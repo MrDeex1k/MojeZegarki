@@ -4,7 +4,7 @@ Aplikacja na iPhone’a do prywatnego zarządzania kolekcją zegarków. Pierwszy
 
 ## Aktualny status
 
-Stan projektu: 2026-09-08. Zatwierdzono lokalny zakres funkcjonalny FREE: kolekcję, zdjęcia, Archiwum, noszenie, listę życzeń, dokumenty oraz blokadę dostępu. Implementacja, testy i raporty weryfikacji są wprowadzane osobnymi zmianami po fundamencie dokumentacji.
+Stan implementacji: 2026-09-08. Repozytorium zawiera lokalny zakres funkcjonalny FREE: kolekcję, zdjęcia, Archiwum, noszenie, listę życzeń, dokumenty oraz blokadę dostępu. Do publikacji pozostają weryfikacja fizycznych urządzeń i przygotowanie dystrybucji. Szczegóły uruchomienia znajdują się w [głównym README](../README.md), a dowody i ograniczenia w [raporcie FREE](10-free-weryfikacja.md).
 
 ## Zatwierdzony kierunek
 
@@ -28,6 +28,8 @@ Stan projektu: 2026-09-08. Zatwierdzono lokalny zakres funkcjonalny FREE: kolekc
 - [Prywatność i bezpieczeństwo](./06-prywatnosc-i-bezpieczenstwo.md)
 - [Roadmapa](./07-roadmapa.md)
 - [Decyzje, ryzyka i pytania otwarte](./08-decyzje-ryzyka.md)
+- [Etap 1 — weryfikacja historyczna](./09-etap-1-weryfikacja.md)
+- [FREE — weryfikacja i następne kroki](./10-free-weryfikacja.md)
 
 ## Źródła techniczne
 
