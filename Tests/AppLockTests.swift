@@ -58,11 +58,18 @@ final class AppLockTests: XCTestCase {
         auth.suspended = true
         let lock = AppLock(defaults: defaults, authenticator: auth)
         let pending = Task { await lock.unlock() }
-        while auth.continuation == nil { await Task.yield() }
+        for _ in 0..<100 where auth.continuation == nil {
+            try await Task.sleep(for: .milliseconds(10))
+        }
+        guard let continuation = auth.continuation else {
+            pending.cancel()
+            XCTFail("AppLock did not request authentication within one second")
+            return
+        }
         await lock.unlock()
         XCTAssertEqual(auth.calls, 1)
         lock.lock()
-        auth.continuation?.resume(returning: true)
+        continuation.resume(returning: true)
         await pending.value
         XCTAssertTrue(lock.isLocked)
         XCTAssertFalse(lock.isBusy)

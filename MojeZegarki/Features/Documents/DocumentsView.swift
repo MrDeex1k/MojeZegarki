@@ -7,7 +7,7 @@ struct DocumentsView: View {
     let watch: Timepiece
     let store: CollectionStore
     let onClose: () -> Void
-    @Query(sort: \DocumentItem.createdAt, order: .reverse) private var allDocuments: [DocumentItem]
+    @Query private var documents: [DocumentItem]
     @State private var choosingFile = false
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var pending: DocumentAsset?
@@ -19,9 +19,13 @@ struct DocumentsView: View {
         self.watch = watch
         self.store = store
         self.onClose = onClose
+        let watchID = watch.id
+        _documents = Query(
+            filter: #Predicate<DocumentItem> { $0.timepiece?.id == watchID },
+            sort: \DocumentItem.createdAt,
+            order: .reverse
+        )
     }
-
-    private var documents: [DocumentItem] { allDocuments.filter { $0.timepiece?.id == watch.id } }
 
     var body: some View {
         List {
@@ -42,7 +46,9 @@ struct DocumentsView: View {
                 Section {
                     ForEach(documents) { document in
                         NavigationLink {
-                            DocumentPreviewView(document: document, store: store)
+                            DocumentPreviewView(document: document, store: store) {
+                                error = $0
+                            }
                         } label: {
                             HStack(spacing: 12) {
                                 Image(systemName: document.contentType == UTType.pdf.identifier ? "doc.text" : "photo")

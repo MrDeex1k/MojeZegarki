@@ -5,37 +5,53 @@ struct WearTodayButton: View {
     let watch: Timepiece
     let store: CollectionStore
     var compact = false
-    @Query private var allLogs: [WearLog]
+
+    var body: some View {
+        TimelineView(.periodic(from: Date(timeIntervalSince1970: 0), by: 60)) { timeline in
+            let today = WearDay(timeline.date).key
+            WearTodayDayButton(watch: watch, store: store, compact: compact, day: today)
+                .id(today)
+        }
+    }
+}
+
+private struct WearTodayDayButton: View {
+    let watch: Timepiece
+    let store: CollectionStore
+    let compact: Bool
+    let day: String
+    @Query private var logs: [WearLog]
     @State private var error: String?
 
-    init(watch: Timepiece, store: CollectionStore, compact: Bool = false) {
+    init(watch: Timepiece, store: CollectionStore, compact: Bool, day: String) {
         self.watch = watch
         self.store = store
         self.compact = compact
+        self.day = day
+        let watchID = watch.id
+        _logs = Query(filter: #Predicate<WearLog> {
+            $0.timepiece?.id == watchID && $0.calendarDay == day
+        })
     }
 
     var body: some View {
-        let recordedDays = Set(allLogs.filter { $0.timepiece?.id == watch.id }.map(\.calendarDay))
-        TimelineView(.periodic(from: Date(timeIntervalSince1970: 0), by: 60)) { timeline in
-            let today = WearDay(timeline.date).key
-            let logged = recordedDays.contains(today)
-            Button {
-                do { try store.logWear(for: watch, date: .now) }
-                catch { self.error = error.localizedDescription }
-            } label: {
-                if compact {
-                    Image(systemName: logged ? "checkmark.circle.fill" : "checkmark.circle")
-                        .font(.title2)
-                } else {
-                    Label(logged ? "Worn today" : "Wearing today", systemImage: logged ? "checkmark.circle.fill" : "checkmark.circle")
-                }
+        let logged = !logs.isEmpty
+        Button {
+            do { try store.logWear(for: watch, date: .now) }
+            catch { self.error = error.localizedDescription }
+        } label: {
+            if compact {
+                Image(systemName: logged ? "checkmark.circle.fill" : "checkmark.circle")
+                    .font(.title2)
+            } else {
+                Label(logged ? "Worn today" : "Wearing today", systemImage: logged ? "checkmark.circle.fill" : "checkmark.circle")
             }
-            .buttonStyle(.borderless)
-            .disabled(logged || watch.status != .owned)
-            .accessibilityLabel(logged ? Text("Worn today") : Text("Wearing today"))
-            .accessibilityHint(Text("\(watch.brand) \(watch.modelName)"))
-            .accessibilityIdentifier(compact ? "wear.quick.\(watch.id)" : "wear.today")
         }
+        .buttonStyle(.borderless)
+        .disabled(logged || watch.status != .owned)
+        .accessibilityLabel(logged ? Text("Worn today") : Text("Wearing today"))
+        .accessibilityHint(Text("\(watch.brand) \(watch.modelName)"))
+        .accessibilityIdentifier(compact ? "wear.quick.\(watch.id)" : "wear.today")
         .appError($error)
     }
 }

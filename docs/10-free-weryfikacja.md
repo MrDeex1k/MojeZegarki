@@ -47,7 +47,7 @@ Wyniki końcowe:
 
 Lokalne wyniki Xcode: `.build/Free-delivery-iOS17.xcresult` oraz `.build/Free-delivery-iOS26.xcresult`. Wyniki wcześniejszych prób służyły diagnozie i nie zastępują tych końcowych raportów.
 
-Ręcznie na iOS 17.5: otwarcie systemowego importera, wybór syntetycznego PDF z „Na moim iPhonie”, zapis metadanych i podgląd. Treść faktury jest czytelna wizualnie i dostępna w drzewie dostępności. [Zrzut podglądu PDF](../.build/free-document-pl.png). Wcześniej sprawdzono również szybkie noszenie i odczyt liczby dni w polskiej wersji.
+Ręcznie na iOS 17.5: otwarcie systemowego importera, wybór syntetycznego PDF z „Na moim iPhonie”, zapis metadanych i podgląd. Treść faktury jest czytelna wizualnie i dostępna w drzewie dostępności. Wcześniej sprawdzono również szybkie noszenie i odczyt liczby dni w polskiej wersji.
 
 Symulacja Face ID przez agent-device zwróciła `UNSUPPORTED_OPERATION` dla tego runtime. Nie zaliczono ręcznego testu biometrii. Brak tej możliwości nie ogranicza opisanych testów logiki blokady ani automatycznego sprawdzenia zasłony prywatności.
 

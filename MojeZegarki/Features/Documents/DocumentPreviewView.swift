@@ -5,9 +5,9 @@ import UniformTypeIdentifiers
 struct DocumentPreviewView: View {
     let document: DocumentItem
     let store: CollectionStore
+    let onDeleteError: (String) -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var data: Data?
-    @State private var error: String?
     @State private var failedToLoad = false
     @State private var editing = false
     @State private var deleting = false
@@ -44,14 +44,14 @@ struct DocumentPreviewView: View {
         .confirmationDialog("Delete this document?", isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete", role: .destructive) {
                 deleting = true
+                dismiss()
                 Task {
-                    do { try await store.deleteDocument(document); dismiss() }
-                    catch { self.error = error.localizedDescription; deleting = false }
+                    do { try await store.deleteDocument(document) }
+                    catch { onDeleteError(error.localizedDescription) }
                 }
             }
             .accessibilityIdentifier("document.confirmDelete")
         }
-        .appError($error)
         .task(id: document.id) {
             do { data = try await store.documentStore.data(id: document.id, filename: document.filename) }
             catch { failedToLoad = true }
