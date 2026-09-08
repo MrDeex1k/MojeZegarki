@@ -12,11 +12,29 @@ private final class FakeAuthenticator: DeviceAuthenticating {
     var continuation: CheckedContinuation<Bool, any Error>?
     func authenticate(reason: String) async throws -> Bool {
         calls += 1
-        if suspended { return try await withCheckedThrowingContinuation { continuation = $0 } }
+        if suspended {
+            return try await withTaskCancellationHandler {
+                try await withCheckedThrowingContinuation { continuation = $0 }
+            } onCancel: {
+                Task { @MainActor [weak self] in
+                    self?.cancelPendingAuthentication()
+                }
+            }
+        }
         if let failure { throw failure }
         return success
     }
     func invalidate() { invalidations += 1 }
+    func completeAuthentication(returning result: Bool) {
+        guard let continuation else { return }
+        self.continuation = nil
+        continuation.resume(returning: result)
+    }
+    private func cancelPendingAuthentication() {
+        guard let continuation else { return }
+        self.continuation = nil
+        continuation.resume(throwing: CancellationError())
+    }
 }
 
 @MainActor
@@ -61,18 +79,39 @@ final class AppLockTests: XCTestCase {
         for _ in 0..<100 where auth.continuation == nil {
             try await Task.sleep(for: .milliseconds(10))
         }
-        guard let continuation = auth.continuation else {
+        guard auth.continuation != nil else {
             pending.cancel()
+            await pending.value
             XCTFail("AppLock did not request authentication within one second")
             return
         }
         await lock.unlock()
         XCTAssertEqual(auth.calls, 1)
         lock.lock()
-        continuation.resume(returning: true)
+        auth.completeAuthentication(returning: true)
         await pending.value
         XCTAssertTrue(lock.isLocked)
         XCTAssertFalse(lock.isBusy)
         XCTAssertEqual(auth.invalidations, 1)
+    }
+
+    func testCancellingPendingAuthenticationResumesContinuation() async throws {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        defaults.set(true, forKey: "appLockEnabled")
+        let auth = FakeAuthenticator()
+        auth.suspended = true
+        let lock = AppLock(defaults: defaults, authenticator: auth)
+        let pending = Task { await lock.unlock() }
+        for _ in 0..<100 where auth.continuation == nil {
+            try await Task.sleep(for: .milliseconds(10))
+        }
+        XCTAssertNotNil(auth.continuation)
+
+        pending.cancel()
+        await pending.value
+
+        XCTAssertNil(auth.continuation)
+        XCTAssertFalse(lock.isBusy)
+        XCTAssertTrue(lock.isLocked)
     }
 }
