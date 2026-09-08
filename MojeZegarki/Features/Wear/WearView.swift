@@ -21,6 +21,7 @@ private struct WearTodayDayButton: View {
     let compact: Bool
     let day: String
     @Query private var logs: [WearLog]
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var error: String?
 
     init(watch: Timepiece, store: CollectionStore, compact: Bool, day: String) {
@@ -45,14 +46,45 @@ private struct WearTodayDayButton: View {
                     .font(.title2)
             } else {
                 Label(logged ? "Worn today" : "Wearing today", systemImage: logged ? "checkmark.circle.fill" : "checkmark.circle")
+                    .labelStyle(.titleOnly)
+                    .font(.headline)
+                    .foregroundStyle(logged ? Color.primary : Color(uiColor: .systemBackground))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, minHeight: 28)
+                    .padding(.vertical, 4)
+                    .contentTransition(.opacity)
             }
         }
-        .buttonStyle(.borderless)
+        .modifier(WearActionStyle(compact: compact))
         .disabled(logged || watch.status != .owned)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: logged)
         .accessibilityLabel(logged ? Text("Worn today") : Text("Wearing today"))
         .accessibilityHint(Text("\(watch.brand) \(watch.modelName)"))
         .accessibilityIdentifier(compact ? "wear.quick.\(watch.id)" : "wear.today")
         .appError($error)
+    }
+}
+
+private struct WearActionStyle: ViewModifier {
+    let compact: Bool
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.colorSchemeContrast) private var contrast
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if compact {
+            content.buttonStyle(.borderless)
+        } else if #available(iOS 26.0, *), !reduceTransparency, contrast != .increased {
+            content.buttonStyle(.glassProminent).buttonBorderShape(borderShape)
+        } else {
+            content.buttonStyle(.borderedProminent).buttonBorderShape(borderShape)
+        }
+    }
+
+    private var borderShape: ButtonBorderShape {
+        typeSize.isAccessibilitySize ? .roundedRectangle(radius: 16) : .capsule
     }
 }
 

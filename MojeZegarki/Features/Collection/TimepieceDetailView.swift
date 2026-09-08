@@ -24,15 +24,22 @@ struct TimepieceDetailView: View {
         List {
             if !watch.sortedPhotos.isEmpty {
                 Section {
-                    TabView {
-                        ForEach(orderedPhotos) { photo in
-                            PhotoView(photo: PhotoDraft(id: photo.id, filename: photo.filename), store: store.photoStore, thumbnail: false)
-                                .accessibilityHidden(false)
-                                .accessibilityLabel("Watch photo")
+                    VStack(spacing: 0) {
+                        TabView {
+                            ForEach(orderedPhotos) { photo in
+                                PhotoView(photo: PhotoDraft(id: photo.id, filename: photo.filename), store: store.photoStore, thumbnail: false)
+                                    .accessibilityHidden(false)
+                                    .accessibilityLabel("Watch photo")
+                            }
+                        }
+                        .tabViewStyle(.page(indexDisplayMode: orderedPhotos.count > 1 ? .always : .never))
+                        .indexViewStyle(.page(backgroundDisplayMode: .always))
+                        .frame(height: 300)
+                        if watch.status == .owned {
+                            WearTodayButton(watch: watch, store: store)
+                                .padding(16)
                         }
                     }
-                    .tabViewStyle(.page)
-                    .frame(height: 300)
                     .listRowInsets(EdgeInsets())
                 }
             }
@@ -41,9 +48,12 @@ struct TimepieceDetailView: View {
                 Text(watch.modelName).font(.title2.weight(.semibold))
                     .accessibilityIdentifier("detail.model")
                 LabeledContent("Status") { Text(watch.status.title) }
+                if watch.sortedPhotos.isEmpty && watch.status == .owned {
+                    WearTodayButton(watch: watch, store: store)
+                        .padding(.vertical, 4)
+                }
             }
             Section("Wearing") {
-                if watch.status == .owned { WearTodayButton(watch: watch, store: store) }
                 Button { showingWear = true } label: {
                     LabeledContent {
                         Text("\(wearLogs.count) days worn")
@@ -98,7 +108,10 @@ struct TimepieceDetailView: View {
         .navigationTitle(watch.modelName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            Button("Edit") { editing = true }.accessibilityIdentifier("detail.edit")
+            ToolbarItem(placement: .primaryAction) {
+                Button("Edit", systemImage: "pencil") { editing = true }
+                    .accessibilityIdentifier("detail.edit")
+            }
         }
         .sheet(isPresented: $editing) { TimepieceEditorView(store: store, watch: watch) }
         .sheet(isPresented: $showingDocuments) {

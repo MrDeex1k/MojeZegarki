@@ -36,8 +36,13 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Your next watch"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Collection"].tap()
         XCTAssertTrue(app.staticTexts["G-Shock"].waitForExistence(timeout: 5))
+        app.staticTexts["G-Shock"].tap()
+        let today = app.buttons["wear.today"]
+        XCTAssertTrue(today.isHittable)
+        today.tap()
+        XCTAssertFalse(today.isEnabled)
+        app.navigationBars.buttons.element(boundBy: 0).tap()
         let quick = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.quick.")).firstMatch
-        quick.tap()
         XCTAssertFalse(quick.isEnabled)
         app.staticTexts["G-Shock"].tap()
         app.buttons["detail.wear"].tap()
