@@ -75,7 +75,9 @@ struct TimepieceEditorView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }.disabled(importing || saving)
+                    Button("Cancel") { dismiss() }
+                        .disabled(importing || saving)
+                        .accessibilityIdentifier("editor.cancel")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { Task { await save() } }

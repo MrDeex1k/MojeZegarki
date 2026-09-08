@@ -22,11 +22,11 @@ Ruch ogranicza się do natywnej reakcji przycisku, krótkiej zmiany stanu po zap
 
 ## Weryfikacja
 
-- Pięć istniejących testów UI przeszło na iOS 17.5 i iOS 26.5. Scenariusz przeniesienia życzenia sprawdza teraz zapis noszenia z ekranu szczegółów, dezaktywację obu akcji i zachowanie wpisu po restarcie.
+- Pięć istniejących testów UI przeszło w przebiegach `.build/Glass-final-check-iOS17.xcresult` na iOS 17.5 i `.build/Glass-final-iOS26.xcresult` na iOS 26.5. Scenariusz przeniesienia życzenia sprawdza teraz zapis noszenia z ekranu szczegółów, dezaktywację obu akcji i zachowanie wpisu po restarcie. Są to przebiegi wcześniejsze niż `Free-delivery-iOS17.xcresult` opisany w dokumencie weryfikacji FREE.
 - Raporty: `.build/Glass-iOS17.xcresult` i `.build/Glass-isolated-iOS26.xcresult`. Pierwszy przebieg iOS 26 na współdzielonym symulatorze zakłócała inna aplikacja; końcowy pełny przebieg wykonano na osobnym symulatorze „MojeZegarki Glass QA”.
 - Oględziny PL: systemowa nawigacja, ekran ze zdjęciem, zapis i potwierdzenie noszenia, tryb jasny i ciemny. Największy Dynamic Type ze zwiększonym kontrastem ujawnił skracanie etykiety; poprawiono układ i potwierdzono pełne dwuwierszowe wyświetlanie.
-- Po poprawce typografii i kontrastu scenariusz zapisu przeszedł ponownie na obu systemach: `.build/Glass-final-iOS26.xcresult` i `.build/Glass-final-check-iOS17.xcresult`. Pierwsza końcowa próba na iOS 17 zatrzymała się na kroku Anuluj, jeszcze przed ekranem noszenia; ponowny przebieg bez zmiany kodu przeszedł. Ten krok testu warto obserwować pod kątem stabilności automatyzacji.
-- Zrzuty wykorzystują syntetyczną ilustrację testową: [kolekcja](../.build/glass-collection26-pl.png), [szczegóły — jasny](../.build/glass-detail26-pl.png), [szczegóły — ciemny](../.build/glass-detail26-dark-pl.png), [największy tekst i kontrast](../.build/glass-detail26-accessibility.png), [potwierdzenie](../.build/glass-confirmation26-pl.png).
+- Po poprawce typografii i kontrastu scenariusz zapisu przeszedł ponownie na obu systemach: `.build/Glass-final-iOS26.xcresult` i `.build/Glass-final-check-iOS17.xcresult`. Pierwsza końcowa próba na iOS 17 zatrzymała się na kroku Anuluj, jeszcze przed ekranem noszenia; ponowny przebieg bez zmiany kodu przeszedł. Po powtórzeniu problemu przycisk anulowania otrzymał stabilny identyfikator dostępności używany przez test UI.
+- Zrzuty wykorzystują syntetyczną ilustrację testową: [kolekcja](assets/liquid-glass/collection26-pl.png), [szczegóły — jasny](assets/liquid-glass/detail26-pl.png), [szczegóły — ciemny](assets/liquid-glass/detail26-dark-pl.png), [największy tekst i kontrast](assets/liquid-glass/detail26-accessibility.png), [potwierdzenie](assets/liquid-glass/confirmation26-pl.png).
 - Kontrola fizycznego urządzenia, VoiceOver i systemowego ograniczania przezroczystości/ruchu pozostaje do wykonania; obsługa tych preferencji jest w kodzie. Zmiana nie obejmuje pełnego audytu dostępności pozostałych ekranów.
 
 ## Źródła
