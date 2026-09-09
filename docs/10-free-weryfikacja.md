@@ -23,7 +23,7 @@ Pliki są najpierw zapisywane do katalogu roboczego. Udany zapis bazy zachowuje 
 
 ## Testy automatyczne
 
-Zestaw zawiera 13 testów domeny/integracji i 5 testów UI:
+Zestaw zawiera 14 testów domeny/integracji i 5 testów UI:
 
 - walidacja wymaganych pól i kwot, trwałość po otwarciu bazy ponownie;
 - migracja V1 → V2, archiwizacja i kaskadowe usuwanie;
@@ -39,13 +39,15 @@ Wyniki końcowe:
 
 | Weryfikacja | Wynik |
 | --- | --- |
-| iPhone 15 Pro, iOS 17.5 | 18/18 testów zaliczonych |
-| iPhone 17, iOS 26.5 | 18/18 testów zaliczonych |
+| iPhone 15 Pro, iOS 17.5 | Poprzedni pełny przebieg: 18/18; bieżące testy domeny/integracji: 14/14 |
+| iPhone 17, iOS 26.5 | 19/19 testów zaliczonych |
 | Release, generic iOS, bez podpisu | BUILD SUCCEEDED |
 | Katalog tłumaczeń | Wszystkie wyodrębnione klucze mają PL i EN |
 | Paczka Release | Minimum 17.0, rodzina urządzeń iPhone, ikona i manifest; bez testowych wtyczek |
 
 Lokalne wyniki Xcode: `.build/Free-delivery-iOS17.xcresult` oraz `.build/Free-delivery-iOS26.xcresult`. Wyniki wcześniejszych prób służyły diagnozie i nie zastępują tych końcowych raportów.
+
+Po dodaniu testu anulowania uwierzytelniania zestaw domeny/integracji na iOS 17.5 przechodzi 14/14. Ponowny pełny przebieg zaliczył pozostałe testy, ale test UI podglądu PDF dwukrotnie zatrzymał się na oczekiwaniu XCTest na bezczynność `PDFView`; nie zapisano więc dla tego runtime wyniku 19/19. Ten sam bieżący zestaw przechodzi 19/19 na iOS 26.5.
 
 Ręcznie na iOS 17.5: otwarcie systemowego importera, wybór syntetycznego PDF z „Na moim iPhonie”, zapis metadanych i podgląd. Treść faktury jest czytelna wizualnie i dostępna w drzewie dostępności. Wcześniej sprawdzono również szybkie noszenie i odczyt liczby dni w polskiej wersji.
 

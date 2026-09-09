@@ -27,7 +27,7 @@ final class FreeModuleUITests: XCTestCase {
         actions.tap()
         app.buttons["wish.move"].tap()
         XCTAssertEqual(app.textFields["editor.brand"].value as? String, "Casio")
-        app.buttons["Cancel"].tap()
+        app.buttons["editor.cancel"].tap()
         XCTAssertTrue(app.textFields["editor.brand"].waitForNonExistence(timeout: 5))
         if !actions.isHittable { app.swipeDown() }
         actions.tap()
@@ -36,8 +36,19 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Your next watch"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Collection"].tap()
         XCTAssertTrue(app.staticTexts["G-Shock"].waitForExistence(timeout: 5))
+        app.staticTexts["G-Shock"].tap()
+        let today = app.buttons["wear.today"]
+        XCTAssertTrue(today.waitForExistence(timeout: 5))
+        XCTAssertTrue(today.isHittable)
+        today.tap()
+        let disabled = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == false"),
+            object: today
+        )
+        wait(for: [disabled], timeout: 5)
+        XCTAssertFalse(today.isEnabled)
+        app.navigationBars.buttons.element(boundBy: 0).tap()
         let quick = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.quick.")).firstMatch
-        quick.tap()
         XCTAssertFalse(quick.isEnabled)
         app.staticTexts["G-Shock"].tap()
         app.buttons["detail.wear"].tap()

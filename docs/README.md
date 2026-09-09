@@ -30,6 +30,7 @@ Stan implementacji: 2026-09-08. Repozytorium zawiera lokalny zakres funkcjonalny
 - [Decyzje, ryzyka i pytania otwarte](./08-decyzje-ryzyka.md)
 - [Etap 1 — weryfikacja historyczna](./09-etap-1-weryfikacja.md)
 - [FREE — weryfikacja i następne kroki](./10-free-weryfikacja.md)
+- [Liquid Glass — pierwszy etap](./11-liquid-glass.md)
 
 ## Źródła techniczne
 
