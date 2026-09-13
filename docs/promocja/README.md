@@ -4,10 +4,20 @@
 
 Pierwszy automat, prezent na ważną okazję, ulubiony zegarek na co dzień. **Moje Zegarki** to Twoje prywatne miejsce na kolekcję — ze zdjęciami, wspomnieniami i planami na kolejny zakup. Zawsze pod ręką, na iPhonie.
 
+### W jasnym motywie
+
 | Twoja kolekcja. Twoje historie. | Co dziś na nadgarstku? | Zrób miejsce na marzenia. |
 | :---: | :---: | :---: |
 | ![Szczegóły zegarka Forest 01: zdjęcie, status i szybkie oznaczanie noszenia](screenshots/zegarek.png) | ![Historia noszenia z przykładowym wpisem dla zegarka Forest 01](screenshots/noszenie.png) | ![Lista życzeń z zegarkiem Weekend 02 i wysokim priorytetem](screenshots/lista-zyczen.png) |
 | Zdjęcia i szczegóły każdego zegarka w jednym miejscu. | Oznacz, co nosisz, i wracaj do historii swojej kolekcji. | Zapisuj wymarzone modele i ustalaj priorytety. |
+
+### W ciemnym motywie
+
+Ta sama kolekcja, historia i plany — w ciemnej oprawie.
+
+| Twoja kolekcja. Twoje historie. | Co dziś na nadgarstku? | Zrób miejsce na marzenia. |
+| :---: | :---: | :---: |
+| ![Ciemny motyw: szczegóły zegarka Forest 01 ze zdjęciem i oznaczaniem noszenia](screenshots/zegarek-dark.png) | ![Ciemny motyw: historia noszenia zegarka Forest 01](screenshots/noszenie-dark.png) | ![Ciemny motyw: lista życzeń z zegarkiem Weekend 02 i wysokim priorytetem](screenshots/lista-zyczen-dark.png) |
 
 ### Mniej szukania. Więcej przyjemności z kolekcjonowania.
 
