@@ -8,7 +8,7 @@ Pierwszy automat, prezent na ważną okazję, ulubiony zegarek na co dzień. **M
 
 | Twoja kolekcja. Twoje historie. | Co dziś na nadgarstku? | Zrób miejsce na marzenia. |
 | :---: | :---: | :---: |
-| ![Szczegóły zegarka Forest 01: zdjęcie, status i szybkie oznaczanie noszenia](screenshots/zegarek.png) | ![Historia noszenia z przykładowym wpisem dla zegarka Forest 01](screenshots/noszenie.png) | ![Lista życzeń z zegarkiem Weekend 02 i wysokim priorytetem](screenshots/lista-zyczen.png) |
+| ![Szczegóły zegarka Forest 01: zdjęcie, status i szybkie oznaczanie noszenia](screenshots/zegarek.png) | ![Harmonogram z przykładowym wpisem dla zegarka Forest 01](screenshots/noszenie.png) | ![Lista życzeń z zegarkiem Weekend 02 i wysokim priorytetem](screenshots/lista-zyczen.png) |
 | Zdjęcia i szczegóły każdego zegarka w jednym miejscu. | Oznacz, co nosisz, i wracaj do historii swojej kolekcji. | Zapisuj wymarzone modele i ustalaj priorytety. |
 
 ### W ciemnym motywie
@@ -17,7 +17,7 @@ Ta sama kolekcja, historia i plany — w ciemnej oprawie.
 
 | Twoja kolekcja. Twoje historie. | Co dziś na nadgarstku? | Zrób miejsce na marzenia. |
 | :---: | :---: | :---: |
-| ![Ciemny motyw: szczegóły zegarka Forest 01 ze zdjęciem i oznaczaniem noszenia](screenshots/zegarek-dark.png) | ![Ciemny motyw: historia noszenia zegarka Forest 01](screenshots/noszenie-dark.png) | ![Ciemny motyw: lista życzeń z zegarkiem Weekend 02 i wysokim priorytetem](screenshots/lista-zyczen-dark.png) |
+| ![Ciemny motyw: szczegóły zegarka Forest 01 ze zdjęciem i oznaczaniem noszenia](screenshots/zegarek-dark.png) | ![Ciemny motyw: harmonogram zegarka Forest 01](screenshots/noszenie-dark.png) | ![Ciemny motyw: lista życzeń z zegarkiem Weekend 02 i wysokim priorytetem](screenshots/lista-zyczen-dark.png) |
 
 ### Mniej szukania. Więcej przyjemności z kolekcjonowania.
 
@@ -32,4 +32,4 @@ Ta sama kolekcja, historia i plany — w ciemnej oprawie.
 
 *iPhone · iOS 17 lub nowszy · język polski i angielski. Aplikacja jest w rozwoju, przed publikacją w App Store. Materiał przedstawia obecny lokalny zakres FREE.*
 
-*Autentyczne zrzuty z aplikacji uruchomionej w symulatorze, wykonane 13.09.2026. Nazwy i wpisy są fikcyjnymi danymi demonstracyjnymi; ilustrację zegarka wygenerowano przy użyciu AI i dodano do aplikacji jako zdjęcie. Interfejs screenów nie był retuszowany.*
+*Autentyczne zrzuty z aplikacji uruchomionej w symulatorze iPhone 18 Pro, wykonane 16.09.2026. Nazwy i wpisy są fikcyjnymi danymi demonstracyjnymi; ilustrację zegarka wygenerowano przy użyciu AI i dodano do aplikacji jako zdjęcie. Interfejs screenów nie był retuszowany.*
