@@ -18,6 +18,10 @@ Stan implementacji: 2026-09-08. Repozytorium zawiera lokalny zakres funkcjonalny
 - Późniejsze Premium: wyłącznie synchronizacja iCloud, subskrypcja miesięczna.
 - Bez własnego backendu, reklam i zewnętrznej analityki w pierwszej wersji.
 
+## Przygotowanie TestFlight
+
+Ustalenia bety 0.8.0, metadane PL/EN, screeny i scenariusze fizycznych urządzeń znajdują się w [pakiecie TestFlight](testflight/README.md). Wysyłka wymaga aktywnego członkostwa Apple Developer Program i podpisania aplikacji.
+
 ## Spis treści
 
 - [Wizja produktu](./01-wizja-produktu.md)
