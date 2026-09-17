@@ -7,6 +7,7 @@ Stan przygotowania: 17.09.2026. Celem jest zamknięta beta dla 15–20 osób, po
 | Pole | Wartość |
 | --- | --- |
 | Osoba odpowiedzialna | Jakub Batycki |
+| Status właściciela | Osoba prywatna, nie przedsiębiorca — deklaracja właściciela |
 | Nazwa PL / EN | Moje Zegarki / My Watches — dostępność do potwierdzenia w App Store Connect |
 | Bundle ID | `pl.jakubbatycki.MojeZegarki` |
 | Wersja / pierwszy build | `0.8.0` / `1`; zwiększać build przy kolejnych wysyłkach |
@@ -53,6 +54,8 @@ Build Debug dla symulatora i Release dla urządzenia zakończone powodzeniem bez
 - Odpowiedzi formularzy App Store Connect, w tym klasyfikacja wiekowa i prywatność, przed odpowiednim etapem dystrybucji.
 
 ## Kontakt i prywatność danych kontaktowych
+
+Właściciel potwierdził, że jest osobą prywatną i nie jest przedsiębiorcą. Aktualny zakres to wyłącznie TestFlight — według Apple taka dystrybucja nie oznacza działania jako trader w App Store. Przy późniejszej publikacji sklepowej deklaracja DSA powinna odzwierciedlać charakter działalności związanej z aplikacją; sam brak firmy nie rozstrzyga jej automatycznie. Wybór `This is not a trader account` nie wymaga podawania publicznych danych kontaktowych DSA. Nie zmieniano ustawień App Store Connect. [Apple: DSA](https://developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements).
 
 Każda aplikacja może mieć własny adres wsparcia/Feedback Email. Tutaj używamy `mywatches@mail.batycki.dev`. Przekierowanie na jedną skrzynkę rozdziela adresy, ale do porządkowania poczty potrzebne będą reguły lub osobne skrzynki.
 
