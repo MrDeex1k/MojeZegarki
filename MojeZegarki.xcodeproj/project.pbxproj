@@ -1,117 +1,705 @@
 // !$*UTF8*$!
-{ archiveVersion = 1; classes = {}; objectVersion = 56; objects = {
-45EDEF8DA916E87DCC6EF9BF = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppError.swift"; sourceTree = "<group>"; };
-190E12A6DE050AA0E4F254A4 = { isa = PBXBuildFile; fileRef = 45EDEF8DA916E87DCC6EF9BF; };
-1002E2A2D83E50DF7F3ACF97 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LockShield.swift"; sourceTree = "<group>"; };
-C5AFF9879F39852C5D7DD54F = { isa = PBXBuildFile; fileRef = 1002E2A2D83E50DF7F3ACF97; };
-FE11ED33912A05BB7857BABF = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MojeZegarkiApp.swift"; sourceTree = "<group>"; };
-8C40DD5AFDF8C8CD111D34DC = { isa = PBXBuildFile; fileRef = FE11ED33912A05BB7857BABF; };
-A261FC320BF614D2C4274E52 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootView.swift"; sourceTree = "<group>"; };
-8CD6737D43AB27F56CEA5005 = { isa = PBXBuildFile; fileRef = A261FC320BF614D2C4274E52; };
-1475EFD9D255E2CF05827271 = { isa = PBXGroup; children = (45EDEF8DA916E87DCC6EF9BF,1002E2A2D83E50DF7F3ACF97,FE11ED33912A05BB7857BABF,A261FC320BF614D2C4274E52,); path = "App"; sourceTree = "<group>"; };
-B9B816C4E4AEB7EA3D3EACDD = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentTypes.swift"; sourceTree = "<group>"; };
-E15D9232E86384A39690B752 = { isa = PBXBuildFile; fileRef = B9B816C4E4AEB7EA3D3EACDD; };
-6E7B22E931690D246AD42192 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchTypes.swift"; sourceTree = "<group>"; };
-B56D10DC665529CF38510088 = { isa = PBXBuildFile; fileRef = 6E7B22E931690D246AD42192; };
-09F158ABF3575947F19E6D0A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearDay.swift"; sourceTree = "<group>"; };
-12798E6ACA4D4472B8A77F8A = { isa = PBXBuildFile; fileRef = 09F158ABF3575947F19E6D0A; };
-9F78BA3FF36DC56A95686568 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WishlistDraft.swift"; sourceTree = "<group>"; };
-7E24AFD9C426B75DFFC16F57 = { isa = PBXBuildFile; fileRef = 9F78BA3FF36DC56A95686568; };
-10208B03215AADB9C46A7535 = { isa = PBXGroup; children = (B9B816C4E4AEB7EA3D3EACDD,6E7B22E931690D246AD42192,09F158ABF3575947F19E6D0A,9F78BA3FF36DC56A95686568,); path = "Domain"; sourceTree = "<group>"; };
-76CD33C3F6AA70A109319289 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView.swift"; sourceTree = "<group>"; };
-5AEAF8372FC2C5CEAA2DBB4C = { isa = PBXBuildFile; fileRef = 76CD33C3F6AA70A109319289; };
-E7695B7C24BB24A1302201AC = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoView.swift"; sourceTree = "<group>"; };
-8DF67488E9433441399533DF = { isa = PBXBuildFile; fileRef = E7695B7C24BB24A1302201AC; };
-E702C5225D67539778E823A8 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimepieceDetailView.swift"; sourceTree = "<group>"; };
-CA3DB8F2EF9B83CD5469160D = { isa = PBXBuildFile; fileRef = E702C5225D67539778E823A8; };
-5015B9A05080CD7ACD47908C = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimepieceEditorView.swift"; sourceTree = "<group>"; };
-97B8FA873634F62467BC13F0 = { isa = PBXBuildFile; fileRef = 5015B9A05080CD7ACD47908C; };
-C7EFD3EF57DECBFAD5C8660E = { isa = PBXGroup; children = (76CD33C3F6AA70A109319289,E7695B7C24BB24A1302201AC,E702C5225D67539778E823A8,5015B9A05080CD7ACD47908C,); path = "Collection"; sourceTree = "<group>"; };
-4DD44D09B4E017F915D45294 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentPreviewView.swift"; sourceTree = "<group>"; };
-9464FA5EBF66900A492D4190 = { isa = PBXBuildFile; fileRef = 4DD44D09B4E017F915D45294; };
-D7F58E14745A5BF6AC8A577B = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentsView.swift"; sourceTree = "<group>"; };
-74053BC7FE1391FF86718530 = { isa = PBXBuildFile; fileRef = D7F58E14745A5BF6AC8A577B; };
-EAAB65F8AE55B1A6FDB11328 = { isa = PBXGroup; children = (4DD44D09B4E017F915D45294,D7F58E14745A5BF6AC8A577B,); path = "Documents"; sourceTree = "<group>"; };
-078151CF97D91D8173A69324 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView.swift"; sourceTree = "<group>"; };
-A26B4FED7851F9E99BE8BC3C = { isa = PBXBuildFile; fileRef = 078151CF97D91D8173A69324; };
-AC60AF109213A9B1E7B5036C = { isa = PBXGroup; children = (078151CF97D91D8173A69324,); path = "Settings"; sourceTree = "<group>"; };
-6D2FF408CE63D2A71F0F4C4E = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearView.swift"; sourceTree = "<group>"; };
-3E1223A786843F65F449DB92 = { isa = PBXBuildFile; fileRef = 6D2FF408CE63D2A71F0F4C4E; };
-D0F0707B83F464A2B5CCFE08 = { isa = PBXGroup; children = (6D2FF408CE63D2A71F0F4C4E,); path = "Wear"; sourceTree = "<group>"; };
-B50D978E139A81B9FCAF9AFD = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WishlistView.swift"; sourceTree = "<group>"; };
-D4E74F1AA38FED6400A7EF53 = { isa = PBXBuildFile; fileRef = B50D978E139A81B9FCAF9AFD; };
-800E7E96C9B5F375B1D644D2 = { isa = PBXGroup; children = (B50D978E139A81B9FCAF9AFD,); path = "Wishlist"; sourceTree = "<group>"; };
-7D17E5F50E01E59CDD718A71 = { isa = PBXGroup; children = (C7EFD3EF57DECBFAD5C8660E,EAAB65F8AE55B1A6FDB11328,AC60AF109213A9B1E7B5036C,D0F0707B83F464A2B5CCFE08,800E7E96C9B5F375B1D644D2,); path = "Features"; sourceTree = "<group>"; };
-19210AE448DA0ABAB8750744 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionSchema.swift"; sourceTree = "<group>"; };
-04702C25A5714DD909F0DFC5 = { isa = PBXBuildFile; fileRef = 19210AE448DA0ABAB8750744; };
-F48D5A5551D53FAB6248C11D = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionSchemaV2.swift"; sourceTree = "<group>"; };
-EE899E36CE74DD8D9761C798 = { isa = PBXBuildFile; fileRef = F48D5A5551D53FAB6248C11D; };
-03C92F291EBBA494F8D9622A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionStore.swift"; sourceTree = "<group>"; };
-B4CFE7FAF07C208453820A04 = { isa = PBXBuildFile; fileRef = 03C92F291EBBA494F8D9622A; };
-DFBC7678EC9C1863E2AE4F59 = { isa = PBXGroup; children = (19210AE448DA0ABAB8750744,F48D5A5551D53FAB6248C11D,03C92F291EBBA494F8D9622A,); path = "Persistence"; sourceTree = "<group>"; };
-AE4E82260C83AF63B2E2931D = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppLock.swift"; sourceTree = "<group>"; };
-D34F855A50BEE6E89363F372 = { isa = PBXBuildFile; fileRef = AE4E82260C83AF63B2E2931D; };
-CCBF6E9632325D1F5A5B8AA3 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentStore.swift"; sourceTree = "<group>"; };
-EBB2138D447384A1C56399B8 = { isa = PBXBuildFile; fileRef = CCBF6E9632325D1F5A5B8AA3; };
-81EBF365D4524DE104976E42 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoStore.swift"; sourceTree = "<group>"; };
-66D6BA5C312AC22133C87E87 = { isa = PBXBuildFile; fileRef = 81EBF365D4524DE104976E42; };
-BD28C4A8CF4996C22D248E3F = { isa = PBXGroup; children = (AE4E82260C83AF63B2E2931D,CCBF6E9632325D1F5A5B8AA3,81EBF365D4524DE104976E42,); path = "Services"; sourceTree = "<group>"; };
-097045A8359835A73ACAD6E7 = { isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets.xcassets"; sourceTree = "<group>"; };
-86E26D2AB2B33795ADD274EC = { isa = PBXBuildFile; fileRef = 097045A8359835A73ACAD6E7; };
-7BE49B9B343D17AC911FC3F6 = { isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = "Localizable.xcstrings"; sourceTree = "<group>"; };
-349A870A2F72B35EB6681332 = { isa = PBXBuildFile; fileRef = 7BE49B9B343D17AC911FC3F6; };
-8A112267E929502BF8263454 = { isa = PBXFileReference; lastKnownFileType = text.xml; path = "PrivacyInfo.xcprivacy"; sourceTree = "<group>"; };
-71023499FE93D9BCAB236A23 = { isa = PBXBuildFile; fileRef = 8A112267E929502BF8263454; };
-863E659805EAEF9EF6ED0019 = { isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-004DDBF4871F50AC6F637034 = { isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "pl.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-987AAB6D1335350732FD5CDB = { isa = PBXVariantGroup; children = (863E659805EAEF9EF6ED0019,004DDBF4871F50AC6F637034,); name = InfoPlist.strings; sourceTree = "<group>"; };
-58485B0C7AFFCAD545225ADA = { isa = PBXBuildFile; fileRef = 987AAB6D1335350732FD5CDB; };
-0189424A5A60FED329FA868E = { isa = PBXGroup; children = (097045A8359835A73ACAD6E7,7BE49B9B343D17AC911FC3F6,8A112267E929502BF8263454,987AAB6D1335350732FD5CDB,); path = Resources; sourceTree = "<group>"; };
-681D8297790EAE3457110456 = { isa = PBXGroup; children = (1475EFD9D255E2CF05827271,10208B03215AADB9C46A7535,7D17E5F50E01E59CDD718A71,DFBC7678EC9C1863E2AE4F59,BD28C4A8CF4996C22D248E3F,0189424A5A60FED329FA868E,); path = "MojeZegarki"; sourceTree = "<group>"; };
-144E24429C6B2DB14D957368 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppLockTests.swift"; sourceTree = "<group>"; };
-68020241B5E5DA5BF38AA064 = { isa = PBXBuildFile; fileRef = 144E24429C6B2DB14D957368; };
-7BAC008B2DF99278619233FE = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionTests.swift"; sourceTree = "<group>"; };
-E6ACF921A64A4A5F62BC1C57 = { isa = PBXBuildFile; fileRef = 7BAC008B2DF99278619233FE; };
-259737604D2CFB1D01F233D1 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FreeModuleTests.swift"; sourceTree = "<group>"; };
-9CD99E564C58B07EE748BD4A = { isa = PBXBuildFile; fileRef = 259737604D2CFB1D01F233D1; };
-156052F04525D0F710673CF0 = { isa = PBXGroup; children = (144E24429C6B2DB14D957368,7BAC008B2DF99278619233FE,259737604D2CFB1D01F233D1,); path = "Tests"; sourceTree = "<group>"; };
-E202D8F442FDD04AE706140E = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionUITests.swift"; sourceTree = "<group>"; };
-B9CC5C5EE0A9A590619F9F21 = { isa = PBXBuildFile; fileRef = E202D8F442FDD04AE706140E; };
-00862672210B614F7E585226 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FreeModuleUITests.swift"; sourceTree = "<group>"; };
-4643A935D3C7CE153319722B = { isa = PBXBuildFile; fileRef = 00862672210B614F7E585226; };
-5A349263041B6A939BD7831F = { isa = PBXGroup; children = (E202D8F442FDD04AE706140E,00862672210B614F7E585226,); path = "UITests"; sourceTree = "<group>"; };
-89E1FD6268CC0F221A2BE178 = { isa = XCBuildConfiguration; buildSettings = { CLANG_ENABLE_MODULES = "YES"; CLANG_ENABLE_OBJC_ARC = "YES"; DEBUG_INFORMATION_FORMAT = "dwarf"; ENABLE_TESTABILITY = "YES"; ENABLE_USER_SCRIPT_SANDBOXING = "YES"; IPHONEOS_DEPLOYMENT_TARGET = "17.0"; ONLY_ACTIVE_ARCH = "YES"; SDKROOT = "iphoneos"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)"; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_STRICT_CONCURRENCY = "complete"; SWIFT_VERSION = "6.0"; }; name = Debug; };
-E6DE6C99132752C914FEF632 = { isa = XCBuildConfiguration; buildSettings = { CLANG_ENABLE_MODULES = "YES"; CLANG_ENABLE_OBJC_ARC = "YES"; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ENABLE_USER_SCRIPT_SANDBOXING = "YES"; IPHONEOS_DEPLOYMENT_TARGET = "17.0"; SDKROOT = "iphoneos"; SWIFT_OPTIMIZATION_LEVEL = "-O"; SWIFT_STRICT_CONCURRENCY = "complete"; SWIFT_VERSION = "6.0"; }; name = Release; };
-862894B703A6DEDF96A9DD6C = { isa = XCConfigurationList; buildConfigurations = (89E1FD6268CC0F221A2BE178,E6DE6C99132752C914FEF632,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-6E285DF62416BD4B68439D20 = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MojeZegarki.app; sourceTree = BUILT_PRODUCTS_DIR; };
-A649DF9B901BE335C93490EC = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (190E12A6DE050AA0E4F254A4,C5AFF9879F39852C5D7DD54F,8C40DD5AFDF8C8CD111D34DC,8CD6737D43AB27F56CEA5005,E15D9232E86384A39690B752,B56D10DC665529CF38510088,12798E6ACA4D4472B8A77F8A,7E24AFD9C426B75DFFC16F57,5AEAF8372FC2C5CEAA2DBB4C,8DF67488E9433441399533DF,CA3DB8F2EF9B83CD5469160D,97B8FA873634F62467BC13F0,9464FA5EBF66900A492D4190,74053BC7FE1391FF86718530,A26B4FED7851F9E99BE8BC3C,3E1223A786843F65F449DB92,D4E74F1AA38FED6400A7EF53,04702C25A5714DD909F0DFC5,EE899E36CE74DD8D9761C798,B4CFE7FAF07C208453820A04,D34F855A50BEE6E89363F372,EBB2138D447384A1C56399B8,66D6BA5C312AC22133C87E87,); runOnlyForDeploymentPostprocessing = 0; };
-609264385B42858101192C7D = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-12A89187922AFE9FA0EDD91B = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (86E26D2AB2B33795ADD274EC,349A870A2F72B35EB6681332,71023499FE93D9BCAB236A23,58485B0C7AFFCAD545225ADA,); runOnlyForDeploymentPostprocessing = 0; };
-5BE0B5220B01DB137FEFA9FE = { isa = XCBuildConfiguration; buildSettings = { ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon"; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "AccentColor"; CODE_SIGN_STYLE = "Automatic"; CURRENT_PROJECT_VERSION = "1"; GENERATE_INFOPLIST_FILE = "YES"; INFOPLIST_KEY_CFBundleDisplayName = "Moje Zegarki"; INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock your private watch collection."; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = "YES"; INFOPLIST_KEY_UILaunchScreen_Generation = "YES"; INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait"; MARKETING_VERSION = "0.2.0"; PRODUCT_BUNDLE_IDENTIFIER = "pl.jakubbatycki.MojeZegarki"; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = "NO"; SWIFT_EMIT_LOC_STRINGS = "YES"; TARGETED_DEVICE_FAMILY = "1"; }; name = Debug; };
-23002DFE6D972EAF49415A03 = { isa = XCBuildConfiguration; buildSettings = { ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon"; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "AccentColor"; CODE_SIGN_STYLE = "Automatic"; CURRENT_PROJECT_VERSION = "1"; GENERATE_INFOPLIST_FILE = "YES"; INFOPLIST_KEY_CFBundleDisplayName = "Moje Zegarki"; INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock your private watch collection."; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = "YES"; INFOPLIST_KEY_UILaunchScreen_Generation = "YES"; INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait"; MARKETING_VERSION = "0.2.0"; PRODUCT_BUNDLE_IDENTIFIER = "pl.jakubbatycki.MojeZegarki"; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = "NO"; SWIFT_EMIT_LOC_STRINGS = "YES"; TARGETED_DEVICE_FAMILY = "1"; }; name = Release; };
-FD09E8DD823BC4E86C1F6494 = { isa = XCConfigurationList; buildConfigurations = (5BE0B5220B01DB137FEFA9FE,23002DFE6D972EAF49415A03,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-AC63FCD376ED5727CE0BD208 = { isa = PBXNativeTarget; buildConfigurationList = FD09E8DD823BC4E86C1F6494; buildPhases = (A649DF9B901BE335C93490EC,609264385B42858101192C7D,12A89187922AFE9FA0EDD91B,); buildRules = (); dependencies = (); name = MojeZegarki; productName = MojeZegarki; productReference = 6E285DF62416BD4B68439D20; productType = "com.apple.product-type.application"; };
-4BB7453A06207C79A217178B = { isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MojeZegarkiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-250628AB2CABBE13963F5C2C = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (68020241B5E5DA5BF38AA064,E6ACF921A64A4A5F62BC1C57,9CD99E564C58B07EE748BD4A,); runOnlyForDeploymentPostprocessing = 0; };
-03EF606706FF330FA9A948AA = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-F9EC4FC7A8587DCA6D1D42BE = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-92E74F0CFD89B158164DD61F = { isa = PBXContainerItemProxy; containerPortal = 98F54143AB4E86B28C3AFEE0; proxyType = 1; remoteGlobalIDString = AC63FCD376ED5727CE0BD208; remoteInfo = MojeZegarki; };
-F90FCA579DB01EFA5ECD2DA6 = { isa = PBXTargetDependency; target = AC63FCD376ED5727CE0BD208; targetProxy = 92E74F0CFD89B158164DD61F; };
-F2FA7C118F7BE284CF574803 = { isa = XCBuildConfiguration; buildSettings = { BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = "Automatic"; CURRENT_PROJECT_VERSION = "1"; GENERATE_INFOPLIST_FILE = "YES"; MARKETING_VERSION = "0.2.0"; PRODUCT_BUNDLE_IDENTIFIER = "pl.jakubbatycki.MojeZegarkiTests"; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = "NO"; SWIFT_EMIT_LOC_STRINGS = "NO"; TARGETED_DEVICE_FAMILY = "1"; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MojeZegarki.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MojeZegarki"; }; name = Debug; };
-7F8B44E7CC9518439C0C1E6C = { isa = XCBuildConfiguration; buildSettings = { BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = "Automatic"; CURRENT_PROJECT_VERSION = "1"; GENERATE_INFOPLIST_FILE = "YES"; MARKETING_VERSION = "0.2.0"; PRODUCT_BUNDLE_IDENTIFIER = "pl.jakubbatycki.MojeZegarkiTests"; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = "NO"; SWIFT_EMIT_LOC_STRINGS = "NO"; TARGETED_DEVICE_FAMILY = "1"; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MojeZegarki.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MojeZegarki"; }; name = Release; };
-427D2C68A8F791BF6AC0547E = { isa = XCConfigurationList; buildConfigurations = (F2FA7C118F7BE284CF574803,7F8B44E7CC9518439C0C1E6C,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-FCF56959D8E4AB63FACF0C2C = { isa = PBXNativeTarget; buildConfigurationList = 427D2C68A8F791BF6AC0547E; buildPhases = (250628AB2CABBE13963F5C2C,03EF606706FF330FA9A948AA,F9EC4FC7A8587DCA6D1D42BE,); buildRules = (); dependencies = (F90FCA579DB01EFA5ECD2DA6,); name = MojeZegarkiTests; productName = MojeZegarkiTests; productReference = 4BB7453A06207C79A217178B; productType = "com.apple.product-type.bundle.unit-test"; };
-B0E04739A75F90CC09A78D18 = { isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MojeZegarkiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-0A163ABD4E3C4F990E16E251 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (B9CC5C5EE0A9A590619F9F21,4643A935D3C7CE153319722B,); runOnlyForDeploymentPostprocessing = 0; };
-9EFE2D4961A09F422C0AEDFB = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-05B97AB0DD5D5B624F27C39E = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-36D39632151F1ABCEFE540C6 = { isa = PBXContainerItemProxy; containerPortal = 98F54143AB4E86B28C3AFEE0; proxyType = 1; remoteGlobalIDString = AC63FCD376ED5727CE0BD208; remoteInfo = MojeZegarki; };
-FC408D25327B545F9D7749E2 = { isa = PBXTargetDependency; target = AC63FCD376ED5727CE0BD208; targetProxy = 36D39632151F1ABCEFE540C6; };
-FF05E8B4C0EA4B05BF585D6E = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_STYLE = "Automatic"; CURRENT_PROJECT_VERSION = "1"; GENERATE_INFOPLIST_FILE = "YES"; MARKETING_VERSION = "0.2.0"; PRODUCT_BUNDLE_IDENTIFIER = "pl.jakubbatycki.MojeZegarkiUITests"; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = "NO"; SWIFT_EMIT_LOC_STRINGS = "NO"; TARGETED_DEVICE_FAMILY = "1"; TEST_TARGET_NAME = "MojeZegarki"; }; name = Debug; };
-CE17555CCC37D34E3BCBE352 = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGN_STYLE = "Automatic"; CURRENT_PROJECT_VERSION = "1"; GENERATE_INFOPLIST_FILE = "YES"; MARKETING_VERSION = "0.2.0"; PRODUCT_BUNDLE_IDENTIFIER = "pl.jakubbatycki.MojeZegarkiUITests"; PRODUCT_NAME = "$(TARGET_NAME)"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = "NO"; SWIFT_EMIT_LOC_STRINGS = "NO"; TARGETED_DEVICE_FAMILY = "1"; TEST_TARGET_NAME = "MojeZegarki"; }; name = Release; };
-27B26D491ED4CD897D7E6AD5 = { isa = XCConfigurationList; buildConfigurations = (FF05E8B4C0EA4B05BF585D6E,CE17555CCC37D34E3BCBE352,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-F0553766EAA05376D5CCD0EB = { isa = PBXNativeTarget; buildConfigurationList = 27B26D491ED4CD897D7E6AD5; buildPhases = (0A163ABD4E3C4F990E16E251,9EFE2D4961A09F422C0AEDFB,05B97AB0DD5D5B624F27C39E,); buildRules = (); dependencies = (FC408D25327B545F9D7749E2,); name = MojeZegarkiUITests; productName = MojeZegarkiUITests; productReference = B0E04739A75F90CC09A78D18; productType = "com.apple.product-type.bundle.ui-testing"; };
-FBDC4F23F93125BBEEAE800C = { isa = PBXGroup; children = (6E285DF62416BD4B68439D20,4BB7453A06207C79A217178B,B0E04739A75F90CC09A78D18,); name = Products; sourceTree = "<group>"; };
-B28B7AF69320201D1CF206EB = { isa = PBXGroup; children = (681D8297790EAE3457110456,156052F04525D0F710673CF0,5A349263041B6A939BD7831F,FBDC4F23F93125BBEEAE800C,); sourceTree = "<group>"; };
-98F54143AB4E86B28C3AFEE0 = { isa = PBXProject; attributes = { BuildIndependentTargetsInParallel = YES; LastSwiftUpdateCheck = 2660; LastUpgradeCheck = 2660; }; buildConfigurationList = 862894B703A6DEDF96A9DD6C; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en,pl,Base,); mainGroup = B28B7AF69320201D1CF206EB; productRefGroup = FBDC4F23F93125BBEEAE800C; projectDirPath = ""; projectRoot = ""; targets = (AC63FCD376ED5727CE0BD208,FCF56959D8E4AB63FACF0C2C,F0553766EAA05376D5CCD0EB,); };
-}; rootObject = 98F54143AB4E86B28C3AFEE0; }
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 100;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04702C25A5714DD909F0DFC5 /* CollectionSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19210AE448DA0ABAB8750744 /* CollectionSchema.swift */; };
+		12798E6ACA4D4472B8A77F8A /* WearDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F158ABF3575947F19E6D0A /* WearDay.swift */; };
+		190E12A6DE050AA0E4F254A4 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EDEF8DA916E87DCC6EF9BF /* AppError.swift */; };
+		349A870A2F72B35EB6681332 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 7BE49B9B343D17AC911FC3F6 /* Localizable.xcstrings */; };
+		3E1223A786843F65F449DB92 /* WearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2FF408CE63D2A71F0F4C4E /* WearView.swift */; };
+		4643A935D3C7CE153319722B /* FreeModuleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00862672210B614F7E585226 /* FreeModuleUITests.swift */; };
+		58485B0C7AFFCAD545225ADA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 987AAB6D1335350732FD5CDB /* InfoPlist.strings */; };
+		5AEAF8372FC2C5CEAA2DBB4C /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CD33C3F6AA70A109319289 /* CollectionView.swift */; };
+		66D6BA5C312AC22133C87E87 /* PhotoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EBF365D4524DE104976E42 /* PhotoStore.swift */; };
+		68020241B5E5DA5BF38AA064 /* AppLockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144E24429C6B2DB14D957368 /* AppLockTests.swift */; };
+		71023499FE93D9BCAB236A23 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8A112267E929502BF8263454 /* PrivacyInfo.xcprivacy */; };
+		74053BC7FE1391FF86718530 /* DocumentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F58E14745A5BF6AC8A577B /* DocumentsView.swift */; };
+		7E24AFD9C426B75DFFC16F57 /* WishlistDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F78BA3FF36DC56A95686568 /* WishlistDraft.swift */; };
+		86E26D2AB2B33795ADD274EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 097045A8359835A73ACAD6E7 /* Assets.xcassets */; };
+		8C40DD5AFDF8C8CD111D34DC /* MojeZegarkiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE11ED33912A05BB7857BABF /* MojeZegarkiApp.swift */; };
+		8CD6737D43AB27F56CEA5005 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A261FC320BF614D2C4274E52 /* RootView.swift */; };
+		8DF67488E9433441399533DF /* PhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7695B7C24BB24A1302201AC /* PhotoView.swift */; };
+		9464FA5EBF66900A492D4190 /* DocumentPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD44D09B4E017F915D45294 /* DocumentPreviewView.swift */; };
+		97B8FA873634F62467BC13F0 /* TimepieceEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5015B9A05080CD7ACD47908C /* TimepieceEditorView.swift */; };
+		9CD99E564C58B07EE748BD4A /* FreeModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259737604D2CFB1D01F233D1 /* FreeModuleTests.swift */; };
+		A26B4FED7851F9E99BE8BC3C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078151CF97D91D8173A69324 /* SettingsView.swift */; };
+		B4CFE7FAF07C208453820A04 /* CollectionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C92F291EBBA494F8D9622A /* CollectionStore.swift */; };
+		B56D10DC665529CF38510088 /* WatchTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B22E931690D246AD42192 /* WatchTypes.swift */; };
+		B9CC5C5EE0A9A590619F9F21 /* CollectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E202D8F442FDD04AE706140E /* CollectionUITests.swift */; };
+		C5AFF9879F39852C5D7DD54F /* LockShield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1002E2A2D83E50DF7F3ACF97 /* LockShield.swift */; };
+		CA3DB8F2EF9B83CD5469160D /* TimepieceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702C5225D67539778E823A8 /* TimepieceDetailView.swift */; };
+		D34F855A50BEE6E89363F372 /* AppLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4E82260C83AF63B2E2931D /* AppLock.swift */; };
+		D4E74F1AA38FED6400A7EF53 /* WishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D978E139A81B9FCAF9AFD /* WishlistView.swift */; };
+		E15D9232E86384A39690B752 /* DocumentTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B816C4E4AEB7EA3D3EACDD /* DocumentTypes.swift */; };
+		E6ACF921A64A4A5F62BC1C57 /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAC008B2DF99278619233FE /* CollectionTests.swift */; };
+		EBB2138D447384A1C56399B8 /* DocumentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF6E9632325D1F5A5B8AA3 /* DocumentStore.swift */; };
+		EE899E36CE74DD8D9761C798 /* CollectionSchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		36D39632151F1ABCEFE540C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC63FCD376ED5727CE0BD208;
+			remoteInfo = MojeZegarki;
+		};
+		92E74F0CFD89B158164DD61F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC63FCD376ED5727CE0BD208;
+			remoteInfo = MojeZegarki;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		004DDBF4871F50AC6F637034 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		00862672210B614F7E585226 /* FreeModuleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeModuleUITests.swift; sourceTree = "<group>"; };
+		03C92F291EBBA494F8D9622A /* CollectionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionStore.swift; sourceTree = "<group>"; };
+		078151CF97D91D8173A69324 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		097045A8359835A73ACAD6E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		09F158ABF3575947F19E6D0A /* WearDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearDay.swift; sourceTree = "<group>"; };
+		1002E2A2D83E50DF7F3ACF97 /* LockShield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockShield.swift; sourceTree = "<group>"; };
+		144E24429C6B2DB14D957368 /* AppLockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockTests.swift; sourceTree = "<group>"; };
+		19210AE448DA0ABAB8750744 /* CollectionSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionSchema.swift; sourceTree = "<group>"; };
+		259737604D2CFB1D01F233D1 /* FreeModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeModuleTests.swift; sourceTree = "<group>"; };
+		45EDEF8DA916E87DCC6EF9BF /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		4BB7453A06207C79A217178B /* MojeZegarkiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MojeZegarkiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DD44D09B4E017F915D45294 /* DocumentPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPreviewView.swift; sourceTree = "<group>"; };
+		5015B9A05080CD7ACD47908C /* TimepieceEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimepieceEditorView.swift; sourceTree = "<group>"; };
+		6D2FF408CE63D2A71F0F4C4E /* WearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearView.swift; sourceTree = "<group>"; };
+		6E285DF62416BD4B68439D20 /* MojeZegarki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MojeZegarki.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E7B22E931690D246AD42192 /* WatchTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTypes.swift; sourceTree = "<group>"; };
+		76CD33C3F6AA70A109319289 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		7BAC008B2DF99278619233FE /* CollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTests.swift; sourceTree = "<group>"; };
+		7BE49B9B343D17AC911FC3F6 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		81EBF365D4524DE104976E42 /* PhotoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStore.swift; sourceTree = "<group>"; };
+		863E659805EAEF9EF6ED0019 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8A112267E929502BF8263454 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		9F78BA3FF36DC56A95686568 /* WishlistDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistDraft.swift; sourceTree = "<group>"; };
+		A261FC320BF614D2C4274E52 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		AE4E82260C83AF63B2E2931D /* AppLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLock.swift; sourceTree = "<group>"; };
+		B0E04739A75F90CC09A78D18 /* MojeZegarkiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MojeZegarkiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B50D978E139A81B9FCAF9AFD /* WishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistView.swift; sourceTree = "<group>"; };
+		B9B816C4E4AEB7EA3D3EACDD /* DocumentTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTypes.swift; sourceTree = "<group>"; };
+		CCBF6E9632325D1F5A5B8AA3 /* DocumentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentStore.swift; sourceTree = "<group>"; };
+		D7F58E14745A5BF6AC8A577B /* DocumentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsView.swift; sourceTree = "<group>"; };
+		E202D8F442FDD04AE706140E /* CollectionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUITests.swift; sourceTree = "<group>"; };
+		E702C5225D67539778E823A8 /* TimepieceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimepieceDetailView.swift; sourceTree = "<group>"; };
+		E7695B7C24BB24A1302201AC /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
+		F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionSchemaV2.swift; sourceTree = "<group>"; };
+		FE11ED33912A05BB7857BABF /* MojeZegarkiApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MojeZegarkiApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		03EF606706FF330FA9A948AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		609264385B42858101192C7D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		9EFE2D4961A09F422C0AEDFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0189424A5A60FED329FA868E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				097045A8359835A73ACAD6E7 /* Assets.xcassets */,
+				7BE49B9B343D17AC911FC3F6 /* Localizable.xcstrings */,
+				8A112267E929502BF8263454 /* PrivacyInfo.xcprivacy */,
+				987AAB6D1335350732FD5CDB /* InfoPlist.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		10208B03215AADB9C46A7535 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				B9B816C4E4AEB7EA3D3EACDD /* DocumentTypes.swift */,
+				6E7B22E931690D246AD42192 /* WatchTypes.swift */,
+				09F158ABF3575947F19E6D0A /* WearDay.swift */,
+				9F78BA3FF36DC56A95686568 /* WishlistDraft.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		1475EFD9D255E2CF05827271 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				45EDEF8DA916E87DCC6EF9BF /* AppError.swift */,
+				1002E2A2D83E50DF7F3ACF97 /* LockShield.swift */,
+				FE11ED33912A05BB7857BABF /* MojeZegarkiApp.swift */,
+				A261FC320BF614D2C4274E52 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		156052F04525D0F710673CF0 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				144E24429C6B2DB14D957368 /* AppLockTests.swift */,
+				7BAC008B2DF99278619233FE /* CollectionTests.swift */,
+				259737604D2CFB1D01F233D1 /* FreeModuleTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		5A349263041B6A939BD7831F /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				E202D8F442FDD04AE706140E /* CollectionUITests.swift */,
+				00862672210B614F7E585226 /* FreeModuleUITests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		681D8297790EAE3457110456 /* MojeZegarki */ = {
+			isa = PBXGroup;
+			children = (
+				1475EFD9D255E2CF05827271 /* App */,
+				10208B03215AADB9C46A7535 /* Domain */,
+				7D17E5F50E01E59CDD718A71 /* Features */,
+				DFBC7678EC9C1863E2AE4F59 /* Persistence */,
+				BD28C4A8CF4996C22D248E3F /* Services */,
+				0189424A5A60FED329FA868E /* Resources */,
+			);
+			path = MojeZegarki;
+			sourceTree = "<group>";
+		};
+		7D17E5F50E01E59CDD718A71 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				C7EFD3EF57DECBFAD5C8660E /* Collection */,
+				EAAB65F8AE55B1A6FDB11328 /* Documents */,
+				AC60AF109213A9B1E7B5036C /* Settings */,
+				D0F0707B83F464A2B5CCFE08 /* Wear */,
+				800E7E96C9B5F375B1D644D2 /* Wishlist */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		800E7E96C9B5F375B1D644D2 /* Wishlist */ = {
+			isa = PBXGroup;
+			children = (
+				B50D978E139A81B9FCAF9AFD /* WishlistView.swift */,
+			);
+			path = Wishlist;
+			sourceTree = "<group>";
+		};
+		AC60AF109213A9B1E7B5036C /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				078151CF97D91D8173A69324 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		B28B7AF69320201D1CF206EB = {
+			isa = PBXGroup;
+			children = (
+				681D8297790EAE3457110456 /* MojeZegarki */,
+				156052F04525D0F710673CF0 /* Tests */,
+				5A349263041B6A939BD7831F /* UITests */,
+				FBDC4F23F93125BBEEAE800C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BD28C4A8CF4996C22D248E3F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AE4E82260C83AF63B2E2931D /* AppLock.swift */,
+				CCBF6E9632325D1F5A5B8AA3 /* DocumentStore.swift */,
+				81EBF365D4524DE104976E42 /* PhotoStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C7EFD3EF57DECBFAD5C8660E /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				76CD33C3F6AA70A109319289 /* CollectionView.swift */,
+				E7695B7C24BB24A1302201AC /* PhotoView.swift */,
+				E702C5225D67539778E823A8 /* TimepieceDetailView.swift */,
+				5015B9A05080CD7ACD47908C /* TimepieceEditorView.swift */,
+			);
+			path = Collection;
+			sourceTree = "<group>";
+		};
+		D0F0707B83F464A2B5CCFE08 /* Wear */ = {
+			isa = PBXGroup;
+			children = (
+				6D2FF408CE63D2A71F0F4C4E /* WearView.swift */,
+			);
+			path = Wear;
+			sourceTree = "<group>";
+		};
+		DFBC7678EC9C1863E2AE4F59 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				19210AE448DA0ABAB8750744 /* CollectionSchema.swift */,
+				F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */,
+				03C92F291EBBA494F8D9622A /* CollectionStore.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		EAAB65F8AE55B1A6FDB11328 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				4DD44D09B4E017F915D45294 /* DocumentPreviewView.swift */,
+				D7F58E14745A5BF6AC8A577B /* DocumentsView.swift */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		FBDC4F23F93125BBEEAE800C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6E285DF62416BD4B68439D20 /* MojeZegarki.app */,
+				4BB7453A06207C79A217178B /* MojeZegarkiTests.xctest */,
+				B0E04739A75F90CC09A78D18 /* MojeZegarkiUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AC63FCD376ED5727CE0BD208 /* MojeZegarki */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD09E8DD823BC4E86C1F6494 /* Build configuration list for PBXNativeTarget "MojeZegarki" */;
+			buildPhases = (
+				A649DF9B901BE335C93490EC /* Sources */,
+				609264385B42858101192C7D /* Frameworks */,
+				12A89187922AFE9FA0EDD91B /* Resources */,
+			);
+			buildRules = (
+			);
+			name = MojeZegarki;
+			productName = MojeZegarki;
+			productReference = 6E285DF62416BD4B68439D20 /* MojeZegarki.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F0553766EAA05376D5CCD0EB /* MojeZegarkiUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27B26D491ED4CD897D7E6AD5 /* Build configuration list for PBXNativeTarget "MojeZegarkiUITests" */;
+			buildPhases = (
+				0A163ABD4E3C4F990E16E251 /* Sources */,
+				9EFE2D4961A09F422C0AEDFB /* Frameworks */,
+				05B97AB0DD5D5B624F27C39E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FC408D25327B545F9D7749E2 /* PBXTargetDependency */,
+			);
+			name = MojeZegarkiUITests;
+			productName = MojeZegarkiUITests;
+			productReference = B0E04739A75F90CC09A78D18 /* MojeZegarkiUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		FCF56959D8E4AB63FACF0C2C /* MojeZegarkiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 427D2C68A8F791BF6AC0547E /* Build configuration list for PBXNativeTarget "MojeZegarkiTests" */;
+			buildPhases = (
+				250628AB2CABBE13963F5C2C /* Sources */,
+				03EF606706FF330FA9A948AA /* Frameworks */,
+				F9EC4FC7A8587DCA6D1D42BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F90FCA579DB01EFA5ECD2DA6 /* PBXTargetDependency */,
+			);
+			name = MojeZegarkiTests;
+			productName = MojeZegarkiTests;
+			productReference = 4BB7453A06207C79A217178B /* MojeZegarkiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2700;
+			};
+			buildConfigurationList = 862894B703A6DEDF96A9DD6C /* Build configuration list for PBXProject "MojeZegarki" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				pl,
+				Base,
+			);
+			mainGroup = B28B7AF69320201D1CF206EB;
+			preferredProjectObjectVersion = 100;
+			productRefGroup = FBDC4F23F93125BBEEAE800C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AC63FCD376ED5727CE0BD208 /* MojeZegarki */,
+				FCF56959D8E4AB63FACF0C2C /* MojeZegarkiTests */,
+				F0553766EAA05376D5CCD0EB /* MojeZegarkiUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		05B97AB0DD5D5B624F27C39E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		12A89187922AFE9FA0EDD91B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				86E26D2AB2B33795ADD274EC /* Assets.xcassets in Resources */,
+				349A870A2F72B35EB6681332 /* Localizable.xcstrings in Resources */,
+				71023499FE93D9BCAB236A23 /* PrivacyInfo.xcprivacy in Resources */,
+				58485B0C7AFFCAD545225ADA /* InfoPlist.strings in Resources */,
+			);
+		};
+		F9EC4FC7A8587DCA6D1D42BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0A163ABD4E3C4F990E16E251 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				B9CC5C5EE0A9A590619F9F21 /* CollectionUITests.swift in Sources */,
+				4643A935D3C7CE153319722B /* FreeModuleUITests.swift in Sources */,
+			);
+		};
+		250628AB2CABBE13963F5C2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				68020241B5E5DA5BF38AA064 /* AppLockTests.swift in Sources */,
+				E6ACF921A64A4A5F62BC1C57 /* CollectionTests.swift in Sources */,
+				9CD99E564C58B07EE748BD4A /* FreeModuleTests.swift in Sources */,
+			);
+		};
+		A649DF9B901BE335C93490EC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				190E12A6DE050AA0E4F254A4 /* AppError.swift in Sources */,
+				C5AFF9879F39852C5D7DD54F /* LockShield.swift in Sources */,
+				8C40DD5AFDF8C8CD111D34DC /* MojeZegarkiApp.swift in Sources */,
+				8CD6737D43AB27F56CEA5005 /* RootView.swift in Sources */,
+				E15D9232E86384A39690B752 /* DocumentTypes.swift in Sources */,
+				B56D10DC665529CF38510088 /* WatchTypes.swift in Sources */,
+				12798E6ACA4D4472B8A77F8A /* WearDay.swift in Sources */,
+				7E24AFD9C426B75DFFC16F57 /* WishlistDraft.swift in Sources */,
+				5AEAF8372FC2C5CEAA2DBB4C /* CollectionView.swift in Sources */,
+				8DF67488E9433441399533DF /* PhotoView.swift in Sources */,
+				CA3DB8F2EF9B83CD5469160D /* TimepieceDetailView.swift in Sources */,
+				97B8FA873634F62467BC13F0 /* TimepieceEditorView.swift in Sources */,
+				9464FA5EBF66900A492D4190 /* DocumentPreviewView.swift in Sources */,
+				74053BC7FE1391FF86718530 /* DocumentsView.swift in Sources */,
+				A26B4FED7851F9E99BE8BC3C /* SettingsView.swift in Sources */,
+				3E1223A786843F65F449DB92 /* WearView.swift in Sources */,
+				D4E74F1AA38FED6400A7EF53 /* WishlistView.swift in Sources */,
+				04702C25A5714DD909F0DFC5 /* CollectionSchema.swift in Sources */,
+				EE899E36CE74DD8D9761C798 /* CollectionSchemaV2.swift in Sources */,
+				B4CFE7FAF07C208453820A04 /* CollectionStore.swift in Sources */,
+				D34F855A50BEE6E89363F372 /* AppLock.swift in Sources */,
+				EBB2138D447384A1C56399B8 /* DocumentStore.swift in Sources */,
+				66D6BA5C312AC22133C87E87 /* PhotoStore.swift in Sources */,
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F90FCA579DB01EFA5ECD2DA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AC63FCD376ED5727CE0BD208 /* MojeZegarki */;
+			targetProxy = 92E74F0CFD89B158164DD61F /* PBXContainerItemProxy */;
+		};
+		FC408D25327B545F9D7749E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AC63FCD376ED5727CE0BD208 /* MojeZegarki */;
+			targetProxy = 36D39632151F1ABCEFE540C6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		987AAB6D1335350732FD5CDB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				863E659805EAEF9EF6ED0019 /* en */,
+				004DDBF4871F50AC6F637034 /* pl */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		23002DFE6D972EAF49415A03 /* Release configuration for PBXNativeTarget "MojeZegarki" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Moje Zegarki";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock your private watch collection.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarki;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		5BE0B5220B01DB137FEFA9FE /* Debug configuration for PBXNativeTarget "MojeZegarki" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Moje Zegarki";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock your private watch collection.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarki;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		7F8B44E7CC9518439C0C1E6C /* Release configuration for PBXNativeTarget "MojeZegarkiTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarkiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MojeZegarki.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MojeZegarki";
+			};
+			name = Release;
+		};
+		89E1FD6268CC0F221A2BE178 /* Debug configuration for PBXProject "MojeZegarki" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		CE17555CCC37D34E3BCBE352 /* Release configuration for PBXNativeTarget "MojeZegarkiUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarkiUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = MojeZegarki;
+			};
+			name = Release;
+		};
+		E6DE6C99132752C914FEF632 /* Release configuration for PBXProject "MojeZegarki" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		F2FA7C118F7BE284CF574803 /* Debug configuration for PBXNativeTarget "MojeZegarkiTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarkiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MojeZegarki.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MojeZegarki";
+			};
+			name = Debug;
+		};
+		FF05E8B4C0EA4B05BF585D6E /* Debug configuration for PBXNativeTarget "MojeZegarkiUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarkiUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = MojeZegarki;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		27B26D491ED4CD897D7E6AD5 /* Build configuration list for PBXNativeTarget "MojeZegarkiUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF05E8B4C0EA4B05BF585D6E /* Debug configuration for PBXNativeTarget "MojeZegarkiUITests" */,
+				CE17555CCC37D34E3BCBE352 /* Release configuration for PBXNativeTarget "MojeZegarkiUITests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		427D2C68A8F791BF6AC0547E /* Build configuration list for PBXNativeTarget "MojeZegarkiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2FA7C118F7BE284CF574803 /* Debug configuration for PBXNativeTarget "MojeZegarkiTests" */,
+				7F8B44E7CC9518439C0C1E6C /* Release configuration for PBXNativeTarget "MojeZegarkiTests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		862894B703A6DEDF96A9DD6C /* Build configuration list for PBXProject "MojeZegarki" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89E1FD6268CC0F221A2BE178 /* Debug configuration for PBXProject "MojeZegarki" */,
+				E6DE6C99132752C914FEF632 /* Release configuration for PBXProject "MojeZegarki" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		FD09E8DD823BC4E86C1F6494 /* Build configuration list for PBXNativeTarget "MojeZegarki" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5BE0B5220B01DB137FEFA9FE /* Debug configuration for PBXNativeTarget "MojeZegarki" */,
+				23002DFE6D972EAF49415A03 /* Release configuration for PBXNativeTarget "MojeZegarki" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}
