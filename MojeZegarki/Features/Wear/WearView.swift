@@ -91,6 +91,7 @@ private struct WearActionStyle: ViewModifier {
 struct WearView: View {
     let store: CollectionStore
     var watch: Timepiece?
+    @ScaledMetric(relativeTo: .subheadline) private var brandFontSize = 18.75
     @Query(sort: \WearLog.calendarDay, order: .reverse) private var logs: [WearLog]
     @Query(sort: \Timepiece.brand) private var watches: [Timepiece]
     @State private var adding = false
@@ -137,7 +138,7 @@ struct WearView: View {
                                         PhotoView(photo: owner.mainPhoto.map { PhotoDraft(id: $0.id, filename: $0.filename) }, store: store.photoStore)
                                             .frame(width: 50, height: 58).clipShape(RoundedRectangle(cornerRadius: 8))
                                         VStack(alignment: .leading) {
-                                            Text(owner.brand).font(.subheadline).foregroundStyle(.secondary)
+                                            Text(owner.brand).font(.system(size: brandFontSize)).foregroundStyle(.secondary)
                                             Text(owner.modelName).font(.headline).foregroundStyle(.primary)
                                             if owner.status != .owned { Text(owner.status.title).font(.caption).foregroundStyle(.secondary) }
                                         }
@@ -154,12 +155,15 @@ struct WearView: View {
                             }
                         }
                     } header: {
-                        if let date = WearDay(key: group.day)?.date() { Text(date.formatted(date: .complete, time: .omitted)) }
+                        if let date = WearDay(key: group.day)?.date() {
+                            Text(date.formatted(date: .complete, time: .omitted))
+                                .listRowInsets(EdgeInsets(top: 7, leading: 16, bottom: 3, trailing: 16))
+                        }
                     }
                 }
             }
         }
-        .listSectionSpacing(28)
+        .listSectionSpacing(12)
         .navigationTitle("Wearing")
         .toolbar {
             Button("Add wear days", systemImage: "plus") { adding = true }
