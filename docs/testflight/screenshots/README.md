@@ -4,6 +4,8 @@ Autentyczne zrzuty z buildu 0.8.0 (1), wykonane 17.09.2026 na iPhone 17 Pro Max,
 
 Nie powiększano obrazów z dokumentacji promocyjnej. Zrzuty powstały bez retuszu interfejsu, z tą samą fikcyjną kolekcją w obu językach. Ilustracja zegarka została wygenerowana przy użyciu AI i zaimportowana do aplikacji jako zdjęcie; nie przedstawia konkretnego produktu. Aplikacja instalowana przez użytkownika ma pustą kolekcję.
 
+Zrzuty dokumentują build 1. Nie obejmują późniejszych zmian Harmonogramu i typografii; przed publikacją sklepową należy je odświeżyć.
+
 ## Polski — jasny motyw
 
 | Kolekcja | Harmonogram | Lista życzeń |

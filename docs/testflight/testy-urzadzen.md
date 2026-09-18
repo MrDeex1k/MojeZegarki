@@ -1,10 +1,10 @@
 # Testy fizycznych urządzeń — 0.8.0
 
-Systemy podane przez właściciela; nie są wynikami testów. Początkowo trzech testerów, docelowo do 15–20. Nie zapisujemy tu prywatnych danych testerów.
+Systemy podane przez właściciela. Instalacja właściciela potwierdzona 17.09.2026 dla buildu 0.8.0 (1); pełna lista scenariuszy nie została jeszcze udokumentowana. Początkowo trzech testerów, docelowo do 15–20. Nie zapisujemy tu prywatnych danych testerów.
 
 | Telefon | iOS | Instalacja TestFlight | Wynik scenariuszy |
 | --- | --- | --- | --- |
-| iPhone 15 Pro — właściciel | 27.0 | Do wykonania | Do wykonania |
+| iPhone 15 Pro — właściciel | 27.0 | Potwierdzona, build 1 | Ogólne działanie potwierdzone; pełna lista do wykonania |
 | iPhone 12 | 26.6 | Do wykonania | Do wykonania |
 | iPhone 17 | 26.6 | Do wykonania | Do wykonania |
 

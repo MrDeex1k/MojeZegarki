@@ -1,10 +1,10 @@
-# EN metadata — My Watches
+# EN metadata — My Watches: Daily wrist
 
-Copy-ready draft. The beta description and What to Test apply to TestFlight 0.8.0. Store fields are prepared for a future App Store release. App name availability remains unconfirmed.
+Copy-ready draft. The beta description and What to Test apply to TestFlight 0.8.0. Store fields are prepared for a future App Store release. The English app name was accepted in App Store Connect on 17 September 2026.
 
 ## App name
 
-My Watches
+My Watches: Daily wrist
 
 ## Subtitle
 
