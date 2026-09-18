@@ -138,7 +138,7 @@ struct WearView: View {
                                         PhotoView(photo: owner.mainPhoto.map { PhotoDraft(id: $0.id, filename: $0.filename) }, store: store.photoStore)
                                             .frame(width: 50, height: 58).clipShape(RoundedRectangle(cornerRadius: 8))
                                         VStack(alignment: .leading) {
-                                            Text(owner.brand).font(.system(size: brandFontSize)).foregroundStyle(.secondary)
+                                            Text(owner.brand).font(.system(size: brandFontSize)).foregroundStyle(Color(uiColor: .label))
                                             Text(owner.modelName).font(.headline).foregroundStyle(.primary)
                                             if owner.status != .owned { Text(owner.status.title).font(.caption).foregroundStyle(.secondary) }
                                         }
