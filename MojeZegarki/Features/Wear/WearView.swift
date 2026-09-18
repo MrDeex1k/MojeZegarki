@@ -159,6 +159,7 @@ struct WearView: View {
                 }
             }
         }
+        .listSectionSpacing(28)
         .navigationTitle("Wearing")
         .toolbar {
             Button("Add wear days", systemImage: "plus") { adding = true }
