@@ -234,8 +234,10 @@ struct WearEditorView: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        guard let watch = watches.first(where: { $0.id == watchID }) else { return }
                         do {
+                            guard let watch = watches.first(where: { $0.id == watchID }) else {
+                                throw WearError.missingWatch
+                            }
                             if let log {
                                 try store.logWear(for: watch, date: date, editing: log)
                             } else {

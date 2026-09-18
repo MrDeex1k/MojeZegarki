@@ -50,7 +50,7 @@ Opisy sklepowe i screeny są materiałami na późniejszą publikację. TestFlig
 
 1. Dokończyć udostępnienie bety zewnętrznym testerom i zebrać wyniki scenariuszy fizycznych urządzeń.
 2. Zmiany Harmonogramu na tym branchu powstały po wysłaniu buildu 1: wybór wielu dni, ciaśniejsze odstępy i poprawiona typografia. Nie są jeszcze częścią zainstalowanej bety.
-3. Przed kolejną wysyłką zwiększyć numer buildu, przygotować nowe archiwum i zweryfikować zachowanie danych przy aktualizacji. Numer w projekcie nadal wynosi `0.8.0 (1)`.
+3. Projekt przygotowano do kolejnej wysyłki jako `0.8.0 (2)` (Debug i Release aplikacji). Przygotować nowe archiwum i zweryfikować zachowanie danych przy aktualizacji. Build 2 nie został jeszcze wysłany; przy następnych wysyłkach dalej zwiększać numer buildu.
 4. Przed publiczną publikacją uzupełnić metadane sklepu, strony wsparcia i prywatności oraz aktualne zrzuty ekranu.
 
 ## Informacje do uzupełnienia
