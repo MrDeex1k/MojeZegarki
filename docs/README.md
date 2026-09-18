@@ -4,7 +4,7 @@ Aplikacja na iPhone’a do prywatnego zarządzania kolekcją zegarków. Pierwszy
 
 ## Aktualny status
 
-Stan implementacji: 2026-09-08. Repozytorium zawiera lokalny zakres funkcjonalny FREE: kolekcję, zdjęcia, Archiwum, noszenie, listę życzeń, dokumenty oraz blokadę dostępu. Do publikacji pozostają weryfikacja fizycznych urządzeń i przygotowanie dystrybucji. Szczegóły uruchomienia znajdują się w [głównym README](../README.md), a dowody i ograniczenia w [raporcie FREE](10-free-weryfikacja.md).
+Stan implementacji: 2026-09-18. Repozytorium zawiera lokalny zakres funkcjonalny FREE: kolekcję, zdjęcia, Archiwum, noszenie, listę życzeń, dokumenty oraz blokadę dostępu. Build 0.8.0 (1) działa u właściciela przez TestFlight. Do publikacji sklepowej pozostają pełne testy fizyczne i przygotowanie metadanych dystrybucji. Szczegóły uruchomienia znajdują się w [głównym README](../README.md), a dowody i ograniczenia w [raporcie FREE](10-free-weryfikacja.md).
 
 ## Zatwierdzony kierunek
 
@@ -17,6 +17,10 @@ Stan implementacji: 2026-09-08. Repozytorium zawiera lokalny zakres funkcjonalny
 - Pierwsza publikacja obejmuje FREE, bez paywalla i bez synchronizacji.
 - Późniejsze Premium: wyłącznie synchronizacja iCloud, subskrypcja miesięczna.
 - Bez własnego backendu, reklam i zewnętrznej analityki w pierwszej wersji.
+
+## Przygotowanie TestFlight
+
+Ustalenia bety 0.8.0, metadane PL/EN, screeny i scenariusze fizycznych urządzeń znajdują się w [pakiecie TestFlight](testflight/README.md). Pierwszy build został wysłany i zainstalowany przez właściciela. Zmiany Harmonogramu wymagają kolejnego buildu.
 
 ## Spis treści
 

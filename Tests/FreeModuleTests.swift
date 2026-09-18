@@ -96,6 +96,38 @@ final class FreeModuleTests: XCTestCase {
         XCTAssertEqual(remaining.first?.timepiece?.id, second.id)
     }
 
+    func testBulkWearSkipsDuplicatesAndPersistsAcrossReopen() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let zone = TimeZone(identifier: "Europe/Warsaw")!
+        let days = ["2026-03-28", "2026-03-29", "2026-03-30"].map { WearDay(key: $0)!.date(timeZone: zone)! }
+        try autoreleasepool {
+            let store = try CollectionStore(directory: root)
+            let watch = try watch(store)
+            try store.logWear(for: watch, date: days[0], now: days[2], timeZone: zone)
+            XCTAssertEqual(try store.logWear(for: watch, dates: days + [days[0]], now: days[2], timeZone: zone), 2)
+            XCTAssertEqual(try store.logWear(for: watch, dates: days, now: days[2], timeZone: zone), 0)
+        }
+        let reopened = try CollectionStore(directory: root)
+        let logs = try reopened.context.fetch(FetchDescriptor<WearLog>())
+        XCTAssertEqual(logs.map(\.calendarDay).sorted(), ["2026-03-28", "2026-03-29", "2026-03-30"])
+        XCTAssertTrue(logs.allSatisfy { $0.timepiece?.modelName == "Explorer" })
+    }
+
+    func testBulkWearRejectsWholeSelectionBeforeMakingChanges() throws {
+        let store = try store()
+        let watch = try watch(store)
+        let zone = TimeZone(secondsFromGMT: 0)!
+        let today = WearDay(key: "2026-09-07")!.date(timeZone: zone)!
+        let past = today.addingTimeInterval(-86400)
+        XCTAssertThrowsError(try store.logWear(for: watch, dates: [past, today.addingTimeInterval(86400)], now: today, timeZone: zone))
+        XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WearLog>()), 0)
+        XCTAssertFalse(store.context.hasChanges)
+        try store.changeStatus(.sold, for: watch)
+        XCTAssertThrowsError(try store.logWear(for: watch, dates: [past, today], now: today, timeZone: zone))
+        XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WearLog>()), 0)
+        XCTAssertEqual(try store.logWear(for: watch, dates: [past], now: today, timeZone: zone), 1)
+    }
+
     func testWishlistValidationAndAtomicConversionPreservesPhoto() async throws {
         let store = try store()
         let image = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 100)).jpegData(withCompressionQuality: 0.9) { context in

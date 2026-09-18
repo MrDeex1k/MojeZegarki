@@ -91,6 +91,8 @@ private struct WearActionStyle: ViewModifier {
 struct WearView: View {
     let store: CollectionStore
     var watch: Timepiece?
+    @ScaledMetric(relativeTo: .subheadline) private var brandFontSize = 18.75
+    @ScaledMetric(relativeTo: .headline) private var modelFontSize = 20
     @Query(sort: \WearLog.calendarDay, order: .reverse) private var logs: [WearLog]
     @Query(sort: \Timepiece.brand) private var watches: [Timepiece]
     @State private var adding = false
@@ -137,8 +139,11 @@ struct WearView: View {
                                         PhotoView(photo: owner.mainPhoto.map { PhotoDraft(id: $0.id, filename: $0.filename) }, store: store.photoStore)
                                             .frame(width: 50, height: 58).clipShape(RoundedRectangle(cornerRadius: 8))
                                         VStack(alignment: .leading) {
-                                            Text(owner.brand).font(.subheadline).foregroundStyle(.secondary)
-                                            Text(owner.modelName).font(.headline).foregroundStyle(.primary)
+                                            Text(owner.brand).font(.system(size: brandFontSize)).foregroundStyle(Color(uiColor: .label))
+                                            Text(owner.modelName)
+                                                .font(.system(size: modelFontSize, weight: .semibold))
+                                                .foregroundStyle(Color("WatchModelGold"))
+                                                .fixedSize(horizontal: false, vertical: true)
                                             if owner.status != .owned { Text(owner.status.title).font(.caption).foregroundStyle(.secondary) }
                                         }
                                         Spacer()
@@ -154,14 +159,18 @@ struct WearView: View {
                             }
                         }
                     } header: {
-                        if let date = WearDay(key: group.day)?.date() { Text(date.formatted(date: .complete, time: .omitted)) }
+                        if let date = WearDay(key: group.day)?.date() {
+                            Text(date.formatted(date: .complete, time: .omitted))
+                                .listRowInsets(EdgeInsets(top: 7, leading: 16, bottom: 3, trailing: 16))
+                        }
                     }
                 }
             }
         }
+        .listSectionSpacing(12)
         .navigationTitle("Wearing")
         .toolbar {
-            Button("Add wear day", systemImage: "plus") { adding = true }
+            Button("Add wear days", systemImage: "plus") { adding = true }
                 .disabled(watches.isEmpty)
                 .accessibilityIdentifier("wear.add")
         }
@@ -183,8 +192,10 @@ struct WearEditorView: View {
     var log: WearLog?
     @Query(sort: \Timepiece.brand) private var watches: [Timepiece]
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.calendar) private var calendar
     @State private var watchID: UUID?
     @State private var date: Date
+    @State private var selectedDays: Set<DateComponents> = []
     @State private var error: String?
 
     init(store: CollectionStore, log: WearLog? = nil, initialWatch: Timepiece? = nil) {
@@ -202,24 +213,54 @@ struct WearEditorView: View {
                     ForEach(watches) { Text("\($0.brand) \($0.modelName)").tag(Optional($0.id)) }
                 }
                 .accessibilityIdentifier("wear.watch")
-                DatePicker("Day", selection: $date, in: ...Date.now, displayedComponents: .date)
+                if log != nil {
+                    DatePicker("Day", selection: $date, in: ...Date.now, displayedComponents: .date)
+                } else {
+                    Section {
+                        MultiDatePicker("Wear days", selection: $selectedDays, in: ..<selectionEnd)
+                            .accessibilityIdentifier("wear.days")
+                        Text("Selected days: \(selectedDays.count)")
+                            .accessibilityIdentifier("wear.selectionCount")
+                    } footer: {
+                        Text("Select one or more days. Existing entries for this watch will be skipped.")
+                    }
+                }
                 Text("You can log several watches per day, once per watch. Archived watches can be logged for past days.")
                     .font(.footnote).foregroundStyle(.secondary)
             }
-            .navigationTitle(log == nil ? Text("Add wear day") : Text("Edit wear day"))
+            .navigationTitle(log == nil ? Text("Add wear days") : Text("Edit wear day"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        guard let watch = watches.first(where: { $0.id == watchID }) else { return }
-                        do { try store.logWear(for: watch, date: date, editing: log); dismiss() }
+                        do {
+                            guard let watch = watches.first(where: { $0.id == watchID }) else {
+                                throw WearError.missingWatch
+                            }
+                            if let log {
+                                try store.logWear(for: watch, date: date, editing: log)
+                            } else {
+                                let dates = selectedDays.compactMap { calendar.date(from: $0) }
+                                guard dates.count == selectedDays.count else { return }
+                                try store.logWear(for: watch, dates: dates, timeZone: calendar.timeZone)
+                            }
+                            dismiss()
+                        }
                         catch { self.error = error.localizedDescription }
                     }
-                    .disabled(watchID == nil).accessibilityIdentifier("wear.save")
+                    .disabled(watchID == nil || (log == nil && selectedDays.isEmpty)).accessibilityIdentifier("wear.save")
                 }
             }
             .appError($error)
         }
+    }
+
+    private var selectionEnd: Date {
+        let today = calendar.startOfDay(for: .now)
+        if let watch = watches.first(where: { $0.id == watchID }), watch.status != .owned {
+            return today.addingTimeInterval(-1)
+        }
+        return .now
     }
 }

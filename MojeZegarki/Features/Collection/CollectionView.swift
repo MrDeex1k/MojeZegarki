@@ -3,6 +3,7 @@ import SwiftData
 
 struct CollectionView: View {
     let store: CollectionStore
+    @ScaledMetric(relativeTo: .subheadline) private var brandFontSize = 18.75
     @Query(sort: \Timepiece.createdAt, order: .reverse) private var watches: [Timepiece]
     @State private var search = ""
     @State private var archive = false
@@ -51,7 +52,7 @@ struct CollectionView: View {
                                     .frame(width: 86, height: 104)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                 VStack(alignment: .leading, spacing: 6) {
-                                    Text(watch.brand).font(.subheadline).foregroundStyle(.secondary)
+                                    Text(watch.brand).font(.system(size: brandFontSize)).foregroundStyle(.secondary)
                                     Text(watch.modelName).font(.headline)
                                     if archive { Text(watch.status.title).font(.caption).foregroundStyle(.secondary) }
                                 }
