@@ -275,6 +275,23 @@
         }
       }
     },
+    "Add wear days": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add wear days"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dodaj dni noszenia"
+          }
+        }
+      }
+    },
     "Add your first watch and keep its story in one place.": {
       "extractionState": "manual",
       "localizations": {
@@ -2043,6 +2060,40 @@
         }
       }
     },
+    "Select one or more days. Existing entries for this watch will be skipped.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select one or more days. Existing entries for this watch will be skipped."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybierz jeden lub więcej dni. Istniejące wpisy dla tego zegarka zostaną pominięte."
+          }
+        }
+      }
+    },
+    "Selected days: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected days: %lld"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wybrane dni: %lld"
+          }
+        }
+      }
+    },
     "Seller": {
       "extractionState": "manual",
       "localizations": {
@@ -2549,6 +2600,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zdjęcie zegarka"
+          }
+        }
+      }
+    },
+    "Wear days": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wear days"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dni noszenia"
           }
         }
       }
