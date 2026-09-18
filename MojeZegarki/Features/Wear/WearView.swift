@@ -92,6 +92,7 @@ struct WearView: View {
     let store: CollectionStore
     var watch: Timepiece?
     @ScaledMetric(relativeTo: .subheadline) private var brandFontSize = 18.75
+    @ScaledMetric(relativeTo: .headline) private var modelFontSize = 20
     @Query(sort: \WearLog.calendarDay, order: .reverse) private var logs: [WearLog]
     @Query(sort: \Timepiece.brand) private var watches: [Timepiece]
     @State private var adding = false
@@ -139,7 +140,10 @@ struct WearView: View {
                                             .frame(width: 50, height: 58).clipShape(RoundedRectangle(cornerRadius: 8))
                                         VStack(alignment: .leading) {
                                             Text(owner.brand).font(.system(size: brandFontSize)).foregroundStyle(Color(uiColor: .label))
-                                            Text(owner.modelName).font(.headline).foregroundStyle(.primary)
+                                            Text(owner.modelName)
+                                                .font(.system(size: modelFontSize, weight: .semibold))
+                                                .foregroundStyle(Color("WatchModelGold"))
+                                                .fixedSize(horizontal: false, vertical: true)
                                             if owner.status != .owned { Text(owner.status.title).font(.caption).foregroundStyle(.secondary) }
                                         }
                                         Spacer()
