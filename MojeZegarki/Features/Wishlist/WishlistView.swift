@@ -5,6 +5,7 @@ import PhotosUI
 struct WishlistView: View {
     let store: CollectionStore
     @Query(sort: [SortDescriptor(\WishlistItem.priority, order: .reverse), SortDescriptor(\WishlistItem.createdAt, order: .reverse)]) private var items: [WishlistItem]
+    @Environment(\.locale) private var locale
     @State private var search = ""
     @State private var adding = false
     @State private var editing: WishlistItem?
@@ -29,38 +30,48 @@ struct WishlistView: View {
                     } else { ContentUnavailableView.search(text: search) }
                 } else {
                     List(visible) { item in
-                        HStack(spacing: 12) {
-                            Button { editing = item } label: {
-                                HStack(spacing: 12) {
-                                    PhotoView(photo: item.photo, store: store.photoStore)
-                                        .frame(width: 70, height: 88).clipShape(RoundedRectangle(cornerRadius: 10))
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(item.brand).font(.subheadline).foregroundStyle(.secondary)
-                                        Text(item.modelName).font(.headline).foregroundStyle(.primary)
-                                        if let amount = item.targetPrice.flatMap({ Decimal(string: $0, locale: Locale(identifier: "en_US_POSIX")) }), let currency = item.currencyCode {
-                                            Text(amount.formatted(.currency(code: currency))).font(.subheadline).foregroundStyle(.secondary)
-                                        }
-                                        if let priority = WishlistPriority(rawValue: item.priority), priority != .unspecified {
-                                            Text(priority.title).font(.caption).foregroundStyle(.secondary)
+                        VStack(alignment: .leading, spacing: 12) {
+                            HStack(spacing: 12) {
+                                Button { editing = item } label: {
+                                    HStack(spacing: 12) {
+                                        PhotoView(photo: item.photo, store: store.photoStore)
+                                            .frame(width: 70, height: 88).clipShape(RoundedRectangle(cornerRadius: 10))
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(item.brand).font(.subheadline).foregroundStyle(.secondary)
+                                            Text(item.modelName).font(.headline).foregroundStyle(.primary)
+                                            if let amount = item.targetPrice.flatMap({ Decimal(string: $0, locale: Locale(identifier: "en_US_POSIX")) }), let currency = item.currencyCode {
+                                                Text(amount.formatted(.currency(code: currency))).font(.subheadline).foregroundStyle(.secondary)
+                                            }
+                                            if let priority = WishlistPriority(rawValue: item.priority), priority != .unspecified {
+                                                Text(priority.title).font(.caption).foregroundStyle(.secondary)
+                                            }
                                         }
                                     }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                 }
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .buttonStyle(.plain)
+                                .accessibilityIdentifier("wish.\(item.id)")
+                                Menu {
+                                    Button("Edit", systemImage: "pencil") { editing = item }
+                                    Button("Add to collection", systemImage: "plus.circle") { moving = item }
+                                        .accessibilityIdentifier("wish.move")
+                                    if let rawURL = item.url, let url = URL(string: rawURL), ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
+                                        Link("Open link", destination: url)
+                                    }
+                                    Button("Delete", systemImage: "trash", role: .destructive) { deleting = item }
+                                } label: { Image(systemName: "ellipsis.circle").font(.title2) }
+                                .buttonStyle(.borderless)
+                                .accessibilityLabel("Watch actions")
+                                .accessibilityIdentifier("wish.actions.\(item.id)")
                             }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("wish.\(item.id)")
-                            Menu {
-                                Button("Edit", systemImage: "pencil") { editing = item }
-                                Button("Add to collection", systemImage: "plus.circle") { moving = item }
-                                    .accessibilityIdentifier("wish.move")
-                                if let rawURL = item.url, let url = URL(string: rawURL), ["http", "https"].contains(url.scheme?.lowercased() ?? "") {
-                                    Link("Open link", destination: url)
-                                }
-                                Button("Delete", systemImage: "trash", role: .destructive) { deleting = item }
-                            } label: { Image(systemName: "ellipsis.circle").font(.title2) }
-                            .buttonStyle(.borderless)
-                            .accessibilityLabel("Watch actions")
-                            .accessibilityIdentifier("wish.actions.\(item.id)")
+                            Button("Add to collection", systemImage: "plus.circle.fill") {
+                                do {
+                                    let draft = WishlistDraft(item: item, locale: locale).purchaseDraft
+                                    try store.save(draft, moving: item, locale: locale)
+                                } catch { self.error = error.localizedDescription }
+                            }
+                            .buttonStyle(.bordered)
+                            .accessibilityIdentifier("wish.quickMove.\(item.id)")
                         }
                         .swipeActions {
                             Button("Delete", role: .destructive) { deleting = item }

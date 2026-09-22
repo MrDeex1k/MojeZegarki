@@ -29,10 +29,10 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertEqual(app.textFields["editor.brand"].value as? String, "Casio")
         app.buttons["editor.cancel"].tap()
         XCTAssertTrue(app.textFields["editor.brand"].waitForNonExistence(timeout: 5))
-        if !actions.isHittable { app.swipeDown() }
-        actions.tap()
-        app.buttons["wish.move"].tap()
-        app.buttons["editor.save"].tap()
+        let quickMove = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wish.quickMove.")).firstMatch
+        XCTAssertTrue(quickMove.waitForExistence(timeout: 5))
+        quickMove.tap()
+        XCTAssertFalse(app.buttons["editor.save"].exists)
         XCTAssertTrue(app.staticTexts["Your next watch"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Collection"].tap()
         XCTAssertTrue(app.staticTexts["G-Shock"].waitForExistence(timeout: 5))
@@ -52,8 +52,18 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertFalse(quick.isEnabled)
         app.staticTexts["G-Shock"].tap()
         app.buttons["detail.wear"].tap()
-        XCTAssertTrue(app.buttons["wear.add"].waitForExistence(timeout: 5))
-        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).count, 1)
+        let month = app.staticTexts["wear.month.title"]
+        XCTAssertTrue(month.waitForExistence(timeout: 5))
+        let currentMonth = month.label
+        XCTAssertFalse(app.buttons["wear.month.next"].isEnabled)
+        app.buttons["wear.month.previous"].tap()
+        XCTAssertNotEqual(month.label, currentMonth)
+        app.buttons["wear.month.next"].tap()
+        XCTAssertEqual(month.label, currentMonth)
+        let logs = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log."))
+        for _ in 0..<3 where !logs.firstMatch.isHittable { app.swipeUp() }
+        XCTAssertTrue(app.buttons["wear.add"].exists)
+        XCTAssertEqual(logs.count, 1)
         app.buttons["Done"].tap()
         app.tabBars.buttons["Wearing"].tap()
         XCTAssertTrue(app.staticTexts["1 day worn"].waitForExistence(timeout: 5))
@@ -64,6 +74,13 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
         app.tabBars.buttons["Wearing"].tap()
         XCTAssertTrue(app.staticTexts["1 day worn"].waitForExistence(timeout: 5))
+        app.buttons["wear.statistics"].tap()
+        XCTAssertTrue(app.segmentedControls["stats.period"].waitForExistence(timeout: 5))
+        app.segmentedControls["stats.period"].buttons["All time"].tap()
+        XCTAssertTrue(app.staticTexts["Share of recorded days"].exists)
+        XCTAssertTrue(app.buttons["stats.watch"].exists)
+        app.buttons["Done"].tap()
+        XCTAssertTrue(app.buttons["wear.statistics"].waitForExistence(timeout: 5))
     }
 
     func testEnabledLockHidesCollectionOnLaunch() {

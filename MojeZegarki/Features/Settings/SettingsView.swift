@@ -22,8 +22,6 @@ struct SettingsView: View {
                 }
                 Section("About") {
                     LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0")
-                    Text("Your collection is stored on this iPhone and works offline.")
-                        .foregroundStyle(.secondary)
                 }
             }
             .navigationTitle("Settings")
