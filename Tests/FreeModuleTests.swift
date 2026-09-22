@@ -16,6 +16,43 @@ final class FreeModuleTests: XCTestCase {
         return try store.save(draft)
     }
 
+    func testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches() throws {
+        let a = UUID(), b = UUID()
+        let zone = TimeZone(identifier: "Europe/Warsaw")!
+        let now = try XCTUnwrap(WearDay(key: "2026-09-22")?.date(timeZone: zone))
+        let entries: [WearStatistics.Entry] = [
+            .init(watchID: a, day: "2026-09-21"),
+            .init(watchID: a, day: "2026-09-21"),
+            .init(watchID: a, day: "2026-09-22"),
+            .init(watchID: b, day: "2026-09-22"),
+            .init(watchID: b, day: "2026-08-01"),
+            .init(watchID: b, day: "2026-09-23"),
+            .init(watchID: b, day: "invalid")
+        ]
+        let stats = WearStatistics(entries: entries, period: .month, now: now, timeZone: zone)
+        XCTAssertEqual(stats.calendarDays, 30)
+        XCTAssertEqual(stats.recordedDays, 2)
+        XCTAssertEqual(stats.daysByWatch[a], 2)
+        XCTAssertEqual(stats.daysByWatch[b], 1)
+        XCTAssertEqual(stats.shareOfRecordedDays(for: a), 1)
+        XCTAssertEqual(stats.shareOfRecordedDays(for: b), 0.5)
+        let all = WearStatistics(entries: entries, period: .all, now: now, timeZone: zone)
+        XCTAssertEqual(all.calendarDays, 53)
+        XCTAssertEqual(all.recordedDays, 3)
+    }
+
+    func testWearStatisticsCalendarDaysAcrossDSTAndEmptyPeriod() throws {
+        let zone = TimeZone(identifier: "Europe/Warsaw")!
+        let now = try XCTUnwrap(WearDay(key: "2026-03-30")?.date(timeZone: zone))
+        let id = UUID()
+        let stats = WearStatistics(entries: [.init(watchID: id, day: "2026-03-28")], period: .all, now: now, timeZone: zone)
+        XCTAssertEqual(stats.calendarDays, 3)
+        let empty = WearStatistics(entries: [], period: .year, now: now, timeZone: zone)
+        XCTAssertEqual(empty.calendarDays, 89)
+        XCTAssertEqual(empty.recordedDays, 0)
+        XCTAssertEqual(empty.shareOfRecordedDays(for: id), 0)
+    }
+
     private func pdf() -> Data {
         UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: 400, height: 600)).pdfData { context in
             context.beginPage()

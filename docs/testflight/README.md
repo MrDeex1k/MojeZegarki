@@ -1,6 +1,6 @@
 # TestFlight 0.8.0 — przygotowanie dystrybucji
 
-Stan przygotowania: 18.09.2026. Celem jest zamknięta beta dla 15–20 osób, początkowo 3 testerów. Nie zgłaszamy jeszcze publicznej wersji do App Store.
+Stan przygotowania: 22.09.2026. Celem jest zamknięta beta dla 15–20 osób, początkowo 3 testerów. Nie zgłaszamy jeszcze publicznej wersji do App Store.
 
 ## Zatwierdzone ustalenia
 
@@ -46,11 +46,17 @@ Opisy sklepowe i screeny są materiałami na późniejszą publikację. TestFlig
 - Wcześniejsza ręczna weryfikacja wyboru wielu dni na iOS 17.5: zapis trzech dni i zachowanie wpisów po ponownym uruchomieniu.
 - Testy automatyczne nie zastępują sprawdzenia aktualizacji istniejącej instalacji TestFlight na fizycznym urządzeniu. Schemat bazy pozostaje bez zmian.
 
+## Wersja 0.8.2 (3)
+
+Następny build zawiera statystyki noszenia z wyborem okresu i zegarka, porównanie zegarków, kalendarz w historii oraz poprawki zgłoszone przez testerów. Dodano bezpośrednie przenoszenie z listy życzeń i poprawiono układ Harmonogramu oraz szczegółów zegarka. Schemat danych pozostaje bez zmian.
+
+Wersja 0.8.1 (2) została wysłana do TestFlight 18.09.2026. W projekcie aplikacji ustawiono teraz 0.8.2 (3) dla Debug i Release. Build 3 wymaga podpisanego archiwum i wysłania przez właściciela.
+
 ## Następne kroki
 
 1. Dokończyć udostępnienie bety zewnętrznym testerom i zebrać wyniki scenariuszy fizycznych urządzeń.
 2. Zmiany Harmonogramu na tym branchu powstały po wysłaniu buildu 1: wybór wielu dni, ciaśniejsze odstępy i poprawiona typografia. Nie są jeszcze częścią zainstalowanej bety.
-3. Projekt przygotowano do kolejnej wysyłki jako `0.8.0 (2)` (Debug i Release aplikacji). Przygotować nowe archiwum i zweryfikować zachowanie danych przy aktualizacji. Build 2 nie został jeszcze wysłany; przy następnych wysyłkach dalej zwiększać numer buildu.
+3. Projekt przygotowano do kolejnej wysyłki jako `0.8.2 (3)`. Przygotować nowe archiwum i zweryfikować zachowanie danych przy aktualizacji. Przy następnych wysyłkach dalej zwiększać numer buildu.
 4. Przed publiczną publikacją uzupełnić metadane sklepu, strony wsparcia i prywatności oraz aktualne zrzuty ekranu.
 
 ## Informacje do uzupełnienia

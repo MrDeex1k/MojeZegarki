@@ -24,7 +24,7 @@ final class CollectionUITests: XCTestCase {
         model.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "Prospex".count) + "Alpinist")
         app.buttons["editor.save"].tap()
         XCTAssertTrue(app.staticTexts["detail.model"].waitForExistence(timeout: 5))
-        XCTAssertEqual(app.staticTexts["detail.model"].label, "Alpinist")
+        XCTAssertEqual(app.staticTexts["detail.model"].label, "Seiko Alpinist")
         app.terminate()
         app.launchArguments.removeAll { $0 == "--reset-test-store" }
         app.launch()
