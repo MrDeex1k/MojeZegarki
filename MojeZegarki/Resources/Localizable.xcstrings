@@ -3252,19 +3252,19 @@
         }
       }
     },
-    "Other recorded days": {
+    "Days without selected watch": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Other recorded days"
+            "value": "Days without selected watch"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pozostałe dni z wpisami"
+            "value": "Dni bez wybranego zegarka"
           }
         }
       }

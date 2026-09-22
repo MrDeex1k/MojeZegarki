@@ -509,7 +509,7 @@ private struct WearStatisticsView: View {
                                 HStack {
                                     Label("Selected watch", systemImage: "circle.fill").foregroundStyle(Color.accentColor)
                                     Spacer()
-                                    Text("Other recorded days").foregroundStyle(.secondary)
+                                    Text("Days without selected watch").foregroundStyle(.secondary)
                                 }
                                 .font(.caption)
                                 Text("\(count) of \(stats.recordedDays) recorded days")
