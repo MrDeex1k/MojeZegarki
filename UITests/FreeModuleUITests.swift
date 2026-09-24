@@ -60,6 +60,13 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertNotEqual(month.label, currentMonth)
         app.buttons["wear.month.next"].tap()
         XCTAssertEqual(month.label, currentMonth)
+        let dayFormatter = DateFormatter()
+        dayFormatter.calendar = Calendar(identifier: .gregorian)
+        dayFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dayFormatter.dateFormat = "yyyy-MM-dd"
+        let todayID = "wear.day.\(dayFormatter.string(from: Date()))"
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).count, 0)
+        app.buttons[todayID].tap()
         let logs = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log."))
         for _ in 0..<3 where !logs.firstMatch.isHittable { app.swipeUp() }
         XCTAssertTrue(app.buttons["wear.add"].exists)
@@ -67,6 +74,9 @@ final class FreeModuleUITests: XCTestCase {
         app.buttons["Done"].tap()
         app.tabBars.buttons["Wearing"].tap()
         XCTAssertTrue(app.staticTexts["1 day worn"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).count, 0)
+        app.buttons[todayID].tap()
+        app.swipeUp()
         XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).count, 1)
         app.terminate()
         app.launchArguments.removeAll { $0 == "--reset-test-store" }

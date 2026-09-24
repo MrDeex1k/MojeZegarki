@@ -101,6 +101,7 @@ struct WearView: View {
     @State private var editing: WearLog?
     @State private var deleting: WearLog?
     @State private var showingStatistics = false
+    @State private var selectedDay: String?
     @ScaledMetric(relativeTo: .title3) private var countFontSize = 20
     @State private var filterID: UUID?
     @State private var error: String?
@@ -175,7 +176,20 @@ struct WearView: View {
                         .listRowInsets(EdgeInsets())
                         .listRowBackground(Color.clear)
                 }
-                ForEach(days, id: \.day) { group in
+                Section("Wear calendar") {
+                    WearHistoryCalendar(counts: Dictionary(uniqueKeysWithValues: days.map {
+                        ($0.day, Set($0.entries.compactMap { $0.timepiece?.id }).count)
+                    }), selectedDay: $selectedDay)
+                }
+                if selectedDay == nil {
+                    Text("Select a day to see worn watches")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                        .listRowBackground(Color.clear)
+                } else if !days.contains(where: { $0.day == selectedDay }) {
+                    Text("No wear entries for this day")
+                        .foregroundStyle(.secondary).listRowBackground(Color.clear)
+                }
+                ForEach(days.filter { $0.day == selectedDay }, id: \.day) { group in
                     Section {
                         ForEach(group.entries) { log in
                             if let owner = log.timepiece {
@@ -329,6 +343,38 @@ struct WearEditorView: View {
 private struct WearSummaryView: View {
     let dayKeys: Set<String>
     @Environment(\.locale) private var locale
+
+    private var calendar: Calendar {
+        var value = Calendar(identifier: .gregorian)
+        value.locale = locale
+        value.firstWeekday = Calendar.current.firstWeekday
+        return value
+    }
+
+    private var daysThisMonth: Int {
+        guard let interval = calendar.dateInterval(of: .month, for: .now) else { return 0 }
+        return dayKeys.compactMap { WearDay(key: $0)?.date() }.filter { interval.contains($0) }.count
+    }
+
+    var body: some View {
+        Section("Summary") {
+            LabeledContent("Total") { Text("\(dayKeys.count) days worn").fontWeight(.semibold) }
+            LabeledContent("This month") { Text("\(daysThisMonth) days worn") }
+            LabeledContent("Last worn") {
+                if let key = dayKeys.max(), let date = WearDay(key: key)?.date() {
+                    Text(date.formatted(date: .abbreviated, time: .omitted))
+                } else { Text("Not yet worn") }
+            }
+        }
+    }
+}
+
+
+private struct WearHistoryCalendar: View {
+    let counts: [String: Int]
+    @Binding var selectedDay: String?
+    @Environment(\.locale) private var locale
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var monthOffset = 0
 
     private var calendar: Calendar {
@@ -356,71 +402,78 @@ private struct WearSummaryView: View {
         (calendar.component(.weekday, from: displayedMonth) - calendar.firstWeekday + 7) % 7
     }
 
-    private var daysThisMonth: Int {
-        guard let interval = calendar.dateInterval(of: .month, for: .now) else { return 0 }
-        return dayKeys.compactMap { WearDay(key: $0)?.date() }.filter { interval.contains($0) }.count
-    }
-
     var body: some View {
-        Section("Summary") {
-            LabeledContent("Total") { Text("\(dayKeys.count) days worn").fontWeight(.semibold) }
-            LabeledContent("This month") { Text("\(daysThisMonth) days worn") }
-            LabeledContent("Last worn") {
-                if let key = dayKeys.max(), let date = WearDay(key: key)?.date() {
-                    Text(date.formatted(date: .abbreviated, time: .omitted))
-                } else { Text("Not yet worn") }
-            }
-        }
-        Section("Wear calendar") {
-            VStack(spacing: 16) {
-                HStack {
-                    Button { monthOffset -= 1 } label: {
-                        Image(systemName: "chevron.left").frame(width: 44, height: 44)
-                    }
-                    .accessibilityLabel("Previous month")
-                    .accessibilityIdentifier("wear.month.previous")
-                    Spacer(minLength: 0)
-                    Text(displayedMonth.formatted(.dateTime.month(.wide).year()))
-                        .font(.headline).multilineTextAlignment(.center)
-                        .accessibilityAddTraits(.isHeader)
-                        .accessibilityIdentifier("wear.month.title")
-                    Spacer(minLength: 0)
-                    Button { monthOffset += 1 } label: {
-                        Image(systemName: "chevron.right").frame(width: 44, height: 44)
-                    }
-                    .accessibilityLabel("Next month")
-                    .accessibilityIdentifier("wear.month.next")
-                    .disabled(monthOffset >= 0)
+        VStack(spacing: 16) {
+            HStack {
+                Button { monthOffset -= 1 } label: {
+                    Image(systemName: "chevron.left").frame(width: 44, height: 44)
                 }
-                .buttonStyle(.borderless)
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 8) {
-                    ForEach(0..<7, id: \.self) { index in
-                        Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
-                            .font(.caption).foregroundStyle(.secondary)
-                            .accessibilityHidden(true)
-                    }
-                    ForEach(0..<leadingDays, id: \.self) { _ in
-                        Color.clear.frame(height: 32).accessibilityHidden(true)
-                    }
-                    ForEach(dates, id: \.self) { date in
-                        let worn = dayKeys.contains(WearDay(date).key)
+                .accessibilityLabel("Previous month")
+                .accessibilityIdentifier("wear.month.previous")
+                Spacer(minLength: 0)
+                Text(displayedMonth.formatted(.dateTime.month(.wide).year()))
+                    .font(.headline).multilineTextAlignment(.center)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier("wear.month.title")
+                Spacer(minLength: 0)
+                Button { monthOffset += 1 } label: {
+                    Image(systemName: "chevron.right").frame(width: 44, height: 44)
+                }
+                .accessibilityLabel("Next month")
+                .accessibilityIdentifier("wear.month.next")
+                .disabled(monthOffset >= 0)
+            }
+            .buttonStyle(.borderless)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 8) {
+                ForEach(0..<7, id: \.self) { index in
+                    Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
+                        .font(.caption).foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
+                }
+                ForEach(0..<leadingDays, id: \.self) { _ in
+                    Color.clear.frame(height: 32).accessibilityHidden(true)
+                }
+                ForEach(dates, id: \.self) { date in
+                    let key = WearDay(date).key
+                    let count = counts[key, default: 0]
+                    let worn = count > 0
+                    let selected = selectedDay == key
+                    Button { selectedDay = key } label: {
                         Text("\(calendar.component(.day, from: date))")
-                            .font(.subheadline.weight(worn ? .bold : .regular))
-                            .frame(maxWidth: .infinity, minHeight: 32)
-                            .foregroundStyle(worn ? Color.accentColor : Color.primary)
-                            .background(worn ? Color.accentColor.opacity(0.2) : Color.clear, in: Circle())
-                            .accessibilityLabel(date.formatted(date: .complete, time: .omitted))
-                            .accessibilityValue(worn ? Text("Worn") : Text("Not worn"))
+                            .font(.body.weight(worn ? .semibold : .regular))
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                            .foregroundStyle(Color.primary)
+                            .background(worn ? Color.accentColor.opacity(count == 1 ? 0.22 : count == 2 ? 0.45 : 0.7) : Color.clear, in: Circle())
+                            .overlay { Circle().strokeBorder(selected ? Color.accentColor : Color.clear, lineWidth: 2) }
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(date > calendar.startOfDay(for: .now))
+                    .accessibilityIdentifier("wear.day.\(key)")
+                    .accessibilityLabel(date.formatted(date: .complete, time: .omitted))
+                    .accessibilityValue(Text("Watches: \(count)"))
+                    .accessibilityAddTraits(selected ? .isSelected : [])
+                }
+            }
+            HStack(spacing: 16) {
+                ForEach(1...3, id: \.self) { count in
+                    HStack(spacing: 5) {
+                        Circle().fill(Color.accentColor.opacity(count == 1 ? 0.22 : count == 2 ? 0.45 : 0.7))
+                            .frame(width: 12, height: 12)
+                        Text(count == 3 ? "3+" : "\(count)")
                     }
                 }
-                Label("Highlighted days indicate wear", systemImage: "circle.fill")
-                    .font(.caption).foregroundStyle(.secondary)
+                Text("Watches").foregroundStyle(.secondary)
             }
-            .padding(.vertical, 4)
+            .font(.caption)
+            .accessibilityElement(children: .combine)
         }
+        .padding(.vertical, 4)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: selectedDay)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: monthOffset)
+        .onChange(of: monthOffset) { selectedDay = nil }
     }
 }
-
 
 private struct WearStatisticsView: View {
     let initialWatchID: UUID?
