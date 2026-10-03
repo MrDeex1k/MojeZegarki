@@ -1,5 +1,6 @@
-import XCTest
 import LocalAuthentication
+import XCTest
+
 @testable import MojeZegarki
 
 @MainActor

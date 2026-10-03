@@ -27,30 +27,9 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FCF56959D8E4AB63FACF0C2C"
-               BuildableName = "MojeZegarkiTests.xctest"
-               BlueprintName = "MojeZegarkiTests"
-               ReferencedContainer = "container:MojeZegarki.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F0553766EAA05376D5CCD0EB"
-               BuildableName = "MojeZegarkiUITests.xctest"
-               BlueprintName = "MojeZegarkiUITests"
-               ReferencedContainer = "container:MojeZegarki.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
+      <TestPlans>
+         <TestPlanReference reference = "container:Regression.xctestplan" default = "YES" />
+      </TestPlans>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

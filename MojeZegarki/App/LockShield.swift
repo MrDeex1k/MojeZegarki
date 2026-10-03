@@ -26,7 +26,10 @@ struct LockShield: UIViewRepresentable {
 
     final class AnchorView: UIView {
         var onWindowChanged: ((UIWindow?) -> Void)?
-        override func didMoveToWindow() { super.didMoveToWindow(); onWindowChanged?(window) }
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            onWindowChanged?(window)
+        }
     }
 
     @MainActor final class Coordinator: NSObject {
@@ -37,13 +40,18 @@ struct LockShield: UIViewRepresentable {
 
         override init() {
             super.init()
-            NotificationCenter.default.addObserver(self, selector: #selector(sceneChanged(_:)), name: UIScene.didActivateNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(sceneChanged(_:)), name: UIScene.willDeactivateNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(sceneChanged(_:)), name: UIScene.didEnterBackgroundNotification, object: nil)
+            NotificationCenter.default.addObserver(
+                self, selector: #selector(sceneChanged(_:)), name: UIScene.didActivateNotification, object: nil)
+            NotificationCenter.default.addObserver(
+                self, selector: #selector(sceneChanged(_:)), name: UIScene.willDeactivateNotification, object: nil)
+            NotificationCenter.default.addObserver(
+                self, selector: #selector(sceneChanged(_:)), name: UIScene.didEnterBackgroundNotification, object: nil)
         }
 
         @objc private func sceneChanged(_ notification: Notification) {
-            guard let scene = notification.object as? UIWindowScene, scene === originalWindow?.windowScene else { return }
+            guard let scene = notification.object as? UIWindowScene, scene === originalWindow?.windowScene else {
+                return
+            }
             if notification.name == UIScene.willDeactivateNotification { originalWindow?.endEditing(true) }
             if notification.name == UIScene.didEnterBackgroundNotification {
                 needsUnlock = true
@@ -94,12 +102,15 @@ private struct LockScreen: View {
     let obscured: Bool
     var body: some View {
         VStack(spacing: 20) {
-            Image(systemName: "lock.shield").font(.system(size: 54, weight: .light)).foregroundStyle(Color("AccentColor"))
+            Image(systemName: "lock.shield").font(.system(size: 54, weight: .light)).foregroundStyle(
+                Color("AccentColor"))
             Text("Collection locked").font(.title2.bold())
             if !obscured {
-                Text("Unlock with Face ID or your device passcode.").multilineTextAlignment(.center).foregroundStyle(.secondary)
-                if lock.isBusy { ProgressView() }
-                else {
+                Text("Unlock with Face ID or your device passcode.").multilineTextAlignment(.center).foregroundStyle(
+                    .secondary)
+                if lock.isBusy {
+                    ProgressView()
+                } else {
                     Button("Unlock") { Task { await lock.unlock() } }
                         .buttonStyle(.borderedProminent).tint(Color("AccentColor"))
                         .accessibilityIdentifier("lock.unlock")

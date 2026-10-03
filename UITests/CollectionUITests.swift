@@ -11,16 +11,16 @@ final class CollectionUITests: XCTestCase {
         XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
         app.buttons["collection.add"].tap()
         XCTAssertFalse(app.buttons["editor.save"].isEnabled)
-        app.textFields["editor.brand"].tap()
+        focus(app.textFields["editor.brand"], in: app)
         app.textFields["editor.brand"].typeText("Seiko")
-        app.textFields["editor.model"].tap()
+        focus(app.textFields["editor.model"], in: app)
         app.textFields["editor.model"].typeText("Prospex")
         app.buttons["editor.save"].tap()
         XCTAssertTrue(app.staticTexts["Prospex"].waitForExistence(timeout: 5))
         app.staticTexts["Prospex"].tap()
         app.buttons["detail.edit"].tap()
         let model = app.textFields["editor.model"]
-        model.tap()
+        focus(model, in: app)
         model.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "Prospex".count) + "Alpinist")
         app.buttons["editor.save"].tap()
         XCTAssertTrue(app.staticTexts["detail.model"].waitForExistence(timeout: 5))
@@ -62,10 +62,31 @@ final class CollectionUITests: XCTestCase {
         app.buttons["collection.add"].tap()
         XCTAssertTrue(app.textFields["editor.brand"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.textFields["editor.brand"].placeholderValue, "Marka")
-        app.textFields["editor.brand"].tap()
+        focus(app.textFields["editor.brand"], in: app)
         app.textFields["editor.brand"].typeText("Casio")
         app.buttons["Anuluj"].tap()
         XCTAssertTrue(app.buttons["collection.addFirst"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.staticTexts["Casio"].exists)
+    }
+}
+
+@MainActor extension XCTestCase {
+    /// DeviceHub can expose transient scaled frames while an app/sheet is animating.
+    /// Verify the target field owns keyboard focus even when another field already opened the keyboard.
+    func focus(_ field: XCUIElement, in app: XCUIApplication) {
+        XCTAssertTrue(field.waitForExistence(timeout: 5))
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isHittable == true"), object: field)
+        wait(for: [ready], timeout: 5)
+        field.tap()
+        let focused = NSPredicate(format: "hasKeyboardFocus == true")
+        let initialFocus = XCTNSPredicateExpectation(predicate: focused, object: field)
+        if XCTWaiter.wait(for: [initialFocus], timeout: 3) != .completed {
+            field.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        }
+        let confirmedFocus = XCTNSPredicateExpectation(predicate: focused, object: field)
+        XCTAssertEqual(
+            XCTWaiter.wait(for: [confirmedFocus], timeout: 5), .completed,
+            "The target field must own keyboard focus before typing")
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
     }
 }

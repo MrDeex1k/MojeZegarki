@@ -1,13 +1,13 @@
-import SwiftUI
 import PDFKit
+import SwiftUI
 import UniformTypeIdentifiers
 
 struct DocumentPreviewView: View {
     let document: DocumentItem
     let store: CollectionStore
+    let onClose: () -> Void
     let onDeleteError: (String) -> Void
-    @Environment(\.dismiss) private var dismiss
-    @State private var data: Data?
+    @State private var content: PreviewContent?
     @State private var failedToLoad = false
     @State private var editing = false
     @State private var deleting = false
@@ -15,16 +15,24 @@ struct DocumentPreviewView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if let data {
-                if document.contentType == UTType.pdf.identifier {
-                    PDFPreview(data: data)
-                } else if let image = UIImage(data: data) {
-                    ZoomableDocumentImage(image: image)
+            if let content {
+                switch content {
+                case .pdf(let pdf):
+                    GeometryReader { geometry in
+                        PDFPreview(document: pdf).frame(width: geometry.size.width, height: geometry.size.height)
+                    }
+                case .image(let image): ZoomableDocumentImage(image: image)
                 }
             } else if failedToLoad {
-                ContentUnavailableView("Document unavailable", systemImage: "doc.badge.ellipsis", description: Text("The document file could not be opened."))
-            } else { ProgressView("Opening document…").frame(maxWidth: .infinity, maxHeight: .infinity) }
-            if let notes = document.notes { Text(notes).font(.footnote).padding().frame(maxWidth: .infinity, alignment: .leading) }
+                ContentUnavailableView(
+                    "Document unavailable", systemImage: "doc.badge.ellipsis",
+                    description: Text("The document file could not be opened."))
+            } else {
+                ProgressView("Opening document…").frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            if let notes = document.notes {
+                Text(notes).font(.footnote).padding().frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
         .privacySensitive()
         .navigationTitle(document.displayName)
@@ -35,7 +43,9 @@ struct DocumentPreviewView: View {
                     .accessibilityIdentifier("document.edit")
                 Button("Delete", systemImage: "trash", role: .destructive) { confirmingDelete = true }
                     .accessibilityIdentifier("document.delete")
-            } label: { Label("Document actions", systemImage: "ellipsis.circle") }
+            } label: {
+                Label("Document actions", systemImage: "ellipsis.circle")
+            }
             .disabled(deleting).accessibilityIdentifier("document.actions")
         }
         .sheet(isPresented: $editing) {
@@ -44,32 +54,53 @@ struct DocumentPreviewView: View {
         .confirmationDialog("Delete this document?", isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete", role: .destructive) {
                 deleting = true
-                dismiss()
+                onClose()
                 Task {
-                    do { try await store.deleteDocument(document) }
-                    catch { onDeleteError(error.localizedDescription) }
+                    do { try await store.deleteDocument(document) } catch { onDeleteError(error.localizedDescription) }
                 }
             }
             .accessibilityIdentifier("document.confirmDelete")
         }
         .task(id: document.id) {
-            do { data = try await store.documentStore.data(id: document.id, filename: document.filename) }
-            catch { failedToLoad = true }
+            content = nil
+            failedToLoad = false
+            do {
+                let data = try await store.documentStore.data(id: document.id, filename: document.filename)
+                try Task.checkCancellation()
+                if document.contentType == UTType.pdf.identifier {
+                    guard let pdf = PDFDocument(data: data), !pdf.isLocked, pdf.pageCount > 0 else {
+                        throw DocumentError.unsupported
+                    }
+                    content = .pdf(pdf)
+                } else {
+                    guard let image = await ImageLoader.prepare(data) else { throw DocumentError.unsupported }
+                    try Task.checkCancellation()
+                    content = .image(image)
+                }
+            } catch is CancellationError {} catch { failedToLoad = true }
         }
     }
 }
 
+private enum PreviewContent {
+    case pdf(PDFDocument)
+    case image(UIImage)
+}
+
 private struct PDFPreview: UIViewRepresentable {
-    let data: Data
+    let document: PDFDocument
     func makeUIView(context: Context) -> PDFView {
         let view = PDFView()
         view.autoScales = true
         view.displayMode = .singlePageContinuous
-        view.document = PDFDocument(data: data)
+        view.document = document
         view.accessibilityLabel = String(localized: "Document preview")
         return view
     }
     func updateUIView(_ uiView: PDFView, context: Context) {}
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: PDFView, context: Context) -> CGSize? {
+        CGSize(width: proposal.width ?? 0, height: proposal.height ?? 0)
+    }
 }
 
 private struct ZoomableDocumentImage: UIViewRepresentable {
@@ -93,7 +124,10 @@ private struct ZoomableDocumentImage: UIViewRepresentable {
         required init?(coder: NSCoder) { nil }
         override func layoutSubviews() {
             super.layoutSubviews()
-            if zoomScale == 1 { imageView.frame = bounds; contentSize = bounds.size }
+            if zoomScale == 1 {
+                imageView.frame = bounds
+                contentSize = bounds.size
+            }
         }
         func viewForZooming(in scrollView: UIScrollView) -> UIView? { imageView }
     }

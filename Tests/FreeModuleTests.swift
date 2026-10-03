@@ -1,6 +1,7 @@
-import XCTest
 import SwiftData
 import UIKit
+import XCTest
+
 @testable import MojeZegarki
 
 @MainActor
@@ -17,7 +18,8 @@ final class FreeModuleTests: XCTestCase {
     }
 
     func testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches() throws {
-        let a = UUID(), b = UUID()
+        let a = UUID()
+        let b = UUID()
         let zone = TimeZone(identifier: "Europe/Warsaw")!
         let now = try XCTUnwrap(WearDay(key: "2026-09-22")?.date(timeZone: zone))
         let entries: [WearStatistics.Entry] = [
@@ -27,7 +29,7 @@ final class FreeModuleTests: XCTestCase {
             .init(watchID: b, day: "2026-09-22"),
             .init(watchID: b, day: "2026-08-01"),
             .init(watchID: b, day: "2026-09-23"),
-            .init(watchID: b, day: "invalid")
+            .init(watchID: b, day: "invalid"),
         ]
         let stats = WearStatistics(entries: entries, period: .month, now: now, timeZone: zone)
         XCTAssertEqual(stats.calendarDays, 30)
@@ -45,7 +47,8 @@ final class FreeModuleTests: XCTestCase {
         let zone = TimeZone(identifier: "Europe/Warsaw")!
         let now = try XCTUnwrap(WearDay(key: "2026-03-30")?.date(timeZone: zone))
         let id = UUID()
-        let stats = WearStatistics(entries: [.init(watchID: id, day: "2026-03-28")], period: .all, now: now, timeZone: zone)
+        let stats = WearStatistics(
+            entries: [.init(watchID: id, day: "2026-03-28")], period: .all, now: now, timeZone: zone)
         XCTAssertEqual(stats.calendarDays, 3)
         let empty = WearStatistics(entries: [], period: .year, now: now, timeZone: zone)
         XCTAssertEqual(empty.calendarDays, 89)
@@ -66,7 +69,8 @@ final class FreeModuleTests: XCTestCase {
         let photoID = UUID()
         try autoreleasepool {
             let schema = Schema(versionedSchema: CollectionSchemaV1.self)
-            let config = ModelConfiguration(schema: schema, url: root.appendingPathComponent("collection.store"), cloudKitDatabase: .none)
+            let config = ModelConfiguration(
+                schema: schema, url: root.appendingPathComponent("collection.store"), cloudKitDatabase: .none)
             let container = try ModelContainer(for: schema, configurations: [config])
             let old = CollectionSchemaV1.Timepiece(brand: "Seiko", modelName: "Legacy")
             container.mainContext.insert(old)
@@ -121,7 +125,8 @@ final class FreeModuleTests: XCTestCase {
         let past = try store.logWear(for: first, date: yesterday, now: today, timeZone: zone)
         XCTAssertThrowsError(try store.logWear(for: first, date: today, editing: past, now: today, timeZone: zone))
         XCTAssertEqual(past.calendarDay, "2026-09-06")
-        XCTAssertThrowsError(try store.logWear(for: first, date: today.addingTimeInterval(86400), now: today, timeZone: zone))
+        XCTAssertThrowsError(
+            try store.logWear(for: first, date: today.addingTimeInterval(86400), now: today, timeZone: zone))
         try store.changeStatus(.sold, for: first)
         XCTAssertThrowsError(try store.logWear(for: first, date: today, now: today, timeZone: zone))
         try store.logWear(for: first, date: yesterday.addingTimeInterval(-86400), now: today, timeZone: zone)
@@ -156,7 +161,8 @@ final class FreeModuleTests: XCTestCase {
         let zone = TimeZone(secondsFromGMT: 0)!
         let today = WearDay(key: "2026-09-07")!.date(timeZone: zone)!
         let past = today.addingTimeInterval(-86400)
-        XCTAssertThrowsError(try store.logWear(for: watch, dates: [past, today.addingTimeInterval(86400)], now: today, timeZone: zone))
+        XCTAssertThrowsError(
+            try store.logWear(for: watch, dates: [past, today.addingTimeInterval(86400)], now: today, timeZone: zone))
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WearLog>()), 0)
         XCTAssertFalse(store.context.hasChanges)
         try store.changeStatus(.sold, for: watch)
@@ -167,8 +173,10 @@ final class FreeModuleTests: XCTestCase {
 
     func testWishlistValidationAndAtomicConversionPreservesPhoto() async throws {
         let store = try store()
-        let image = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 100)).jpegData(withCompressionQuality: 0.9) { context in
-            UIColor.blue.setFill(); context.fill(CGRect(x: 0, y: 0, width: 100, height: 100))
+        let image = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 100)).jpegData(withCompressionQuality: 0.9)
+        { context in
+            UIColor.blue.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 100, height: 100))
         }
         let photo = try await store.photoStore.importPhoto(image)
         var draft = WishlistDraft()
@@ -216,24 +224,33 @@ final class FreeModuleTests: XCTestCase {
         try FileManager.default.removeItem(at: source)
         let copy = try await store.documentStore.data(id: asset.id, filename: asset.filename)
         XCTAssertEqual(copy, data)
-        let document = try store.attachDocument(asset, to: owner, name: "Invoice", kind: .purchase, date: nil, notes: "Private")
+        let document = try store.attachDocument(
+            asset, to: owner, name: "Invoice", kind: .purchase, date: nil, notes: "Private")
         try store.updateDocument(document, name: "Warranty", kind: .warranty, date: .now, notes: "Updated")
         XCTAssertEqual(document.kindRaw, "warranty")
         let duplicate = try await store.documentStore.importData(data)
-        XCTAssertThrowsError(try store.attachDocument(duplicate, to: owner, name: "Copy", kind: .purchase, date: nil, notes: ""))
-        let other = try store.attachDocument(duplicate, to: another, name: "Shared source", kind: .other, date: nil, notes: "")
+        XCTAssertThrowsError(
+            try store.attachDocument(duplicate, to: owner, name: "Copy", kind: .purchase, date: nil, notes: ""))
+        let other = try store.attachDocument(
+            duplicate, to: another, name: "Shared source", kind: .other, date: nil, notes: "")
         let orphan = try await store.documentStore.importData(data)
         try await store.reconcilePhotos()
-        do { _ = try await store.documentStore.data(id: orphan.id, filename: orphan.filename); XCTFail("Orphan must be removed") }
-        catch { XCTAssertTrue(error is DocumentError) }
+        do {
+            _ = try await store.documentStore.data(id: orphan.id, filename: orphan.filename)
+            XCTFail("Orphan must be removed")
+        } catch { XCTAssertTrue(error is DocumentError) }
         for invalid in [Data("broken".utf8), Data(repeating: 0, count: DocumentStore.maximumBytes + 1)] {
-            do { _ = try await store.documentStore.importData(invalid); XCTFail("Invalid file accepted") }
-            catch { XCTAssertTrue(error is DocumentError) }
+            do {
+                _ = try await store.documentStore.importData(invalid)
+                XCTFail("Invalid file accepted")
+            } catch { XCTAssertTrue(error is DocumentError) }
         }
         try await store.delete(owner)
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<DocumentItem>()), 1)
-        do { _ = try await store.documentStore.data(id: asset.id, filename: asset.filename); XCTFail("Deleted document file retained") }
-        catch { XCTAssertTrue(error is DocumentError) }
+        do {
+            _ = try await store.documentStore.data(id: asset.id, filename: asset.filename)
+            XCTFail("Deleted document file retained")
+        } catch { XCTAssertTrue(error is DocumentError) }
         try await store.deleteDocument(other)
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<DocumentItem>()), 0)
     }
@@ -242,10 +259,13 @@ final class FreeModuleTests: XCTestCase {
         let store = try store()
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
-        let source = UIGraphicsImageRenderer(size: CGSize(width: 4200, height: 2400), format: format).jpegData(withCompressionQuality: 1) { context in
+        let source = UIGraphicsImageRenderer(size: CGSize(width: 4200, height: 2400), format: format).jpegData(
+            withCompressionQuality: 1
+        ) { context in
             UIColor.white.setFill()
             context.fill(CGRect(x: 0, y: 0, width: 4200, height: 2400))
-            ("TEST INVOICE 1234.56 PLN" as NSString).draw(at: CGPoint(x: 100, y: 100), withAttributes: [.font: UIFont.systemFont(ofSize: 80)])
+            ("TEST INVOICE 1234.56 PLN" as NSString).draw(
+                at: CGPoint(x: 100, y: 100), withAttributes: [.font: UIFont.systemFont(ofSize: 80)])
         }
         let asset = try await store.documentStore.importData(source)
         XCTAssertTrue(["document.heic", "document.jpg"].contains(asset.filename))
@@ -254,4 +274,72 @@ final class FreeModuleTests: XCTestCase {
         XCTAssertEqual(max(image.size.width, image.size.height), 4000)
         XCTAssertLessThanOrEqual(bytes.count, DocumentStore.maximumBytes)
     }
+    func testBoundedPhotoReadRejectsOversizedFiles() throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: url) }
+        try Data(repeating: 1, count: ImportedImage.maximumBytes + 1).write(to: url)
+        XCTAssertThrowsError(try ImportedImage.read(url))
+        let valid = Data([1, 2, 3])
+        try valid.write(to: url)
+        XCTAssertEqual(try ImportedImage.read(url), valid)
+    }
+
+    func testStatisticsAtCollectionScale() throws {
+        let zone = TimeZone(secondsFromGMT: 0)!
+        let now = WearDay(key: "2026-10-03")!.date(timeZone: zone)!
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = zone
+        let ids = (0..<100).map { _ in UUID() }
+        let keys = (0..<500).map { WearDay(calendar.date(byAdding: .day, value: -$0, to: now)!, timeZone: zone).key }
+        for size in [1_000, 10_000, 50_000] {
+            let entries = (0..<size).map { WearStatistics.Entry(watchID: ids[$0 % 100], day: keys[$0 / 100]) }
+            let start = ContinuousClock.now
+            let stats = WearStatistics(entries: entries, period: .all, now: now, timeZone: zone)
+            let optimized = start.duration(to: .now)
+            let baselineStart = ContinuousClock.now
+            let baselineToday = calendar.startOfDay(for: now)
+            let baselineTodayKey = WearDay(now, timeZone: zone).key
+            let valid = entries.filter { $0.day <= baselineTodayKey && WearDay(key: $0.day) != nil }
+            let baselineFirst =
+                valid.compactMap { WearDay(key: $0.day)?.date(timeZone: zone) }
+                .map { calendar.startOfDay(for: $0) }.min() ?? baselineToday
+            let baselineStartKey = WearDay(baselineFirst, timeZone: zone).key
+            let included = valid.filter { $0.day >= baselineStartKey }
+            let baselineRecorded = Set(included.map(\.day)).count
+            let baselineCounts = Dictionary(grouping: included, by: \.watchID).mapValues { Set($0.map(\.day)).count }
+            let baseline = baselineStart.duration(to: .now)
+            XCTAssertEqual(stats.recordedDays, baselineRecorded)
+            XCTAssertEqual(stats.daysByWatch, baselineCounts)
+            XCTAssertEqual(WearDay(stats.start, timeZone: zone), WearDay(baselineFirst, timeZone: zone))
+            print("STATISTICS \(size): optimized=\(optimized), baseline=\(baseline)")
+            XCTAssertEqual(stats.recordedDays, size / 100)
+            XCTAssertEqual(stats.daysByWatch.count, 100)
+            XCTAssertEqual(stats.daysByWatch[ids[0]], size / 100)
+        }
+    }
+
+    func testQuickMoveUndoRestoresWishAndRefusesToDiscardLaterWear() throws {
+        let store = try store()
+        var draft = WishlistDraft()
+        draft.brand = "Casio"
+        draft.modelName = "Oceanus"
+        draft.url = "https://example.com/watch"
+        draft.priority = .high
+        let wish = try store.saveWish(draft)
+        let id = wish.id
+        let token = try store.moveWish(wish)
+        try store.undoWishMove(token)
+        let restored = try XCTUnwrap(store.context.fetch(FetchDescriptor<WishlistItem>()).first)
+        XCTAssertEqual(restored.id, id)
+        XCTAssertEqual(restored.url, draft.url)
+        XCTAssertEqual(restored.priority, WishlistPriority.high.rawValue)
+        XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<Timepiece>()), 0)
+        let second = try store.moveWish(restored)
+        let watch = try XCTUnwrap(store.context.fetch(FetchDescriptor<Timepiece>()).first)
+        try store.logWear(for: watch, date: .now)
+        XCTAssertThrowsError(try store.undoWishMove(second))
+        XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WearLog>()), 1)
+        XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WishlistItem>()), 0)
+    }
+
 }

@@ -14,7 +14,9 @@ struct WearDay: Hashable, Comparable, Sendable {
     init?(key: String) {
         guard key.range(of: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", options: .regularExpression) != nil else { return nil }
         self.key = key
-        guard let date = date(timeZone: TimeZone(secondsFromGMT: 0)!), WearDay(date, timeZone: TimeZone(secondsFromGMT: 0)!).key == key else { return nil }
+        guard let date = date(timeZone: TimeZone(secondsFromGMT: 0)!),
+            WearDay(date, timeZone: TimeZone(secondsFromGMT: 0)!).key == key
+        else { return nil }
     }
 
     func date(timeZone: TimeZone = .current) -> Date? {
@@ -33,7 +35,8 @@ enum WearError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .futureDay: String(localized: "Wear history cannot be added for a future day.")
-        case .archivedToday: String(localized: "Restore this watch before logging it for today. You can still add past days.")
+        case .archivedToday:
+            String(localized: "Restore this watch before logging it for today. You can still add past days.")
         case .duplicate: String(localized: "This watch is already logged for that day.")
         case .missingWatch: String(localized: "The watch is no longer available.")
         }
@@ -61,19 +64,25 @@ struct WearStatistics {
         calendar.timeZone = timeZone
         let today = calendar.startOfDay(for: now)
         let todayKey = WearDay(now, timeZone: timeZone).key
-        let valid = entries.filter { $0.day <= todayKey && WearDay(key: $0.day) != nil }
+        // Validate each distinct day once (many watches share the same date).
+        let validKeys = Set(entries.map(\.day)).filter { $0 <= todayKey && WearDay(key: $0) != nil }
         switch period {
         case .month: start = calendar.date(byAdding: .day, value: -29, to: today)!
         case .year: start = calendar.date(from: calendar.dateComponents([.year], from: today))!
         case .all:
-            start = valid.compactMap { WearDay(key: $0.day)?.date(timeZone: timeZone) }
-                .map { calendar.startOfDay(for: $0) }.min() ?? today
+            start =
+                validKeys.min().flatMap { WearDay(key: $0)?.date(timeZone: timeZone) }
+                .map { calendar.startOfDay(for: $0) } ?? today
         }
         calendarDays = (calendar.dateComponents([.day], from: start, to: today).day ?? 0) + 1
         let startKey = WearDay(start, timeZone: timeZone).key
-        let included = valid.filter { $0.day >= startKey }
-        recordedDays = Set(included.map(\.day)).count
-        daysByWatch = Dictionary(grouping: included, by: \.watchID).mapValues { Set($0.map(\.day)).count }
+        let includedKeys = Set(validKeys.filter { $0 >= startKey })
+        var watchDays: [UUID: Set<String>] = [:]
+        for entry in entries where includedKeys.contains(entry.day) {
+            watchDays[entry.watchID, default: []].insert(entry.day)
+        }
+        recordedDays = includedKeys.count
+        daysByWatch = watchDays.mapValues(\.count)
     }
 
     func shareOfRecordedDays(for id: UUID) -> Double {

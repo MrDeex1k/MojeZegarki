@@ -1,7 +1,8 @@
 import Foundation
 
 enum WishlistPriority: Int, CaseIterable, Identifiable {
-    case unspecified = 0, low, medium, high
+    case unspecified = 0
+    case low, medium, high
     var id: Int { rawValue }
     var title: LocalizedStringResource {
         switch self {
@@ -13,7 +14,7 @@ enum WishlistPriority: Int, CaseIterable, Identifiable {
     }
 }
 
-struct WishlistDraft {
+struct WishlistDraft: Equatable {
     var brand = ""
     var modelName = ""
     var price = ""
@@ -50,8 +51,9 @@ struct WishlistDraft {
     func validatedURL() throws -> String? {
         guard let value = url.nilIfEmpty else { return nil }
         guard let parsed = URLComponents(string: value),
-              ["https", "http"].contains(parsed.scheme?.lowercased() ?? ""),
-              let host = parsed.host, !host.isEmpty, parsed.user == nil, parsed.password == nil else {
+            ["https", "http"].contains(parsed.scheme?.lowercased() ?? ""),
+            let host = parsed.host, !host.isEmpty, parsed.user == nil, parsed.password == nil
+        else {
             throw WishlistError.invalidURL
         }
         return value
@@ -59,6 +61,12 @@ struct WishlistDraft {
 }
 
 enum WishlistError: LocalizedError {
-    case invalidURL
-    var errorDescription: String? { String(localized: "Enter a full http or https link without login details.") }
+    case invalidURL, changedAfterMove
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL: String(localized: "Enter a full http or https link without login details.")
+        case .changedAfterMove:
+            String(localized: "This watch has changed since it was added. Undo is no longer available.")
+        }
+    }
 }

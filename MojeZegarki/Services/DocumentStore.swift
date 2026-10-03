@@ -1,7 +1,7 @@
-import Foundation
 import CryptoKit
-import PDFKit
+import Foundation
 import ImageIO
+import PDFKit
 import UniformTypeIdentifiers
 
 actor DocumentStore {
@@ -41,37 +41,52 @@ actor DocumentStore {
             guard pdf.pageCount > 0 else { throw DocumentError.unsupported }
             filename = "document.pdf"
             contentType = UTType.pdf.identifier
-            output = data // Never recompress or rewrite an invoice PDF.
+            output = data  // Never recompress or rewrite an invoice PDF.
         } else {
             guard let source = CGImageSourceCreateWithData(data as CFData, nil),
-                  let image = CGImageSourceCreateThumbnailAtIndex(source, 0, [
-                    kCGImageSourceCreateThumbnailFromImageAlways: true,
-                    kCGImageSourceCreateThumbnailWithTransform: true,
-                    kCGImageSourceThumbnailMaxPixelSize: 4000
-                  ] as CFDictionary) else { throw DocumentError.unsupported }
+                let image = CGImageSourceCreateThumbnailAtIndex(
+                    source, 0,
+                    [
+                        kCGImageSourceCreateThumbnailFromImageAlways: true,
+                        kCGImageSourceCreateThumbnailWithTransform: true,
+                        kCGImageSourceThumbnailMaxPixelSize: 4000,
+                    ] as CFDictionary)
+            else { throw DocumentError.unsupported }
             if let heic = Self.encode(image, type: .heic) {
-                filename = "document.heic"; contentType = UTType.heic.identifier; output = heic
+                filename = "document.heic"
+                contentType = UTType.heic.identifier
+                output = heic
             } else if let jpeg = Self.encode(image, type: .jpeg) {
-                filename = "document.jpg"; contentType = UTType.jpeg.identifier; output = jpeg
-            } else { throw DocumentError.unsupported }
+                filename = "document.jpg"
+                contentType = UTType.jpeg.identifier
+                output = jpeg
+            } else {
+                throw DocumentError.unsupported
+            }
         }
         guard output.count <= Self.maximumBytes else { throw DocumentError.tooLarge }
         try FileManager.default.createDirectory(at: staging, withIntermediateDirectories: true)
         do {
-            try output.write(to: staging.appendingPathComponent(filename), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+            try output.write(
+                to: staging.appendingPathComponent(filename),
+                options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
             try FileManager.default.moveItem(at: staging, to: destination)
         } catch {
             try? FileManager.default.removeItem(at: staging)
             throw error
         }
-        return DocumentAsset(id: id, filename: filename, contentType: contentType, fileSize: output.count,
-                             contentHash: SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined())
+        return DocumentAsset(
+            id: id, filename: filename, contentType: contentType, fileSize: output.count,
+            contentHash: SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined())
     }
 
     func data(id: UUID, filename: String) throws -> Data {
-        guard ["document.pdf", "document.heic", "document.jpg"].contains(filename) else { throw DocumentError.missingFile }
-        do { return try Data(contentsOf: root.appendingPathComponent(id.uuidString).appendingPathComponent(filename)) }
-        catch { throw DocumentError.missingFile }
+        guard ["document.pdf", "document.heic", "document.jpg"].contains(filename) else {
+            throw DocumentError.missingFile
+        }
+        do {
+            return try Data(contentsOf: root.appendingPathComponent(id.uuidString).appendingPathComponent(filename))
+        } catch { throw DocumentError.missingFile }
     }
 
     func remove(_ id: UUID) throws {
@@ -84,7 +99,9 @@ actor DocumentStore {
         for url in try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil) {
             let name = url.lastPathComponent
             if let id = UUID(uuidString: name), !ids.contains(id) { try FileManager.default.removeItem(at: url) }
-            if name.hasPrefix("."), UUID(uuidString: String(name.dropFirst())) != nil { try FileManager.default.removeItem(at: url) }
+            if name.hasPrefix("."), UUID(uuidString: String(name.dropFirst())) != nil {
+                try FileManager.default.removeItem(at: url)
+            }
         }
     }
 
@@ -92,8 +109,11 @@ actor DocumentStore {
         let types = CGImageDestinationCopyTypeIdentifiers() as! [String]
         guard types.contains(type.identifier) else { return nil }
         let buffer = NSMutableData()
-        guard let destination = CGImageDestinationCreateWithData(buffer, type.identifier as CFString, 1, nil) else { return nil }
-        CGImageDestinationAddImage(destination, image, [kCGImageDestinationLossyCompressionQuality: 0.92] as CFDictionary)
+        guard let destination = CGImageDestinationCreateWithData(buffer, type.identifier as CFString, 1, nil) else {
+            return nil
+        }
+        CGImageDestinationAddImage(
+            destination, image, [kCGImageDestinationLossyCompressionQuality: 0.92] as CFDictionary)
         guard CGImageDestinationFinalize(destination) else { return nil }
         return buffer as Data
     }

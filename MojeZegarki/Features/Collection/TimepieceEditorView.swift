@@ -1,5 +1,5 @@
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct TimepieceEditorView: View {
     let store: CollectionStore
@@ -7,10 +7,14 @@ struct TimepieceEditorView: View {
     let wishlistItem: WishlistItem?
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) private var locale
+    private let initialDraft: TimepieceDraft
+    @State private var discarding = false
     @State private var draft: TimepieceDraft
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State private var stagedIDs: Set<UUID> = []
     @State private var importing = false
+    @State private var importTask: Task<Void, Never>?
+    @State private var importedCount = 0
     @State private var saving = false
     @State private var committed = false
     @State private var errorMessage: String?
@@ -19,7 +23,11 @@ struct TimepieceEditorView: View {
         self.store = store
         self.watch = watch
         self.wishlistItem = wishlistItem
-        _draft = State(initialValue: watch.map { TimepieceDraft(timepiece: $0) } ?? wishlistItem.map { WishlistDraft(item: $0).purchaseDraft } ?? TimepieceDraft())
+        let initial =
+            watch.map { TimepieceDraft(timepiece: $0) } ?? wishlistItem.map { WishlistDraft(item: $0).purchaseDraft }
+            ?? TimepieceDraft()
+        initialDraft = initial
+        _draft = State(initialValue: initial)
     }
 
     var body: some View {
@@ -28,7 +36,11 @@ struct TimepieceEditorView: View {
                 Section {
                     TextField("Brand", text: $draft.brand).accessibilityIdentifier("editor.brand")
                     TextField("Model", text: $draft.modelName).accessibilityIdentifier("editor.model")
-                } header: { Text("Watch") } footer: { Text("Only brand and model are required.") }
+                } header: {
+                    Text("Watch")
+                } footer: {
+                    Text("Only brand and model are required.")
+                }
 
                 photosSection
 
@@ -37,13 +49,25 @@ struct TimepieceEditorView: View {
                     optionalPicker("Movement", selection: $draft.movementType)
                     NavigationLink {
                         List(WatchCategory.allCases) { category in
-                            Toggle(isOn: Binding(get: { draft.categories.contains(category) }, set: { selected in
-                                if selected { draft.categories.insert(category) } else { draft.categories.remove(category) }
-                            })) { Text(category.title) }
+                            Toggle(
+                                isOn: Binding(
+                                    get: { draft.categories.contains(category) },
+                                    set: { selected in
+                                        if selected {
+                                            draft.categories.insert(category)
+                                        } else {
+                                            draft.categories.remove(category)
+                                        }
+                                    })
+                            ) { Text(category.title) }
                         }
                         .navigationTitle("Categories")
                     } label: {
-                        LabeledContent("Categories", value: draft.categories.isEmpty ? String(localized: "Not specified") : draft.categories.map { String(localized: $0.title) }.sorted().joined(separator: ", "))
+                        LabeledContent(
+                            "Categories",
+                            value: draft.categories.isEmpty
+                                ? String(localized: "Not specified")
+                                : draft.categories.map { String(localized: $0.title) }.sorted().joined(separator: ", "))
                     }
                     TextField("Reference number", text: $draft.referenceNumber).textInputAutocapitalization(.characters)
                     TextField("Serial number", text: $draft.serialNumber).textInputAutocapitalization(.characters)
@@ -52,16 +76,23 @@ struct TimepieceEditorView: View {
                     }
                 }
                 Section("Purchase") {
-                    Toggle("Add purchase date", isOn: Binding(get: { draft.purchaseDate != nil }, set: { draft.purchaseDate = $0 ? Date() : nil }))
+                    Toggle(
+                        "Add purchase date",
+                        isOn: Binding(
+                            get: { draft.purchaseDate != nil }, set: { draft.purchaseDate = $0 ? Date() : nil }))
                     if draft.purchaseDate != nil {
-                        DatePicker("Purchase date", selection: Binding(get: { draft.purchaseDate ?? Date() }, set: { draft.purchaseDate = $0 }), displayedComponents: .date)
+                        DatePicker(
+                            "Purchase date",
+                            selection: Binding(get: { draft.purchaseDate ?? Date() }, set: { draft.purchaseDate = $0 }),
+                            displayedComponents: .date)
                     }
                     TextField("Purchase price", text: $draft.price).keyboardType(.decimalPad)
                         .accessibilityIdentifier("editor.price")
                     Picker("Currency", selection: $draft.currencyCode) {
                         Text("Not specified").tag("")
                         ForEach(Locale.commonISOCurrencyCodes.sorted(), id: \.self) { code in
-                            Text(verbatim: "\(code) — \(locale.localizedString(forCurrencyCode: code) ?? code)").tag(code)
+                            Text(verbatim: "\(code) — \(locale.localizedString(forCurrencyCode: code) ?? code)").tag(
+                                code)
                         }
                     }
                     TextField("Seller", text: $draft.seller)
@@ -75,7 +106,7 @@ struct TimepieceEditorView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") { if draft != initialDraft { discarding = true } else { dismiss() } }
                         .disabled(importing || saving)
                         .accessibilityIdentifier("editor.cancel")
                 }
@@ -85,14 +116,23 @@ struct TimepieceEditorView: View {
                         .accessibilityIdentifier("editor.save")
                 }
             }
-            .interactiveDismissDisabled(importing || saving)
-            .alert("Something went wrong", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
+            .interactiveDismissDisabled(importing || saving || draft != initialDraft)
+            .confirmationDialog("Discard unsaved changes?", isPresented: $discarding, titleVisibility: .visible) {
+                Button("Discard changes", role: .destructive) { dismiss() }
+            }
+            .alert(
+                "Something went wrong",
+                isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
+            ) {
                 Button("OK", role: .cancel) { errorMessage = nil }
-            } message: { Text(errorMessage ?? "") }
+            } message: {
+                Text(errorMessage ?? "")
+            }
             .onChange(of: selectedPhotos) { _, items in
                 guard !items.isEmpty else { return }
                 importing = true
-                Task { await importPhotos(items) }
+                importedCount = 0
+                importTask = Task { await importPhotos(items) }
             }
         }
         // The whole editor must disappear, not just the form when opening Categories.
@@ -116,8 +156,11 @@ struct TimepieceEditorView: View {
                                 Button {
                                     draft.mainPhotoID = photo.id
                                 } label: {
-                                    Label(draft.mainPhotoID == photo.id ? "Main photo" : "Set as main", systemImage: draft.mainPhotoID == photo.id ? "star.fill" : "star")
-                                        .font(.caption)
+                                    Label(
+                                        draft.mainPhotoID == photo.id ? "Main photo" : "Set as main",
+                                        systemImage: draft.mainPhotoID == photo.id ? "star.fill" : "star"
+                                    )
+                                    .font(.caption)
                                 }
                                 .buttonStyle(.borderless)
                                 Button("Remove photo", role: .destructive) { removePhoto(photo) }
@@ -128,16 +171,23 @@ struct TimepieceEditorView: View {
                     .padding(.vertical, 4)
                 }
             }
-            PhotosPicker(selection: $selectedPhotos, matching: .images) {
+            PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 10, matching: .images) {
                 Label("Add photos", systemImage: "photo.badge.plus")
             }
             .disabled(importing)
             .accessibilityIdentifier("editor.photos")
-            if importing { ProgressView("Importing photos…") }
+            if importing {
+                ProgressView(value: Double(importedCount), total: Double(max(selectedPhotos.count, 1))) {
+                    Text("Importing photos…")
+                }
+                Button("Stop importing") { importTask?.cancel() }
+            }
+            Text("Up to 10 photos at a time, 20 MB each.").font(.footnote).foregroundStyle(.secondary)
         }
     }
 
-    private func optionalPicker<T: WatchOption>(_ title: LocalizedStringKey, selection: Binding<T?>) -> some View where T.AllCases: RandomAccessCollection {
+    private func optionalPicker<T: WatchOption>(_ title: LocalizedStringKey, selection: Binding<T?>) -> some View
+    where T.AllCases: RandomAccessCollection {
         Picker(title, selection: selection) {
             Text("Not specified").tag(Optional<T>.none)
             ForEach(Array(T.allCases)) { Text($0.title).tag(Optional($0)) }
@@ -145,15 +195,26 @@ struct TimepieceEditorView: View {
     }
 
     @MainActor private func importPhotos(_ items: [PhotosPickerItem]) async {
-        defer { selectedPhotos = []; importing = false }
+        defer {
+            selectedPhotos = []
+            importing = false
+        }
         for item in items {
             do {
-                guard let data = try await item.loadTransferable(type: Data.self) else { throw CollectionError.unreadablePhoto }
-                let photo = try await store.photoStore.importPhoto(data)
+                try Task.checkCancellation()
+                guard let data = try await item.loadTransferable(type: ImportedImage.self) else {
+                    throw CollectionError.unreadablePhoto
+                }
+                try Task.checkCancellation()
+                let photo = try await store.photoStore.importPhoto(data.data)
                 stagedIDs.insert(photo.id)
                 draft.photos.append(photo)
                 if draft.mainPhotoID == nil { draft.mainPhotoID = photo.id }
-            } catch { errorMessage = String(localized: "A photo could not be imported. Already imported photos are still available.") }
+                importedCount += 1
+            } catch is CancellationError { break } catch {
+                errorMessage = String(
+                    localized: "A photo could not be imported. Already imported photos are still available.")
+            }
         }
     }
 

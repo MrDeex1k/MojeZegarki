@@ -1,5 +1,5 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct TimepieceDetailView: View {
     let watch: Timepiece
@@ -17,9 +17,11 @@ struct TimepieceDetailView: View {
     init(watch: Timepiece, store: CollectionStore) {
         self.watch = watch
         self.store = store
+        let id = watch.id
+        _allWearLogs = Query(filter: #Predicate<WearLog> { $0.timepiece?.id == id })
     }
 
-    private var wearLogs: [WearLog] { allWearLogs.filter { $0.timepiece?.id == watch.id } }
+    private var wearLogs: [WearLog] { allWearLogs }
 
     var body: some View {
         List {
@@ -28,9 +30,12 @@ struct TimepieceDetailView: View {
                     VStack(spacing: 0) {
                         TabView {
                             ForEach(orderedPhotos) { photo in
-                                PhotoView(photo: PhotoDraft(id: photo.id, filename: photo.filename), store: store.photoStore, thumbnail: false)
-                                    .accessibilityHidden(false)
-                                    .accessibilityLabel("Watch photo")
+                                PhotoView(
+                                    photo: PhotoDraft(id: photo.id, filename: photo.filename), store: store.photoStore,
+                                    thumbnail: false
+                                )
+                                .accessibilityHidden(false)
+                                .accessibilityLabel("Watch photo")
                             }
                         }
                         .tabViewStyle(.page(indexDisplayMode: orderedPhotos.count > 1 ? .always : .never))
@@ -62,7 +67,9 @@ struct TimepieceDetailView: View {
                 }
             }
             Section("Wearing") {
-                Button { showingWear = true } label: {
+                Button {
+                    showingWear = true
+                } label: {
                     HStack(spacing: 12) {
                         Image(systemName: "calendar")
                         VStack(alignment: .leading, spacing: 4) {
@@ -79,7 +86,11 @@ struct TimepieceDetailView: View {
                 .accessibilityIdentifier("detail.wear")
             }
             Section {
-                Button { showingDocuments = true } label: { Label("Documents", systemImage: "doc.text") }
+                Button {
+                    showingDocuments = true
+                } label: {
+                    Label("Documents", systemImage: "doc.text")
+                }
                 .accessibilityIdentifier("detail.documents")
             }
             if hasDetails {
@@ -91,17 +102,29 @@ struct TimepieceDetailView: View {
                         LabeledContent("Movement") { Text(movement.title) }
                     }
                     if !watch.categoryIDs.isEmpty {
-                        LabeledContent("Categories", value: watch.categoryIDs.compactMap(WatchCategory.init(rawValue:)).map { String(localized: $0.title) }.joined(separator: ", "))
+                        LabeledContent(
+                            "Categories",
+                            value: watch.categoryIDs.compactMap(WatchCategory.init(rawValue:)).map {
+                                String(localized: $0.title)
+                            }.joined(separator: ", "))
                     }
                     if let value = watch.referenceNumber { LabeledContent("Reference number", value: value) }
-                    if let value = watch.serialNumber { LabeledContent("Serial number", value: value).privacySensitive() }
+                    if let value = watch.serialNumber {
+                        LabeledContent("Serial number", value: value).privacySensitive()
+                    }
                 }
             }
             if watch.purchaseDate != nil || watch.purchasePrice != nil || watch.seller != nil {
                 Section("Purchase") {
-                    if let date = watch.purchaseDate { LabeledContent("Purchase date", value: date.formatted(date: .abbreviated, time: .omitted)) }
-                    if let price = watch.purchasePrice, let decimal = Decimal(string: price, locale: Locale(identifier: "en_US_POSIX")), let currency = watch.currencyCode {
-                        LabeledContent("Purchase price", value: decimal.formatted(.currency(code: currency))).privacySensitive()
+                    if let date = watch.purchaseDate {
+                        LabeledContent("Purchase date", value: date.formatted(date: .abbreviated, time: .omitted))
+                    }
+                    if let price = watch.purchasePrice,
+                        let decimal = Decimal(string: price, locale: Locale(identifier: "en_US_POSIX")),
+                        let currency = watch.currencyCode
+                    {
+                        LabeledContent("Purchase price", value: decimal.formatted(.currency(code: currency)))
+                            .privacySensitive()
                     }
                     if let seller = watch.seller { LabeledContent("Seller", value: seller) }
                 }
@@ -109,18 +132,21 @@ struct TimepieceDetailView: View {
             if let notes = watch.notes { Section("Notes") { Text(notes) } }
             Section {
                 if watch.status == .owned {
-                    Button("Mark as sold", systemImage: "archivebox") { changeStatus(.sold) }.accessibilityIdentifier("detail.sell")
+                    Button("Mark as sold", systemImage: "archivebox") { changeStatus(.sold) }.accessibilityIdentifier(
+                        "detail.sell")
                     Button("Mark as destroyed", systemImage: "archivebox") { changeStatus(.destroyed) }
                 } else {
                     Button("Restore to collection", systemImage: "arrow.uturn.backward") { changeStatus(.owned) }
                         .accessibilityIdentifier("detail.restore")
                 }
-                Button(role: .destructive) { confirmingDelete = true } label: {
+                Button(role: .destructive) {
+                    confirmingDelete = true
+                } label: {
                     Label("Delete permanently", systemImage: "trash")
                         .foregroundStyle(.red)
                 }
-                    .tint(.red)
-                    .accessibilityIdentifier("detail.delete")
+                .tint(.red)
+                .accessibilityIdentifier("detail.delete")
             } footer: {
                 Text("Archiving keeps all photos and history. Permanent deletion cannot be undone.")
             }
@@ -155,19 +181,32 @@ struct TimepieceDetailView: View {
                     }
             }
         }
-        .confirmationDialog("Delete this watch permanently?", isPresented: $confirmingDelete, titleVisibility: .visible) {
+        .confirmationDialog("Delete this watch permanently?", isPresented: $confirmingDelete, titleVisibility: .visible)
+        {
             Button("Delete permanently", role: .destructive) {
                 deleting = true
                 Task {
-                    do { try await store.delete(watch); dismiss() }
-                    catch { errorMessage = error.localizedDescription; deleting = false }
+                    do {
+                        try await store.delete(watch)
+                        dismiss()
+                    } catch {
+                        errorMessage = error.localizedDescription
+                        deleting = false
+                    }
                 }
             }
             .accessibilityIdentifier("confirm.delete")
-        } message: { Text("The watch, photos, documents and wear history will be removed from this iPhone.") }
-        .alert("Something went wrong", isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) {
+        } message: {
+            Text("The watch, photos, documents and wear history will be removed from this iPhone.")
+        }
+        .alert(
+            "Something went wrong",
+            isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
+        ) {
             Button("OK", role: .cancel) { errorMessage = nil }
-        } message: { Text(errorMessage ?? "") }
+        } message: {
+            Text(errorMessage ?? "")
+        }
     }
 
     private var wearSummaryText: AttributedString {
@@ -182,12 +221,11 @@ struct TimepieceDetailView: View {
     }
 
     private var hasDetails: Bool {
-        watch.deviceKindRaw != nil || watch.movementTypeRaw != nil || !watch.categoryIDs.isEmpty ||
-        watch.referenceNumber != nil || watch.serialNumber != nil
+        watch.deviceKindRaw != nil || watch.movementTypeRaw != nil || !watch.categoryIDs.isEmpty
+            || watch.referenceNumber != nil || watch.serialNumber != nil
     }
 
     private func changeStatus(_ status: WatchStatus) {
-        do { try store.changeStatus(status, for: watch) }
-        catch { errorMessage = error.localizedDescription }
+        do { try store.changeStatus(status, for: watch) } catch { errorMessage = error.localizedDescription }
     }
 }

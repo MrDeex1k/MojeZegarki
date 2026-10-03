@@ -1,7 +1,8 @@
-import XCTest
+import ImageIO
 import SwiftData
 import UIKit
-import ImageIO
+import XCTest
+
 @testable import MojeZegarki
 
 @MainActor
@@ -148,7 +149,9 @@ final class CollectionTests: XCTestCase {
     private func testImage() -> Data {
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
-        return UIGraphicsImageRenderer(size: CGSize(width: 2800, height: 1600), format: format).jpegData(withCompressionQuality: 0.9) { context in
+        return UIGraphicsImageRenderer(size: CGSize(width: 2800, height: 1600), format: format).jpegData(
+            withCompressionQuality: 0.9
+        ) { context in
             UIColor.systemTeal.setFill()
             context.fill(CGRect(x: 0, y: 0, width: 2800, height: 1600))
             UIColor.white.setFill()
