@@ -39,6 +39,11 @@
 		E6ACF921A64A4A5F62BC1C57 /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAC008B2DF99278619233FE /* CollectionTests.swift */; };
 		EBB2138D447384A1C56399B8 /* DocumentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF6E9632325D1F5A5B8AA3 /* DocumentStore.swift */; };
 		EE899E36CE74DD8D9761C798 /* CollectionSchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */; };
+		789B8086E922056FC8F6DB1D /* WearTodayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD49839E16A1398D7C13D7A8 /* WearTodayButton.swift */; };
+		EDDF143632DBBA960002E296 /* WearEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF092A7B00D57E423DF23F0 /* WearEditorView.swift */; };
+		0C513EA021C1636CE095F1A6 /* WearSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8695DE556DE34E559D0F4770 /* WearSummaryView.swift */; };
+		170AA1EDAEB7919AF56C648B /* WearCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BA492D2D0D2594717BDEC /* WearCalendar.swift */; };
+		6D446E82D74BFB8A76AB93CC /* WearStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AEE7F21301984303F90A56 /* WearStatisticsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +100,11 @@
 		E7695B7C24BB24A1302201AC /* PhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoView.swift; sourceTree = "<group>"; };
 		F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionSchemaV2.swift; sourceTree = "<group>"; };
 		FE11ED33912A05BB7857BABF /* MojeZegarkiApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MojeZegarkiApp.swift; sourceTree = "<group>"; };
+		FD49839E16A1398D7C13D7A8 /* WearTodayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearTodayButton.swift; sourceTree = "<group>"; };
+		5BF092A7B00D57E423DF23F0 /* WearEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearEditorView.swift; sourceTree = "<group>"; };
+		8695DE556DE34E559D0F4770 /* WearSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearSummaryView.swift; sourceTree = "<group>"; };
+		321BA492D2D0D2594717BDEC /* WearCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearCalendar.swift; sourceTree = "<group>"; };
+		18AEE7F21301984303F90A56 /* WearStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearStatisticsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +254,11 @@
 			isa = PBXGroup;
 			children = (
 				6D2FF408CE63D2A71F0F4C4E /* WearView.swift */,
+				18AEE7F21301984303F90A56 /* WearStatisticsView.swift */,
+				321BA492D2D0D2594717BDEC /* WearCalendar.swift */,
+				8695DE556DE34E559D0F4770 /* WearSummaryView.swift */,
+				5BF092A7B00D57E423DF23F0 /* WearEditorView.swift */,
+				FD49839E16A1398D7C13D7A8 /* WearTodayButton.swift */,
 			);
 			path = Wear;
 			sourceTree = "<group>";
@@ -419,6 +434,11 @@
 				74053BC7FE1391FF86718530 /* DocumentsView.swift in Sources */,
 				A26B4FED7851F9E99BE8BC3C /* SettingsView.swift in Sources */,
 				3E1223A786843F65F449DB92 /* WearView.swift in Sources */,
+				6D446E82D74BFB8A76AB93CC /* WearStatisticsView.swift in Sources */,
+				170AA1EDAEB7919AF56C648B /* WearCalendar.swift in Sources */,
+				0C513EA021C1636CE095F1A6 /* WearSummaryView.swift in Sources */,
+				EDDF143632DBBA960002E296 /* WearEditorView.swift in Sources */,
+				789B8086E922056FC8F6DB1D /* WearTodayButton.swift in Sources */,
 				D4E74F1AA38FED6400A7EF53 /* WishlistView.swift in Sources */,
 				04702C25A5714DD909F0DFC5 /* CollectionSchema.swift in Sources */,
 				EE899E36CE74DD8D9761C798 /* CollectionSchemaV2.swift in Sources */,

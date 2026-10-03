@@ -6,7 +6,8 @@ final class FreeModuleUITests: XCTestCase {
 
     private func launch(extra: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["--uitesting", "--reset-test-store", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"] + extra
+        app.launchArguments =
+            ["--uitesting", "--reset-test-store", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"] + extra
         app.launch()
         return app
     }
@@ -17,9 +18,9 @@ final class FreeModuleUITests: XCTestCase {
         app.tabBars.buttons["Wishlist"].tap()
         app.buttons["wish.add"].tap()
         XCTAssertFalse(app.buttons["wish.save"].isEnabled)
-        app.textFields["wish.brand"].tap()
+        focus(app.textFields["wish.brand"], in: app)
         app.textFields["wish.brand"].typeText("Casio")
-        app.textFields["wish.model"].tap()
+        focus(app.textFields["wish.model"], in: app)
         app.textFields["wish.model"].typeText("G-Shock")
         app.buttons["wish.save"].tap()
         let actions = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wish.actions.")).firstMatch
@@ -27,14 +28,21 @@ final class FreeModuleUITests: XCTestCase {
         actions.tap()
         app.buttons["wish.move"].tap()
         XCTAssertEqual(app.textFields["editor.brand"].value as? String, "Casio")
-        app.buttons["editor.cancel"].tap()
-        XCTAssertTrue(app.textFields["editor.brand"].waitForNonExistence(timeout: 5))
-        let quickMove = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wish.quickMove.")).firstMatch
+        let cancel = app.buttons["editor.cancel"]
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isHittable == true"), object: cancel)
+        wait(for: [ready], timeout: 5)
+        cancel.tap()
+        let dismissed = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "exists == false"), object: app.textFields["editor.brand"])
+        wait(for: [dismissed], timeout: 8)
+        XCTAssertTrue(actions.waitForExistence(timeout: 5))
+        let quickMove = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wish.quickMove."))
+            .firstMatch
         XCTAssertTrue(quickMove.waitForExistence(timeout: 5))
         quickMove.tap()
         XCTAssertFalse(app.buttons["editor.save"].exists)
         XCTAssertTrue(app.staticTexts["Your next watch"].waitForExistence(timeout: 5))
-        app.tabBars.buttons["Collection"].tap()
+        app.buttons["Show collection"].tap()
         XCTAssertTrue(app.staticTexts["G-Shock"].waitForExistence(timeout: 5))
         app.staticTexts["G-Shock"].tap()
         let today = app.buttons["wear.today"]
@@ -52,7 +60,7 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertFalse(quick.isEnabled)
         app.staticTexts["G-Shock"].tap()
         app.buttons["detail.wear"].tap()
-        let month = app.staticTexts["wear.month.title"]
+        let month = app.buttons["wear.month.title"]
         XCTAssertTrue(month.waitForExistence(timeout: 5))
         let currentMonth = month.label
         XCTAssertFalse(app.buttons["wear.month.next"].isEnabled)
@@ -113,14 +121,15 @@ final class FreeModuleUITests: XCTestCase {
         app.buttons["document.actions"].tap()
         app.buttons["document.edit"].tap()
         let name = app.textFields["document.name"]
-        name.tap()
+        focus(name, in: app)
         name.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "Test invoice".count) + "Discarded")
         app.buttons["Cancel"].tap()
+        app.buttons["Discard changes"].tap()
         XCTAssertTrue(name.waitForNonExistence(timeout: 5))
         XCTAssertTrue(app.navigationBars["Test invoice"].exists)
         app.buttons["document.actions"].tap()
         app.buttons["document.edit"].tap()
-        name.tap()
+        focus(name, in: app)
         name.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "Test invoice".count) + "Receipt")
         app.buttons["document.save"].tap()
         XCTAssertTrue(app.navigationBars["Receipt"].waitForExistence(timeout: 5))
@@ -129,4 +138,95 @@ final class FreeModuleUITests: XCTestCase {
         app.buttons.matching(identifier: "document.confirmDelete").firstMatch.tap()
         XCTAssertTrue(app.staticTexts["No documents yet"].waitForExistence(timeout: 5))
     }
+    func testCalendarShowsSavedDaysAndCountsOnlyNewSelection() {
+        let app = launch(extra: ["--test-wear-fixture"])
+        XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Calendar watch"].tap()
+        app.buttons["detail.wear"].tap()
+        app.buttons["wear.add"].tap()
+        XCTAssertTrue(app.buttons["wear.save"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["wear.save"].isEnabled)
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd"
+        let today = app.buttons["wear.selection.day.\(formatter.string(from: Date()))"]
+        XCTAssertFalse(today.isEnabled)
+        XCTAssertEqual(today.value as? String, "Already worn")
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        if Calendar.current.component(.day, from: Date()) == 1 { app.buttons["wear.selection.month.previous"].tap() }
+        let previous = app.buttons["wear.selection.day.\(formatter.string(from: yesterday))"]
+        previous.tap()
+        XCTAssertTrue(app.buttons["wear.save"].isEnabled)
+        XCTAssertEqual(app.staticTexts["wear.selectionCount"].label, "Selected days: 1")
+        previous.tap()
+        XCTAssertFalse(app.buttons["wear.save"].isEnabled)
+        previous.tap()
+        app.buttons["wear.save"].tap()
+        XCTAssertTrue(app.alerts["Wear history updated"].waitForExistence(timeout: 5))
+        app.alerts.buttons["OK"].tap()
+        app.buttons["wear.add"].tap()
+        if Calendar.current.component(.day, from: Date()) == 1 { app.buttons["wear.selection.month.previous"].tap() }
+        XCTAssertFalse(previous.isEnabled)
+        XCTAssertFalse(app.buttons["wear.save"].isEnabled)
+    }
+
+    func testMissingAndCorruptDocumentShowsRecoverableError() {
+        for variant in [
+            ["--test-missing-document"], ["--test-corrupt-document"],
+            ["--test-image-document", "--test-corrupt-document"],
+        ] {
+            let app = launch(extra: ["--test-document-fixture"] + variant)
+            XCTAssertTrue(app.staticTexts["Document watch"].waitForExistence(timeout: 15))
+            app.staticTexts["Document watch"].tap()
+            app.buttons["detail.documents"].tap()
+            app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "document.")).firstMatch.tap()
+            XCTAssertTrue(app.staticTexts["Document unavailable"].waitForExistence(timeout: 5))
+            XCTAssertTrue(app.buttons["document.actions"].isHittable)
+            app.terminate()
+        }
+    }
+
+    func testImageDocumentOpens() {
+        let app = launch(extra: ["--test-document-fixture", "--test-image-document"])
+        XCTAssertTrue(app.staticTexts["Document watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Document watch"].tap()
+        app.buttons["detail.documents"].tap()
+        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "document.")).firstMatch.tap()
+        XCTAssertTrue(app.images["Document preview"].waitForExistence(timeout: 5))
+    }
+
+    func testCalendarAppearanceAndLocalizationMatrix() {
+        for locale in ["en", "pl"] {
+            for dark in [false, true] {
+                for large in [false, true] {
+                    let app = XCUIApplication()
+                    app.launchArguments = [
+                        "--uitesting", "--reset-test-store", "--test-wear-fixture",
+                        "-AppleLanguages", "(\(locale))", "-AppleLocale", locale == "pl" ? "pl_PL" : "en_US",
+                        dark ? "--test-dark" : "--test-light", "-UIPreferredContentSizeCategoryName",
+                        large ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL",
+                    ]
+                    app.launch()
+                    XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+                    app.tabBars.buttons[locale == "pl" ? "Noszenie" : "Wearing"].tap()
+                    XCTAssertTrue(app.buttons["wear.filter"].waitForExistence(timeout: 5))
+                    XCTAssertTrue(app.buttons["wear.add"].isHittable)
+                    let overview = XCTAttachment(screenshot: app.screenshot())
+                    overview.name = "history-\(locale)-dark\(dark)-large\(large)"
+                    overview.lifetime = .keepAlways
+                    add(overview)
+                    app.buttons["wear.add"].tap()
+                    XCTAssertTrue(app.buttons["wear.save"].waitForExistence(timeout: 5))
+                    XCTAssertFalse(app.buttons["wear.save"].isEnabled)
+                    let editor = XCTAttachment(screenshot: app.screenshot())
+                    editor.name = "editor-\(locale)-dark\(dark)-large\(large)"
+                    editor.lifetime = .keepAlways
+                    add(editor)
+                    app.terminate()
+                }
+            }
+        }
+    }
+
 }

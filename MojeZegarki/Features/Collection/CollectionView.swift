@@ -1,23 +1,26 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct CollectionView: View {
     let store: CollectionStore
+    var revealRequest: UUID?
+    @State private var path: [WatchRoute] = []
     @ScaledMetric(relativeTo: .subheadline) private var brandFontSize = 18.75
     @Query(sort: \Timepiece.createdAt, order: .reverse) private var watches: [Timepiece]
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var search = ""
     @State private var archive = false
     @State private var adding = false
 
     private var visible: [Timepiece] {
         watches.filter {
-            ($0.status != .owned) == archive &&
-            (search.trimmed.isEmpty || "\($0.brand) \($0.modelName)".localizedStandardContains(search.trimmed))
+            ($0.status != .owned) == archive
+                && (search.trimmed.isEmpty || "\($0.brand) \($0.modelName)".localizedStandardContains(search.trimmed))
         }
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack(spacing: 0) {
                 Picker("Collection filter", selection: $archive) {
                     Text("In collection").tag(false)
@@ -31,7 +34,9 @@ struct CollectionView: View {
                     if !search.trimmed.isEmpty {
                         ContentUnavailableView.search(text: search)
                     } else if archive {
-                        ContentUnavailableView("Archive is empty", systemImage: "archivebox", description: Text("Sold and destroyed watches stay here with their photos and history."))
+                        ContentUnavailableView(
+                            "Archive is empty", systemImage: "archivebox",
+                            description: Text("Sold and destroyed watches stay here with their photos and history."))
                     } else {
                         ContentUnavailableView {
                             Label("Your collection starts here", systemImage: "watch.analog")
@@ -44,27 +49,50 @@ struct CollectionView: View {
                         }
                     }
                 } else {
-                    List(visible) { watch in
-                      HStack {
-                        NavigationLink(value: WatchRoute(id: watch.id)) {
-                            HStack(spacing: 16) {
-                                PhotoView(photo: watch.mainPhoto.map { PhotoDraft(id: $0.id, filename: $0.filename) }, store: store.photoStore)
-                                    .frame(width: 86, height: 104)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                VStack(alignment: .leading, spacing: 6) {
-                                    Text(watch.brand).font(.system(size: brandFontSize)).foregroundStyle(.secondary)
-                                    Text(watch.modelName).font(.headline)
-                                    if archive { Text(watch.status.title).font(.caption).foregroundStyle(.secondary) }
+                    TimelineView(.periodic(from: Date(timeIntervalSince1970: 0), by: 60)) { timeline in
+                        TodayWearScope(day: WearDay(timeline.date).key) { loggedIDs in
+                            List(visible) { watch in
+                                HStack {
+                                    NavigationLink(value: WatchRoute(id: watch.id)) {
+                                        (typeSize.isAccessibilitySize
+                                            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+                                            : AnyLayout(HStackLayout(spacing: 16))) {
+                                                PhotoView(
+                                                    photo: watch.mainPhoto.map {
+                                                        PhotoDraft(id: $0.id, filename: $0.filename)
+                                                    }, store: store.photoStore
+                                                )
+                                                .frame(width: 86, height: 104)
+                                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                VStack(alignment: .leading, spacing: 6) {
+                                                    Text(watch.brand).font(.system(size: brandFontSize))
+                                                        .foregroundStyle(.secondary)
+                                                    Text(watch.modelName).font(.headline)
+                                                    if archive {
+                                                        Text(watch.status.title).font(.caption).foregroundStyle(
+                                                            .secondary)
+                                                    }
+                                                }
+                                                .padding(.vertical, 6)
+                                            }
+                                    }
+                                    .accessibilityIdentifier("watch.\(watch.id.uuidString)")
+                                    if watch.status == .owned {
+                                        WearTodayButton(
+                                            watch: watch, store: store, compact: true,
+                                            sharedLogged: loggedIDs.contains(watch.id))
+                                    }
                                 }
-                                .padding(.vertical, 6)
                             }
-                        }
-                        .accessibilityIdentifier("watch.\(watch.id.uuidString)")
-                        if watch.status == .owned { WearTodayButton(watch: watch, store: store, compact: true) }
-                      }
+                            .listStyle(.plain)
+                        }.id(WearDay(timeline.date).key)
                     }
-                    .listStyle(.plain)
                 }
+            }
+            .onChange(of: revealRequest) {
+                path.removeAll()
+                archive = false
+                search = ""
             }
             .navigationTitle("Collection")
             .searchable(text: $search, prompt: "Search brand or model")

@@ -1,6 +1,6 @@
-import SwiftUI
-import SwiftData
 import PhotosUI
+import SwiftData
+import SwiftUI
 import UniformTypeIdentifiers
 
 struct DocumentsView: View {
@@ -14,6 +14,7 @@ struct DocumentsView: View {
     @State private var pendingName = ""
     @State private var importing = false
     @State private var error: String?
+    @State private var preview: DocumentRoute?
 
     init(watch: Timepiece, store: CollectionStore, onClose: @escaping () -> Void) {
         self.watch = watch
@@ -36,19 +37,22 @@ struct DocumentsView: View {
                     Label("Choose document photo", systemImage: "photo")
                 }
                 if importing { ProgressView("Importing document…") }
-            } footer: { Text("PDF or photo, up to 20 MB each. Files are copied to your private collection.") }
+            } footer: {
+                Text("PDF or photo, up to 20 MB each. Files are copied to your private collection.")
+            }
             .disabled(importing)
 
             if documents.isEmpty {
-                ContentUnavailableView("No documents yet", systemImage: "doc.text", description: Text("Keep invoices and other documents with this watch."))
-                    .listRowBackground(Color.clear)
+                ContentUnavailableView(
+                    "No documents yet", systemImage: "doc.text",
+                    description: Text("Keep invoices and other documents with this watch.")
+                )
+                .listRowBackground(Color.clear)
             } else {
                 Section {
                     ForEach(documents) { document in
-                        NavigationLink {
-                            DocumentPreviewView(document: document, store: store) {
-                                error = $0
-                            }
+                        Button {
+                            preview = DocumentRoute(id: document.id)
                         } label: {
                             HStack(spacing: 12) {
                                 Image(systemName: document.contentType == UTType.pdf.identifier ? "doc.text" : "photo")
@@ -58,13 +62,23 @@ struct DocumentsView: View {
                                     Text((DocumentKind(rawValue: document.kindRaw) ?? .other).title)
                                         .font(.subheadline).foregroundStyle(.secondary)
                                     if let date = document.documentDate {
-                                        Text(date.formatted(date: .abbreviated, time: .omitted)).font(.caption).foregroundStyle(.secondary)
+                                        Text(date.formatted(date: .abbreviated, time: .omitted)).font(.caption)
+                                            .foregroundStyle(.secondary)
                                     }
                                 }
                             }
                         }
                         .accessibilityIdentifier("document.\(document.id)")
                     }
+                }
+            }
+        }
+        .sheet(item: $preview) { route in
+            NavigationStack {
+                if let document = documents.first(where: { $0.id == route.id }) {
+                    DocumentPreviewView(document: document, store: store, onClose: { preview = nil }) {
+                        error = $0
+                    }.toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { preview = nil } } }
                 }
             }
         }
@@ -93,10 +107,15 @@ struct DocumentsView: View {
             guard let photo else { return }
             importing = true
             Task {
-                defer { importing = false; selectedPhoto = nil }
+                defer {
+                    importing = false
+                    selectedPhoto = nil
+                }
                 do {
-                    guard let data = try await photo.loadTransferable(type: Data.self) else { throw DocumentError.unsupported }
-                    let asset = try await store.documentStore.importData(data)
+                    guard let data = try await photo.loadTransferable(type: ImportedImage.self) else {
+                        throw DocumentError.unsupported
+                    }
+                    let asset = try await store.documentStore.importData(data.data)
                     pendingName = String(localized: "Document")
                     pending = asset
                 } catch { self.error = error.localizedDescription }
@@ -119,14 +138,23 @@ struct DocumentEditorView: View {
     @State private var kind: DocumentKind
     @State private var date: Date?
     @State private var notes: String
+    private let original: DocumentDraft
+    @State private var discarding = false
     @State private var committed = false
     @State private var error: String?
 
-    init(watch: Timepiece, store: CollectionStore, asset: DocumentAsset? = nil, proposedName: String = "", document: DocumentItem? = nil) {
+    init(
+        watch: Timepiece, store: CollectionStore, asset: DocumentAsset? = nil, proposedName: String = "",
+        document: DocumentItem? = nil
+    ) {
         self.watch = watch
         self.store = store
         self.asset = asset
         self.document = document
+        original = DocumentDraft(
+            name: document?.displayName ?? proposedName,
+            kind: document.flatMap { DocumentKind(rawValue: $0.kindRaw) } ?? .purchase, date: document?.documentDate,
+            notes: document?.notes ?? "")
         _name = State(initialValue: document?.displayName ?? proposedName)
         _kind = State(initialValue: document.flatMap { DocumentKind(rawValue: $0.kindRaw) } ?? .purchase)
         _date = State(initialValue: document?.documentDate)
@@ -142,21 +170,26 @@ struct DocumentEditorView: View {
                 }
                 Toggle("Add document date", isOn: Binding(get: { date != nil }, set: { date = $0 ? .now : nil }))
                 if date != nil {
-                    DatePicker("Document date", selection: Binding(get: { date ?? .now }, set: { date = $0 }), displayedComponents: .date)
+                    DatePicker(
+                        "Document date", selection: Binding(get: { date ?? .now }, set: { date = $0 }),
+                        displayedComponents: .date)
                 }
                 TextField("Notes", text: $notes, axis: .vertical).lineLimit(3...8)
             }
             .navigationTitle(document == nil ? Text("Add document") : Text("Edit document"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { if dirty { discarding = true } else { dismiss() } }
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         do {
                             if let document {
                                 try store.updateDocument(document, name: name, kind: kind, date: date, notes: notes)
                             } else if let asset {
-                                try store.attachDocument(asset, to: watch, name: name, kind: kind, date: date, notes: notes)
+                                try store.attachDocument(
+                                    asset, to: watch, name: name, kind: kind, date: date, notes: notes)
                             }
                             committed = true
                             dismiss()
@@ -165,10 +198,24 @@ struct DocumentEditorView: View {
                     .accessibilityIdentifier("document.save")
                 }
             }
+            .interactiveDismissDisabled(dirty)
+            .confirmationDialog("Discard unsaved changes?", isPresented: $discarding, titleVisibility: .visible) {
+                Button("Discard changes", role: .destructive) { dismiss() }
+            }
             .appError($error)
         }
         .onDisappear {
             if !committed, let asset { Task { try? await store.documentStore.remove(asset.id) } }
         }
     }
+    private var dirty: Bool { original != DocumentDraft(name: name, kind: kind, date: date, notes: notes) }
 }
+
+private struct DocumentDraft: Equatable {
+    let name: String
+    let kind: DocumentKind
+    let date: Date?
+    let notes: String
+}
+
+private struct DocumentRoute: Hashable, Identifiable { let id: UUID }

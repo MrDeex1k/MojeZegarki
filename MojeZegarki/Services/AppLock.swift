@@ -68,12 +68,17 @@ final class AppLock {
         let request = generation
         defer { isBusy = false }
         do {
-            let success = try await authenticator.authenticate(reason: String(localized: "Authenticate to access your private collection."))
+            let success = try await authenticator.authenticate(
+                reason: String(localized: "Authenticate to access your private collection."))
             return success && generation == request
         } catch {
             guard generation == request else { return false }
-            if let authError = error as? LAError, [.userCancel, .systemCancel, .appCancel].contains(authError.code) { return false }
-            self.error = String(localized: "Authentication could not be completed. Make sure a device passcode is configured and try again.")
+            if let authError = error as? LAError, [.userCancel, .systemCancel, .appCancel].contains(authError.code) {
+                return false
+            }
+            self.error = String(
+                localized:
+                    "Authentication could not be completed. Make sure a device passcode is configured and try again.")
             return false
         }
     }

@@ -1,0 +1,599 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project MojeZegarki.xcodeproj -scheme MojeZegarki -destination "platform=iOS Simulator,id=10C18B34-55BD-45C9-8308-6181BFAAF040" -derivedDataPath .build/Audit20261002 -resultBundlePath .build/audit-12.xcresult -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO test-without-building
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+Writing result bundle at path:
+	/Users/jakubbatycki/KOD/MojeZegarki/.build/audit-12.xcresult
+
+Test Suite 'All tests' started at 2026-10-02 23:13:19.759.
+Test Suite 'MojeZegarkiTests.xctest' started at 2026-10-02 23:13:19.759.
+Test Suite 'AppLockTests' started at 2026-10-02 23:13:19.759.
+Test Case '-[MojeZegarkiTests.AppLockTests testBackgroundInvalidatesPendingSuccessAndDeduplicatesRequests]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testBackgroundInvalidatesPendingSuccessAndDeduplicatesRequests]' passed (0.014 seconds).
+Test Case '-[MojeZegarkiTests.AppLockTests testCancellingPendingAuthenticationResumesContinuation]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testCancellingPendingAuthenticationResumesContinuation]' passed (0.015 seconds).
+Test Case '-[MojeZegarkiTests.AppLockTests testEnableUnlockAndDisableRequireAuthentication]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testEnableUnlockAndDisableRequireAuthentication]' passed (0.003 seconds).
+Test Suite 'AppLockTests' passed at 2026-10-02 23:13:19.792.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.032 (0.033) seconds
+Test Suite 'CollectionTests' started at 2026-10-02 23:13:19.793.
+Test Case '-[MojeZegarkiTests.CollectionTests testArchiveRestoreAndCascadeDeletionWithPhotos]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testArchiveRestoreAndCascadeDeletionWithPhotos]' passed (0.176 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testDiskPersistenceAndEditingWithoutAutosave]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testDiskPersistenceAndEditingWithoutAutosave]' passed (0.017 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testPhotoEncodingThumbnailAndRecoveryOfUnreferencedFiles]' started.
+2026-10-02 23:13:20.247749+0200 MojeZegarki[54971:366828] [MojeZegarki] CGImageSourceCreateThumbnailAtIndex:4592: *** ERROR: CGImageSourceCreateThumbnailAtIndex[0] - '....' - failed to create thumbnail [-50] {alw:1, abs: 0 tra:1 max:2400}
+Test Case '-[MojeZegarkiTests.CollectionTests testPhotoEncodingThumbnailAndRecoveryOfUnreferencedFiles]' passed (0.264 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testRemovingMainPhotoChoosesRemainingPhoto]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testRemovingMainPhotoChoosesRemainingPhoto]' passed (0.225 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testRequiredFieldsAndExactLocalizedMoney]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testRequiredFieldsAndExactLocalizedMoney]' passed (0.001 seconds).
+Test Suite 'CollectionTests' passed at 2026-10-02 23:13:20.476.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.682 (0.683) seconds
+Test Suite 'FreeModuleTests' started at 2026-10-02 23:13:20.476.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearRejectsWholeSelectionBeforeMakingChanges]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearRejectsWholeSelectionBeforeMakingChanges]' passed (0.014 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearSkipsDuplicatesAndPersistsAcrossReopen]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearSkipsDuplicatesAndPersistsAcrossReopen]' passed (0.013 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentImageConversionPreservesReadableResolution]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentImageConversionPreservesReadableResolution]' passed (0.172 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentsPrivateCopyDuplicatesLimitsAndCascade]' started.
+2026-10-02 23:13:20.699261+0200 MojeZegarki[54971:366816] [MojeZegarki] CGImageSourceCreateThumbnailAtIndex:4592: *** ERROR: CGImageSourceCreateThumbnailAtIndex[0] - '....' - failed to create thumbnail [-50] {alw:1, abs: 0 tra:1 max:4000}
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentsPrivateCopyDuplicatesLimitsAndCascade]' passed (0.028 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV1MigrationPreservesWatchPhotoAndPurchase]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV1MigrationPreservesWatchPhotoAndPurchase]' passed (0.943 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearDayTimeZonesAndInvalidCalendarDates]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearDayTimeZonesAndInvalidCalendarDates]' passed (0.003 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearIdempotenceEditingArchiveAndCascade]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearIdempotenceEditingArchiveAndCascade]' passed (0.017 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsCalendarDaysAcrossDSTAndEmptyPeriod]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsCalendarDaysAcrossDSTAndEmptyPeriod]' passed (0.001 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches]' passed (0.001 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistValidationAndAtomicConversionPreservesPhoto]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistValidationAndAtomicConversionPreservesPhoto]' passed (0.026 seconds).
+Test Suite 'FreeModuleTests' passed at 2026-10-02 23:13:21.696.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 1.218 (1.220) seconds
+Test Suite 'MojeZegarkiTests.xctest' passed at 2026-10-02 23:13:21.696.
+	 Executed 18 tests, with 0 failures (0 unexpected) in 1.932 (1.937) seconds
+Test Suite 'All tests' passed at 2026-10-02 23:13:21.696.
+	 Executed 18 tests, with 0 failures (0 unexpected) in 1.932 (1.938) seconds
+2026-10-02 23:13:22.391118+0200 MojeZegarkiUITests-Runner[54977:366900] [Default] Running tests...
+Test Suite 'All tests' started at 2026-10-02 23:13:22.477.
+Test Suite 'MojeZegarkiUITests.xctest' started at 2026-10-02 23:13:22.477.
+Test Suite 'CollectionUITests' started at 2026-10-02 23:13:22.477.
+Test Case '-[MojeZegarkiUITests.CollectionUITests testCreateEditPersistArchiveRestoreAndDelete]' started.
+    t =     0.00s Start Test at 2026-10-02 23:13:22.477
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-02 23:13:22.784 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-02 23:13:22.784 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     0.51s         Setting up automation session
+    t =     0.68s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     1.75s Waiting 15.0s for "collection.add" Button to exist
+    t =     2.78s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     2.78s         Checking existence of `"collection.add" Button`
+    t =     2.83s Tap "collection.add" Button
+    t =     2.83s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.84s     Find the "collection.add" Button
+    t =     2.85s     Check for interrupting elements affecting "collection.add" Button
+    t =     2.86s     Synthesize event
+    t =     3.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.71s Find the "editor.save" Button
+    t =     3.77s Tap "editor.brand" TextField
+    t =     3.77s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.78s     Find the "editor.brand" TextField
+    t =     3.81s     Check for interrupting elements affecting "editor.brand" TextField
+    t =     3.84s     Synthesize event
+    t =     4.12s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.56s Type 'Seiko' into "editor.brand" TextField
+    t =     4.56s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.56s     Find the "editor.brand" TextField
+    t =     4.62s     Check for interrupting elements affecting "editor.brand" TextField
+    t =     4.65s     Synthesize event
+    t =     4.94s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.94s Tap "editor.model" TextField
+    t =     4.94s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.94s     Find the "editor.model" TextField
+    t =     4.98s     Check for interrupting elements affecting "editor.model" TextField
+    t =     5.02s     Synthesize event
+    t =     5.31s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.31s Type 'Prospex' into "editor.model" TextField
+    t =     5.31s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.32s     Find the "editor.model" TextField
+    t =     5.36s     Check for interrupting elements affecting "editor.model" TextField
+    t =     5.40s     Synthesize event
+    t =     5.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.72s Tap "editor.save" Button
+    t =     5.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.73s     Find the "editor.save" Button
+    t =     5.77s     Check for interrupting elements affecting "editor.save" Button
+    t =     5.81s     Synthesize event
+    t =     6.10s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.48s Waiting 5.0s for "Prospex" StaticText to exist
+    t =     7.52s     Checking `Expect predicate `existsNoRetry == 1` for object "Prospex" StaticText`
+    t =     7.52s         Checking existence of `"Prospex" StaticText`
+    t =     7.54s Tap "Prospex" StaticText
+    t =     7.54s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.54s     Find the "Prospex" StaticText
+    t =     7.56s     Check for interrupting elements affecting "Prospex" StaticText
+    t =     7.57s     Synthesize event
+    t =     7.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.26s Tap "detail.edit" Button
+    t =     8.26s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.26s     Find the "detail.edit" Button
+    t =     8.31s     Check for interrupting elements affecting "detail.edit" Button
+    t =     8.33s     Synthesize event
+    t =     8.62s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.11s Tap "editor.model" TextField
+    t =     9.11s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.12s     Find the "editor.model" TextField
+    t =     9.20s     Check for interrupting elements affecting "editor.model" TextField
+    t =     9.24s     Synthesize event
+    t =     9.52s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.60s Type 'Alpinist' into "editor.model" TextField
+    t =     9.60s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.16s     Find the "editor.model" TextField
+    t =    10.21s     Check for interrupting elements affecting "editor.model" TextField
+    t =    10.26s     Synthesize event
+    t =    10.71s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.73s Tap "editor.save" Button
+    t =    10.73s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.73s     Find the "editor.save" Button
+    t =    10.80s     Check for interrupting elements affecting "editor.save" Button
+    t =    10.85s     Synthesize event
+    t =    11.13s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.52s Waiting 5.0s for "detail.model" StaticText to exist
+    t =    12.55s     Checking `Expect predicate `existsNoRetry == 1` for object "detail.model" StaticText`
+    t =    12.55s         Checking existence of `"detail.model" StaticText`
+    t =    12.58s Find the "detail.model" StaticText
+    t =    12.60s Terminate pl.jakubbatycki.MojeZegarki:54980
+    t =    13.65s Open pl.jakubbatycki.MojeZegarki
+    t =    13.66s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-02 23:13:36.135 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-02 23:13:36.135 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =    13.87s         Setting up automation session
+    t =    14.06s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    15.14s Waiting 10.0s for "Alpinist" StaticText to exist
+    t =    16.17s     Checking `Expect predicate `existsNoRetry == 1` for object "Alpinist" StaticText`
+    t =    16.17s         Checking existence of `"Alpinist" StaticText`
+    t =    16.25s Tap "Alpinist" StaticText
+    t =    16.25s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.25s     Find the "Alpinist" StaticText
+    t =    16.27s     Check for interrupting elements affecting "Alpinist" StaticText
+    t =    16.28s     Synthesize event
+    t =    16.57s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.94s Checking existence of `"detail.sell" Button`
+    t =    16.98s Find the "detail.sell" Button
+    t =    17.01s Tap "detail.sell" Button
+    t =    17.01s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.01s     Find the "detail.sell" Button
+    t =    17.04s     Check for interrupting elements affecting "detail.sell" Button
+    t =    17.06s     Synthesize event
+    t =    17.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.35s Tap Button (Element at index 0)
+    t =    17.35s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.35s     Find the Button (Element at index 0)
+    t =    17.37s     Check for interrupting elements affecting "Collection" Button
+    t =    17.39s     Synthesize event
+    t =    17.68s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.99s Tap "Archive" Button
+    t =    17.99s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.00s     Find the "Archive" Button
+    t =    18.02s     Check for interrupting elements affecting "Archive" Button
+    t =    18.04s     Synthesize event
+    t =    18.33s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.53s Tap "Alpinist" StaticText
+    t =    18.53s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.54s     Find the "Alpinist" StaticText
+    t =    18.56s     Check for interrupting elements affecting "Alpinist" StaticText
+    t =    18.58s     Synthesize event
+    t =    18.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.21s Checking existence of `"detail.restore" Button`
+    t =    19.24s Find the "detail.restore" Button
+    t =    19.27s Tap "detail.restore" Button
+    t =    19.27s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.27s     Find the "detail.restore" Button
+    t =    19.29s     Check for interrupting elements affecting "detail.restore" Button
+    t =    19.31s     Synthesize event
+    t =    19.60s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.61s Checking existence of `"detail.delete" Button`
+    t =    19.63s Find the "detail.delete" Button
+    t =    19.66s Tap "detail.delete" Button
+    t =    19.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.66s     Find the "detail.delete" Button
+    t =    19.68s     Check for interrupting elements affecting "detail.delete" Button
+    t =    19.70s     Synthesize event
+    t =    19.99s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    20.25s Waiting 5.0s for "confirm.delete" Button to exist
+    t =    21.29s     Checking `Expect predicate `existsNoRetry == 1` for object "confirm.delete" Button`
+    t =    21.29s         Checking existence of `"confirm.delete" Button`
+    t =    21.34s Tap "confirm.delete" Button
+    t =    21.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    21.34s     Find the "confirm.delete" Button
+    t =    21.37s     Check for interrupting elements affecting "confirm.delete" Button
+    t =    21.39s     Synthesize event
+    t =    21.69s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    21.91s Waiting 5.0s for "Archive is empty" StaticText to exist
+    t =    22.94s     Checking `Expect predicate `existsNoRetry == 1` for object "Archive is empty" StaticText`
+    t =    22.94s         Checking existence of `"Archive is empty" StaticText`
+    t =    22.96s Tear Down
+Test Case '-[MojeZegarkiUITests.CollectionUITests testCreateEditPersistArchiveRestoreAndDelete]' passed (23.209 seconds).
+Test Case '-[MojeZegarkiUITests.CollectionUITests testPolishLocalizationAndCancel]' started.
+    t =     0.00s Start Test at 2026-10-02 23:13:45.688
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Terminate pl.jakubbatycki.MojeZegarki:55339
+2026-10-02 23:13:46.758 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-02 23:13:46.758 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.28s         Setting up automation session
+    t =     1.45s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.53s Waiting 15.0s for "Kolekcja" NavigationBar to exist
+    t =     3.57s     Checking `Expect predicate `existsNoRetry == 1` for object "Kolekcja" NavigationBar`
+    t =     3.57s         Checking existence of `"Kolekcja" NavigationBar`
+    t =     3.61s Tap "collection.add" Button
+    t =     3.61s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.62s     Find the "collection.add" Button
+    t =     3.63s     Check for interrupting elements affecting "collection.add" Button
+    t =     3.64s     Synthesize event
+    t =     3.93s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.51s Waiting 5.0s for "editor.brand" TextField to exist
+    t =     5.55s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.brand" TextField`
+    t =     5.55s         Checking existence of `"editor.brand" TextField`
+    t =     5.64s Find the "editor.brand" TextField
+    t =     5.68s Tap "editor.brand" TextField
+    t =     5.68s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.68s     Find the "editor.brand" TextField
+    t =     5.71s     Check for interrupting elements affecting "editor.brand" TextField
+    t =     5.75s     Synthesize event
+    t =     6.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.46s Type 'Casio' into "editor.brand" TextField
+    t =     6.46s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.47s     Find the "editor.brand" TextField
+    t =     6.53s     Check for interrupting elements affecting "editor.brand" TextField
+    t =     6.57s     Synthesize event
+    t =     6.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.86s Tap "Anuluj" Button
+    t =     6.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.86s     Find the "Anuluj" Button
+    t =     6.92s     Check for interrupting elements affecting "editor.cancel" Button
+    t =     6.96s     Synthesize event
+    t =     7.25s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.62s Waiting 5.0s for "collection.addFirst" Button to exist
+    t =     8.65s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.addFirst" Button`
+    t =     8.65s         Checking existence of `"collection.addFirst" Button`
+    t =     8.68s Checking existence of `"Casio" StaticText`
+    t =     8.69s Tear Down
+Test Case '-[MojeZegarkiUITests.CollectionUITests testPolishLocalizationAndCancel]' passed (8.922 seconds).
+Test Suite 'CollectionUITests' passed at 2026-10-02 23:13:54.611.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 32.132 (32.134) seconds
+Test Suite 'FreeModuleUITests' started at 2026-10-02 23:13:54.612.
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testDocumentPreviewEditCancelSaveAndDelete]' started.
+    t =     0.00s Start Test at 2026-10-02 23:13:54.613
+    t =     0.03s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:56007
+2026-10-02 23:13:55.697 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-02 23:13:55.698 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.29s         Setting up automation session
+    t =     1.45s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.53s Waiting 15.0s for "Document watch" StaticText to exist
+    t =     3.54s     Checking `Expect predicate `existsNoRetry == 1` for object "Document watch" StaticText`
+    t =     3.54s         Checking existence of `"Document watch" StaticText`
+    t =     3.61s Tap "Document watch" StaticText
+    t =     3.61s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.61s     Find the "Document watch" StaticText
+    t =     3.63s     Check for interrupting elements affecting "Document watch" StaticText
+    t =     3.64s     Synthesize event
+    t =     3.93s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.30s Tap "detail.documents" Button
+    t =     4.30s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.31s     Find the "detail.documents" Button
+    t =     4.35s     Check for interrupting elements affecting "detail.documents" Button
+    t =     4.38s     Synthesize event
+    t =     4.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.05s Tap Button (First Match)
+    t =     5.05s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.06s     Find the Button (First Match)
+    t =     5.12s     Check for interrupting elements affecting "document.977E781E-2ADE-40ED-8E2B-09CEBF118C8E" Button
+    t =     5.14s     Synthesize event
+    t =     5.43s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    65.45s         App event loop idle notification not received, will attempt to continue.
+    t =   106.41s Waiting 5.0s for "document.actions" Button to exist
+    t =   107.49s     Checking `Expect predicate `existsNoRetry == 1` for object "document.actions" Button`
+    t =   107.49s         Checking existence of `"document.actions" Button`
+    t =   111.71s         Capturing element debug description
+    t =   111.71s     Checking existence of `"document.actions" Button`
+    t =   142.73s     Checking existence of `"document.actions" Button` (retry 1)
+    t =   173.75s     Checking existence of `"document.actions" Button` (retry 2)
+/Users/jakubbatycki/KOD/MojeZegarki/UITests/FreeModuleUITests.swift:111: error: -[MojeZegarkiUITests.FreeModuleUITests testDocumentPreviewEditCancelSaveAndDelete] : Failed to get matching snapshots: Timed out while evaluating UI query.
+    t =   229.23s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testDocumentPreviewEditCancelSaveAndDelete]' failed (229.452 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testEnabledLockHidesCollectionOnLaunch]' started.
+    t =     0.00s Start Test at 2026-10-02 23:17:44.065
+    t =     0.03s Set Up
+    t =     0.03s     Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s             Terminate pl.jakubbatycki.MojeZegarki:56015
+    t =     0.03s Unable to monitor event loop
+2026-10-02 23:17:45.136 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-02 23:17:45.136 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.28s             Setting up automation session
+    t =     1.58s             Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.74s     Waiting 15.0s for "Collection locked" StaticText to exist
+    t =     3.82s         Checking `Expect predicate `existsNoRetry == 1` for object "Collection locked" StaticText`
+    t =     3.82s             Checking existence of `"Collection locked" StaticText`
+    t =     3.84s     Checking existence of `"collection.add" Button`
+    t =     3.85s     Checking existence of `"Collection" Button`
+    t =     3.85s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testEnabledLockHidesCollectionOnLaunch]' passed (4.083 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistMoveCanBeCancelledThenCommittedAndWearPersists]' started.
+    t =     0.00s Start Test at 2026-10-02 23:17:48.148
+    t =     0.02s Set Up
+    t =     0.02s     Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s             Terminate pl.jakubbatycki.MojeZegarki:59975
+2026-10-02 23:17:49.261 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-02 23:17:49.261 xcodebuild[54640:366499] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.33s             Setting up automation session
+    t =     1.45s             Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.52s     Waiting 15.0s for "collection.add" Button to exist
+    t =     3.59s         Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     3.59s             Checking existence of `"collection.add" Button`
+    t =     3.64s     Tap "Wishlist" Button
+    t =     3.64s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.64s         Find the "Wishlist" Button
+    t =     3.65s         Check for interrupting elements affecting "Wishlist" Button
+    t =     3.67s         Synthesize event
+    t =     3.96s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.97s     Tap "wish.add" Button
+    t =     3.97s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.97s         Find the "wish.add" Button
+    t =     3.99s         Check for interrupting elements affecting "wish.add" Button
+    t =     4.00s         Synthesize event
+    t =     4.29s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.81s     Find the "wish.save" Button
+    t =     4.86s     Tap "wish.brand" TextField
+    t =     4.86s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.86s         Find the "wish.brand" TextField
+    t =     4.89s         Check for interrupting elements affecting "wish.brand" TextField
+    t =     4.91s         Synthesize event
+    t =     5.20s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.66s     Type 'Casio' into "wish.brand" TextField
+    t =     5.66s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.66s         Find the "wish.brand" TextField
+    t =     5.71s         Check for interrupting elements affecting "wish.brand" TextField
+    t =     5.74s         Synthesize event
+    t =     6.02s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.03s     Tap "wish.model" TextField
+    t =     6.03s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.03s         Find the "wish.model" TextField
+    t =     6.07s         Check for interrupting elements affecting "wish.model" TextField
+    t =     6.10s         Synthesize event
+    t =     6.39s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.39s     Type 'G-Shock' into "wish.model" TextField
+    t =     6.39s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.39s         Find the "wish.model" TextField
+    t =     6.43s         Check for interrupting elements affecting "wish.model" TextField
+    t =     6.46s         Synthesize event
+    t =     6.77s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.78s     Tap "wish.save" Button
+    t =     6.78s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.78s         Find the "wish.save" Button
+    t =     6.82s         Check for interrupting elements affecting "wish.save" Button
+    t =     6.85s         Synthesize event
+    t =     7.14s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.54s     Waiting 5.0s for Button (First Match) to exist
+    t =     8.62s         Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     8.62s             Checking existence of `Button (First Match)`
+    t =     8.65s     Tap Button (First Match)
+    t =     8.65s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.65s         Find the Button (First Match)
+    t =     8.68s         Check for interrupting elements affecting "wish.actions.EFF0D288-841B-4A5F-8C2D-BEEECD45DEFB" Button
+    t =     8.69s         Synthesize event
+    t =     8.71s             Scroll element to visible
+    t =     8.71s                     Retrying failed scroll-to-visible with containing cell Cell
+    t =     8.71s             Find the "wish.actions.EFF0D288-841B-4A5F-8C2D-BEEECD45DEFB" Button
+    t =     8.75s             Computed hit point {-1, -1} after scrolling to visible
+    t =     9.03s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.03s     Tap "wish.move" Button
+    t =     9.03s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.04s         Find the "wish.move" Button
+    t =     9.06s         Check for interrupting elements affecting "wish.move" Button
+    t =     9.07s         Synthesize event
+    t =     9.36s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.39s     Find the "editor.brand" TextField
+    t =     9.45s     Tap "editor.cancel" Button
+    t =     9.45s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.79s         Find the "editor.cancel" Button
+    t =     9.84s         Check for interrupting elements affecting "editor.cancel" Button
+    t =     9.87s         Synthesize event
+    t =    10.16s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.17s     Waiting 5.0s for "editor.brand" TextField to not exist
+    t =    11.24s         Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    11.24s             Checking existence of `"editor.brand" TextField`
+    t =    11.28s             Capturing element debug description
+    t =    12.24s         Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    12.24s             Checking existence of `"editor.brand" TextField`
+    t =    12.29s             Capturing element debug description
+    t =    13.24s         Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    13.24s             Checking existence of `"editor.brand" TextField`
+    t =    13.28s             Capturing element debug description
+    t =    14.24s         Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    14.24s             Checking existence of `"editor.brand" TextField`
+    t =    14.29s             Capturing element debug description
+Testing started
+In flight operation:   <DVTOperationGroup: 0x74817f3000; state = AREfc>
+     <DVTOperationGroup: 0x74817f2e80; state = AREfc>
+         <DVTOperation: 0x747ec98780; name = 'Remove Log If Needed', state = aReFc>
+         <DVTOperationGroup: 0x74817f2b80; state = AREfc>
+             <DVTOperationGroup: 0x74817f2d00; state = AREfc>
+                 <__DVTSwiftAsyncOperation: 0x74817f2880; state = AReFc>
+                 <DVTOperationGroup: 0x74817f1500; state = AREf!c, blocking { Blocking finish to clean up test session. }>
+                     <DVTOperation: 0x747ed31540; state = aReFc>
+                     <XCTHOperationGroup: 0x74817f1380>
+                         <XCTHOperationGroup: 0x74817f1680>
+                             <XCTHOperationGroup: 0x74817f2100>
+                                 <XCTHOperationGroup: 0x74817f2580>{name = 'com.apple.dt.xctest.target-runner'}(Finishing blocked for reasons:
+  waiting for workers to materialize
+  )
+                                     <XCTHOperationGroup: 0x74817f3780>
+                                         <XCTHOperationGroup: 0x74820ac600>
+                                             <IDERunOperation: 0x74820ac300; state = aReF!c, blocking { XCTHTestOperationCoordinator processing delay, Blocking finish to allow restarting of crashed test operations., Waiting for -runningDidFinish call. }>
+                                             worker: <IDERunOperationWorkerGroup: 0x7482194000, unfinished subworkers :
+					<IDELaunchiPhoneSimulatorLauncher: 0x747f1d71e0 -- ExtensionIdentifier: Xcode.IDEiPhoneSimulatorSupport.Launch>
+				 >
+
+                                             tracker: <IDEExecutionOperationTracker: 0x747f277b80: Testing project MojeZegarki with scheme MojeZegarki
+	subtrackers=(
+    "<IDEExecutionRunnableTracker: 0x747f0c5620: subtrackers=none>",
+    "<IDEExecutionRunnableTracker: 0x747f0e5920: subtrackers=none>"
+)>
+
+                             <XCTHOperation: 0x747ec98140>
+                 <DVTOperation: 0x747ec98280; state = aReFc>
+                 <DVTOperation: 0x747ec98640; state = arefc>
+                 <__DVTSwiftAsyncOperation: 0x74817f2400; state = AReFc>
+                 <__DVTSwiftAsyncOperation: 0x74817f2700; state = AReFc>
+                 <__DVTSwiftAsyncOperation: 0x74817f2a00; state = AReFc>
+                 <DVTOperation: 0x747ec98500; state = arefc>
+                 <DVTOperation: 0x747ec983c0; state = aReFc>
+                 <IDESchemeActionResultOperation: 0x74817f1f80; state = Arefc>
+         <_IDETestingFinalizeLogsOperation: 0x747ec988c0; name = 'Finalize test log', state = aref!c, blocking { waiting for test log to finish recording }>
+In flight operation:   <IDERunOperation: 0x74820ac900; state = aReF!c, blocking { Waiting for -runningDidFinish call. }>
+  worker: <IDERunOperationWorkerGroup: 0x7482194d80, unfinished subworkers :
+					<IDELaunchiPhoneSimulatorLauncher: 0x747f1d7020 -- ExtensionIdentifier: Xcode.IDEiPhoneSimulatorSupport.Launch>
+				 >
+
+  tracker: <IDEExecutionOperationTracker: 0x7480f96450: Launch application pl.jakubbatycki.MojeZegarki for UI testing.
+	subtrackers=(
+    "<IDEExecutionRunnableTracker: 0x747f10d2c0: subtrackers=none>"
+)>
+
+<DVTOperationGroup: 0x74817f3000; state = AREfc> created at:
+  0   -[DVTOperation init] (in DVTFoundation)
+  1   -[DVTOperationGroup init] (in DVTFoundation)
+  2   +[DVTOperationGroup operationGroupWithSuboperations:] (in DVTFoundation)
+  3   -[IDEScheme _groupAndImposeDependenciesForOrderedOperations:] (in IDEFoundation)
+  4   -[IDEScheme _executionOperationForSchemeOperationParameters:build:onlyBuild:buildParameters:title:buildLog:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:actionCallbackBlock:] (in IDEFoundation)
+  5   -[IDEScheme(TestSchemeAction) schemeTestActionOperationForSchemeOperationParameters:onlyBuild:buildLog:deviceAvailableChecker:buildParameters:shouldBuild:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+  6   -[IDEScheme buildAndActionTaskForSchemeOperationParameters:shouldBuild:onlyBuild:buildParameters:buildLog:deviceAvailableChecker:restorePersistedBuildResults:dontActuallyRunCommands:error:completionBlock:] (in IDEFoundation)
+  7   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:completionBlock:] (in IDEFoundation)
+  8   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+  9   -[Xcode3CommandLineBuildTool(TestSchemeAction) buildForTestSchemeCommandWantsSkip:buildAction:isProjectBuild:title:buildLog:isMoreDestinationsPending:runDestinations:runDestination:schemeCommand:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 10   -[Xcode3CommandLineBuildTool doSchemeBuildWithRunDestinations:runDestinationIdx:wantsSkip:buildActionTimingSection:timingSection:buildAction:isMoreDesinationsPending:actionResultBlock:title:buildLog:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 11   -[Xcode3CommandLineBuildTool doBuildForBuildAction:timingSection:colorize:colorizeFailure:error:] (in Xcode3Core)
+ 12   -[Xcode3CommandLineBuildTool _buildWithTimingSection:] (in Xcode3Core)
+ 13   -[Xcode3CommandLineBuildTool run] (in Xcode3Core)
+ 14   XcodeBuildMain (in libxcodebuildLoader.dylib)
+ 15   -[XcodebuildPreIDEHandler loadXcode3ProjectSupportAndRunXcode3CommandLineBuildToolWithArguments:] (in xcodebuild)
+ 16   -[XcodebuildPreIDEHandler runWithArguments:] (in xcodebuild)
+ 17   main (in xcodebuild)
+ 18   start (in dyld)
+
+<DVTOperationGroup: 0x74817f2e80; state = AREfc> created at:
+  0   -[DVTOperation init] (in DVTFoundation)
+  1   -[DVTOperationGroup init] (in DVTFoundation)
+  2   +[DVTOperationGroup operationGroupWithSuboperations:] (in DVTFoundation)
+  3   -[IDETestSchemeAction testOperationWithSchemeOperationParameters:testManager:buildOperation:buildParameters:schemeCommand:actionRecord:testPlanRunSpecifications:deviceAvailableChecker:outError:actionCallbackBlock:] (in IDEFoundation)
+  4   -[IDEScheme(TestSchemeAction) executionOperationForTestSchemeActionWithOperationParameters:command:buildOperationVariantSpecifiers:buildOperationGroup:schemeActionResult:buildParameters:shouldOnlyBuild:runDestination:orderedOperations:schemeActionRecord:deviceAvailableChecker:actionCallbackBlock:error:] (in IDEFoundation)
+  5   -[IDEScheme _executionOperationForSchemeOperationParameters:build:onlyBuild:buildParameters:title:buildLog:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:actionCallbackBlock:] (in IDEFoundation)
+  6   -[IDEScheme(TestSchemeAction) schemeTestActionOperationForSchemeOperationParameters:onlyBuild:buildLog:deviceAvailableChecker:buildParameters:shouldBuild:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+  7   -[IDEScheme buildAndActionTaskForSchemeOperationParameters:shouldBuild:onlyBuild:buildParameters:buildLog:deviceAvailableChecker:restorePersistedBuildResults:dontActuallyRunCommands:error:completionBlock:] (in IDEFoundation)
+  8   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:completionBlock:] (in IDEFoundation)
+  9   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+ 10   -[Xcode3CommandLineBuildTool(TestSchemeAction) buildForTestSchemeCommandWantsSkip:buildAction:isProjectBuild:title:buildLog:isMoreDestinationsPending:runDestinations:runDestination:schemeCommand:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 11   -[Xcode3CommandLineBuildTool doSchemeBuildWithRunDestinations:runDestinationIdx:wantsSkip:buildActionTimingSection:timingSection:buildAction:isMoreDesinationsPending:actionResultBlock:title:buildLog:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 12   -[Xcode3CommandLineBuildTool doBuildForBuildAction:timingSection:colorize:colorizeFailure:error:] (in Xcode3Core)
+ 13   -[Xcode3CommandLineBuildTool _buildWithTimingSection:] (in Xcode3Core)
+ 14   -[Xcode3CommandLineBuildTool run] (in Xcode3Core)
+ 15   XcodeBuildMain (in libxcodebuildLoader.dylib)
+ 16   -[XcodebuildPreIDEHandler loadXcode3ProjectSupportAndRunXcode3CommandLineBuildToolWithArguments:] (in xcodebuild)
+ 17   -[XcodebuildPreIDEHandler runWithArguments:] (in xcodebuild)
+ 18   main (in xcodebuild)
+ 19   start (in dyld)
+
+<DVTOperation: 0x747ec98780; name = 'Remove Log If Needed', state = aReFc> created at:
+  0   -[DVTOperation init] (in DVTFoundation)
+  1   +[DVTOperation(DVTConveniences) operationWithBlock:] (in DVTFoundation)
+  2   -[IDETestSchemeAction _removeLogIfNeededOperationWithLogStore:logRecord:buildOperation:] (in IDEFoundation)
+  3   -[IDETestSchemeAction testOperationWithSchemeOperationParameters:testManager:buildOperation:buildParameters:schemeCommand:actionRecord:testPlanRunSpecifications:deviceAvailableChecker:outError:actionCallbackBlock:] (in IDEFoundation)
+  4   -[IDEScheme(TestSchemeAction) executionOperationForTestSchemeActionWithOperationParameters:command:buildOperationVariantSpecifiers:buildOperationGroup:schemeActionResult:buildParameters:shouldOnlyBuild:runDestination:orderedOperations:schemeActionRecord:deviceAvailableChecker:actionCallbackBlock:error:] (in IDEFoundation)
+  5   -[IDEScheme _executionOperationForSchemeOperationParameters:build:onlyBuild:buildParameters:title:buildLog:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:actionCallbackBlock:] (in IDEFoundation)
+  6   -[IDEScheme(TestSchemeAction) schemeTestActionOperationForSchemeOperationParameters:onlyBuild:buildLog:deviceAvailableChecker:buildParameters:shouldBuild:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+  7   -[IDEScheme buildAndActionTaskForSchemeOperationParameters:shouldBuild:onlyBuild:buildParameters:buildLog:deviceAvailableChecker:restorePersistedBuildResults:dontActuallyRunCommands:error:completionBlock:] (in IDEFoundation)
+  8   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:completionBlock:] (in IDEFoundation)
+  9   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+ 10   -[Xcode3CommandLineBuildTool(TestSchemeAction) buildForTestSchemeCommandWantsSkip:buildAction:isProjectBuild:title:buildLog:isMoreDestinationsPending:runDestinations:runDestination:schemeCommand:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 11   -[Xcode3CommandLineBuildTool doSchemeBuildWithRunDestinations:runDestinationIdx:wantsSkip:buildActionTimingSection:timingSection:buildAction:isMoreDesinationsPending:actionResultBlock:title:buildLog:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 12   -[Xcode3CommandLineBuildTool doBuildForBuildAction:timingSection:colorize:colorizeFailure:error:] (in Xcode3Core)
+ 13   -[Xcode3CommandLineBuildTool _buildWithTimingSection:] (in Xcode3Core)
+ 14   -[Xcode3CommandLineBuildTool run] (in Xcode3Core)
+ 15   XcodeBuildMain (in libxcodebuildLoader.dylib)
+ 16   -[XcodebuildPreIDEHandler loadXcode3ProjectSupportAndRunXcode3CommandLineBuildToolWithArguments:] (in xcodebuild)
+ 17   -[XcodebuildPreIDEHandler runWithArguments:] (in xcodebuild)
+ 18   main (in xcodebuild)
+ 19   start (in dyld)
+
+<DVTOperationGroup: 0x74817f2b80; state = AREfc> created at:
+  0   -[DVTOperation init] (in DVTFoundation)
+  1   -[DVTOperationGroup init] (in DVTFoundation)
+  2   +[DVTOperationGroup operationGroupWithSuboperations:] (in DVTFoundation)
+  3   -[IDETestSchemeAction testOperationWithSchemeOperationParameters:testManager:buildOperation:buildParameters:schemeCommand:actionRecord:testPlanRunSpecifications:deviceAvailableChecker:outError:actionCallbackBlock:] (in IDEFoundation)
+  4   -[IDEScheme(TestSchemeAction) executionOperationForTestSchemeActionWithOperationParameters:command:buildOperationVariantSpecifiers:buildOperationGroup:schemeActionResult:buildParameters:shouldOnlyBuild:runDestination:orderedOperations:schemeActionRecord:deviceAvailableChecker:actionCallbackBlock:error:] (in IDEFoundation)
+  5   -[IDEScheme _executionOperationForSchemeOperationParameters:build:onlyBuild:buildParameters:title:buildLog:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:actionCallbackBlock:] (in IDEFoundation)
+  6   -[IDEScheme(TestSchemeAction) schemeTestActionOperationForSchemeOperationParameters:onlyBuild:buildLog:deviceAvailableChecker:buildParameters:shouldBuild:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+  7   -[IDEScheme buildAndActionTaskForSchemeOperationParameters:shouldBuild:onlyBuild:buildParameters:buildLog:deviceAvailableChecker:restorePersistedBuildResults:dontActuallyRunCommands:error:completionBlock:] (in IDEFoundation)
+  8   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:completionBlock:] (in IDEFoundation)
+  9   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+ 10   -[Xcode3CommandLineBuildTool(TestSchemeAction) buildForTestSchemeCommandWantsSkip:buildAction:isProjectBuild:title:buildLog:isMoreDestinationsPending:runDestinations:runDestination:schemeCommand:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 11   -[Xcode3CommandLineBuildTool doSchemeBuildWithRunDestinations:runDestinationIdx:wantsSkip:buildActionTimingSection:timingSection:buildAction:isMoreDesinationsPending:actionResultBlock:title:buildLog:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 12   -[Xcode3CommandLineBuildTool doBuildForBuildAction:timingSection:colorize:colorizeFailure:error:] (in Xcode3Core)
+ 13   -[Xcode3CommandLineBuildTool _buildWithTimingSection:] (in Xcode3Core)
+ 14   -[Xcode3CommandLineBuildTool run] (in Xcode3Core)
+ 15   XcodeBuildMain (in libxcodebuildLoader.dylib)
+ 16   -[XcodebuildPreIDEHandler loadXcode3ProjectSupportAndRunXcode3CommandLineBuildToolWithArguments:] (in xcodebuild)
+ 17   -[XcodebuildPreIDEHandler runWithArguments:] (in xcodebuild)
+ 18   main (in xcodebuild)
+ 19   start (in dyld)
+
+<DVTOperationGroup: 0x74817f2d00; state = AREfc> created at:
+  0   -[DVTOperation init] (in DVTFoundation)
+  1   -[DVTOperationGroup init] (in DVTFoundation)
+  2   +[DVTOperationGroup operationGroupWithSuboperations:] (in DVTFoundation)
+  3   -[IDETestSchemeAction testOperationWithSchemeOperationParameters:testManager:buildOperation:buildParameters:schemeCommand:actionRecord:testPlanRunSpecifications:deviceAvailableChecker:outError:actionCallbackBlock:] (in IDEFoundation)
+  4   -[IDEScheme(TestSchemeAction) executionOperationForTestSchemeActionWithOperationParameters:command:buildOperationVariantSpecifiers:buildOperationGroup:schemeActionResult:buildParameters:shouldOnlyBuild:runDestination:orderedOperations:schemeActionRecord:deviceAvailableChecker:actionCallbackBlock:error:] (in IDEFoundation)
+  5   -[IDEScheme _executionOperationForSchemeOperationParameters:build:onlyBuild:buildParameters:title:buildLog:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:actionCallbackBlock:] (in IDEFoundation)
+  6   -[IDEScheme(TestSchemeAction) schemeTestActionOperationForSchemeOperationParameters:onlyBuild:buildLog:deviceAvailableChecker:buildParameters:shouldBuild:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+  7   -[IDEScheme buildAndActionTaskForSchemeOperationParameters:shouldBuild:onlyBuild:buildParameters:buildLog:deviceAvailableChecker:restorePersistedBuildResults:dontActuallyRunCommands:error:completionBlock:] (in IDEFoundation)
+  8   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:completionBlock:] (in IDEFoundation)
+  9   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontActuallyRunCommands:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+ 10   -[Xcode3CommandLineBuildTool(TestSchemeAction) buildForTestSchemeCommandWantsSkip:buildAction:isProjectBuild:title:buildLog:isMoreDestinationsPending:runDestinations:runDestination:schemeCommand:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 11   -[Xcode3CommandLineBuildTool doSchemeBuildWithRunDestinations:runDestinationIdx:wantsSkip:buildActionTimingSection:timingSection:buildAction:isMoreDesinationsPending:actionResultBlock:title:buildLog:executionEnvironment:restorePersistedBuildResults:operationToEnqueue:error:] (in Xcode3Core)
+ 12   -[Xcode3CommandLineBuildTool doBuildForBuildAction:timingSection:colorize:colorizeFailure:error:] (in Xcode3Core)
+ 13   -[Xcode3CommandLineBuildTool _buildWithTimingSection:] (in Xcode3Core)
+ 14   -[Xcode3CommandLineBuildTool run] (in Xcode3Core)
+ 15   XcodeBuildMain (in libxcodebuildLoader.dylib)
+ 16   -[XcodebuildPreIDEHandler loadXcode3ProjectSupportAndRunXcode3CommandLineBuildToolWithArguments:] (in xcodebuild)
+ 17   -[XcodebuildPreIDEHandler runWithArguments:] (in xcodebuild)
+ 18   main (in xcodebuild)
+ 19   start (in dyld)
+
+<__DVTSwiftAsyncOperation: 0x74817f2880; state = AReFc> created at:
+  0   -[DVTOperation init] (in DVTFoundation)
+  1   @objc DVTAsyncOperation.init() (in DVTFoundation)
+  2   static DVTOperation.awaiting(_:) (in DVTFoundation)
+  3   @objc static IDESchemeAction.operationToWaitForFinishedLoadingOperation(of:) (in IDEFoundation)
+  4   -[IDESchemeAction _setUpOperationsForPackageLoadingInWorkspace:handlePreActionsActivityLogSection:isCleanOperation:] (in IDEFoundation)
+  5   -[IDESchemeAction setUpActionDependenciesForCorePhaseOperation:shouldRunPostActionsBlock:prePhaseEnvironmentPopulationBlock:postPhaseEnvironmentPopulationBlock:handlePreActionsActivityLogSection:handlePostActionsActivityLogSection:buildParameters:schemeActionResultOperation:error:] (in IDEFoundation)
+  6   -[IDETestSchemeAction testOperationWithSchemeOperationParameters:testManager:buildOperation:buildParameters:schemeCommand:actionRecord:testPlanRunSpecifications:deviceAvailableChecker:outError:actionCallbackBlock:] (in IDEFoundation)
+  7   -[IDEScheme(TestSchemeAction) executionOperationForTestSchemeActionWithOperationParameters:command:buildOperationVariantSpecifiers:buildOperationGroup:schemeActionResult:buildParameters:shouldOnlyBuild:runDestination:orderedOperations:schemeActionRecord:deviceAvailableChecker:actionCallbackBlock:error:] (in IDEFoundation)
+  8   -[IDEScheme _executionOperationForSchemeOperationParameters:build:onlyBuild:buildParameters:title:buildLog:dontActuallyRunCommands:restorePersistedBuildResults:deviceAvailableChecker:error:actionCallbackBlock:] (in IDEFoundation)
+  9   -[IDEScheme(TestSchemeAction) schemeTestActionOperationForSchemeOperationParameters:onlyBuild:buildLog:deviceAvailableChecker:buildParameters:shouldBuild:restorePersistedBuildResults:error:completionBlock:] (in IDEFoundation)
+ 10   -[IDEScheme buildAndActionTaskForSchemeOperationParameters:shouldBuild:onlyBuild:buildParameters:buildLog:deviceAvailableChecker:restorePersistedBuildResults:dontActuallyRunCommands:error:completionBlock:] (in IDEFoundation)
+ 11   -[IDEScheme schemeOperationForSchemeOperationParameters:buildLog:overridingProperties:overridingBuildConfiguration:dontA

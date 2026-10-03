@@ -9,7 +9,11 @@ final class CollectionStore {
     var context: ModelContext { container.mainContext }
 
     init(directory: URL? = nil, inMemory: Bool = false) throws {
-        let root = try directory ?? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let root =
+            try directory
+            ?? FileManager.default.url(
+                for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true
+            )
             .appendingPathComponent("MojeZegarki", isDirectory: true)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         let schema = Schema(versionedSchema: CollectionSchemaV2.self)
@@ -17,9 +21,11 @@ final class CollectionStore {
         if inMemory {
             configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
         } else {
-            configuration = ModelConfiguration(schema: schema, url: root.appendingPathComponent("collection.store"), cloudKitDatabase: .none)
+            configuration = ModelConfiguration(
+                schema: schema, url: root.appendingPathComponent("collection.store"), cloudKitDatabase: .none)
         }
-        container = try ModelContainer(for: schema, migrationPlan: CollectionMigrationPlan.self, configurations: [configuration])
+        container = try ModelContainer(
+            for: schema, migrationPlan: CollectionMigrationPlan.self, configurations: [configuration])
         container.mainContext.autosaveEnabled = false
         photoStore = PhotoStore(root: root.appendingPathComponent("Photos", isDirectory: true))
         documentStore = DocumentStore(root: root.appendingPathComponent("Documents", isDirectory: true))
@@ -27,7 +33,10 @@ final class CollectionStore {
 
     /// Editors own drafts and staged files. Only a successful explicit save changes the collection.
     @discardableResult
-    func save(_ draft: TimepieceDraft, editing existing: Timepiece? = nil, moving wishlistItem: WishlistItem? = nil, locale: Locale = .current) throws -> Timepiece {
+    func save(
+        _ draft: TimepieceDraft, editing existing: Timepiece? = nil, moving wishlistItem: WishlistItem? = nil,
+        locale: Locale = .current
+    ) throws -> Timepiece {
         let price = try draft.validatedPrice(locale: locale)
         let watch = existing ?? Timepiece(brand: draft.brand.trimmed, modelName: draft.modelName.trimmed)
         if existing == nil { context.insert(watch) }
@@ -50,12 +59,15 @@ final class CollectionStore {
             context.delete(photo)
         }
         watch.photos = draft.photos.enumerated().map { index, item in
-            let photo = oldPhotos.first { $0.id == item.id } ?? TimepiecePhoto(id: item.id, filename: item.filename, position: index)
+            let photo =
+                oldPhotos.first { $0.id == item.id }
+                ?? TimepiecePhoto(id: item.id, filename: item.filename, position: index)
             photo.position = index
             photo.timepiece = watch
             return photo
         }
-        watch.mainPhotoID = draft.photos.contains { $0.id == draft.mainPhotoID } ? draft.mainPhotoID : draft.photos.first?.id
+        watch.mainPhotoID =
+            draft.photos.contains { $0.id == draft.mainPhotoID } ? draft.mainPhotoID : draft.photos.first?.id
         // Moving is one transaction: validation or a failed save must preserve the wish.
         if let wishlistItem { context.delete(wishlistItem) }
         do { try context.save() } catch {
@@ -63,6 +75,57 @@ final class CollectionStore {
             throw CollectionError.saveFailed
         }
         return watch
+    }
+
+    struct WishMoveUndo {
+        let originalID: UUID
+        let createdAt: Date
+        let updatedAt: Date
+        let draft: WishlistDraft
+        let watchID: UUID
+        let watchUpdatedAt: Date
+    }
+
+    func moveWish(_ item: WishlistItem) throws -> WishMoveUndo {
+        let locale = Locale(identifier: "en_US_POSIX")
+        let draft = WishlistDraft(item: item, locale: locale)
+        let id = item.id
+        let createdAt = item.createdAt
+        let updatedAt = item.updatedAt
+        let watch = try save(draft.purchaseDraft, moving: item, locale: locale)
+        return WishMoveUndo(
+            originalID: id, createdAt: createdAt, updatedAt: updatedAt, draft: draft,
+            watchID: watch.id, watchUpdatedAt: watch.updatedAt)
+    }
+
+    /// Undo only the unchanged quick conversion. Never discard subsequent edits or wear/document history.
+    func undoWishMove(_ undo: WishMoveUndo) throws {
+        let id = undo.watchID
+        guard let watch = try context.fetch(FetchDescriptor<Timepiece>(predicate: #Predicate { $0.id == id })).first,
+            watch.updatedAt == undo.watchUpdatedAt, (watch.wearLogs ?? []).isEmpty, (watch.documents ?? []).isEmpty
+        else {
+            throw WishlistError.changedAfterMove
+        }
+        let originalID = undo.originalID
+        guard try context.fetchCount(FetchDescriptor<WishlistItem>(predicate: #Predicate { $0.id == originalID })) == 0
+        else {
+            throw WishlistError.changedAfterMove
+        }
+        let wish = WishlistItem(brand: undo.draft.brand, modelName: undo.draft.modelName)
+        wish.id = originalID
+        wish.createdAt = undo.createdAt
+        wish.updatedAt = undo.updatedAt
+        wish.targetPrice = undo.draft.price.nilIfEmpty
+        wish.currencyCode = undo.draft.currencyCode.nilIfEmpty
+        wish.url = undo.draft.url.nilIfEmpty
+        wish.priority = undo.draft.priority.rawValue
+        wish.notes = undo.draft.notes.nilIfEmpty
+        wish.photoID = undo.draft.photo?.id
+        wish.photoFilename = undo.draft.photo?.filename
+        context.insert(wish)
+        for photo in watch.photos ?? [] { context.delete(photo) }
+        context.delete(watch)
+        try persistChanges()
     }
 
     func changeStatus(_ status: WatchStatus, for watch: Timepiece) throws {
@@ -102,7 +165,10 @@ final class CollectionStore {
     }
 
     @discardableResult
-    func logWear(for watch: Timepiece, date: Date, editing existing: WearLog? = nil, now: Date = .now, timeZone: TimeZone = .current) throws -> WearLog {
+    func logWear(
+        for watch: Timepiece, date: Date, editing existing: WearLog? = nil, now: Date = .now,
+        timeZone: TimeZone = .current
+    ) throws -> WearLog {
         guard watch.modelContext != nil, !watch.isDeleted else { throw WearError.missingWatch }
         let day = WearDay(date, timeZone: timeZone)
         let today = WearDay(now, timeZone: timeZone)
@@ -110,9 +176,10 @@ final class CollectionStore {
         guard watch.status == .owned || day < today else { throw WearError.archivedToday }
         let watchID = watch.id
         let key = day.key
-        let matches = try context.fetch(FetchDescriptor<WearLog>(predicate: #Predicate { $0.timepiece?.id == watchID && $0.calendarDay == key }))
+        let matches = try context.fetch(
+            FetchDescriptor<WearLog>(predicate: #Predicate { $0.timepiece?.id == watchID && $0.calendarDay == key }))
         if let match = matches.first(where: { $0.id != existing?.id }) {
-            if existing == nil { return match } // Repeated "Wearing today" is idempotent.
+            if existing == nil { return match }  // Repeated "Wearing today" is idempotent.
             throw WearError.duplicate
         }
         let log = existing ?? WearLog(day: key, timepiece: watch)
@@ -132,7 +199,8 @@ final class CollectionStore {
         guard days.allSatisfy({ $0 <= today }) else { throw WearError.futureDay }
         guard watch.status == .owned || days.allSatisfy({ $0 < today }) else { throw WearError.archivedToday }
         let watchID = watch.id
-        let existing = try context.fetch(FetchDescriptor<WearLog>(predicate: #Predicate { $0.timepiece?.id == watchID }))
+        let existing = try context.fetch(
+            FetchDescriptor<WearLog>(predicate: #Predicate { $0.timepiece?.id == watchID }))
         let existingDays = Set(existing.map(\.calendarDay))
         let newDays = days.filter { !existingDays.contains($0.key) }.sorted()
         guard !newDays.isEmpty else { return 0 }
@@ -147,7 +215,9 @@ final class CollectionStore {
     }
 
     @discardableResult
-    func saveWish(_ draft: WishlistDraft, editing existing: WishlistItem? = nil, locale: Locale = .current) throws -> WishlistItem {
+    func saveWish(_ draft: WishlistDraft, editing existing: WishlistItem? = nil, locale: Locale = .current) throws
+        -> WishlistItem
+    {
         let price = try draft.purchaseDraft.validatedPrice(locale: locale)
         let url = try draft.validatedURL()
         let item = existing ?? WishlistItem(brand: draft.brand.trimmed, modelName: draft.modelName.trimmed)
@@ -174,13 +244,18 @@ final class CollectionStore {
     }
 
     @discardableResult
-    func attachDocument(_ asset: DocumentAsset, to watch: Timepiece, name: String, kind: DocumentKind, date: Date?, notes: String) throws -> DocumentItem {
+    func attachDocument(
+        _ asset: DocumentAsset, to watch: Timepiece, name: String, kind: DocumentKind, date: Date?, notes: String
+    ) throws -> DocumentItem {
         guard watch.modelContext != nil, !watch.isDeleted else { throw WearError.missingWatch }
         let watchID = watch.id
         let hash = asset.contentHash
-        let matches = try context.fetch(FetchDescriptor<DocumentItem>(predicate: #Predicate { $0.timepiece?.id == watchID && $0.contentHash == hash }))
+        let matches = try context.fetch(
+            FetchDescriptor<DocumentItem>(
+                predicate: #Predicate { $0.timepiece?.id == watchID && $0.contentHash == hash }))
         guard matches.isEmpty else { throw DocumentError.duplicate }
-        let document = DocumentItem(asset: asset, name: name.nilIfEmpty ?? String(localized: "Document"), timepiece: watch)
+        let document = DocumentItem(
+            asset: asset, name: name.nilIfEmpty ?? String(localized: "Document"), timepiece: watch)
         context.insert(document)
         document.kindRaw = kind.rawValue
         document.documentDate = date

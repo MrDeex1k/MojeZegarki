@@ -1,0 +1,32 @@
+{
+  "configurations": [
+    {
+      "id": "397137E7-00AE-43DD-A9EE-A3D913DAE013",
+      "name": "Regression",
+      "options": {}
+    }
+  ],
+  "defaultOptions": {
+    "codeCoverage": true,
+    "testTimeoutsEnabled": true,
+    "defaultTestExecutionTimeAllowance": 180,
+    "maximumTestExecutionTimeAllowance": 240
+  },
+  "testTargets": [
+    {
+      "target": {
+        "containerPath": "container:MojeZegarki.xcodeproj",
+        "identifier": "FCF56959D8E4AB63FACF0C2C",
+        "name": "MojeZegarkiTests"
+      }
+    },
+    {
+      "target": {
+        "containerPath": "container:MojeZegarki.xcodeproj",
+        "identifier": "F0553766EAA05376D5CCD0EB",
+        "name": "MojeZegarkiUITests"
+      }
+    }
+  ],
+  "version": 1
+}

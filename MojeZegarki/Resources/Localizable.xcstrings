@@ -1,84 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Watches: %lld" : {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Watches: %lld"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zegarki: %lld"
-          }
-        }
-      }
-    },
-    "Watches" : {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Watches"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zegarki"
-          }
-        }
-      }
-    },
-    "No wear entries for this day" : {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No wear entries for this day"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Brak wpisów noszenia w tym dniu"
-          }
-        }
-      }
-    },
-    "Select a day to see worn watches" : {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select a day to see worn watches"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wybierz dzień, aby zobaczyć noszone zegarki"
-          }
-        }
-      }
-    },
-    "%@ – %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ – %2$@"
-          }
-        }
-      }
-    },
     "%@ %@" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -96,9 +18,17 @@
         }
       }
     },
-    "%lld" : {
-
+    "%@ – %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ – %2$@"
+          }
+        }
+      }
     },
+    "%lld" : {},
     "%lld days worn" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -267,6 +197,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "O aplikacji"
+          }
+        }
+      }
+    },
+    "Add %lld days" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj dni: %lld"
           }
         }
       }
@@ -458,6 +398,26 @@
         }
       }
     },
+    "Added days: %lld" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodane dni: %lld"
+          }
+        }
+      }
+    },
+    "Added to collection: %@" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodano do kolekcji: %@"
+          }
+        }
+      }
+    },
     "Against calendar days" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -505,6 +465,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wszystkie zegarki"
+          }
+        }
+      }
+    },
+    "Already worn" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Już noszony"
           }
         }
       }
@@ -747,6 +717,16 @@
         }
       }
     },
+    "Choose month and year" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz miesiąc i rok"
+          }
+        }
+      }
+    },
     "Choose photo" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -815,6 +795,16 @@
         }
       }
     },
+    "Complete details and add" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uzupełnij dane i dodaj"
+          }
+        }
+      }
+    },
     "Could not open collection" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -866,8 +856,16 @@
         }
       }
     },
-    "Days" : {
-
+    "Days" : {},
+    "Days with a checkmark are already saved. Select new days marked with a plus." : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dni z haczykiem są już zapisane. Wybierz nowe dni oznaczone plusem."
+          }
+        }
+      }
     },
     "Days without selected watch" : {
       "extractionState" : "manual",
@@ -1035,6 +1033,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rodzaj urządzenia"
+          }
+        }
+      }
+    },
+    "Discard changes" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odrzuć zmiany"
+          }
+        }
+      }
+    },
+    "Discard unsaved changes?" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odrzucić niezapisane zmiany?"
           }
         }
       }
@@ -1498,6 +1516,16 @@
         }
       }
     },
+    "Jump to date" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przejdź do daty"
+          }
+        }
+      }
+    },
     "Keep invoices and other documents with this watch." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1736,6 +1764,16 @@
         }
       }
     },
+    "New day" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nowy dzień"
+          }
+        }
+      }
+    },
     "Next month" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1783,6 +1821,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brak wpisów w tym okresie"
+          }
+        }
+      }
+    },
+    "No wear entries for this day" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No wear entries for this day"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak wpisów noszenia w tym dniu"
           }
         }
       }
@@ -1872,19 +1927,12 @@
         }
       }
     },
-    "of recorded days" : {
-      "extractionState" : "manual",
+    "Number below the date: watches worn" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "of recorded days"
-          }
-        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "dni z wpisami"
+            "value" : "Liczba pod datą: noszone zegarki"
           }
         }
       }
@@ -2025,23 +2073,6 @@
         }
       }
     },
-    "Password-protected PDFs are not supported. Choose an unlocked copy." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Password-protected PDFs are not supported. Choose an unlocked copy."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pliki PDF zabezpieczone hasłem nie są obsługiwane. Wybierz kopię bez hasła."
-          }
-        }
-      }
-    },
     "PDF or photo, up to 20 MB each. Files are copied to your private collection." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2055,6 +2086,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PDF lub zdjęcie, maksymalnie 20 MB na plik. Pliki są kopiowane do Twojej prywatnej kolekcji."
+          }
+        }
+      }
+    },
+    "Password-protected PDFs are not supported. Choose an unlocked copy." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password-protected PDFs are not supported. Choose an unlocked copy."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pliki PDF zabezpieczone hasłem nie są obsługiwane. Wybierz kopię bez hasła."
           }
         }
       }
@@ -2399,6 +2447,23 @@
         }
       }
     },
+    "Select a day to see worn watches" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a day to see worn watches"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz dzień, aby zobaczyć noszone zegarki"
+          }
+        }
+      }
+    },
     "Select one or more days. Existing entries for this watch will be skipped." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2569,6 +2634,16 @@
         }
       }
     },
+    "Show collection" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż kolekcję"
+          }
+        }
+      }
+    },
     "Smartwatch" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2667,6 +2742,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Status"
+          }
+        }
+      }
+    },
+    "Stop importing" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatrzymaj import"
           }
         }
       }
@@ -2841,6 +2926,16 @@
         }
       }
     },
+    "This watch has changed since it was added. Undo is no longer available." : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ten zegarek został zmieniony po dodaniu. Cofnięcie nie jest już dostępne."
+          }
+        }
+      }
+    },
     "This watch is already logged for that day." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2871,6 +2966,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ten rok"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dzisiaj"
           }
         }
       }
@@ -2926,6 +3031,16 @@
         }
       }
     },
+    "Undo" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofnij"
+          }
+        }
+      }
+    },
     "Unknown" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2973,6 +3088,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odblokuj za pomocą Face ID lub kodu urządzenia."
+          }
+        }
+      }
+    },
+    "Up to 10 photos at a time, 20 MB each." : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do 10 zdjęć jednocześnie, po 20 MB każde."
           }
         }
       }
@@ -3113,6 +3238,50 @@
         }
       }
     },
+    "Watches" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watches"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zegarki"
+          }
+        }
+      }
+    },
+    "Watches: %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Watches: %lld"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zegarki: %lld"
+          }
+        }
+      }
+    },
+    "Watches: 1 / 2 / 3+" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zegarki: 1 / 2 / 3+"
+          }
+        }
+      }
+    },
     "Wear calendar" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3131,14 +3300,7 @@
       }
     },
     "Wear days" : {
-      "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wear days"
-          }
-        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3181,6 +3343,16 @@
         }
       }
     },
+    "Wear history updated" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapisano dni noszenia"
+          }
+        }
+      }
+    },
     "Wear overview" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3216,18 +3388,11 @@
       }
     },
     "Wearing" : {
-      "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wearing"
-          }
-        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Harmonogram"
+            "value" : "Noszenie"
           }
         }
       }
@@ -3451,6 +3616,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tutaj znajdziesz historię noszenia zegarków."
+          }
+        }
+      }
+    },
+    "of recorded days" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "of recorded days"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "dni z wpisami"
           }
         }
       }

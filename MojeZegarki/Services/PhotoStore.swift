@@ -1,3 +1,4 @@
+import CoreTransferable
 import Foundation
 import ImageIO
 import UniformTypeIdentifiers
@@ -8,8 +9,9 @@ actor PhotoStore {
 
     func importPhoto(_ data: Data) throws -> PhotoDraft {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil),
-              let image = Self.downsample(source, pixels: 2400),
-              let thumbnail = Self.downsample(source, pixels: 600) else { throw CollectionError.unreadablePhoto }
+            let image = Self.downsample(source, pixels: 2400),
+            let thumbnail = Self.downsample(source, pixels: 600)
+        else { throw CollectionError.unreadablePhoto }
         let id = UUID()
         let staging = root.appendingPathComponent(".\(id.uuidString)", isDirectory: true)
         let destination = root.appendingPathComponent(id.uuidString, isDirectory: true)
@@ -18,18 +20,25 @@ actor PhotoStore {
             let available = CGImageDestinationCopyTypeIdentifiers() as! [String]
             var filename = "photo.heic"
             let heicURL = staging.appendingPathComponent(filename)
-            if !available.contains(UTType.heic.identifier) || !Self.encode(image, to: heicURL, type: .heic, quality: 0.82) {
-                if FileManager.default.fileExists(atPath: heicURL.path) { try FileManager.default.removeItem(at: heicURL) }
+            if !available.contains(UTType.heic.identifier)
+                || !Self.encode(image, to: heicURL, type: .heic, quality: 0.82)
+            {
+                if FileManager.default.fileExists(atPath: heicURL.path) {
+                    try FileManager.default.removeItem(at: heicURL)
+                }
                 filename = "photo.jpg"
-                guard Self.encode(image, to: staging.appendingPathComponent(filename), type: .jpeg, quality: 0.85) else {
+                guard Self.encode(image, to: staging.appendingPathComponent(filename), type: .jpeg, quality: 0.85)
+                else {
                     throw CollectionError.fileAccess
                 }
             }
-            guard Self.encode(thumbnail, to: staging.appendingPathComponent("thumbnail.jpg"), type: .jpeg, quality: 0.8) else {
+            guard Self.encode(thumbnail, to: staging.appendingPathComponent("thumbnail.jpg"), type: .jpeg, quality: 0.8)
+            else {
                 throw CollectionError.fileAccess
             }
             for file in try FileManager.default.contentsOfDirectory(at: staging, includingPropertiesForKeys: nil) {
-                try FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file.path)
+                try FileManager.default.setAttributes(
+                    [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file.path)
             }
             try FileManager.default.moveItem(at: staging, to: destination)
             return PhotoDraft(id: id, filename: filename)
@@ -57,22 +66,46 @@ actor PhotoStore {
         for url in try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil) {
             let name = url.lastPathComponent
             if let id = UUID(uuidString: name), !ids.contains(id) { try FileManager.default.removeItem(at: url) }
-            if name.hasPrefix("."), UUID(uuidString: String(name.dropFirst())) != nil { try FileManager.default.removeItem(at: url) }
+            if name.hasPrefix("."), UUID(uuidString: String(name.dropFirst())) != nil {
+                try FileManager.default.removeItem(at: url)
+            }
         }
     }
 
     private static func downsample(_ source: CGImageSource, pixels: Int) -> CGImage? {
-        CGImageSourceCreateThumbnailAtIndex(source, 0, [
-            kCGImageSourceCreateThumbnailFromImageAlways: true,
-            kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceThumbnailMaxPixelSize: pixels,
-            kCGImageSourceShouldCacheImmediately: true
-        ] as CFDictionary)
+        CGImageSourceCreateThumbnailAtIndex(
+            source, 0,
+            [
+                kCGImageSourceCreateThumbnailFromImageAlways: true,
+                kCGImageSourceCreateThumbnailWithTransform: true,
+                kCGImageSourceThumbnailMaxPixelSize: pixels,
+                kCGImageSourceShouldCacheImmediately: true,
+            ] as CFDictionary)
     }
 
     private static func encode(_ image: CGImage, to url: URL, type: UTType, quality: Double) -> Bool {
-        guard let destination = CGImageDestinationCreateWithURL(url as CFURL, type.identifier as CFString, 1, nil) else { return false }
-        CGImageDestinationAddImage(destination, image, [kCGImageDestinationLossyCompressionQuality: quality] as CFDictionary)
+        guard let destination = CGImageDestinationCreateWithURL(url as CFURL, type.identifier as CFString, 1, nil)
+        else { return false }
+        CGImageDestinationAddImage(
+            destination, image, [kCGImageDestinationLossyCompressionQuality: quality] as CFDictionary)
         return CGImageDestinationFinalize(destination)
+    }
+}
+
+/// A file representation lets us enforce the byte limit before Photos loads an entire original into memory.
+struct ImportedImage: Transferable, Sendable {
+    let data: Data
+    static let maximumBytes = 20_000_000
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(importedContentType: .image) { file in
+            ImportedImage(data: try read(file.file))
+        }
+    }
+    static func read(_ url: URL) throws -> Data {
+        let handle = try FileHandle(forReadingFrom: url)
+        defer { try? handle.close() }
+        let data = try handle.read(upToCount: maximumBytes + 1) ?? Data()
+        guard data.count <= maximumBytes else { throw DocumentError.tooLarge }
+        return data
     }
 }

@@ -1,0 +1,139 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project MojeZegarki.xcodeproj -scheme MojeZegarki -destination "platform=iOS Simulator,id=10C18B34-55BD-45C9-8308-6181BFAAF040" -derivedDataPath .build/Audit20261002 -resultBundlePath .build/audit-12-remaining.xcresult -parallel-testing-enabled NO "-only-testing:MojeZegarkiUITests/FreeModuleUITests/testEnabledLockHidesCollectionOnLaunch" "-only-testing:MojeZegarkiUITests/FreeModuleUITests/testWishlistMoveCanBeCancelledThenCommittedAndWearPersists" CODE_SIGNING_ALLOWED=NO test-without-building
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+Writing result bundle at path:
+	/Users/jakubbatycki/KOD/MojeZegarki/.build/audit-12-remaining.xcresult
+
+2026-10-02 23:18:07.900157+0200 MojeZegarkiUITests-Runner[60833:383690] [Default] Running tests...
+Test Suite 'Selected tests' started at 2026-10-02 23:18:08.246.
+Test Suite 'MojeZegarkiUITests.xctest' started at 2026-10-02 23:18:08.246.
+Test Suite 'FreeModuleUITests' started at 2026-10-02 23:18:08.246.
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testEnabledLockHidesCollectionOnLaunch]' started.
+    t =     0.00s Start Test at 2026-10-02 23:18:08.247
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-02 23:18:08.317 xcodebuild[60469:383482] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-02 23:18:08.317 xcodebuild[60469:383482] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     0.28s         Setting up automation session
+    t =     0.67s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     1.75s Waiting 15.0s for "Collection locked" StaticText to exist
+    t =     2.82s     Checking `Expect predicate `existsNoRetry == 1` for object "Collection locked" StaticText`
+    t =     2.82s         Checking existence of `"Collection locked" StaticText`
+    t =     2.84s Checking existence of `"collection.add" Button`
+    t =     2.84s Checking existence of `"Collection" Button`
+    t =     2.85s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testEnabledLockHidesCollectionOnLaunch]' passed (3.074 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistMoveCanBeCancelledThenCommittedAndWearPersists]' started.
+    t =     0.00s Start Test at 2026-10-02 23:18:11.321
+    t =     0.01s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Terminate pl.jakubbatycki.MojeZegarki:61132
+2026-10-02 23:18:12.422 xcodebuild[60469:383482] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-02 23:18:12.422 xcodebuild[60469:383482] [MT] IDELaunchParametersSnapshot: no debugger version
+    t =     1.31s         Setting up automation session
+    t =     1.44s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.52s Waiting 15.0s for "collection.add" Button to exist
+    t =     3.60s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     3.60s         Checking existence of `"collection.add" Button`
+    t =     3.65s Tap "Wishlist" Button
+    t =     3.65s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.65s     Find the "Wishlist" Button
+    t =     3.66s     Check for interrupting elements affecting "Wishlist" Button
+    t =     3.67s     Synthesize event
+    t =     3.97s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.97s Tap "wish.add" Button
+    t =     3.97s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.97s     Find the "wish.add" Button
+    t =     3.99s     Check for interrupting elements affecting "wish.add" Button
+    t =     4.00s     Synthesize event
+    t =     4.30s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.81s Find the "wish.save" Button
+    t =     4.87s Tap "wish.brand" TextField
+    t =     4.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.87s     Find the "wish.brand" TextField
+    t =     4.90s     Check for interrupting elements affecting "wish.brand" TextField
+    t =     4.92s     Synthesize event
+    t =     5.21s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.64s Type 'Casio' into "wish.brand" TextField
+    t =     5.64s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.64s     Find the "wish.brand" TextField
+    t =     5.69s     Check for interrupting elements affecting "wish.brand" TextField
+    t =     5.72s     Synthesize event
+    t =     6.00s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.00s Tap "wish.model" TextField
+    t =     6.00s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.01s     Find the "wish.model" TextField
+    t =     6.04s     Check for interrupting elements affecting "wish.model" TextField
+    t =     6.08s     Synthesize event
+    t =     6.37s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.37s Type 'G-Shock' into "wish.model" TextField
+    t =     6.37s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.37s     Find the "wish.model" TextField
+    t =     6.41s     Check for interrupting elements affecting "wish.model" TextField
+    t =     6.44s     Synthesize event
+    t =     6.76s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.77s Tap "wish.save" Button
+    t =     6.77s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.77s     Find the "wish.save" Button
+    t =     6.81s     Check for interrupting elements affecting "wish.save" Button
+    t =     6.84s     Synthesize event
+    t =     7.13s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.52s Waiting 5.0s for Button (First Match) to exist
+    t =     8.60s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     8.60s         Checking existence of `Button (First Match)`
+    t =     8.63s Tap Button (First Match)
+    t =     8.63s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.63s     Find the Button (First Match)
+    t =     8.65s     Check for interrupting elements affecting "wish.actions.A0C23731-9032-42E0-9318-4659C0935057" Button
+    t =     8.67s     Synthesize event
+    t =     8.68s         Scroll element to visible
+    t =     8.69s                 Retrying failed scroll-to-visible with containing cell Cell
+    t =     8.69s         Find the "wish.actions.A0C23731-9032-42E0-9318-4659C0935057" Button
+    t =     8.72s         Computed hit point {-1, -1} after scrolling to visible
+    t =     9.01s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.01s Tap "wish.move" Button
+    t =     9.01s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.01s     Find the "wish.move" Button
+    t =     9.03s     Check for interrupting elements affecting "wish.move" Button
+    t =     9.05s     Synthesize event
+    t =     9.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.37s Find the "editor.brand" TextField
+    t =     9.43s Tap "editor.cancel" Button
+    t =     9.43s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.76s     Find the "editor.cancel" Button
+    t =     9.81s     Check for interrupting elements affecting "editor.cancel" Button
+    t =     9.84s     Synthesize event
+    t =    10.13s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.13s Waiting 5.0s for "editor.brand" TextField to not exist
+    t =    11.21s     Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    11.21s         Checking existence of `"editor.brand" TextField`
+    t =    11.25s         Capturing element debug description
+    t =    12.21s     Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    12.21s         Checking existence of `"editor.brand" TextField`
+    t =    12.25s         Capturing element debug description
+    t =    13.21s     Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    13.21s         Checking existence of `"editor.brand" TextField`
+    t =    13.26s         Capturing element debug description
+    t =    14.21s     Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    14.21s         Checking existence of `"editor.brand" TextField`
+    t =    14.27s         Capturing element debug description
+    t =    15.14s     Checking `Expect predicate `existsNoRetry == 0` for object "editor.brand" TextField`
+    t =    15.14s         Checking existence of `"editor.brand" TextField`
+    t =    15.20s         Capturing element debug description
+    t =    15.20s     Checking existence of `"editor.brand" TextField`
+    t =    15.24s Collecting debug information to assist test failure triage
+    t =    15.24s     Requesting snapshot of accessibility hierarchy for app with pid 61160
+/Users/jakubbatycki/KOD/MojeZegarki/UITests/FreeModuleUITests.swift:31: error: -[MojeZegarkiUITests.FreeModuleUITests testWishlistMoveCanBeCancelledThenCommittedAndWearPersists] : XCTAssertTrue failed
+    t =    15.31s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistMoveCanBeCancelledThenCommittedAndWearPersists]' failed (15.531 seconds).
+Test Suite 'FreeModuleUITests' failed at 2026-10-02 23:18:26.853.
+	 Executed 2 tests, with 1 failure (0 unexpected) in 18.605 (18.607) seconds
+Test Suite 'MojeZegarkiUITests.xctest' failed at 2026-10-02 23:18:26.855.
+	 Executed 2 tests, with 1 failure (0 unexpected) in 18.605 (18.608) seconds
+Test Suite 'Selected tests' failed at 2026-10-02 23:18:26.855.
+	 Executed 2 tests, with 1 failure (0 unexpected) in 18.605 (18.609) seconds

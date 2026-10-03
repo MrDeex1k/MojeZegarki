@@ -62,7 +62,8 @@ enum CollectionError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .requiredFields: String(localized: "Enter a brand and model.")
-        case .invalidPrice: String(localized: "Enter a non-negative price using your decimal separator, without thousands separators.")
+        case .invalidPrice:
+            String(localized: "Enter a non-negative price using your decimal separator, without thousands separators.")
         case .invalidCurrency: String(localized: "Choose a currency for the purchase price.")
         case .unreadablePhoto: String(localized: "This photo could not be read. Choose another image.")
         case .saveFailed: String(localized: "Changes could not be saved. Check available storage and try again.")
@@ -76,7 +77,7 @@ struct PhotoDraft: Identifiable, Equatable, Sendable {
     let filename: String
 }
 
-struct TimepieceDraft {
+struct TimepieceDraft: Equatable {
     var brand = ""
     var modelName = ""
     var deviceKind: DeviceKind?
@@ -102,7 +103,8 @@ struct TimepieceDraft {
         let canonical = price.trimmed.replacingOccurrences(of: separator, with: ".")
         // No permissive NumberFormatter parsing: partial numbers must never be silently accepted.
         guard canonical.range(of: "^[0-9]{1,18}(\\.[0-9]{1,6})?$", options: .regularExpression) != nil,
-              let amount = Decimal(string: canonical, locale: Locale(identifier: "en_US_POSIX")) else {
+            let amount = Decimal(string: canonical, locale: Locale(identifier: "en_US_POSIX"))
+        else {
             throw CollectionError.invalidPrice
         }
         guard Locale.commonISOCurrencyCodes.contains(currencyCode) else { throw CollectionError.invalidCurrency }
