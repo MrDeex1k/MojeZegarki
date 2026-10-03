@@ -72,15 +72,21 @@ final class CollectionUITests: XCTestCase {
 
 @MainActor extension XCTestCase {
     /// DeviceHub can expose transient scaled frames while an app/sheet is animating.
-    /// Focus is verified through the keyboard before synthesizing text, rather than assuming a tap succeeded.
+    /// Verify the target field owns keyboard focus even when another field already opened the keyboard.
     func focus(_ field: XCUIElement, in app: XCUIApplication) {
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isHittable == true"), object: field)
         wait(for: [ready], timeout: 5)
         field.tap()
-        if !app.keyboards.firstMatch.waitForExistence(timeout: 3) {
+        let focused = NSPredicate(format: "hasKeyboardFocus == true")
+        let initialFocus = XCTNSPredicateExpectation(predicate: focused, object: field)
+        if XCTWaiter.wait(for: [initialFocus], timeout: 3) != .completed {
             field.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         }
+        let confirmedFocus = XCTNSPredicateExpectation(predicate: focused, object: field)
+        XCTAssertEqual(
+            XCTWaiter.wait(for: [confirmedFocus], timeout: 5), .completed,
+            "The target field must own keyboard focus before typing")
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 5))
     }
 }

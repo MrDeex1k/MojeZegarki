@@ -8,7 +8,7 @@ Zakres: wszystkie sześć etapów zaakceptowanego planu po audycie 2.10.2026. Ni
 2. **Dni noszenia:** wspólny kalendarz historii i edytora. Zapisane dni mają ✓ i nie da się dodać ich ponownie; oczekujące mają +; licznik i przycisk uwzględniają tylko nowe dni. Brak wyboru blokuje zapis. Zmiana zegarka czyści wybór. Przyszłość oraz dzisiaj dla archiwum są niedostępne. Store zachowuje walidację całej partii i idempotencję. Po zapisie pojawia się rzeczywista liczba nowych wpisów.
 3. **UX:** wybór dnia przewija historię do wyników. Nagłówek kalendarza otwiera wybór daty/miesiąca/roku, a „Dzisiaj” wraca do bieżącego miesiąca. Legenda jednego zegarka opisuje noszenie zamiast liczby zegarków. Duży Dynamic Type zmienia siatkę dni w listę, układ wierszy w pionowy, a filtr pokazuje zawijany tekst. Polskie „Harmonogram” zastąpiono „Noszenie”. Menu wishlisty wyraźnie odróżnia uzupełnienie danych od szybkiego dodania. Po dodaniu jest komunikat, przejście do kolekcji i cofnięcie. Cofnięcie nie usuwa późniejszych zmian/historii.
 4. **Odporność i wydajność:** błąd sprzątania plików jest logowany, ale nie blokuje poprawnej bazy; sprzątanie pozostaje przed pokazaniem edytorów. Zapytania szczegółów i edytora ograniczono do zegarka. Kolekcja współdzieli jedno zapytanie dzienne. Grupowanie historii wykonuje się raz na render. Statystyki walidują każdą unikalną datę tylko raz. Miniatury mają ograniczony cache (24 MiB / 32 obrazy) i asynchroniczne przygotowanie do wyświetlenia. Import z Photos używa reprezentacji plikowej i odczytu do 20 MB + 1 bajt; partia maks. 10 zdjęć, postęp i zatrzymanie. Zapisane częściowo zdjęcia zostają w formularzu; anulowanie formularza sprząta staging.
-5. **Kod i narzędzia:** WearView rozdzielono na widoki kalendarza, edytora, statystyk, podsumowania i szybkiej akcji. Dodano `.swift-format`, skrypty formatowania/testów, `Regression.xctestplan`, timeouty i workflow dla iOS 17.5 / 27.0. Ustawienia pokazują wersję i numer builda. Projekt nadal nie ma zewnętrznych pakietów aplikacji wymagających aktualizacji.
+5. **Kod i narzędzia:** WearView rozdzielono na widoki kalendarza, edytora, statystyk, podsumowania i szybkiej akcji. Dodano `.swift-format`, skrypty formatowania/testów, `Regression.xctestplan`, timeouty dla lokalnej regresji iOS 17.5 / 27.0. Ustawienia pokazują wersję i numer builda. Projekt nadal nie ma zewnętrznych pakietów aplikacji wymagających aktualizacji.
 6. **Regresja:** XCTest obejmuje trwałość, migrację, strefy/DST, duplikaty, archiwum, zdjęcia/dokumenty, cofnięcie wishlisty i scenariusze UI. Macierz UI obejmuje PL/EN × jasny/ciemny × standardowy/największy Dynamic Type i zapisuje screenshoty w xcresult.
 
 ## Uruchamianie
@@ -20,9 +20,9 @@ IOS_DESTINATION='platform=iOS Simulator,id=<UUID>' bash scripts/test-ios.sh
 
 W Xcode: Product → Test, schemat MojeZegarki, plan Regression. Testy używają osobnej bazy `CollectionUITests`; testowe fixture i przełączniki motywu są wyłącznie w Debug i wymagają `--uitesting`.
 
-Workflow `.github/workflows/ios.yml` wymaga skonfigurowanego self-hosted runnera Apple Silicon z etykietą `xcode-27`, Xcode 27 oraz oboma runtime'ami i nazwami urządzeń z macierzy. Nie rejestruje runnera ani nie instaluje SDK automatycznie. Zweryfikowano lokalne wykonanie poleceń; zdalnego przebiegu GitHub Actions nie uruchamiano. Actions Runner musi obsługiwać Node 24 (co najmniej 2.327.1). Wyniki z `.build/*.xcresult` są publikowane jako artefakty.
+Workflow CI/CD usunięto po przeglądzie PR-a. Testy i formatowanie uruchamia się lokalnie powyższymi poleceniami; wyniki pozostają w `.build/`.
 
-Użyto aktualnych wydań [checkout 7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1) i [upload-artifact 7.0.1](https://github.com/actions/upload-artifact/releases/tag/v7.0.1). Formatter pochodzi z [toolchainu Swift/Xcode](https://github.com/swiftlang/swift-format). Xcode 27.0 / Swift 6.4 pozostawiono zgodnie z weryfikacją narzędzi w raporcie audytu; numer trybu języka pozostaje 6.0.
+Formatter pochodzi z [toolchainu Swift/Xcode](https://github.com/swiftlang/swift-format). Xcode 27.0 / Swift 6.4 pozostawiono zgodnie z weryfikacją narzędzi w raporcie audytu; numer trybu języka pozostaje 6.0.
 
 ## Ograniczenia
 
@@ -42,7 +42,7 @@ Symulatory nie potwierdzają fizycznego Face ID, pamięci/baterii urządzenia an
 
 ## Stabilność automatyzacji
 
-Współdzielony iPhone 18 Pro był w trakcie testów przejmowany przez `dev.mojeauto.qa`. Logi XCTest pokazują przełączenia aplikacji i przejściowe, przeskalowane współrzędne okna. Z tego powodu końcową regresję przeniesiono na tymczasowy, czysty symulator **iPhone 18 Pro / iOS 27.0** (`1D8CB7CD-EBAF-46A7-B381-ABA84DADECA5`). Nie zatrzymywano obcej aplikacji ani jej runnera. Testy formularzy dodatkowo potwierdzają fokus klawiatury; test anulowania czeka na zamknięcie arkusza zamiast zakładać, że tap oznacza koniec animacji.
+Współdzielony iPhone 18 Pro był w trakcie testów przejmowany przez `dev.mojeauto.qa`. Logi XCTest pokazują przełączenia aplikacji i przejściowe, przeskalowane współrzędne okna. Z tego powodu końcową regresję przeniesiono na tymczasowy, czysty symulator **iPhone 18 Pro / iOS 27.0** (`1D8CB7CD-EBAF-46A7-B381-ABA84DADECA5`). Nie zatrzymywano obcej aplikacji ani jej runnera. Testy formularzy dodatkowo potwierdzają fokus konkretnego pola tekstowego, również gdy klawiatura jest już otwarta; test anulowania czeka na zamknięcie arkusza zamiast zakładać, że tap oznacza koniec animacji.
 
 
 ## Końcowe wyniki
@@ -64,3 +64,7 @@ Ręcznie przez DeviceHub potwierdzono na iPhonie 12: zapisany dzień z ✓ jest 
 Po pracy zamknięto sesje DeviceHub i usunięto własny tymczasowy symulator QA. Na iPhonie 12 przywrócono uruchomienie zwykłej bazy i potwierdzono pustą kolekcję, bez wpisu „Audyt / Test 2026”. Dane użytkownika na oryginalnym iPhonie 18 Pro nie były modyfikowane. Testowe fixture pozostały wyłącznie w odseparowanej bazie testów na iPhonie 12; nie są widoczne w zwykłej aplikacji.
 
 Raport opisuje lokalną weryfikację przed otwarciem PR-a. Na tym etapie nie wykonano publikacji aplikacji ani zdalnego uruchomienia workflow.
+
+## Poprawki po review PR #7
+
+Usunięto workflow CI/CD. Helper testów UI czeka teraz na `hasKeyboardFocus` konkretnego pola i ponawia tap, jeśli fokus nie został przeniesiony; otwarta klawiatura nie wystarcza do rozpoczęcia wpisywania. Weryfikacja na iPhonie 12 / iOS 17.5: oba testy `CollectionUITests` — **2/2 PASS**, formatowanie i `git diff --check` — PASS. Wynik: `.build/pr7-focus-fix.xcresult`.

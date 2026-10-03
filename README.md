@@ -49,7 +49,7 @@ xcodebuild -project MojeZegarki.xcodeproj -scheme MojeZegarki \
 
 Schemat zawiera testy domeny, trwałości danych, obsługi plików i UI. Można je uruchomić przez Product → Test w Xcode. Testy UI używają oddzielnej bazy danych i nie korzystają z kolekcji użytkownika.
 
-Regresja obejmuje symulatory iPhone 12 / iOS 17.5 i iPhone 18 Pro / iOS 27.0. Plan `Regression.xctestplan` ustawia timeouty; macierz UI sprawdza PL/EN, oba motywy i duży tekst. Polecenia, wyniki i wymagania CI opisuje [raport implementacji audytu](docs/implementacja-2026-10-03/README.md).
+Regresja obejmuje symulatory iPhone 12 / iOS 17.5 i iPhone 18 Pro / iOS 27.0. Plan `Regression.xctestplan` ustawia timeouty; macierz UI sprawdza PL/EN, oba motywy i duży tekst. Polecenia i wyniki lokalnej regresji opisuje [raport implementacji audytu](docs/implementacja-2026-10-03/README.md).
 
 Formatowanie: `bash scripts/format.sh`; kontrola: `bash scripts/format.sh --check`. Narzędzie `swift-format` jest częścią Xcode i nie wymaga instalowania pakietów.
 
