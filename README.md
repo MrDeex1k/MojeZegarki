@@ -11,8 +11,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/iOS-17%2B-073D40?style=flat-square&amp;logo=apple&amp;logoColor=white" alt="iPhone z iOS 17 lub nowszym">
-  <img src="https://img.shields.io/badge/TestFlight-Beta-19585B?style=flat-square" alt="Aplikacja w fazie bety TestFlight">
+  <img src="https://img.shields.io/badge/iOS-17%2B-000000?style=flat-square&amp;logo=apple&amp;logoColor=white" alt="iPhone z iOS 17 lub nowszym">
+  <img src="https://img.shields.io/badge/TestFlight-Beta-0D96F6?style=flat-square" alt="Aplikacja w fazie bety TestFlight">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Proprietary-333333?style=flat-square" alt="Licencja własnościowa — projekt nie jest open source"></a>
 </p>
 
@@ -21,9 +21,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Xcode-147EFB?style=for-the-badge&amp;logo=xcode&amp;logoColor=white" alt="Xcode">
   <img src="https://img.shields.io/badge/Swift_6-F05138?style=for-the-badge&amp;logo=swift&amp;logoColor=white" alt="Swift 6">
-  <img src="https://img.shields.io/badge/SwiftUI-19585B?style=for-the-badge&amp;logo=swift&amp;logoColor=white" alt="SwiftUI">
-  <img src="https://img.shields.io/badge/SwiftData-19585B?style=for-the-badge" alt="SwiftData">
-  <img src="https://img.shields.io/badge/XCTest-19585B?style=for-the-badge" alt="Testy jednostkowe i UI w XCTest">
+  <img src="https://img.shields.io/badge/SwiftUI-007AFF?style=for-the-badge&amp;logo=swift&amp;logoColor=white" alt="SwiftUI">
+  <img src="https://img.shields.io/badge/SwiftData-F05138?style=for-the-badge" alt="SwiftData">
+  <img src="https://img.shields.io/badge/XCTest-34C759?style=for-the-badge" alt="Testy jednostkowe i UI w XCTest">
 </p>
 
 <a id="galeria"></a>
