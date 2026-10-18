@@ -61,13 +61,13 @@ Zrzuty z fizycznego iPhone’a 15 Pro pokazują używaną kolekcję z Casio Duro
 
 ## Status aplikacji i materiały
 
-Stan materiałów: **12.10.2026**. Aplikacja jest rozwijana i dystrybuowana w becie przez TestFlight; publiczna wersja App Store nie została jeszcze wydana. Aktualny kod ma wersję **0.8.5 (6)**. Szczegóły wysyłek i dystrybucji opisuje [dokumentacja TestFlight](../testflight/README.md).
+Stan galerii: **12.10.2026**; informacje o wersji zaktualizowano **18.10.2026**. Aplikacja jest rozwijana i dystrybuowana w becie przez TestFlight; publiczna wersja App Store nie została jeszcze wydana. Aktualny kod ma wersję **0.8.6 (7)**. Szczegóły wysyłek i dystrybucji opisuje [dokumentacja TestFlight](../testflight/README.md).
 
 iPhone · iOS 17 lub nowszy · PL/EN. Obecny zakres FREE obejmuje kolekcję, Archiwum, zdjęcia, dokumenty, kalendarz i statystyki noszenia, listę życzeń oraz opcjonalną blokadę. Synchronizacja iCloud pozostaje planowanym etapem Premium.
 
 ### Pochodzenie zrzutów
 
-- **Główna galeria:** symulator iPhone 18 Pro / iOS 27.0, aktualny interfejs z kodu 0.8.5 (6). Osobna instalacja demonstracyjna zawiera przykładowe zegarki i fikcyjną historię noszenia. Nie jest to deklaracja posiadania pokazanych modeli ani katalog dostarczany z aplikacją.
+- **Główna galeria:** symulator iPhone 18 Pro / iOS 27.0, zrzuty z poprzedniej wersji 0.8.5 (6), wykonane 12.10.2026. Galeria nie przedstawia jeszcze poprawek widoku noszenia z wersji 0.8.6 (7). Osobna instalacja demonstracyjna zawiera przykładowe zegarki i fikcyjną historię noszenia. Nie jest to deklaracja posiadania pokazanych modeli ani katalog dostarczany z aplikacją.
 - **Galeria fizycznego urządzenia:** iPhone 15 Pro / iOS 27.0.1, zainstalowana beta 0.8.4 (5), zweryfikowana na ekranie Ustawień. Różni się od 0.8.5 m.in. układem przycisków listy życzeń.
 - Ekrany przygotowano przez Xcode DeviceHub. Pliki PNG przedstawiają rzeczywisty interfejs aplikacji; nie retuszowano jego kontrolek ani zawartości. Na zrzutach fizycznego telefonu widoczny jest systemowy wskaźnik połączenia z DeviceHub.
 - Zestaw obejmuje **17 zrzutów**: 12 z symulatora (po 6 w jasnym i ciemnym motywie, 1206 × 2622 px) oraz 5 z telefonu (ciemny motyw, 1179 × 2556 px). Na symulatorze ujednolicono pasek statusu do godziny 09:41 i pełnej baterii.

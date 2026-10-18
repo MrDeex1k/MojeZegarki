@@ -219,15 +219,21 @@ struct WearView: View {
             }
             .task(id: scrollRequest) {
                 guard let selectedDay else { return }
-                // Wait for List to insert the selected day's rows before scrolling to a real result.
                 await Task.yield()
-                guard !Task.isCancelled else { return }
                 let firstLog = filteredLogs.first { $0.calendarDay == selectedDay }
-                withAnimation {
-                    if let firstLog {
-                        proxy.scrollTo("wear.result.\(firstLog.id)", anchor: .top)
-                    } else {
-                        proxy.scrollTo(Optional(selectedDay), anchor: .top)
+                // A yield alone doesn't guarantee that List has inserted the new target.
+                // Retry briefly; a newer selection or leaving the view cancels this request.
+                for attempt in 0..<3 {
+                    if attempt > 0 {
+                        do { try await Task.sleep(for: .milliseconds(100)) } catch { return }
+                    }
+                    guard !Task.isCancelled, self.selectedDay == selectedDay else { return }
+                    withAnimation {
+                        if let firstLog {
+                            proxy.scrollTo("wear.result.\(firstLog.id)", anchor: .top)
+                        } else {
+                            proxy.scrollTo(Optional(selectedDay), anchor: .top)
+                        }
                     }
                 }
             }

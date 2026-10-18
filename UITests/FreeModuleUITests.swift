@@ -223,6 +223,37 @@ final class FreeModuleUITests: XCTestCase {
         add(screenshot)
     }
 
+    func testWearDaySelectionScrollsToEntriesAndEmptyState() {
+        let app = launch(extra: ["--test-wear-fixture"])
+        XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Calendar watch"].tap()
+        app.buttons["detail.wear"].tap()
+        XCTAssertTrue(app.buttons["wear.month.title"].waitForExistence(timeout: 5))
+
+        let calendar = Calendar(identifier: .gregorian)
+        let today = Date()
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+        let formatter = DateFormatter()
+        formatter.calendar = calendar
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd"
+        var displayedMonth = today
+        for date in [yesterday, today, yesterday, today] {
+            if !calendar.isDate(date, equalTo: displayedMonth, toGranularity: .month) {
+                app.buttons[date < displayedMonth ? "wear.month.previous" : "wear.month.next"].tap()
+                displayedMonth = date
+            }
+            app.buttons["wear.day.\(formatter.string(from: date))"].tap()
+            let target =
+                calendar.isDate(date, inSameDayAs: today)
+                ? app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).firstMatch
+                : app.staticTexts["No wear entries for this day"]
+            wait(
+                for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "isHittable == true"), object: target)],
+                timeout: 5)
+        }
+    }
+
     func testWearSheetKeepsScrollingWithAccessibilityText() {
         let app = launch(extra: [
             "--test-wear-fixture", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL",
