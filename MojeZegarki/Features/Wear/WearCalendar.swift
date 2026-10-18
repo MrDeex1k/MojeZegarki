@@ -27,6 +27,10 @@ struct WearCalendar: View {
             calendar.date(byAdding: .day, value: $0 - 1, to: start)
         }
     }
+    private var leadingEmptyDays: Int {
+        (calendar.component(.weekday, from: dates.first ?? month) - calendar.firstWeekday + 7) % 7
+    }
+
     private var identifierPrefix: String { editing ? "wear.selection" : "wear" }
 
     private var today: String { WearDay(.now).key }
@@ -58,18 +62,28 @@ struct WearCalendar: View {
                     ForEach(dates, id: \.self) { day in dayButton(day, expanded: true) }
                 }
             } else {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 6) {
-                    ForEach(0..<7, id: \.self) { index in
-                        Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
-                            .font(.caption).foregroundStyle(.secondary).accessibilityHidden(true)
+                // List needs the full month height up front to keep its scroll offset stable.
+                Grid(horizontalSpacing: 2, verticalSpacing: 6) {
+                    GridRow {
+                        ForEach(0..<7, id: \.self) { index in
+                            Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
+                                .font(.caption).foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity).accessibilityHidden(true)
+                        }
                     }
-                    ForEach(
-                        0..<((calendar.component(.weekday, from: dates.first ?? month) - calendar.firstWeekday + 7) % 7),
-                        id: \.self
-                    ) { _ in
-                        Color.clear.frame(height: 44).accessibilityHidden(true)
+                    ForEach(0..<((leadingEmptyDays + dates.count + 6) / 7), id: \.self) { week in
+                        GridRow {
+                            ForEach(0..<7, id: \.self) { weekday in
+                                let index = week * 7 + weekday - leadingEmptyDays
+                                if dates.indices.contains(index) {
+                                    dayButton(dates[index], expanded: false)
+                                } else {
+                                    Color.clear.frame(maxWidth: .infinity, minHeight: 44)
+                                        .accessibilityHidden(true)
+                                }
+                            }
+                        }
                     }
-                    ForEach(dates, id: \.self) { day in dayButton(day, expanded: false) }
                 }
             }
             ViewThatFits(in: .horizontal) {
@@ -149,7 +163,7 @@ struct WearCalendar: View {
                         ? date.formatted(.dateTime.day().month().weekday(.wide))
                         : "\(calendar.component(.day, from: date))"
                 )
-                .font(expanded ? .body : .callout)
+                .font(.body)
                 if expanded { Spacer(minLength: 0) }
                 if saved && (editing || singleWatch) {
                     Image(systemName: "checkmark").font(.caption2)

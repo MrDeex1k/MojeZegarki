@@ -44,6 +44,7 @@
 		0C513EA021C1636CE095F1A6 /* WearSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8695DE556DE34E559D0F4770 /* WearSummaryView.swift */; };
 		170AA1EDAEB7919AF56C648B /* WearCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BA492D2D0D2594717BDEC /* WearCalendar.swift */; };
 		6D446E82D74BFB8A76AB93CC /* WearStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AEE7F21301984303F90A56 /* WearStatisticsView.swift */; };
+		E1127468AE9247D99B11A601 /* CollectionSchemaV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1127468AE9247D99B11A602 /* CollectionSchemaV3.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		8695DE556DE34E559D0F4770 /* WearSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearSummaryView.swift; sourceTree = "<group>"; };
 		321BA492D2D0D2594717BDEC /* WearCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearCalendar.swift; sourceTree = "<group>"; };
 		18AEE7F21301984303F90A56 /* WearStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearStatisticsView.swift; sourceTree = "<group>"; };
+		E1127468AE9247D99B11A602 /* CollectionSchemaV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionSchemaV3.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,6 +270,7 @@
 			children = (
 				19210AE448DA0ABAB8750744 /* CollectionSchema.swift */,
 				F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */,
+				E1127468AE9247D99B11A602 /* CollectionSchemaV3.swift */,
 				03C92F291EBBA494F8D9622A /* CollectionStore.swift */,
 			);
 			path = Persistence;
@@ -442,6 +445,7 @@
 				D4E74F1AA38FED6400A7EF53 /* WishlistView.swift in Sources */,
 				04702C25A5714DD909F0DFC5 /* CollectionSchema.swift in Sources */,
 				EE899E36CE74DD8D9761C798 /* CollectionSchemaV2.swift in Sources */,
+				E1127468AE9247D99B11A601 /* CollectionSchemaV3.swift in Sources */,
 				B4CFE7FAF07C208453820A04 /* CollectionStore.swift in Sources */,
 				D34F855A50BEE6E89363F372 /* AppLock.swift in Sources */,
 				EBB2138D447384A1C56399B8 /* DocumentStore.swift in Sources */,
@@ -482,7 +486,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = KV9BUW5GTH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moje Zegarki";
@@ -491,7 +495,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				MARKETING_VERSION = 0.8.2;
+				MARKETING_VERSION = 0.8.6;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -507,7 +511,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = KV9BUW5GTH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moje Zegarki";
@@ -516,7 +520,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				MARKETING_VERSION = 0.8.2;
+				MARKETING_VERSION = 0.8.6;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -59,15 +59,10 @@ struct WearEditorView: View {
                             }
                             Text("Selected days: \(newDays.count)")
                                 .accessibilityIdentifier("wear.selectionCount")
-                        } footer: {
-                            Text("Days with a checkmark are already saved. Select new days marked with a plus.")
                         }
                     }
-                    Text(
-                        "You can log several watches per day, once per watch. Archived watches can be logged for past days."
-                    )
-                    .font(.footnote).foregroundStyle(.secondary)
                 }
+                .scrollBounceBehavior(.basedOnSize)
                 .navigationTitle(log == nil ? Text("Wear days") : Text("Edit wear day"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

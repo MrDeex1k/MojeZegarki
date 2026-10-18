@@ -1,6 +1,6 @@
 # Model danych
 
-CollectionSchemaV2 zawiera Timepiece, TimepiecePhoto, WearLog, DocumentItem i WishlistItem. Schemat V1 pozostaje zamrożony; migracja V1 → V2 zachowuje zegarki, ceny, statusy i relacje zdjęć. Zgodność z przyszłą synchronizacją CloudKit nadal wymaga osobnej weryfikacji.
+CollectionSchemaV3 zawiera Timepiece, TimepiecePhoto, WearLog, DocumentItem i WishlistItem. Schematy V1 i V2 pozostają zamrożone; migracje V1 → V2 → V3 zachowują istniejące dane. V3 dodaje trwałą kolejność listy życzeń. Zgodność z przyszłą synchronizacją CloudKit nadal wymaga osobnej weryfikacji.
 
 ## Timepiece
 
@@ -32,7 +32,9 @@ PDF lub zdjęcie, lokalna kopia niezależna od źródła. Bez dokumentów wspó�
 
 ## WishlistItem
 
-`id`, `brand`, `modelName`, `createdAt`, `updatedAt`; opcjonalnie zdjęcie, `url`, `targetPrice`, `currencyCode`, `priority`, `notes`.
+`id`, `brand`, `modelName`, `createdAt`, `updatedAt`, `position`; opcjonalnie zdjęcie, `url`, `targetPrice`, `currencyCode`, `priority`, `notes`.
+
+Kolejność: priorytet malejąco, `position` rosnąco, następnie data utworzenia malejąco. Migracja zachowuje dotychczasowy porządek. Przeciąganie w trybie „Zmień kolejność” działa tylko w ramach priorytetu i poza wyszukiwaniem. Nowe życzenie lub zmiana priorytetu umieszcza wpis na początku grupy; edycja danych i cofnięcie dodania do kolekcji zachowują jego pozycję.
 
 Przeniesienie otwiera formularz z istniejącymi danymi. Dopiero pomyślne utworzenie zegarka usuwa element listy życzeń; anulowanie i błąd zachowują wpis oraz zdjęcie.
 

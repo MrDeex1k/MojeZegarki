@@ -12,6 +12,55 @@ final class FreeModuleUITests: XCTestCase {
         return app
     }
 
+    func testWishlistDragOrderPersistsAfterRelaunch() {
+        let app = launch()
+        XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+        app.tabBars.buttons["Wishlist"].tap()
+        for model in ["First", "Second", "Third"] {
+            app.buttons["wish.add"].tap()
+            focus(app.textFields["wish.brand"], in: app)
+            app.textFields["wish.brand"].typeText("Seiko")
+            focus(app.textFields["wish.model"], in: app)
+            app.textFields["wish.model"].typeText(model)
+            app.buttons["wish.save"].tap()
+            XCTAssertTrue(app.staticTexts[model].waitForExistence(timeout: 5))
+        }
+        let rows = app.cells.containing(.button, identifier: "Add to collection")
+        XCTAssertEqual(rows.count, 3)
+        XCTAssertTrue(rows.element(boundBy: 0).staticTexts["Third"].exists)
+        let reorder = app.buttons["wish.reorder"]
+        let addWish = app.buttons["wish.add"]
+        XCTAssertLessThan(reorder.frame.maxX, addWish.frame.minX)
+        let actions = rows.element(boundBy: 0).buttons.matching(
+            NSPredicate(format: "identifier BEGINSWITH %@", "wish.actions.")
+        ).firstMatch
+        XCTAssertEqual(actions.frame.midY, rows.element(boundBy: 0).frame.midY, accuracy: 2)
+        reorder.tap()
+        let source = rows.element(boundBy: 0)
+        let destination = rows.element(boundBy: 2)
+        source.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: 0.5)).press(
+            forDuration: 1,
+            thenDragTo: destination.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: 0.85)))
+        app.buttons["wish.reorder"].tap()
+        wait(
+            for: [
+                XCTNSPredicateExpectation(
+                    predicate: NSPredicate(format: "exists == true"),
+                    object: rows.element(boundBy: 2).staticTexts["Third"])
+            ], timeout: 5)
+        app.terminate()
+        app.launchArguments.removeAll { $0 == "--reset-test-store" }
+        app.launch()
+        app.tabBars.buttons["Wishlist"].tap()
+        XCTAssertTrue(rows.element(boundBy: 2).staticTexts["Third"].waitForExistence(timeout: 5))
+        XCTAssertTrue(rows.element(boundBy: 0).staticTexts["Second"].exists)
+        app.swipeDown()
+        XCTAssertTrue(app.searchFields.firstMatch.waitForExistence(timeout: 5))
+        app.searchFields.firstMatch.tap()
+        app.searchFields.firstMatch.typeText("Second")
+        XCTAssertFalse(app.buttons["wish.reorder"].exists)
+    }
+
     func testWishlistMoveCanBeCancelledThenCommittedAndWearPersists() {
         let app = launch()
         XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
@@ -76,7 +125,9 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).count, 0)
         app.buttons[todayID].tap()
         let logs = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log."))
-        for _ in 0..<3 where !logs.firstMatch.isHittable { app.swipeUp() }
+        let visibleLog = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isHittable == true"), object: logs.firstMatch)
+        wait(for: [visibleLog], timeout: 5)
         XCTAssertTrue(app.buttons["wear.add"].exists)
         XCTAssertEqual(logs.count, 1)
         app.buttons["Done"].tap()
@@ -84,7 +135,12 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["1 day worn"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).count, 0)
         app.buttons[todayID].tap()
-        app.swipeUp()
+        let tabLog = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).firstMatch
+        wait(
+            for: [
+                XCTNSPredicateExpectation(
+                    predicate: NSPredicate(format: "isHittable == true"), object: tabLog)
+            ], timeout: 5)
         XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).count, 1)
         app.terminate()
         app.launchArguments.removeAll { $0 == "--reset-test-store" }
@@ -138,6 +194,91 @@ final class FreeModuleUITests: XCTestCase {
         app.buttons.matching(identifier: "document.confirmDelete").firstMatch.tap()
         XCTAssertTrue(app.staticTexts["No documents yet"].waitForExistence(timeout: 5))
     }
+    func testWearCalendarRemainsStableAfterScrollingInSheet() {
+        let app = launch(extra: ["--test-wear-fixture"])
+        XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Calendar watch"].tap()
+        app.buttons["detail.wear"].tap()
+        let month = app.buttons["wear.month.title"]
+        XCTAssertTrue(month.waitForExistence(timeout: 5))
+        XCTAssertLessThan(
+            app.navigationBars["Wear overview"].frame.height, 80,
+            "The watch's wear sheet should use an inline title so scrolling cannot collapse a large header")
+        let hint = app.staticTexts["wear.calendarHint"]
+        for _ in 0..<3 {
+            app.swipeUp(velocity: .slow)
+            // Allow the scroll's deceleration to finish, then check for layout oscillation.
+            RunLoop.current.run(until: Date().addingTimeInterval(1))
+            let position = month.frame.minY
+            for _ in 0..<5 {
+                RunLoop.current.run(until: Date().addingTimeInterval(0.2))
+                XCTAssertEqual(month.frame.minY, position, accuracy: 1)
+            }
+            XCTAssertTrue(hint.isHittable, "The calendar hint should be reachable at the bottom of the sheet")
+            app.swipeDown(velocity: .slow)
+        }
+        let screenshot = XCTAttachment(screenshot: app.screenshot())
+        screenshot.name = "wear-calendar-after-scrolling"
+        screenshot.lifetime = .keepAlways
+        add(screenshot)
+    }
+
+    func testWearDaySelectionScrollsToEntriesAndEmptyState() {
+        let app = launch(extra: ["--test-wear-fixture"])
+        XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Calendar watch"].tap()
+        app.buttons["detail.wear"].tap()
+        XCTAssertTrue(app.buttons["wear.month.title"].waitForExistence(timeout: 5))
+
+        let calendar = Calendar(identifier: .gregorian)
+        let today = Date()
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today)!
+        let formatter = DateFormatter()
+        formatter.calendar = calendar
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd"
+        var displayedMonth = today
+        for date in [yesterday, today, yesterday, today] {
+            if !calendar.isDate(date, equalTo: displayedMonth, toGranularity: .month) {
+                app.buttons[date < displayedMonth ? "wear.month.previous" : "wear.month.next"].tap()
+                displayedMonth = date
+            }
+            app.buttons["wear.day.\(formatter.string(from: date))"].tap()
+            let target =
+                calendar.isDate(date, inSameDayAs: today)
+                ? app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).firstMatch
+                : app.staticTexts["No wear entries for this day"]
+            wait(
+                for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "isHittable == true"), object: target)],
+                timeout: 5)
+        }
+    }
+
+    func testWearSheetKeepsScrollingWithAccessibilityText() {
+        let app = launch(extra: [
+            "--test-wear-fixture", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL",
+        ])
+        XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Calendar watch"].tap()
+        app.buttons["detail.wear"].tap()
+        XCTAssertTrue(app.navigationBars["Wear overview"].waitForExistence(timeout: 5))
+
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd"
+        let today = app.buttons["wear.day.\(formatter.string(from: Date()))"]
+        for _ in 0..<20 {
+            if today.isHittable { break }
+            app.swipeUp()
+        }
+        XCTAssertTrue(today.isHittable, "Disabling bounce must not disable scrolling through a large calendar")
+        today.tap()
+        let entry = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).firstMatch
+        XCTAssertTrue(entry.waitForExistence(timeout: 5))
+        XCTAssertTrue(entry.isHittable, "The selected day's entry should still scroll into view")
+    }
+
     func testCalendarShowsSavedDaysAndCountsOnlyNewSelection() {
         let app = launch(extra: ["--test-wear-fixture"])
         XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))

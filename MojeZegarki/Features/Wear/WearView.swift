@@ -14,10 +14,12 @@ struct WearView: View {
     @State private var deleting: WearLog?
     @State private var showingStatistics = false
     @State private var selectedDay: String?
+    @State private var scrollRequest = UUID()
     @ScaledMetric(relativeTo: .title3) private var countFontSize = 20
     @State private var filterID: UUID?
     @State private var error: String?
     @State private var savedCount: Int?
+    @StateObject private var scrollBehavior = WearScrollBehavior()
     @Environment(\.dynamicTypeSize) private var typeSize
 
     init(store: CollectionStore, watch: Timepiece? = nil) {
@@ -117,23 +119,28 @@ struct WearView: View {
                             .listRowInsets(EdgeInsets())
                             .listRowBackground(Color.clear)
                     }
-                    Section("Wear calendar") {
+                    Section {
                         WearCalendar(
                             counts: Dictionary(
                                 uniqueKeysWithValues: days.map {
                                     ($0.day, Set($0.entries.compactMap { $0.timepiece?.id }).count)
                                 }), selectedDay: selectedDay, singleWatch: watch != nil || filterID != nil
-                        ) { selectedDay = $0 }
+                        ) {
+                            selectedDay = $0
+                            scrollRequest = UUID()
+                        }
+                    } header: {
+                        Text("Wear calendar")
+                    } footer: {
+                        if selectedDay == nil {
+                            Text("Select a day to see worn watches")
+                                .accessibilityIdentifier("wear.calendarHint")
+                        }
                     }
-                    Color.clear.frame(height: 1).listRowInsets(EdgeInsets()).listRowBackground(Color.clear)
-                        .environment(\.defaultMinListRowHeight, 0).id("wear.results")
-                    if selectedDay == nil {
-                        Text("Select a day to see worn watches")
-                            .font(.subheadline).foregroundStyle(.secondary)
-                            .listRowBackground(Color.clear)
-                    } else if !days.contains(where: { $0.day == selectedDay }) {
+                    if selectedDay != nil, !days.contains(where: { $0.day == selectedDay }) {
                         Text("No wear entries for this day")
                             .foregroundStyle(.secondary).listRowBackground(Color.clear)
+                            .id(selectedDay)
                     }
                     ForEach(days.filter { $0.day == selectedDay }, id: \.day) { group in
                         Section {
@@ -169,6 +176,7 @@ struct WearView: View {
                                             }
                                     }
                                     .accessibilityIdentifier("wear.log.\(log.id)")
+                                    .id("wear.result.\(log.id)")
                                     .swipeActions { Button("Delete", role: .destructive) { deleting = log } }
                                     .contextMenu {
                                         Button("Edit") { editing = log }
@@ -186,7 +194,9 @@ struct WearView: View {
                 }
             }
             .listSectionSpacing(12)
+            .scrollBounceBehavior(.basedOnSize)
             .navigationTitle(watch == nil ? Text("Wearing") : Text("Wear overview"))
+            .navigationBarTitleDisplayMode(watch == nil ? .large : .inline)
             .sheet(isPresented: $adding) {
                 WearEditorView(store: store, initialWatch: watch ?? watches.first { $0.id == filterID }) {
                     savedCount = $0
@@ -207,8 +217,25 @@ struct WearView: View {
                     self.deleting = nil
                 }
             }
-            .onChange(of: selectedDay) {
-                if selectedDay != nil { proxy.scrollTo("wear.results", anchor: .top) }
+            .task(id: scrollRequest) {
+                guard let selectedDay else { return }
+                await Task.yield()
+                let firstLog = filteredLogs.first { $0.calendarDay == selectedDay }
+                // A yield alone doesn't guarantee that List has inserted the new target.
+                // Retry briefly; a newer selection or leaving the view cancels this request.
+                for attempt in 0..<3 {
+                    if attempt > 0 {
+                        do { try await Task.sleep(for: .milliseconds(100)) } catch { return }
+                    }
+                    guard !Task.isCancelled, self.selectedDay == selectedDay else { return }
+                    withAnimation {
+                        if let firstLog {
+                            proxy.scrollTo("wear.result.\(firstLog.id)", anchor: .top)
+                        } else {
+                            proxy.scrollTo(Optional(selectedDay), anchor: .top)
+                        }
+                    }
+                }
             }
             .onChange(of: filterID) { selectedDay = nil }
             .alert(
@@ -240,5 +267,71 @@ struct WearView: View {
         .disabled(watches.isEmpty)
         .opacity(watches.isEmpty ? 0.5 : 1)
         .accessibilityIdentifier("wear.add")
+        .background {
+            if watch != nil {
+                WearScrollAnchor(behavior: scrollBehavior).frame(width: 0, height: 0)
+            }
+        }
+    }
+}
+
+/// Keep normal scrolling, but prevent elastic overscroll in the watch's wear sheet.
+/// SwiftUI's basedOnSize still bounces when content exceeds the viewport by a few points.
+@MainActor private final class WearScrollBehavior: ObservableObject {
+    private weak var scrollView: UIScrollView?
+    private var observation: NSKeyValueObservation?
+
+    func attach(to scrollView: UIScrollView) {
+        guard self.scrollView !== scrollView else {
+            scrollView.bounces = false
+            return
+        }
+        observation = nil
+        self.scrollView = scrollView
+        scrollView.bounces = false
+        // SwiftUI can reapply its scroll configuration after selection or layout changes.
+        // Retain this observation for the view's lifetime, including when the anchor's row is recycled.
+        observation = scrollView.observe(\.bounces, options: [.new]) { scrollView, _ in
+            MainActor.assumeIsolated {
+                if scrollView.bounces { scrollView.bounces = false }
+            }
+        }
+    }
+}
+
+private struct WearScrollAnchor: UIViewRepresentable {
+    let behavior: WearScrollBehavior
+
+    func makeUIView(context: Context) -> AnchorView {
+        let view = AnchorView()
+        view.behavior = behavior
+        view.isUserInteractionEnabled = false
+        return view
+    }
+
+    func updateUIView(_ uiView: AnchorView, context: Context) {
+        uiView.behavior = behavior
+        // Apply after SwiftUI finishes updating the containing list.
+        DispatchQueue.main.async { [weak uiView] in uiView?.attach() }
+    }
+
+    final class AnchorView: UIView {
+        weak var behavior: WearScrollBehavior?
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            attach()
+        }
+
+        func attach() {
+            var ancestor = superview
+            while let view = ancestor {
+                if let scrollView = view as? UIScrollView {
+                    behavior?.attach(to: scrollView)
+                    return
+                }
+                ancestor = view.superview
+            }
+        }
     }
 }
