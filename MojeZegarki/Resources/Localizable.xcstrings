@@ -1,6 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "The wishlist changed. Try reordering again." : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista życzeń uległa zmianie. Spróbuj ponownie zmienić kolejność."
+          }
+        }
+      }
+    },
+    "Reorder" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmień kolejność"
+          }
+        }
+      }
+    },
     "%@ %@" : {
       "extractionState" : "manual",
       "localizations" : {

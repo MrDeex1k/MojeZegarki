@@ -17,6 +17,79 @@ final class FreeModuleTests: XCTestCase {
         return try store.save(draft)
     }
 
+    func testWishlistOrderPersistsWithinPriorityAndSurvivesUndo() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        var ids: [UUID] = []
+        try autoreleasepool {
+            let store = try CollectionStore(directory: root)
+            var draft = WishlistDraft()
+            draft.brand = "Seiko"
+            draft.priority = .high
+            for model in ["A", "B", "C"] {
+                draft.modelName = model
+                ids.append(try store.saveWish(draft).id)
+            }
+            draft.priority = .low
+            draft.modelName = "D"
+            let other = try store.saveWish(draft)
+            let otherPosition = other.position
+            XCTAssertThrowsError(try store.reorderWishes([ids[0], other.id], priority: .high))
+            XCTAssertThrowsError(try store.reorderWishes([ids[0], ids[0], ids[1]], priority: .high))
+            try store.reorderWishes([ids[1], ids[2], ids[0]], priority: .high)
+            XCTAssertEqual(other.position, otherPosition)
+            let item = try XCTUnwrap(store.context.fetch(FetchDescriptor<WishlistItem>()).first { $0.id == ids[2] })
+            let undo = try store.moveWish(item)
+            try store.undoWishMove(undo)
+        }
+        let reopened = try CollectionStore(directory: root)
+        let high = try reopened.context.fetch(
+            FetchDescriptor<WishlistItem>(
+                predicate: #Predicate { $0.priority == 3 }, sortBy: [SortDescriptor(\.position)]))
+        XCTAssertEqual(high.map(\.id), [ids[1], ids[2], ids[0]])
+        var edited = WishlistDraft(item: high[0])
+        edited.notes = "Changed details"
+        try reopened.saveWish(edited, editing: high[0])
+        XCTAssertEqual(high[0].position, 0)
+        edited.priority = .low
+        try reopened.saveWish(edited, editing: high[0])
+        let low = try reopened.context.fetch(
+            FetchDescriptor<WishlistItem>(
+                predicate: #Predicate { $0.priority == 1 }, sortBy: [SortDescriptor(\.position)]))
+        XCTAssertEqual(low.first?.id, ids[1])
+    }
+
+    func testV2MigrationPreservesWishlistAndInitialOrder() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        try autoreleasepool {
+            let schema = Schema(versionedSchema: CollectionSchemaV2.self)
+            let config = ModelConfiguration(
+                schema: schema, url: root.appendingPathComponent("collection.store"), cloudKitDatabase: .none)
+            let container = try ModelContainer(for: schema, configurations: [config])
+            for (index, model) in ["Older", "Newer"].enumerated() {
+                let item = CollectionSchemaV2.WishlistItem(brand: "Seiko", modelName: model)
+                item.priority = 3
+                item.createdAt = Date(timeIntervalSince1970: Double(index))
+                item.targetPrice = "123.45"
+                container.mainContext.insert(item)
+            }
+            let watch = CollectionSchemaV2.Timepiece(brand: "Casio", modelName: "Legacy")
+            container.mainContext.insert(watch)
+            container.mainContext.insert(CollectionSchemaV2.WearLog(day: "2026-10-01", timepiece: watch))
+            try container.mainContext.save()
+        }
+        let migrated = try CollectionStore(directory: root)
+        let items = try migrated.context.fetch(
+            FetchDescriptor<WishlistItem>(sortBy: [
+                SortDescriptor(\.position), SortDescriptor(\.createdAt, order: .reverse),
+            ]))
+        XCTAssertEqual(items.map(\.modelName), ["Newer", "Older"])
+        XCTAssertTrue(items.allSatisfy { $0.priority == 3 && $0.targetPrice == "123.45" && $0.position == 0 })
+        let log = try XCTUnwrap(migrated.context.fetch(FetchDescriptor<WearLog>()).first)
+        XCTAssertEqual(log.calendarDay, "2026-10-01")
+        XCTAssertEqual(log.timepiece?.modelName, "Legacy")
+    }
+
     func testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches() throws {
         let a = UUID()
         let b = UUID()

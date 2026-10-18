@@ -16,7 +16,7 @@ final class CollectionStore {
             )
             .appendingPathComponent("MojeZegarki", isDirectory: true)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
-        let schema = Schema(versionedSchema: CollectionSchemaV2.self)
+        let schema = Schema(versionedSchema: CollectionSchemaV3.self)
         let configuration: ModelConfiguration
         if inMemory {
             configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
@@ -79,6 +79,7 @@ final class CollectionStore {
 
     struct WishMoveUndo {
         let originalID: UUID
+        let position: Int
         let createdAt: Date
         let updatedAt: Date
         let draft: WishlistDraft
@@ -92,9 +93,10 @@ final class CollectionStore {
         let id = item.id
         let createdAt = item.createdAt
         let updatedAt = item.updatedAt
+        let position = item.position
         let watch = try save(draft.purchaseDraft, moving: item, locale: locale)
         return WishMoveUndo(
-            originalID: id, createdAt: createdAt, updatedAt: updatedAt, draft: draft,
+            originalID: id, position: position, createdAt: createdAt, updatedAt: updatedAt, draft: draft,
             watchID: watch.id, watchUpdatedAt: watch.updatedAt)
     }
 
@@ -119,6 +121,7 @@ final class CollectionStore {
         wish.currencyCode = undo.draft.currencyCode.nilIfEmpty
         wish.url = undo.draft.url.nilIfEmpty
         wish.priority = undo.draft.priority.rawValue
+        wish.position = undo.position
         wish.notes = undo.draft.notes.nilIfEmpty
         wish.photoID = undo.draft.photo?.id
         wish.photoFilename = undo.draft.photo?.filename
@@ -227,6 +230,12 @@ final class CollectionStore {
         item.targetPrice = price
         item.currencyCode = price == nil ? nil : draft.currencyCode
         item.url = url
+        if existing == nil || item.priority != draft.priority.rawValue {
+            let priority = draft.priority.rawValue
+            let peers = try context.fetch(
+                FetchDescriptor<WishlistItem>(predicate: #Predicate { $0.priority == priority }))
+            item.position = (peers.filter { $0.id != item.id }.map(\.position).min() ?? 0) - 1
+        }
         item.priority = draft.priority.rawValue
         item.notes = draft.notes.nilIfEmpty
         item.photoID = draft.photo?.id
@@ -234,6 +243,21 @@ final class CollectionStore {
         item.updatedAt = .now
         try persistChanges()
         return item
+    }
+
+    /// Only a complete priority group can be reordered; filtered lists cannot hide peers.
+    func reorderWishes(_ orderedIDs: [UUID], priority: WishlistPriority) throws {
+        let rawPriority = priority.rawValue
+        let peers = try context.fetch(
+            FetchDescriptor<WishlistItem>(predicate: #Predicate { $0.priority == rawPriority }))
+        guard orderedIDs.count == peers.count, Set(orderedIDs) == Set(peers.map(\.id)) else {
+            throw WishlistError.invalidOrder
+        }
+        let byID = Dictionary(uniqueKeysWithValues: peers.map { ($0.id, $0) })
+        for (position, id) in orderedIDs.enumerated() {
+            byID[id]?.position = position
+        }
+        try persistChanges()
     }
 
     func deleteWish(_ item: WishlistItem) async throws {

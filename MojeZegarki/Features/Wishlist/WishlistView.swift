@@ -6,10 +6,12 @@ struct WishlistView: View {
     let store: CollectionStore
     var showCollection: () -> Void = {}
     @Environment(\.dynamicTypeSize) private var typeSize
+    @State private var editMode: EditMode = .inactive
     @State private var movedName: String?
     @State private var undoMove: CollectionStore.WishMoveUndo?
     @Query(sort: [
         SortDescriptor(\WishlistItem.priority, order: .reverse),
+        SortDescriptor(\WishlistItem.position),
         SortDescriptor(\WishlistItem.createdAt, order: .reverse),
     ]) private var items: [WishlistItem]
     @Environment(\.locale) private var locale
@@ -43,70 +45,102 @@ struct WishlistView: View {
                         ContentUnavailableView.search(text: search)
                     }
                 } else {
-                    List(visible) { item in
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack(spacing: 12) {
-                                Button {
-                                    editing = item
-                                } label: {
-                                    (typeSize.isAccessibilitySize
-                                        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
-                                        : AnyLayout(HStackLayout(spacing: 12))) {
-                                            PhotoView(photo: item.photo, store: store.photoStore)
-                                                .frame(width: 70, height: 88).clipShape(
-                                                    RoundedRectangle(cornerRadius: 10))
-                                            VStack(alignment: .leading, spacing: 4) {
-                                                Text(item.brand).font(.subheadline).foregroundStyle(.secondary)
-                                                Text(item.modelName).font(.headline).foregroundStyle(.primary)
-                                                if let amount = item.targetPrice.flatMap({
-                                                    Decimal(string: $0, locale: Locale(identifier: "en_US_POSIX"))
-                                                }), let currency = item.currencyCode {
-                                                    Text(amount.formatted(.currency(code: currency))).font(.subheadline)
-                                                        .foregroundStyle(.secondary)
+                    List {
+                        ForEach(WishlistPriority.allCases.reversed()) { priority in
+                            let group = visible.filter { $0.priority == priority.rawValue }
+                            if !group.isEmpty {
+                                Section {
+                                    ForEach(group) { item in
+                                        HStack(spacing: 12) {
+                                            VStack(alignment: .leading, spacing: 12) {
+                                                Button {
+                                                    editing = item
+                                                } label: {
+                                                    (typeSize.isAccessibilitySize
+                                                        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+                                                        : AnyLayout(HStackLayout(spacing: 12))) {
+                                                            PhotoView(photo: item.photo, store: store.photoStore)
+                                                                .frame(width: 70, height: 88).clipShape(
+                                                                    RoundedRectangle(cornerRadius: 10))
+                                                            VStack(alignment: .leading, spacing: 4) {
+                                                                Text(item.brand).font(.subheadline).foregroundStyle(
+                                                                    .secondary)
+                                                                Text(item.modelName).font(.headline).foregroundStyle(
+                                                                    .primary)
+                                                                if let amount = item.targetPrice.flatMap({
+                                                                    Decimal(
+                                                                        string: $0,
+                                                                        locale: Locale(identifier: "en_US_POSIX"))
+                                                                }), let currency = item.currencyCode {
+                                                                    Text(amount.formatted(.currency(code: currency)))
+                                                                        .font(.subheadline)
+                                                                        .foregroundStyle(.secondary)
+                                                                }
+                                                                if let priority = WishlistPriority(
+                                                                    rawValue: item.priority),
+                                                                    priority != .unspecified
+                                                                {
+                                                                    Text(priority.title).font(.caption).foregroundStyle(
+                                                                        .secondary)
+                                                                }
+                                                            }
+                                                        }
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
                                                 }
-                                                if let priority = WishlistPriority(rawValue: item.priority),
-                                                    priority != .unspecified
-                                                {
-                                                    Text(priority.title).font(.caption).foregroundStyle(.secondary)
+                                                .buttonStyle(.plain)
+                                                .accessibilityIdentifier("wish.\(item.id)")
+                                                Button("Add to collection", systemImage: "plus.circle.fill") {
+                                                    do {
+                                                        let name = "\(item.brand) \(item.modelName)"
+                                                        undoMove = try store.moveWish(item)
+                                                        movedName = name
+                                                    } catch { self.error = error.localizedDescription }
                                                 }
+                                                .buttonStyle(.bordered)
+                                                .accessibilityIdentifier("wish.quickMove.\(item.id)")
                                             }
+                                            Menu {
+                                                Button("Edit", systemImage: "pencil") { editing = item }
+                                                Button("Complete details and add", systemImage: "plus.circle") {
+                                                    moving = item
+                                                }
+                                                .accessibilityIdentifier("wish.move")
+                                                if let rawURL = item.url, let url = URL(string: rawURL),
+                                                    ["http", "https"].contains(url.scheme?.lowercased() ?? "")
+                                                {
+                                                    Link("Open link", destination: url)
+                                                }
+                                                Button("Delete", systemImage: "trash", role: .destructive) {
+                                                    deleting = item
+                                                }
+                                            } label: {
+                                                Image(systemName: "ellipsis.circle").font(.title2).frame(
+                                                    width: 44, height: 44)
+                                            }
+                                            .buttonStyle(.borderless)
+                                            .accessibilityLabel("Watch actions")
+                                            .accessibilityIdentifier("wish.actions.\(item.id)")
                                         }
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .buttonStyle(.plain)
-                                .accessibilityIdentifier("wish.\(item.id)")
-                                Menu {
-                                    Button("Edit", systemImage: "pencil") { editing = item }
-                                    Button("Complete details and add", systemImage: "plus.circle") { moving = item }
-                                        .accessibilityIdentifier("wish.move")
-                                    if let rawURL = item.url, let url = URL(string: rawURL),
-                                        ["http", "https"].contains(url.scheme?.lowercased() ?? "")
-                                    {
-                                        Link("Open link", destination: url)
+                                        .swipeActions {
+                                            Button("Delete", role: .destructive) { deleting = item }
+                                            Button("Edit") { editing = item }
+                                        }
+                                        .moveDisabled(!search.trimmed.isEmpty)
                                     }
-                                    Button("Delete", systemImage: "trash", role: .destructive) { deleting = item }
-                                } label: {
-                                    Image(systemName: "ellipsis.circle").font(.title2).frame(width: 44, height: 44)
+                                    .onMove { source, destination in
+                                        var reordered = group
+                                        reordered.move(fromOffsets: source, toOffset: destination)
+                                        do {
+                                            try store.reorderWishes(reordered.map(\.id), priority: priority)
+                                        } catch { self.error = error.localizedDescription }
+                                    }
+                                } header: {
+                                    Text(priority.title)
                                 }
-                                .buttonStyle(.borderless)
-                                .accessibilityLabel("Watch actions")
-                                .accessibilityIdentifier("wish.actions.\(item.id)")
                             }
-                            Button("Add to collection", systemImage: "plus.circle.fill") {
-                                do {
-                                    let name = "\(item.brand) \(item.modelName)"
-                                    undoMove = try store.moveWish(item)
-                                    movedName = name
-                                } catch { self.error = error.localizedDescription }
-                            }
-                            .buttonStyle(.bordered)
-                            .accessibilityIdentifier("wish.quickMove.\(item.id)")
-                        }
-                        .swipeActions {
-                            Button("Delete", role: .destructive) { deleting = item }
-                            Button("Edit") { editing = item }
                         }
                     }
+                    .environment(\.editMode, $editMode)
                 }
             }
             .safeAreaInset(edge: .bottom) {
@@ -134,8 +168,20 @@ struct WishlistView: View {
             }
             .navigationTitle("Wishlist")
             .searchable(text: $search, prompt: "Search brand or model")
+            .onChange(of: search) { if !search.trimmed.isEmpty { editMode = .inactive } }
             .toolbar {
-                Button("Add to wishlist", systemImage: "plus") { adding = true }.accessibilityIdentifier("wish.add")
+                ToolbarItem(placement: .topBarLeading) {
+                    if items.count > 1 && search.trimmed.isEmpty {
+                        Button(editMode.isEditing ? "Done" : "Reorder") {
+                            withAnimation { editMode = editMode.isEditing ? .inactive : .active }
+                        }
+                        .accessibilityIdentifier("wish.reorder")
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add to wishlist", systemImage: "plus") { adding = true }
+                        .accessibilityIdentifier("wish.add")
+                }
             }
             .sheet(isPresented: $adding) { WishlistEditorView(store: store) }
             .sheet(item: $editing) { WishlistEditorView(store: store, item: $0) }

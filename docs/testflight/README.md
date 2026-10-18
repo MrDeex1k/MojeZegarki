@@ -1,4 +1,38 @@
-# TestFlight 0.8.0 — przygotowanie dystrybucji
+# TestFlight — stan dystrybucji
+
+## Wersja 0.8.6 (7) — wysłana 18.10.2026
+
+- Numer wersji zwiększono z `0.8.5` do `0.8.6`, a numer buildu z `6` do `7` w Debug i Release.
+- Usunięto dwa opisy spod kalendarza dodawania dni noszenia.
+- W widoku noszenia otwieranym przez zegarek wyłączono sprężynowanie natywnej listy, zachowując przewijanie. Arkusz ma stały mały nagłówek, a instrukcja wyboru dnia jest stopką kalendarza.
+- Porównanie na symulatorze iPhone 15 Pro / iOS 27.0, z historią 140 dni (14 w październiku): po naprawie zarejestrowano 0 punktów przekroczenia granic przewijania. Nagranie: `.build/wear-ab-proof/po-naprawie.mp4`.
+- Weryfikacja: 23 testy jednostkowe bez błędów; 3 testy UI poprawki przeszły na iPhone 15 Pro / iOS 27.0, obejmując przewijanie, zapis dni i dostęp do wpisu przy największej czcionce.
+- Podpisane archiwum Release: `.build/MojeZegarki-0.8.6-7.xcarchive`. Zweryfikowano identyfikator aplikacji, wersję, build i podpis; Xcode potwierdził `ARCHIVE SUCCEEDED`.
+- Wysyłka zakończyła się `Upload succeeded` / `EXPORT SUCCEEDED` o 19:40 czasu polskiego. Apple rozpoczęło przetwarzanie pakietu; nie potwierdzono jeszcze zakończenia przetwarzania ani dostępności dla testerów.
+- Nie zgłaszano buildu do Beta App Review ani nie przydzielano go do grup testerów — te kroki wykonuje właściciel.
+- Logi: `.build/testflight-0.8.6-7-archive.log`, `.build/testflight-0.8.6-7-upload.log`, `.build/testflight-0.8.6-7-unit.log`.
+
+## Wersja 0.8.5 (6) — wysłana 12.10.2026
+
+- Numer wersji zwiększono z `0.8.4` do `0.8.5`, a numer buildu z `5` do `6` w Debug i Release.
+- Rozdzielono przyciski zmiany kolejności i dodawania na Liście Życzeń.
+- Menu „…” wyśrodkowano względem całego wiersza, wraz z przyciskiem „Dodaj do kolekcji”.
+- Kalendarz noszenia mierzy cały miesiąc od razu, aby ustabilizować wysokość wiersza podczas przewijania.
+- Weryfikacja na iPhone 18 Pro / iOS 27: 23 testy jednostkowe i 4 testy UI, bez błędów; test UI obejmuje stabilność kalendarza po przewijaniu, rozdzielenie przycisków i wyrównanie menu.
+- Podpisane archiwum Release: `.build/MojeZegarki-0.8.5-6.xcarchive`; numer wersji, build i podpis zweryfikowane. Xcode potwierdził `ARCHIVE SUCCEEDED`.
+
+- Wysyłka zakończyła się `Upload succeeded` / `EXPORT SUCCEEDED` o 11:55 czasu polskiego. Apple rozpoczęło przetwarzanie pakietu; dostępność dla testerów nie została jeszcze potwierdzona.
+- Logi: `.build/testflight-0.8.5-6-archive.log`, `.build/testflight-0.8.5-6-upload.log`, `.build/testflight-0.8.5-6-unit.log`.
+
+## Wersja 0.8.3 (4) — wysłana 3.10.2026
+
+- Zbudowano podpisane archiwum Release z `main` (`4046430`) po zmianie wersji aplikacji na `0.8.3` i numeru buildu na `4` w Debug i Release.
+- Xcode potwierdził `ARCHIVE SUCCEEDED`, poprawny podpis oraz `Upload succeeded` / `EXPORT SUCCEEDED` o 15:28 czasu polskiego. Apple rozpoczęło przetwarzanie pakietu; nie potwierdzono jeszcze zakończenia przetwarzania ani dostępności dla testerów.
+- Archiwum lokalne: `.build/MojeZegarki-0.8.3-4.xcarchive`. Logi: `.build/testflight-0.8.3-4-archive.log` oraz `.build/testflight-0.8.3-4-upload.log`.
+- Dalsze kroki w App Store Connect, w tym ewentualne informacje eksportowe i przypisanie buildu do grup testerów, wykonuje właściciel.
+- Historia dystrybucji starszego archiwum Xcode potwierdza również udaną wysyłkę `0.8.2 (3)` 22.09.2026. Poniższe informacje o oczekiwaniu buildu 3 na wysłanie są historyczne.
+
+## Przygotowanie pierwszej bety — informacje historyczne
 
 Stan przygotowania: 22.09.2026. Celem jest zamknięta beta dla 15–20 osób, początkowo 3 testerów. Nie zgłaszamy jeszcze publicznej wersji do App Store.
 
