@@ -4,7 +4,7 @@ Data: 19 października 2026. Branch: `audit/app-review`. Kod bazowy: `6efe09d7a5
 
 Najpierw warto naprawić czytelność notatek i etykiety dostępności, następnie domknąć ścieżki błędów zapisu i sprzątania plików. Obecny podział na `App`, `Domain`, `Persistence`, `Services` i `Features` jest sensowny. Proponowane porządki rozwijają ten układ; nie wymagają migracji do innego frameworka ani dodania warstw dla hipotetycznego backendu.
 
-Raport zawiera propozycje, nie wdrożone poprawki. P0 oznacza blokadę podstawowego zadania lub utratę danych, P1 istotne utrudnienie bez praktycznego obejścia, P2 problem z obejściem lub ograniczoną ekspozycją, P3 usprawnienie utrzymania. Nie potwierdzono P0 ani P1. Ryzyka modelu zagrożeń mają osobną skalę i nie są automatycznie potwierdzonymi podatnościami.
+Raport opisuje stan wyjściowy i pierwotne propozycje. Aktualny zakres wdrożenia i ograniczenia weryfikacji opisuje [IMPLEMENTATION.md](IMPLEMENTATION.md). P0 oznacza blokadę podstawowego zadania lub utratę danych, P1 istotne utrudnienie bez praktycznego obejścia, P2 problem z obejściem lub ograniczoną ekspozycją, P3 usprawnienie utrzymania. Nie potwierdzono P0 ani P1. Ryzyka modelu zagrożeń mają osobną skalę i nie są automatycznie potwierdzonymi podatnościami.
 
 ## Zakres i dowody
 

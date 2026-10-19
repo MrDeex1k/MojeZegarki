@@ -1,0 +1,2436 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project MojeZegarki.xcodeproj -scheme MojeZegarki -destination "platform=iOS Simulator,id=10C18B34-55BD-45C9-8308-6181BFAAF040" -derivedDataPath /tmp/MojeZegarki-audit-build -resultBundlePath /tmp/MojeZegarki-complete17.xcresult -enableCodeCoverage NO -collect-test-diagnostics never -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+Writing result bundle at path:
+	/tmp/MojeZegarki-complete17.xcresult
+
+2026-10-19 19:38:08.961 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+Test Suite 'All tests' started at 2026-10-19 19:38:09.904.
+Test Suite 'MojeZegarkiTests.xctest' started at 2026-10-19 19:38:09.904.
+Test Suite 'AppLockTests' started at 2026-10-19 19:38:09.904.
+Test Case '-[MojeZegarkiTests.AppLockTests testBackgroundInvalidatesPendingSuccessAndDeduplicatesRequests]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testBackgroundInvalidatesPendingSuccessAndDeduplicatesRequests]' passed (0.013 seconds).
+Test Case '-[MojeZegarkiTests.AppLockTests testCancellingPendingAuthenticationResumesContinuation]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testCancellingPendingAuthenticationResumesContinuation]' passed (0.016 seconds).
+Test Case '-[MojeZegarkiTests.AppLockTests testEnableUnlockAndDisableRequireAuthentication]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testEnableUnlockAndDisableRequireAuthentication]' passed (0.003 seconds).
+Test Case '-[MojeZegarkiTests.AppLockTests testReloadedPreferencesRestoreEnabledLock]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testReloadedPreferencesRestoreEnabledLock]' passed (0.002 seconds).
+Test Suite 'AppLockTests' passed at 2026-10-19 19:38:09.939.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.034 (0.035) seconds
+Test Suite 'CollectionTests' started at 2026-10-19 19:38:09.940.
+Test Case '-[MojeZegarkiTests.CollectionTests testArchiveRestoreAndCascadeDeletionWithPhotos]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testArchiveRestoreAndCascadeDeletionWithPhotos]' passed (0.139 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testDiskPersistenceAndEditingWithoutAutosave]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testDiskPersistenceAndEditingWithoutAutosave]' passed (0.014 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testNewDraftCurrencyFollowsLanguageAndPreservesExistingSelection]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testNewDraftCurrencyFollowsLanguageAndPreservesExistingSelection]' passed (0.012 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testPhotoEncodingThumbnailAndRecoveryOfUnreferencedFiles]' started.
+2026-10-19 19:38:10.313229+0200 MojeZegarki[3807:1976584] [MojeZegarki] CGImageSourceCreateThumbnailAtIndex:4592: *** ERROR: CGImageSourceCreateThumbnailAtIndex[0] - '....' - failed to create thumbnail [-50] {alw:1, abs: 0 tra:1 max:2400}
+Test Case '-[MojeZegarkiTests.CollectionTests testPhotoEncodingThumbnailAndRecoveryOfUnreferencedFiles]' passed (0.209 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testRemovingMainPhotoChoosesRemainingPhoto]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testRemovingMainPhotoChoosesRemainingPhoto]' passed (0.221 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testRequiredFieldsAndExactLocalizedMoney]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testRequiredFieldsAndExactLocalizedMoney]' passed (0.001 seconds).
+Test Suite 'CollectionTests' passed at 2026-10-19 19:38:10.538.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.597 (0.599) seconds
+Test Suite 'DocumentComplexityTests' started at 2026-10-19 19:38:10.538.
+Test Case '-[MojeZegarkiTests.DocumentComplexityTests testMultipagePDFImportAndPreviewPreparation]' started.
+PDF_COMPLEXITY pages=1 bytes=6344 import=0.001343958 seconds previewAndFirstPage=0.000764958 seconds
+PDF_COMPLEXITY pages=100 bytes=52533 import=0.000737458 seconds previewAndFirstPage=0.000427666 seconds
+PDF_COMPLEXITY pages=1000 bytes=472893 import=0.002115708 seconds previewAndFirstPage=0.001309167 seconds
+Test Case '-[MojeZegarkiTests.DocumentComplexityTests testMultipagePDFImportAndPreviewPreparation]' passed (0.044 seconds).
+Test Case '-[MojeZegarkiTests.DocumentComplexityTests testPDFByteBoundaryAndCancelledImportDoNotLeaveFiles]' started.
+Test Case '-[MojeZegarkiTests.DocumentComplexityTests testPDFByteBoundaryAndCancelledImportDoNotLeaveFiles]' passed (0.107 seconds).
+Test Suite 'DocumentComplexityTests' passed at 2026-10-19 19:38:10.690.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.151 (0.152) seconds
+Test Suite 'DraftAssetSessionTests' started at 2026-10-19 19:38:10.690.
+Test Case '-[MojeZegarkiTests.DraftAssetSessionTests testCancelledImportCleansLateResultWithoutStagingIt]' started.
+Test Case '-[MojeZegarkiTests.DraftAssetSessionTests testCancelledImportCleansLateResultWithoutStagingIt]' passed (0.001 seconds).
+Test Case '-[MojeZegarkiTests.DraftAssetSessionTests testClosingDraftReleasesOnlyItsStagedFiles]' started.
+Test Case '-[MojeZegarkiTests.DraftAssetSessionTests testClosingDraftReleasesOnlyItsStagedFiles]' passed (0.001 seconds).
+Test Case '-[MojeZegarkiTests.DraftAssetSessionTests testCommitKeepsRetainedAssetAndRemovesReplacedAndUnusedAssets]' started.
+Test Case '-[MojeZegarkiTests.DraftAssetSessionTests testCommitKeepsRetainedAssetAndRemovesReplacedAndUnusedAssets]' passed (0.001 seconds).
+Test Suite 'DraftAssetSessionTests' passed at 2026-10-19 19:38:10.693.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'FreeModuleTests' started at 2026-10-19 19:38:10.693.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBoundedPhotoReadRejectsOversizedFiles]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBoundedPhotoReadRejectsOversizedFiles]' passed (0.007 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearRejectsWholeSelectionBeforeMakingChanges]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearRejectsWholeSelectionBeforeMakingChanges]' passed (0.017 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearSkipsDuplicatesAndPersistsAcrossReopen]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearSkipsDuplicatesAndPersistsAcrossReopen]' passed (0.017 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentImageConversionPreservesReadableResolution]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentImageConversionPreservesReadableResolution]' passed (0.153 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentsPrivateCopyDuplicatesLimitsAndCascade]' started.
+2026-10-19 19:38:10.917296+0200 MojeZegarki[3807:1976583] [MojeZegarki] CGImageSourceCreateThumbnailAtIndex:4592: *** ERROR: CGImageSourceCreateThumbnailAtIndex[0] - '....' - failed to create thumbnail [-50] {alw:1, abs: 0 tra:1 max:4000}
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentsPrivateCopyDuplicatesLimitsAndCascade]' passed (0.031 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testQuickMoveUndoRestoresWishAndRefusesToDiscardLaterWear]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testQuickMoveUndoRestoresWishAndRefusesToDiscardLaterWear]' passed (0.016 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testStatisticsAtCollectionScale]' started.
+STATISTICS 1000: optimized=0.000817791 seconds, baseline=0.026901375 seconds
+STATISTICS 10000: optimized=0.006916584 seconds, baseline=0.266802166 seconds
+STATISTICS 50000: optimized=0.032383125 seconds, baseline=1.322621084 seconds
+Test Case '-[MojeZegarkiTests.FreeModuleTests testStatisticsAtCollectionScale]' passed (1.671 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV1MigrationPreservesWatchPhotoAndPurchase]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV1MigrationPreservesWatchPhotoAndPurchase]' passed (0.571 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV2MigrationPreservesWishlistAndInitialOrder]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV2MigrationPreservesWishlistAndInitialOrder]' passed (0.029 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearDayTimeZonesAndInvalidCalendarDates]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearDayTimeZonesAndInvalidCalendarDates]' passed (0.003 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearIdempotenceEditingArchiveAndCascade]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearIdempotenceEditingArchiveAndCascade]' passed (0.019 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsCalendarDaysAcrossDSTAndEmptyPeriod]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsCalendarDaysAcrossDSTAndEmptyPeriod]' passed (0.001 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches]' passed (0.000 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistOrderPersistsWithinPriorityAndSurvivesUndo]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistOrderPersistsWithinPriorityAndSurvivesUndo]' passed (0.022 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistValidationAndAtomicConversionPreservesPhoto]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistValidationAndAtomicConversionPreservesPhoto]' passed (0.030 seconds).
+Test Suite 'FreeModuleTests' passed at 2026-10-19 19:38:13.285.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 2.588 (2.592) seconds
+Test Suite 'StorageProtectionTests' started at 2026-10-19 19:38:13.285.
+Test Case '-[MojeZegarkiTests.StorageProtectionTests testCompleteProtectionMetadataOnPhysicalDevice]' started.
+/Users/jakubbatycki/KOD/MojeZegarki/Tests/StorageProtectionTests.swift:50: -[MojeZegarkiTests.StorageProtectionTests testCompleteProtectionMetadataOnPhysicalDevice] : Test skipped - Simulator does not expose NSFileProtectionKey. Run on an iPhone with a device passcode.
+Test Case '-[MojeZegarkiTests.StorageProtectionTests testCompleteProtectionMetadataOnPhysicalDevice]' skipped (0.002 seconds).
+Test Case '-[MojeZegarkiTests.StorageProtectionTests testExistingAndNewCollectionFilesRemainReadableAndKeepBackup]' started.
+2026-10-19 19:38:13.320801+0200 MojeZegarki[3807:1976589] [logging] BUG IN CLIENT OF libsqlite3.dylib: database integrity compromised by API violation: vnode unlinked while in use: /Users/jakubbatycki/Library/Developer/CoreSimulator/Devices/10C18B34-55BD-45C9-8308-6181BFAAF040/data/Containers/Data/Application/1552632D-D40E-4BFF-AF88-D85A2B5E2E05/tmp/50D2E0F4-0F07-43E9-B5C9-E874F41EB87E/collection.store
+2026-10-19 19:38:13.320828+0200 MojeZegarki[3807:1976611] [logging] BUG IN CLIENT OF libsqlite3.dylib: database integrity compromised by API violation: vnode unlinked while in use: /Users/jakubbatycki/Library/Developer/CoreSimulator/Devices/10C18B34-55BD-45C9-8308-6181BFAAF040/data/Containers/Data/Application/1552632D-D40E-4BFF-AF88-D85A2B5E2E05/tmp/50D2E0F4-0F07-43E9-B5C9-E874F41EB87E/collection.store-wal
+2026-10-19 19:38:13.320942+0200 MojeZegarki[3807:1976589] [logging] invalidated open fd: 75 (0x11)
+2026-10-19 19:38:13.320943+0200 MojeZegarki[3807:1976611] [logging] invalidated open fd: 76 (0x11)
+2026-10-19 19:38:13.321213+0200 MojeZegarki[3807:1976611] [logging] BUG IN CLIENT OF libsqlite3.dylib: database integrity compromised by API violation: vnode unlinked while in use: /Users/jakubbatycki/Library/Developer/CoreSimulator/Devices/10C18B34-55BD-45C9-8308-6181BFAAF040/data/Containers/Data/Application/1552632D-D40E-4BFF-AF88-D85A2B5E2E05/tmp/50D2E0F4-0F07-43E9-B5C9-E874F41EB87E/collection.store-shm
+2026-10-19 19:38:13.321291+0200 MojeZegarki[3807:1976611] [logging] invalidated open fd: 77 (0x11)
+Test Case '-[MojeZegarkiTests.StorageProtectionTests testExistingAndNewCollectionFilesRemainReadableAndKeepBackup]' passed (0.035 seconds).
+Test Case '-[MojeZegarkiTests.StorageProtectionTests testProtectionLifecycleCanRecoverAfterUnlockNotification]' started.
+Test Case '-[MojeZegarkiTests.StorageProtectionTests testProtectionLifecycleCanRecoverAfterUnlockNotification]' passed (0.000 seconds).
+Test Suite 'StorageProtectionTests' passed at 2026-10-19 19:38:13.323.
+	 Executed 3 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.037 (0.038) seconds
+Test Suite 'StorageSafetyTests' started at 2026-10-19 19:38:13.323.
+Test Case '-[MojeZegarkiTests.StorageSafetyTests testBothCleanupFailuresAreReported]' started.
+Test Case '-[MojeZegarkiTests.StorageSafetyTests testBothCleanupFailuresAreReported]' passed (0.009 seconds).
+Test Case '-[MojeZegarkiTests.StorageSafetyTests testPhotoCleanupFailureStillAttemptsDocumentCleanup]' started.
+Test Case '-[MojeZegarkiTests.StorageSafetyTests testPhotoCleanupFailureStillAttemptsDocumentCleanup]' passed (0.007 seconds).
+Test Case '-[MojeZegarkiTests.StorageSafetyTests testWishlistReadFailureDoesNotInsertOrMutateModels]' started.
+Test Case '-[MojeZegarkiTests.StorageSafetyTests testWishlistReadFailureDoesNotInsertOrMutateModels]' passed (0.006 seconds).
+Test Suite 'StorageSafetyTests' passed at 2026-10-19 19:38:13.346.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.022 (0.023) seconds
+Test Suite 'WearLogScopeTests' started at 2026-10-19 19:38:13.346.
+Test Case '-[MojeZegarkiTests.WearLogScopeTests testDatabaseScopesPreservePeriodStatisticsAndWatchIsolation]' started.
+Test Case '-[MojeZegarkiTests.WearLogScopeTests testDatabaseScopesPreservePeriodStatisticsAndWatchIsolation]' passed (0.010 seconds).
+Test Suite 'WearLogScopeTests' passed at 2026-10-19 19:38:13.357.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.010 (0.011) seconds
+Test Suite 'MojeZegarkiTests.xctest' passed at 2026-10-19 19:38:13.357.
+	 Executed 37 tests, with 1 test skipped and 0 failures (0 unexpected) in 3.441 (3.453) seconds
+Test Suite 'All tests' passed at 2026-10-19 19:38:13.357.
+	 Executed 37 tests, with 1 test skipped and 0 failures (0 unexpected) in 3.441 (3.453) seconds
+2026-10-19 19:38:13.368 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:38:13.368 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:38:13.644 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:38:13.957232+0200 MojeZegarkiUITests-Runner[3926:1977450] [Default] Running tests...
+Test Suite 'All tests' started at 2026-10-19 19:38:14.411.
+Test Suite 'MojeZegarkiUITests.xctest' started at 2026-10-19 19:38:14.412.
+Test Suite 'AccessibilityUITests' started at 2026-10-19 19:38:14.412.
+Test Case '-[MojeZegarkiUITests.AccessibilityUITests testCoreScreensAccessibility]' started.
+    t =     0.00s Start Test at 2026-10-19 19:38:14.412
+    t =     0.01s Set Up
+    t =     0.01s Open pl.jakubbatycki.MojeZegarki
+    t =     0.01s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:38:14.639 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:38:14.639 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:38:14.683 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.44s         Setting up automation session
+    t =     0.70s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     1.77s Waiting 15.0s for "collection.add" Button to exist
+    t =     2.84s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     2.84s         Checking existence of `"collection.add" Button`
+    t =     4.72s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 4422238208.27)
+    t =     4.74s Find the "Search brand or model" SearchField
+    t =     4.75s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 4422238208.27)
+    t =     4.77s Find the "Search brand or model" SearchField
+    t =     4.78s Tap "collection.add" Button
+    t =     4.78s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.79s     Find the "collection.add" Button
+    t =     4.81s     Check for interrupting elements affecting "collection.add" Button
+    t =     4.83s     Synthesize event
+    t =     5.13s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.63s Waiting 5.0s for "editor.brand" TextField to exist
+    t =     6.71s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.brand" TextField`
+    t =     6.71s         Checking existence of `"editor.brand" TextField`
+    t =    10.07s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553169808064.88)
+    t =    10.11s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553169808064.88)
+    t =    10.15s Checking existence of `"editor.save" Button`
+    t =    10.19s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553169808064.88)
+    t =    10.23s Find the "editor.save" Button
+    t =    10.26s Tap "editor.cancel" Button
+    t =    10.26s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.27s     Find the "editor.cancel" Button
+    t =    10.32s     Check for interrupting elements affecting "editor.cancel" Button
+    t =    10.36s     Synthesize event
+    t =    10.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.00s Tap "Wearing" Button
+    t =    11.00s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.01s     Find the "Wearing" Button
+    t =    11.03s     Check for interrupting elements affecting "Wearing" Button
+    t =    11.05s     Synthesize event
+    t =    11.35s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.35s Waiting 5.0s for "wear.add" Button to exist
+    t =    12.42s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.add" Button`
+    t =    12.43s         Checking existence of `"wear.add" Button`
+    t =    12.48s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    12.48s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.49s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    12.51s     Check for interrupting elements affecting "My Watches" Application
+    t =    12.53s     Synthesize event
+    t =    12.95s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.18s Swipe down Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    16.18s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.19s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    16.20s     Check for interrupting elements affecting "My Watches" Application
+    t =    16.23s     Synthesize event
+    t =    16.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.67s Tap "wear.statistics" Button
+    t =    16.67s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.67s     Find the "wear.statistics" Button
+    t =    16.71s     Check for interrupting elements affecting "wear.statistics" Button
+    t =    16.73s     Synthesize event
+    t =    17.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.52s Waiting 5.0s for "stats.period" SegmentedControl to exist
+    t =    18.59s     Checking `Expect predicate `existsNoRetry == 1` for object "stats.period" SegmentedControl`
+    t =    18.59s         Checking existence of `"stats.period" SegmentedControl`
+    t =    20.65s Tap "Done" Button
+    t =    20.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    20.66s     Find the "Done" Button
+    t =    20.72s     Check for interrupting elements affecting "Done" Button
+    t =    20.76s     Synthesize event
+    t =    21.06s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    21.40s Tap "Wishlist" Button
+    t =    21.40s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    21.40s     Find the "Wishlist" Button
+    t =    21.44s     Check for interrupting elements affecting "Wishlist" Button
+    t =    21.47s     Synthesize event
+    t =    21.77s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    21.79s Tap "wish.add" Button
+    t =    21.79s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    21.80s     Find the "wish.add" Button
+    t =    21.83s     Check for interrupting elements affecting "wish.add" Button
+    t =    21.85s     Synthesize event
+    t =    22.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    22.58s Waiting 5.0s for "wish.brand" TextField to exist
+    t =    23.64s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.brand" TextField`
+    t =    23.64s         Checking existence of `"wish.brand" TextField`
+    t =    25.94s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553170015456.612)
+    t =    25.96s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553170015456.612)
+    t =    25.99s Checking existence of `"wish.save" Button`
+    t =    26.01s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553170015456.612)
+    t =    26.03s Find the "wish.save" Button
+    t =    26.06s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553169869280.707)
+    t =    26.08s Find the "Currency" StaticText
+    t =    26.10s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553169869280.707)
+    t =    26.13s Find the "Currency" StaticText
+    t =    26.15s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+AUDIT_SCREENSHOT: /Users/jakubbatycki/Library/Developer/CoreSimulator/Devices/10C18B34-55BD-45C9-8308-6181BFAAF040/data/Containers/Data/Application/16A1DE52-E129-4549-B5F7-1C2D2F8A5DD4/tmp/accessibility-4E2B5676-B3CD-48F0-AF24-4775AFEEF955.png
+    t =    26.21s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553169869280.707)
+    t =    26.24s Find the "Currency" StaticText
+ACCESSIBILITY: Text clipped — Currency
+    t =    26.27s Find the Any (Descendant with identity binding to AX element pid: 3930, elementOrHash.elementID: 105553169869280.707)
+    t =    26.29s Checking existence of `"Currency" StaticText`
+    t =    26.32s Find the "Currency" StaticText
+/Users/jakubbatycki/KOD/MojeZegarki/UITests/AccessibilityUITests.swift:55: error: -[MojeZegarkiUITests.AccessibilityUITests testCoreScreensAccessibility] : Text clipped
+    t =    26.39s Tap "Cancel" Button
+    t =    26.39s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.39s     Find the "Cancel" Button
+    t =    26.43s     Check for interrupting elements affecting "Cancel" Button
+    t =    26.46s     Synthesize event
+    t =    26.75s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    27.09s Tap "Settings" Button
+    t =    27.09s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    27.10s     Find the "Settings" Button
+    t =    27.11s     Check for interrupting elements affecting "Settings" Button
+    t =    27.12s     Synthesize event
+    t =    27.41s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    27.42s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    27.42s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    27.42s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    27.45s     Check for interrupting elements affecting "My Watches" Application
+    t =    27.48s     Synthesize event
+    t =    27.90s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    30.27s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+AUDIT_MANUAL_CONTRAST: Contrast failed for element screenshot=/Users/jakubbatycki/Library/Developer/CoreSimulator/Devices/10C18B34-55BD-45C9-8308-6181BFAAF040/data/Containers/Data/Application/16A1DE52-E129-4549-B5F7-1C2D2F8A5DD4/tmp/unlocated-contrast-BA749398-CCFB-40FF-BF5A-D88C064CFF8D.png
+    t =    30.33s Tear Down
+Test Case '-[MojeZegarkiUITests.AccessibilityUITests testCoreScreensAccessibility]' failed (30.549 seconds).
+Test Case '-[MojeZegarkiUITests.AccessibilityUITests testFullDocumentNoteIsReadableWithoutEditing]' started.
+    t =     0.00s Start Test at 2026-10-19 19:38:44.962
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Terminate pl.jakubbatycki.MojeZegarki:3930
+2026-10-19 19:38:44.995 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:38:44.996 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:38:46.060 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:38:46.060 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:38:46.066 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.31s         Setting up automation session
+    t =     1.58s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.68s Waiting 15.0s for "Document watch" StaticText to exist
+    t =     3.76s     Checking `Expect predicate `existsNoRetry == 1` for object "Document watch" StaticText`
+    t =     3.76s         Checking existence of `"Document watch" StaticText`
+    t =     3.83s Tap "Document watch" StaticText
+    t =     3.83s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.83s     Find the "Document watch" StaticText
+    t =     3.84s     Check for interrupting elements affecting "Document watch" StaticText
+    t =     3.86s     Synthesize event
+    t =     4.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.56s Find the "detail.documents" Button
+    t =     5.60s     Find the "detail.documents" Button (retry 1)
+    t =     6.63s     Find the "detail.documents" Button (retry 2)
+    t =     6.65s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     6.65s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.65s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     6.67s     Check for interrupting elements affecting "My Watches" Application
+    t =     6.68s     Synthesize event
+    t =     7.11s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.21s Find the "detail.documents" Button
+    t =     9.25s Find the "detail.documents" Button
+    t =     9.28s Find the "detail.documents" Button
+    t =     9.30s Find the "detail.documents" Button
+    t =     9.33s Tap "detail.documents" Button
+    t =     9.33s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.33s     Find the "detail.documents" Button
+    t =     9.35s     Check for interrupting elements affecting "detail.documents" Button
+    t =     9.36s     Synthesize event
+    t =     9.65s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.04s Find the Button (First Match)
+    t =    10.11s Find the "document.B6E99E44-B7B2-4726-8265-09378351815A" Button
+    t =    10.15s Find the "document.B6E99E44-B7B2-4726-8265-09378351815A" Button
+    t =    10.20s Find the "document.B6E99E44-B7B2-4726-8265-09378351815A" Button
+    t =    10.24s Find the "document.B6E99E44-B7B2-4726-8265-09378351815A" Button
+    t =    10.28s Tap "document.B6E99E44-B7B2-4726-8265-09378351815A" Button
+    t =    10.28s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.29s     Find the "document.B6E99E44-B7B2-4726-8265-09378351815A" Button
+    t =    10.32s     Check for interrupting elements affecting "document.B6E99E44-B7B2-4726-8265-09378351815A" Button
+    t =    10.34s     Synthesize event
+    t =    10.63s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.70s Find the Any (Descendant with identity binding to AX element pid: 4126, elementOrHash.elementID: 105553172095232.182)
+    t =    12.73s Find the "Test invoice / 2026
+" Other
+    t =    12.76s Find the "Test invoice / 2026
+" Other
+    t =    12.78s Get number of matches for: Elements matching predicate 'label == "Test invoice / 2026
+"'
+    t =    12.82s Find the Any (Descendant with identity binding to AX element pid: 4126, elementOrHash.elementID: 105553169967424.187)
+    t =    12.84s Find the "document.noteSummary" StaticText
+    t =    12.87s Tap "document.readNotes" Button
+    t =    12.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.88s     Find the "document.readNotes" Button
+    t =    12.93s     Check for interrupting elements affecting "document.readNotes" Button
+    t =    12.97s     Synthesize event
+    t =    13.28s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    13.62s Waiting 5.0s for "document.fullNotes" ScrollView to exist
+    t =    14.67s     Checking `Expect predicate `existsNoRetry == 1` for object "document.fullNotes" ScrollView`
+    t =    14.68s         Checking existence of `"document.fullNotes" ScrollView`
+    t =    14.73s Checking existence of `"document.save" Button`
+    t =    14.76s Tear Down
+Test Case '-[MojeZegarkiUITests.AccessibilityUITests testFullDocumentNoteIsReadableWithoutEditing]' passed (14.984 seconds).
+Test Case '-[MojeZegarkiUITests.AccessibilityUITests testLockScreenAccessibility]' started.
+    t =     0.00s Start Test at 2026-10-19 19:38:59.947
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Terminate pl.jakubbatycki.MojeZegarki:4126
+2026-10-19 19:38:59.983 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:38:59.983 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:39:01.032 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:39:01.032 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:39:01.038 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.30s         Setting up automation session
+    t =     1.54s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.63s Waiting 15.0s for "Collection locked" StaticText to exist
+    t =     3.67s     Checking `Expect predicate `existsNoRetry == 1` for object "Collection locked" StaticText`
+    t =     3.67s         Checking existence of `"Collection locked" StaticText`
+    t =     3.71s Checking existence of `"collection.add" Button`
+/Users/jakubbatycki/KOD/MojeZegarki/UITests/AccessibilityUITests.swift:49: -[MojeZegarkiUITests.AccessibilityUITests testLockScreenAccessibility] : Test skipped - System authentication owns the foreground process; audit the lock screen manually on an iPhone.
+    t =     3.72s Tear Down
+Test Case '-[MojeZegarkiUITests.AccessibilityUITests testLockScreenAccessibility]' skipped (3.973 seconds).
+Test Suite 'AccessibilityUITests' failed at 2026-10-19 19:39:03.921.
+	 Executed 3 tests, with 1 test skipped and 1 failure (0 unexpected) in 49.506 (49.509) seconds
+Test Suite 'CollectionUITests' started at 2026-10-19 19:39:03.922.
+Test Case '-[MojeZegarkiUITests.CollectionUITests testCreateEditPersistArchiveRestoreAndDelete]' started.
+    t =     0.00s Start Test at 2026-10-19 19:39:03.924
+    t =     0.03s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4157
+2026-10-19 19:39:03.967 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:39:03.968 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:39:05.003 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:39:05.003 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:39:05.006 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.29s         Setting up automation session
+    t =     1.44s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.52s Waiting 15.0s for "collection.add" Button to exist
+    t =     3.56s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     3.56s         Checking existence of `"collection.add" Button`
+    t =     3.61s Tap "collection.add" Button
+    t =     3.61s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.61s     Find the "collection.add" Button
+    t =     3.62s     Check for interrupting elements affecting "collection.add" Button
+    t =     3.63s     Synthesize event
+    t =     3.92s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.41s Find the "editor.save" Button
+    t =     4.47s Waiting 5.0s for "editor.brand" TextField to exist
+    t =     5.51s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.brand" TextField`
+    t =     5.51s         Checking existence of `"editor.brand" TextField`
+    t =     6.61s Checking `Expect predicate `isHittable == 1` for object "editor.brand" TextField`
+    t =     6.61s     Find the "editor.brand" TextField
+    t =     6.67s Tap "editor.brand" TextField
+    t =     6.67s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.67s     Find the "editor.brand" TextField
+    t =     6.71s     Check for interrupting elements affecting "editor.brand" TextField
+    t =     6.74s     Synthesize event
+    t =     7.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.29s Checking `Expect predicate `hasKeyboardFocus == 1` for object "editor.brand" TextField`
+    t =     8.29s     Find the "editor.brand" TextField
+    t =     9.42s Checking `Expect predicate `hasKeyboardFocus == 1` for object "editor.brand" TextField`
+    t =     9.42s     Find the "editor.brand" TextField
+    t =     9.48s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    10.52s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    10.53s         Checking existence of `Keyboard (First Match)`
+    t =    10.54s Type 'Seiko' into "editor.brand" TextField
+    t =    10.54s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.55s     Find the "editor.brand" TextField
+    t =    10.59s     Check for interrupting elements affecting "editor.brand" TextField
+    t =    10.63s     Synthesize event
+    t =    10.91s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.91s Waiting 5.0s for "editor.model" TextField to exist
+    t =    11.93s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.model" TextField`
+    t =    11.93s         Checking existence of `"editor.model" TextField`
+    t =    13.04s Checking `Expect predicate `isHittable == 1` for object "editor.model" TextField`
+    t =    13.04s     Find the "editor.model" TextField
+    t =    13.12s Tap "editor.model" TextField
+    t =    13.12s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    13.12s     Find the "editor.model" TextField
+    t =    13.16s     Check for interrupting elements affecting "editor.model" TextField
+    t =    13.20s     Synthesize event
+    t =    13.48s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    14.53s Checking `Expect predicate `hasKeyboardFocus == 1` for object "editor.model" TextField`
+    t =    14.53s     Find the "editor.model" TextField
+    t =    15.63s Checking `Expect predicate `hasKeyboardFocus == 1` for object "editor.model" TextField`
+    t =    15.63s     Find the "editor.model" TextField
+    t =    15.68s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    16.72s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    16.72s         Checking existence of `Keyboard (First Match)`
+    t =    16.74s Type 'Prospex' into "editor.model" TextField
+    t =    16.74s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.74s     Find the "editor.model" TextField
+    t =    16.78s     Check for interrupting elements affecting "editor.model" TextField
+    t =    16.82s     Synthesize event
+    t =    17.13s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.14s Tap "editor.save" Button
+    t =    17.14s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.14s     Find the "editor.save" Button
+    t =    17.18s     Check for interrupting elements affecting "editor.save" Button
+    t =    17.22s     Synthesize event
+    t =    17.51s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.90s Waiting 5.0s for "Prospex" StaticText to exist
+    t =    18.92s     Checking `Expect predicate `existsNoRetry == 1` for object "Prospex" StaticText`
+    t =    18.93s         Checking existence of `"Prospex" StaticText`
+    t =    18.96s Tap "Prospex" StaticText
+    t =    18.96s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.96s     Find the "Prospex" StaticText
+    t =    18.98s     Check for interrupting elements affecting "Prospex" StaticText
+    t =    18.99s     Synthesize event
+    t =    19.28s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.65s Tap "detail.edit" Button
+    t =    19.65s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.65s     Find the "detail.edit" Button
+    t =    19.69s     Check for interrupting elements affecting "detail.edit" Button
+    t =    19.72s     Synthesize event
+    t =    20.01s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    20.45s Waiting 5.0s for "editor.model" TextField to exist
+    t =    21.46s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.model" TextField`
+    t =    21.46s         Checking existence of `"editor.model" TextField`
+    t =    22.57s Checking `Expect predicate `isHittable == 1` for object "editor.model" TextField`
+    t =    22.57s     Find the "editor.model" TextField
+    t =    22.63s Tap "editor.model" TextField
+    t =    22.63s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    22.64s     Find the "editor.model" TextField
+    t =    22.68s     Check for interrupting elements affecting "editor.model" TextField
+    t =    22.72s     Synthesize event
+    t =    23.01s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    24.41s Checking `Expect predicate `hasKeyboardFocus == 1` for object "editor.model" TextField`
+    t =    24.41s     Find the "editor.model" TextField
+    t =    25.52s Checking `Expect predicate `hasKeyboardFocus == 1` for object "editor.model" TextField`
+    t =    25.52s     Find the "editor.model" TextField
+    t =    25.57s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    26.59s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    26.59s         Checking existence of `Keyboard (First Match)`
+    t =    26.60s Type 'Alpinist' into "editor.model" TextField
+    t =    26.60s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.61s     Find the "editor.model" TextField
+    t =    26.66s     Check for interrupting elements affecting "editor.model" TextField
+    t =    26.70s     Synthesize event
+    t =    27.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    27.15s Tap "editor.save" Button
+    t =    27.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    27.16s     Find the "editor.save" Button
+    t =    27.21s     Check for interrupting elements affecting "editor.save" Button
+    t =    27.26s     Synthesize event
+    t =    27.55s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    27.95s Waiting 5.0s for "detail.model" StaticText to exist
+    t =    28.99s     Checking `Expect predicate `existsNoRetry == 1` for object "detail.model" StaticText`
+    t =    28.99s         Checking existence of `"detail.model" StaticText`
+    t =    29.02s Find the "detail.model" StaticText
+    t =    29.04s Terminate pl.jakubbatycki.MojeZegarki:4160
+2026-10-19 19:39:32.979 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:39:32.980 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    30.13s Open pl.jakubbatycki.MojeZegarki
+    t =    30.13s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:39:34.052 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:39:34.053 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:39:34.058 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    30.34s         Setting up automation session
+    t =    30.59s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    31.68s Waiting 10.0s for "Alpinist" StaticText to exist
+    t =    32.71s     Checking `Expect predicate `existsNoRetry == 1` for object "Alpinist" StaticText`
+    t =    32.71s         Checking existence of `"Alpinist" StaticText`
+    t =    32.78s Tap "Alpinist" StaticText
+    t =    32.78s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.78s     Find the "Alpinist" StaticText
+    t =    32.80s     Check for interrupting elements affecting "Alpinist" StaticText
+    t =    32.81s     Synthesize event
+    t =    33.10s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    33.47s Checking existence of `"detail.sell" Button`
+    t =    33.51s Find the "detail.sell" Button
+    t =    33.53s Tap "detail.sell" Button
+    t =    33.53s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    33.54s     Find the "detail.sell" Button
+    t =    33.56s     Check for interrupting elements affecting "detail.sell" Button
+    t =    33.58s     Synthesize event
+    t =    33.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    33.87s Tap Button (Element at index 0)
+    t =    33.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    33.87s     Find the Button (Element at index 0)
+    t =    33.89s     Check for interrupting elements affecting "Collection" Button
+    t =    33.91s     Synthesize event
+    t =    34.19s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    34.51s Tap "Archive" Button
+    t =    34.51s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    34.52s     Find the "Archive" Button
+    t =    34.53s     Check for interrupting elements affecting "Archive" Button
+    t =    34.55s     Synthesize event
+    t =    34.83s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.04s Tap "Alpinist" StaticText
+    t =    35.04s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.04s     Find the "Alpinist" StaticText
+    t =    35.06s     Check for interrupting elements affecting "Alpinist" StaticText
+    t =    35.07s     Synthesize event
+    t =    35.36s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.71s Checking existence of `"detail.restore" Button`
+    t =    35.74s Find the "detail.restore" Button
+    t =    35.76s Tap "detail.restore" Button
+    t =    35.76s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.77s     Find the "detail.restore" Button
+    t =    35.78s     Check for interrupting elements affecting "detail.restore" Button
+    t =    35.80s     Synthesize event
+    t =    36.09s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    36.10s Checking existence of `"detail.delete" Button`
+    t =    36.12s Find the "detail.delete" Button
+    t =    36.15s Tap "detail.delete" Button
+    t =    36.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    36.15s     Find the "detail.delete" Button
+    t =    36.17s     Check for interrupting elements affecting "detail.delete" Button
+    t =    36.19s     Synthesize event
+    t =    36.48s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    36.73s Waiting 5.0s for "confirm.delete" Button to exist
+    t =    37.76s     Checking `Expect predicate `existsNoRetry == 1` for object "confirm.delete" Button`
+    t =    37.76s         Checking existence of `"confirm.delete" Button`
+    t =    37.79s Tap "confirm.delete" Button
+    t =    37.79s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    37.79s     Find the "confirm.delete" Button
+    t =    37.82s     Check for interrupting elements affecting "confirm.delete" Button
+    t =    37.84s     Synthesize event
+    t =    38.13s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    38.35s Waiting 5.0s for "Archive is empty" StaticText to exist
+    t =    39.41s     Checking `Expect predicate `existsNoRetry == 1` for object "Archive is empty" StaticText`
+    t =    39.41s         Checking existence of `"Archive is empty" StaticText`
+    t =    39.43s Tear Down
+Test Case '-[MojeZegarkiUITests.CollectionUITests testCreateEditPersistArchiveRestoreAndDelete]' passed (39.662 seconds).
+Test Case '-[MojeZegarkiUITests.CollectionUITests testPolishLocalizationAndCancel]' started.
+    t =     0.00s Start Test at 2026-10-19 19:39:43.593
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Terminate pl.jakubbatycki.MojeZegarki:4231
+2026-10-19 19:39:43.624 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:39:43.624 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:39:44.656 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:39:44.656 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:39:44.660 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.27s         Setting up automation session
+    t =     1.49s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.58s Waiting 15.0s for "Kolekcja" NavigationBar to exist
+    t =     3.60s     Checking `Expect predicate `existsNoRetry == 1` for object "Kolekcja" NavigationBar`
+    t =     3.61s         Checking existence of `"Kolekcja" NavigationBar`
+    t =     3.66s Tap "collection.add" Button
+    t =     3.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.66s     Find the "collection.add" Button
+    t =     3.68s     Check for interrupting elements affecting "collection.add" Button
+    t =     3.69s     Synthesize event
+    t =     3.98s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.50s Waiting 5.0s for "editor.brand" TextField to exist
+    t =     5.55s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.brand" TextField`
+    t =     5.56s         Checking existence of `"editor.brand" TextField`
+    t =     5.63s Find the "editor.brand" TextField
+    t =     5.66s Waiting 5.0s for "editor.brand" TextField to exist
+    t =     6.70s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.brand" TextField`
+    t =     6.71s         Checking existence of `"editor.brand" TextField`
+    t =     7.79s Checking `Expect predicate `isHittable == 1` for object "editor.brand" TextField`
+    t =     7.79s     Find the "editor.brand" TextField
+    t =     7.83s Tap "editor.brand" TextField
+    t =     7.83s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.83s     Find the "editor.brand" TextField
+    t =     7.87s     Check for interrupting elements affecting "editor.brand" TextField
+    t =     7.90s     Synthesize event
+    t =     8.19s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.67s Checking `Expect predicate `hasKeyboardFocus == 1` for object "editor.brand" TextField`
+    t =     9.67s     Find the "editor.brand" TextField
+    t =    10.76s Checking `Expect predicate `hasKeyboardFocus == 1` for object "editor.brand" TextField`
+    t =    10.76s     Find the "editor.brand" TextField
+    t =    10.82s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    11.84s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    11.84s         Checking existence of `Keyboard (First Match)`
+    t =    11.86s Type 'Casio' into "editor.brand" TextField
+    t =    11.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.87s     Find the "editor.brand" TextField
+    t =    11.92s     Check for interrupting elements affecting "editor.brand" TextField
+    t =    11.96s     Synthesize event
+    t =    12.24s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.24s Tap "Anuluj" Button
+    t =    12.24s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.25s     Find the "Anuluj" Button
+    t =    12.30s     Check for interrupting elements affecting "editor.cancel" Button
+    t =    12.34s     Synthesize event
+    t =    12.62s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.96s Waiting 5.0s for "collection.addFirst" Button to exist
+    t =    14.00s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.addFirst" Button`
+    t =    14.00s         Checking existence of `"collection.addFirst" Button`
+    t =    14.06s Checking existence of `"Casio" StaticText`
+    t =    14.10s Tear Down
+Test Case '-[MojeZegarkiUITests.CollectionUITests testPolishLocalizationAndCancel]' passed (14.332 seconds).
+Test Suite 'CollectionUITests' passed at 2026-10-19 19:39:57.926.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 53.995 (54.004) seconds
+Test Suite 'FreeModuleUITests' started at 2026-10-19 19:39:57.927.
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testCalendarAppearanceAndLocalizationMatrix]' started.
+    t =     0.00s Start Test at 2026-10-19 19:39:57.928
+    t =     0.02s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4260
+2026-10-19 19:39:57.968 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:39:57.968 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:39:59.004 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:39:59.004 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:39:59.010 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.29s         Setting up automation session
+    t =     1.51s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.60s Waiting 15.0s for "collection.add" Button to exist
+    t =     3.62s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     3.62s         Checking existence of `"collection.add" Button`
+    t =     3.67s Tap "Wearing" Button
+    t =     3.67s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.68s     Find the "Wearing" Button
+    t =     3.69s     Check for interrupting elements affecting "Wearing" Button
+    t =     3.71s     Synthesize event
+    t =     3.99s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.99s Waiting 5.0s for "wear.filter" Button to exist
+    t =     5.03s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.filter" Button`
+    t =     5.04s         Checking existence of `"wear.filter" Button`
+    t =     5.09s Find the "wear.add" Button
+    t =     5.13s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     5.18s Added attachment named 'history-en-darkfalse-largefalse'
+    t =     5.18s Tap "wear.add" Button
+    t =     5.18s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.18s     Find the "wear.add" Button
+    t =     5.21s     Check for interrupting elements affecting "wear.add" Button
+    t =     5.22s     Synthesize event
+    t =     5.51s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.53s Waiting 5.0s for "wear.save" Button to exist
+    t =     6.57s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =     6.57s         Checking existence of `"wear.save" Button`
+    t =     6.67s Find the "wear.save" Button
+    t =     6.71s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     6.77s Added attachment named 'editor-en-darkfalse-largefalse'
+    t =     6.77s Terminate pl.jakubbatycki.MojeZegarki:4320
+2026-10-19 19:40:04.709 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:40:04.709 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     7.81s Open pl.jakubbatycki.MojeZegarki
+    t =     7.81s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:40:05.737 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:40:05.737 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:40:05.743 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     8.02s         Setting up automation session
+    t =     8.16s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.25s Waiting 15.0s for "collection.add" Button to exist
+    t =    10.27s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =    10.27s         Checking existence of `"collection.add" Button`
+    t =    10.34s Tap "Wearing" Button
+    t =    10.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.34s     Find the "Wearing" Button
+    t =    10.36s     Check for interrupting elements affecting "Wearing" Button
+    t =    10.37s     Synthesize event
+    t =    10.65s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.66s Waiting 5.0s for "wear.filter" Button to exist
+    t =    11.69s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.filter" Button`
+    t =    11.69s         Checking existence of `"wear.filter" Button`
+    t =    11.74s Find the "wear.add" Button
+    t =    11.76s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    11.82s Added attachment named 'history-en-darkfalse-largetrue'
+    t =    11.82s Tap "wear.add" Button
+    t =    11.82s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.83s     Find the "wear.add" Button
+    t =    11.84s     Check for interrupting elements affecting "wear.add" Button
+    t =    11.86s     Synthesize event
+    t =    12.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.59s Waiting 5.0s for "wear.save" Button to exist
+    t =    13.64s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =    13.64s         Checking existence of `"wear.save" Button`
+    t =    13.69s Find the "wear.save" Button
+    t =    13.73s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    13.79s Added attachment named 'editor-en-darkfalse-largetrue'
+    t =    13.79s Terminate pl.jakubbatycki.MojeZegarki:4327
+2026-10-19 19:40:11.726 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:40:11.726 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    14.84s Open pl.jakubbatycki.MojeZegarki
+    t =    14.84s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:40:12.769 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:40:12.769 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:40:12.773 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    15.05s         Setting up automation session
+    t =    15.26s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.35s Waiting 15.0s for "collection.add" Button to exist
+    t =    17.39s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =    17.39s         Checking existence of `"collection.add" Button`
+    t =    17.45s Tap "Wearing" Button
+    t =    17.45s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.45s     Find the "Wearing" Button
+    t =    17.47s     Check for interrupting elements affecting "Wearing" Button
+    t =    17.48s     Synthesize event
+    t =    17.77s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.77s Waiting 5.0s for "wear.filter" Button to exist
+    t =    18.80s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.filter" Button`
+    t =    18.80s         Checking existence of `"wear.filter" Button`
+    t =    18.85s Find the "wear.add" Button
+    t =    18.88s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    18.94s Added attachment named 'history-en-darktrue-largefalse'
+    t =    18.94s Tap "wear.add" Button
+    t =    18.94s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.94s     Find the "wear.add" Button
+    t =    18.97s     Check for interrupting elements affecting "wear.add" Button
+    t =    18.99s     Synthesize event
+    t =    19.28s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.32s Waiting 5.0s for "wear.save" Button to exist
+    t =    20.35s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =    20.35s         Checking existence of `"wear.save" Button`
+    t =    20.45s Find the "wear.save" Button
+    t =    20.49s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    20.55s Added attachment named 'editor-en-darktrue-largefalse'
+    t =    20.55s Terminate pl.jakubbatycki.MojeZegarki:4347
+2026-10-19 19:40:18.487 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:40:18.487 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    21.61s Open pl.jakubbatycki.MojeZegarki
+    t =    21.62s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:40:19.546 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:40:19.546 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:40:19.549 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    21.83s         Setting up automation session
+    t =    21.97s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    23.06s Waiting 15.0s for "collection.add" Button to exist
+    t =    24.12s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =    24.12s         Checking existence of `"collection.add" Button`
+    t =    24.20s Tap "Wearing" Button
+    t =    24.20s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    24.20s     Find the "Wearing" Button
+    t =    24.22s     Check for interrupting elements affecting "Wearing" Button
+    t =    24.23s     Synthesize event
+    t =    24.52s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    24.52s Waiting 5.0s for "wear.filter" Button to exist
+    t =    25.57s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.filter" Button`
+    t =    25.57s         Checking existence of `"wear.filter" Button`
+    t =    25.63s Find the "wear.add" Button
+    t =    25.66s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    25.72s Added attachment named 'history-en-darktrue-largetrue'
+    t =    25.72s Tap "wear.add" Button
+    t =    25.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    25.72s     Find the "wear.add" Button
+    t =    25.75s     Check for interrupting elements affecting "wear.add" Button
+    t =    25.77s     Synthesize event
+    t =    26.05s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.51s Waiting 5.0s for "wear.save" Button to exist
+    t =    27.54s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =    27.54s         Checking existence of `"wear.save" Button`
+    t =    27.61s Find the "wear.save" Button
+    t =    27.65s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    27.71s Added attachment named 'editor-en-darktrue-largetrue'
+    t =    27.71s Terminate pl.jakubbatycki.MojeZegarki:4356
+2026-10-19 19:40:25.647 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:40:25.647 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    28.73s Open pl.jakubbatycki.MojeZegarki
+    t =    28.73s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:40:26.658 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:40:26.658 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:40:26.663 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    28.93s         Setting up automation session
+    t =    29.16s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    30.25s Waiting 15.0s for "collection.add" Button to exist
+    t =    31.30s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =    31.30s         Checking existence of `"collection.add" Button`
+    t =    31.37s Tap "Noszenie" Button
+    t =    31.37s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    31.37s     Find the "Noszenie" Button
+    t =    31.39s     Check for interrupting elements affecting "Noszenie" Button
+    t =    31.40s     Synthesize event
+    t =    31.69s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    31.69s Waiting 5.0s for "wear.filter" Button to exist
+    t =    32.73s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.filter" Button`
+    t =    32.74s         Checking existence of `"wear.filter" Button`
+    t =    32.78s Find the "wear.add" Button
+    t =    32.81s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    32.87s Added attachment named 'history-pl-darkfalse-largefalse'
+    t =    32.87s Tap "wear.add" Button
+    t =    32.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.87s     Find the "wear.add" Button
+    t =    32.89s     Check for interrupting elements affecting "wear.add" Button
+    t =    32.91s     Synthesize event
+    t =    33.19s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    33.21s Waiting 5.0s for "wear.save" Button to exist
+    t =    34.24s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =    34.24s         Checking existence of `"wear.save" Button`
+    t =    34.33s Find the "wear.save" Button
+    t =    34.37s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    34.44s Added attachment named 'editor-pl-darkfalse-largefalse'
+    t =    34.44s Terminate pl.jakubbatycki.MojeZegarki:4364
+2026-10-19 19:40:32.372 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:40:32.372 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    35.49s Open pl.jakubbatycki.MojeZegarki
+    t =    35.49s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:40:33.419 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:40:33.419 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:40:33.421 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    35.70s         Setting up automation session
+    t =    35.82s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    36.92s Waiting 15.0s for "collection.add" Button to exist
+    t =    37.97s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =    37.97s         Checking existence of `"collection.add" Button`
+    t =    38.02s Tap "Noszenie" Button
+    t =    38.02s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    38.02s     Find the "Noszenie" Button
+    t =    38.04s     Check for interrupting elements affecting "Noszenie" Button
+    t =    38.05s     Synthesize event
+    t =    38.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    38.34s Waiting 5.0s for "wear.filter" Button to exist
+    t =    39.35s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.filter" Button`
+    t =    39.35s         Checking existence of `"wear.filter" Button`
+    t =    39.40s Find the "wear.add" Button
+    t =    39.43s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    39.49s Added attachment named 'history-pl-darkfalse-largetrue'
+    t =    39.49s Tap "wear.add" Button
+    t =    39.49s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    39.49s     Find the "wear.add" Button
+    t =    39.51s     Check for interrupting elements affecting "wear.add" Button
+    t =    39.53s     Synthesize event
+    t =    39.82s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    40.27s Waiting 5.0s for "wear.save" Button to exist
+    t =    41.30s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =    41.30s         Checking existence of `"wear.save" Button`
+    t =    41.38s Find the "wear.save" Button
+    t =    41.41s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    41.47s Added attachment named 'editor-pl-darkfalse-largetrue'
+    t =    41.47s Terminate pl.jakubbatycki.MojeZegarki:4396
+2026-10-19 19:40:39.407 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:40:39.408 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    42.52s Open pl.jakubbatycki.MojeZegarki
+    t =    42.52s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:40:40.453 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:40:40.453 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:40:40.459 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    42.73s         Setting up automation session
+    t =    42.95s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    44.05s Waiting 15.0s for "collection.add" Button to exist
+    t =    45.09s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =    45.09s         Checking existence of `"collection.add" Button`
+    t =    45.15s Tap "Noszenie" Button
+    t =    45.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    45.15s     Find the "Noszenie" Button
+    t =    45.16s     Check for interrupting elements affecting "Noszenie" Button
+    t =    45.18s     Synthesize event
+    t =    45.45s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    45.46s Waiting 5.0s for "wear.filter" Button to exist
+    t =    46.48s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.filter" Button`
+    t =    46.49s         Checking existence of `"wear.filter" Button`
+    t =    46.54s Find the "wear.add" Button
+    t =    46.57s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    46.63s Added attachment named 'history-pl-darktrue-largefalse'
+    t =    46.63s Tap "wear.add" Button
+    t =    46.63s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    46.63s     Find the "wear.add" Button
+    t =    46.65s     Check for interrupting elements affecting "wear.add" Button
+    t =    46.67s     Synthesize event
+    t =    46.95s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    46.96s Waiting 5.0s for "wear.save" Button to exist
+    t =    47.98s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =    47.99s         Checking existence of `"wear.save" Button`
+    t =    48.07s Find the "wear.save" Button
+    t =    48.10s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    48.16s Added attachment named 'editor-pl-darktrue-largefalse'
+    t =    48.16s Terminate pl.jakubbatycki.MojeZegarki:4468
+2026-10-19 19:40:46.098 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:40:46.098 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    49.24s Open pl.jakubbatycki.MojeZegarki
+    t =    49.24s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:40:47.169 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:40:47.169 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:40:47.172 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    49.45s         Setting up automation session
+    t =    49.57s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    50.67s Waiting 15.0s for "collection.add" Button to exist
+    t =    51.72s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =    51.72s         Checking existence of `"collection.add" Button`
+    t =    51.78s Tap "Noszenie" Button
+    t =    51.78s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    51.78s     Find the "Noszenie" Button
+    t =    51.79s     Check for interrupting elements affecting "Noszenie" Button
+    t =    51.81s     Synthesize event
+    t =    52.10s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    52.10s Waiting 5.0s for "wear.filter" Button to exist
+    t =    53.14s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.filter" Button`
+    t =    53.14s         Checking existence of `"wear.filter" Button`
+    t =    53.20s Find the "wear.add" Button
+    t =    53.23s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    53.29s Added attachment named 'history-pl-darktrue-largetrue'
+    t =    53.29s Tap "wear.add" Button
+    t =    53.29s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    53.29s     Find the "wear.add" Button
+    t =    53.31s     Check for interrupting elements affecting "wear.add" Button
+    t =    53.33s     Synthesize event
+    t =    53.62s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    54.05s Waiting 5.0s for "wear.save" Button to exist
+    t =    55.09s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =    55.09s         Checking existence of `"wear.save" Button`
+    t =    55.15s Find the "wear.save" Button
+    t =    55.19s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    55.24s Added attachment named 'editor-pl-darktrue-largetrue'
+    t =    55.25s Terminate pl.jakubbatycki.MojeZegarki:4549
+2026-10-19 19:40:53.182 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:40:53.183 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    56.32s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testCalendarAppearanceAndLocalizationMatrix]' passed (56.330 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testCalendarShowsSavedDaysAndCountsOnlyNewSelection]' started.
+    t =     0.00s Start Test at 2026-10-19 19:40:54.259
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:40:54.278 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:40:54.278 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:40:54.280 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.23s         Setting up automation session
+    t =     0.35s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     1.45s Waiting 15.0s for "Calendar watch" StaticText to exist
+    t =     2.49s     Checking `Expect predicate `existsNoRetry == 1` for object "Calendar watch" StaticText`
+    t =     2.49s         Checking existence of `"Calendar watch" StaticText`
+    t =     2.55s Tap "Calendar watch" StaticText
+    t =     2.55s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.56s     Find the "Calendar watch" StaticText
+    t =     2.57s     Check for interrupting elements affecting "Calendar watch" StaticText
+    t =     2.59s     Synthesize event
+    t =     2.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.25s Tap "detail.wear" Button
+    t =     3.25s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.26s     Find the "detail.wear" Button
+    t =     3.29s     Check for interrupting elements affecting "detail.wear" Button
+    t =     3.31s     Synthesize event
+    t =     3.60s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.08s Tap "wear.add" Button
+    t =     4.08s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.08s     Find the "wear.add" Button
+    t =     4.13s     Check for interrupting elements affecting "wear.add" Button
+    t =     4.16s     Synthesize event
+    t =     4.45s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.96s Waiting 5.0s for "wear.save" Button to exist
+    t =     5.97s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =     5.97s         Checking existence of `"wear.save" Button`
+    t =     6.10s Find the "wear.save" Button
+    t =     6.15s Find the "wear.selection.day.2026-10-19" Button
+    t =     6.20s Find the "wear.selection.day.2026-10-19" Button
+    t =     6.25s Tap "wear.selection.day.2026-10-18" Button
+    t =     6.25s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.25s     Find the "wear.selection.day.2026-10-18" Button
+    t =     6.30s     Check for interrupting elements affecting "wear.selection.day.2026-10-18" Button
+    t =     6.35s     Synthesize event
+    t =     6.64s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.64s Find the "wear.save" Button
+    t =     6.71s Find the "wear.selectionCount" StaticText
+    t =     6.76s Tap "wear.selection.day.2026-10-18" Button
+    t =     6.76s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.76s     Find the "wear.selection.day.2026-10-18" Button
+    t =     6.82s     Check for interrupting elements affecting "wear.selection.day.2026-10-18" Button
+    t =     6.86s     Synthesize event
+    t =     6.88s         Scroll element to visible
+    t =     6.88s                 Retrying failed scroll-to-visible with containing cell Cell
+    t =     6.88s         Find the "wear.selection.day.2026-10-18" Button
+    t =     6.96s         Computed hit point {-1, -1} after scrolling to visible
+    t =     7.24s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.25s Find the "wear.save" Button
+    t =     7.32s Tap "wear.selection.day.2026-10-18" Button
+    t =     7.32s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.32s     Find the "wear.selection.day.2026-10-18" Button
+    t =     7.38s     Check for interrupting elements affecting "wear.selection.day.2026-10-18" Button
+    t =     7.42s     Synthesize event
+    t =     7.71s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.71s Tap "wear.save" Button
+    t =     7.71s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.72s     Find the "wear.save" Button
+    t =     7.79s     Check for interrupting elements affecting "wear.save" Button
+    t =     7.84s     Synthesize event
+    t =     8.12s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.68s Waiting 5.0s for "Wear history updated" Alert to exist
+    t =     9.71s     Checking `Expect predicate `existsNoRetry == 1` for object "Wear history updated" Alert`
+    t =     9.71s         Checking existence of `"Wear history updated" Alert`
+    t =     9.78s Tap "OK" Button
+    t =     9.78s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.78s     Find the "OK" Button
+    t =     9.82s     Check for interrupting elements affecting "OK" Button
+    t =     9.86s     Synthesize event
+    t =    10.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.38s Tap "wear.add" Button
+    t =    10.38s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.42s     Find the "wear.add" Button
+    t =    10.46s     Check for interrupting elements affecting "wear.add" Button
+    t =    10.49s     Synthesize event
+    t =    10.78s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.28s Find the "wear.selection.day.2026-10-18" Button
+    t =    11.40s Find the "wear.save" Button
+    t =    11.45s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testCalendarShowsSavedDaysAndCountsOnlyNewSelection]' passed (11.698 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testDocumentPreviewEditCancelSaveAndDelete]' started.
+    t =     0.00s Start Test at 2026-10-19 19:41:05.957
+    t =     0.03s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4559
+2026-10-19 19:41:06.000 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:06.001 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:07.031 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:41:07.031 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:41:07.036 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.28s         Setting up automation session
+    t =     1.49s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.57s Waiting 15.0s for "Document watch" StaticText to exist
+    t =     3.59s     Checking `Expect predicate `existsNoRetry == 1` for object "Document watch" StaticText`
+    t =     3.59s         Checking existence of `"Document watch" StaticText`
+    t =     3.64s Tap "Document watch" StaticText
+    t =     3.64s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.65s     Find the "Document watch" StaticText
+    t =     3.66s     Check for interrupting elements affecting "Document watch" StaticText
+    t =     3.68s     Synthesize event
+    t =     3.97s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.34s Tap "detail.documents" Button
+    t =     4.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.34s     Find the "detail.documents" Button
+    t =     4.38s     Check for interrupting elements affecting "detail.documents" Button
+    t =     4.40s     Synthesize event
+    t =     4.69s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.09s Tap Button (First Match)
+    t =     5.09s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.09s     Find the Button (First Match)
+    t =     5.15s     Check for interrupting elements affecting "document.9B4D5313-0514-466A-A4B4-BBDE03B91E78" Button
+    t =     5.18s     Synthesize event
+    t =     5.47s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.82s Waiting 5.0s for "document.actions" Button to exist
+    t =     6.86s     Checking `Expect predicate `existsNoRetry == 1` for object "document.actions" Button`
+    t =     6.86s         Checking existence of `"document.actions" Button`
+    t =     6.94s Checking existence of `"Private test document" StaticText`
+    t =     6.97s Tap "document.actions" Button
+    t =     6.97s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.98s     Find the "document.actions" Button
+    t =     7.01s     Check for interrupting elements affecting "document.actions" Button
+    t =     7.04s     Synthesize event
+    t =     7.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.34s Tap "document.edit" Button
+    t =     7.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.35s     Find the "document.edit" Button
+    t =     7.40s     Check for interrupting elements affecting "document.edit" Button
+    t =     7.44s     Synthesize event
+    t =     7.73s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.10s Waiting 5.0s for "document.name" TextField to exist
+    t =     9.12s     Checking `Expect predicate `existsNoRetry == 1` for object "document.name" TextField`
+    t =     9.12s         Checking existence of `"document.name" TextField`
+    t =    10.26s Checking `Expect predicate `isHittable == 1` for object "document.name" TextField`
+    t =    10.26s     Find the "document.name" TextField
+    t =    10.34s Tap "document.name" TextField
+    t =    10.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.34s     Find the "document.name" TextField
+    t =    10.39s     Check for interrupting elements affecting "document.name" TextField
+    t =    10.43s     Synthesize event
+    t =    10.71s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.22s Checking `Expect predicate `hasKeyboardFocus == 1` for object "document.name" TextField`
+    t =    12.22s     Find the "document.name" TextField
+    t =    13.36s Checking `Expect predicate `hasKeyboardFocus == 1` for object "document.name" TextField`
+    t =    13.36s     Find the "document.name" TextField
+    t =    13.42s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    14.45s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    14.45s         Checking existence of `Keyboard (First Match)`
+    t =    14.47s Type 'Discar...' into "document.name" TextField
+    t =    14.47s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    14.47s     Find the "document.name" TextField
+    t =    14.53s     Check for interrupting elements affecting "document.name" TextField
+    t =    14.57s     Synthesize event
+    t =    15.12s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    15.13s Tap "Cancel" Button
+    t =    15.13s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    15.13s     Find the "Cancel" Button
+    t =    15.19s     Check for interrupting elements affecting "Cancel" Button
+    t =    15.24s     Synthesize event
+    t =    15.53s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    15.85s Tap "Discard changes" Button
+    t =    15.85s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    15.86s     Find the "Discard changes" Button
+    t =    15.92s     Check for interrupting elements affecting "Discard changes" Button
+    t =    15.97s     Synthesize event
+    t =    16.26s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.12s Waiting 5.0s for "document.name" TextField to not exist
+    t =    18.14s     Checking `Expect predicate `existsNoRetry == 0` for object "document.name" TextField`
+    t =    18.14s         Checking existence of `"document.name" TextField`
+    t =    18.19s Checking existence of `"Test invoice" NavigationBar`
+    t =    18.23s Tap "document.actions" Button
+    t =    18.23s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.23s     Find the "document.actions" Button
+    t =    18.27s     Check for interrupting elements affecting "document.actions" Button
+    t =    18.30s     Synthesize event
+    t =    18.59s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.60s Tap "document.edit" Button
+    t =    18.60s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.60s     Find the "document.edit" Button
+    t =    18.63s     Check for interrupting elements affecting "document.edit" Button
+    t =    18.67s     Synthesize event
+    t =    18.96s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.32s Waiting 5.0s for "document.name" TextField to exist
+    t =    20.37s     Checking `Expect predicate `existsNoRetry == 1` for object "document.name" TextField`
+    t =    20.38s         Checking existence of `"document.name" TextField`
+    t =    21.47s Checking `Expect predicate `isHittable == 1` for object "document.name" TextField`
+    t =    21.47s     Find the "document.name" TextField
+    t =    21.55s Tap "document.name" TextField
+    t =    21.55s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    21.55s     Find the "document.name" TextField
+    t =    21.60s     Check for interrupting elements affecting "document.name" TextField
+    t =    21.64s     Synthesize event
+    t =    21.92s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    23.33s Checking `Expect predicate `hasKeyboardFocus == 1` for object "document.name" TextField`
+    t =    23.33s     Find the "document.name" TextField
+    t =    24.46s Checking `Expect predicate `hasKeyboardFocus == 1` for object "document.name" TextField`
+    t =    24.46s     Find the "document.name" TextField
+    t =    24.52s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    25.53s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    25.53s         Checking existence of `Keyboard (First Match)`
+    t =    25.55s Type 'Receipt' into "document.name" TextField
+    t =    25.55s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    25.55s     Find the "document.name" TextField
+    t =    25.60s     Check for interrupting elements affecting "document.name" TextField
+    t =    25.65s     Synthesize event
+    t =    26.17s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.18s Tap "document.save" Button
+    t =    26.18s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.18s     Find the "document.save" Button
+    t =    26.24s     Check for interrupting elements affecting "document.save" Button
+    t =    26.29s     Synthesize event
+    t =    26.58s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.95s Waiting 5.0s for "Receipt" NavigationBar to exist
+    t =    27.99s     Checking `Expect predicate `existsNoRetry == 1` for object "Receipt" NavigationBar`
+    t =    27.99s         Checking existence of `"Receipt" NavigationBar`
+    t =    28.03s Tap "document.actions" Button
+    t =    28.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    28.03s     Find the "document.actions" Button
+    t =    28.07s     Check for interrupting elements affecting "document.actions" Button
+    t =    28.10s     Synthesize event
+    t =    28.39s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    28.40s Tap "document.delete" Button
+    t =    28.40s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    28.40s     Find the "document.delete" Button
+    t =    28.46s     Check for interrupting elements affecting "document.delete" Button
+    t =    28.49s     Synthesize event
+    t =    28.78s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    29.02s Tap "document.confirmDelete" Button
+    t =    29.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    29.03s     Find the "document.confirmDelete" Button
+    t =    29.08s     Check for interrupting elements affecting "document.confirmDelete" Button
+    t =    29.12s     Synthesize event
+    t =    29.42s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    29.63s Waiting 5.0s for "No documents yet" StaticText to exist
+    t =    30.67s     Checking `Expect predicate `existsNoRetry == 1` for object "No documents yet" StaticText`
+    t =    30.67s         Checking existence of `"No documents yet" StaticText`
+    t =    30.72s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testDocumentPreviewEditCancelSaveAndDelete]' passed (30.934 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testEmptyWatchWearHistoryHasWideCompactAddButton]' started.
+    t =     0.00s Start Test at 2026-10-19 19:41:36.892
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4579
+2026-10-19 19:41:36.930 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:36.931 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:37.964 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:41:37.964 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:41:37.968 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.28s         Setting up automation session
+    t =     1.50s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.59s Waiting 15.0s for "Second watch" StaticText to exist
+    t =     3.62s     Checking `Expect predicate `existsNoRetry == 1` for object "Second watch" StaticText`
+    t =     3.62s         Checking existence of `"Second watch" StaticText`
+    t =     3.68s Tap "Second watch" StaticText
+    t =     3.68s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.68s     Find the "Second watch" StaticText
+    t =     3.70s     Check for interrupting elements affecting "Second watch" StaticText
+    t =     3.72s     Synthesize event
+    t =     4.01s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.38s Tap "detail.wear" Button
+    t =     4.38s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.39s     Find the "detail.wear" Button
+    t =     4.42s     Check for interrupting elements affecting "detail.wear" Button
+    t =     4.44s     Synthesize event
+    t =     4.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.11s Waiting 5.0s for "No wear history yet" StaticText to exist
+    t =     6.14s     Checking `Expect predicate `existsNoRetry == 1` for object "No wear history yet" StaticText`
+    t =     6.15s         Checking existence of `"No wear history yet" StaticText`
+    t =     6.19s Find the "wear.add" Button
+    t =     6.23s Find the "wear.add" Button
+    t =     6.26s Find the "wear.add" Button
+    t =     6.29s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     6.31s Find the "wear.add" Button
+    t =     6.34s Find the "wear.add" Button
+    t =     6.37s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     6.44s Added attachment named 'Empty wear history compact button'
+    t =     6.44s Tap "wear.add" Button
+    t =     6.44s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.44s     Find the "wear.add" Button
+    t =     6.47s     Check for interrupting elements affecting "wear.add" Button
+    t =     6.50s     Synthesize event
+    t =     6.79s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.28s Waiting 5.0s for "wear.save" Button to exist
+    t =     8.32s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.save" Button`
+    t =     8.32s         Checking existence of `"wear.save" Button`
+    t =     8.44s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testEmptyWatchWearHistoryHasWideCompactAddButton]' passed (8.692 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testEnabledLockHidesCollectionOnLaunch]' started.
+    t =     0.00s Start Test at 2026-10-19 19:41:45.587
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4625
+2026-10-19 19:41:45.621 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:45.621 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:46.647 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:41:46.647 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:41:46.653 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.27s         Setting up automation session
+    t =     1.49s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.57s Waiting 15.0s for "Collection locked" StaticText to exist
+    t =     3.63s     Checking `Expect predicate `existsNoRetry == 1` for object "Collection locked" StaticText`
+    t =     3.63s         Checking existence of `"Collection locked" StaticText`
+    t =     3.66s Checking existence of `"collection.add" Button`
+    t =     3.66s Checking existence of `"Collection" Button`
+    t =     3.67s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testEnabledLockHidesCollectionOnLaunch]' passed (3.925 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testImageDocumentOpens]' started.
+    t =     0.00s Start Test at 2026-10-19 19:41:49.513
+    t =     0.03s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4662
+2026-10-19 19:41:49.557 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:49.557 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:50.583 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:41:50.583 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:41:50.588 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.28s         Setting up automation session
+    t =     1.41s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.50s Waiting 15.0s for "Document watch" StaticText to exist
+    t =     3.53s     Checking `Expect predicate `existsNoRetry == 1` for object "Document watch" StaticText`
+    t =     3.54s         Checking existence of `"Document watch" StaticText`
+    t =     3.59s Tap "Document watch" StaticText
+    t =     3.59s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.59s     Find the "Document watch" StaticText
+    t =     3.61s     Check for interrupting elements affecting "Document watch" StaticText
+    t =     3.62s     Synthesize event
+    t =     3.91s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.30s Tap "detail.documents" Button
+    t =     4.30s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.30s     Find the "detail.documents" Button
+    t =     4.34s     Check for interrupting elements affecting "detail.documents" Button
+    t =     4.36s     Synthesize event
+    t =     4.65s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.03s Tap Button (First Match)
+    t =     5.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.03s     Find the Button (First Match)
+    t =     5.09s     Check for interrupting elements affecting "document.CA243198-8CB3-4E20-ADE5-2655EDA97027" Button
+    t =     5.11s     Synthesize event
+    t =     5.40s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.76s Waiting 5.0s for "Document preview" Image to exist
+    t =     6.80s     Checking `Expect predicate `existsNoRetry == 1` for object "Document preview" Image`
+    t =     6.80s         Checking existence of `"Document preview" Image`
+    t =     6.87s Tap "Zoom in" Button
+    t =     6.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.87s     Find the "Zoom in" Button
+    t =     6.91s     Check for interrupting elements affecting "document.zoomControls" Button
+    t =     6.94s     Synthesize event
+    t =     7.22s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.23s Find the "Document preview" Image
+    t =     7.28s Tap "Zoom out" Button
+    t =     7.28s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.28s     Find the "Zoom out" Button
+    t =     7.32s     Check for interrupting elements affecting "document.zoomControls" Button
+    t =     7.35s     Synthesize event
+    t =     7.64s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.65s Find the "Document preview" Image
+    t =     7.70s Tap "Zoom in" Button
+    t =     7.70s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.70s     Find the "Zoom in" Button
+    t =     7.74s     Check for interrupting elements affecting "document.zoomControls" Button
+    t =     7.77s     Synthesize event
+    t =     8.06s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.06s Tap "Reset zoom" Button
+    t =     8.06s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.07s     Find the "Reset zoom" Button
+    t =     8.12s     Check for interrupting elements affecting "document.zoomControls" Button
+    t =     8.15s     Synthesize event
+    t =     8.44s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.45s Find the "Document preview" Image
+    t =     8.49s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testImageDocumentOpens]' passed (8.710 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testMissingAndCorruptDocumentShowsRecoverableError]' started.
+    t =     0.00s Start Test at 2026-10-19 19:41:58.224
+    t =     0.03s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4668
+2026-10-19 19:41:58.269 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:58.270 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:41:59.299 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:41:59.299 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:41:59.305 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.29s         Setting up automation session
+    t =     1.43s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.52s Waiting 15.0s for "Document watch" StaticText to exist
+    t =     3.55s     Checking `Expect predicate `existsNoRetry == 1` for object "Document watch" StaticText`
+    t =     3.56s         Checking existence of `"Document watch" StaticText`
+    t =     3.62s Tap "Document watch" StaticText
+    t =     3.62s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.62s     Find the "Document watch" StaticText
+    t =     3.64s     Check for interrupting elements affecting "Document watch" StaticText
+    t =     3.65s     Synthesize event
+    t =     3.94s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.31s Tap "detail.documents" Button
+    t =     4.31s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.31s     Find the "detail.documents" Button
+    t =     4.35s     Check for interrupting elements affecting "detail.documents" Button
+    t =     4.37s     Synthesize event
+    t =     4.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.03s Tap Button (First Match)
+    t =     5.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.03s     Find the Button (First Match)
+    t =     5.08s     Check for interrupting elements affecting "document.1C6E56C3-5A5A-464C-9BBF-12FAE20283FD" Button
+    t =     5.11s     Synthesize event
+    t =     5.39s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.75s Waiting 5.0s for "Document unavailable" StaticText to exist
+    t =     6.77s     Checking `Expect predicate `existsNoRetry == 1` for object "Document unavailable" StaticText`
+    t =     6.77s         Checking existence of `"Document unavailable" StaticText`
+    t =     6.83s Find the "document.actions" Button
+    t =     6.88s Terminate pl.jakubbatycki.MojeZegarki:4678
+2026-10-19 19:42:05.107 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:42:05.107 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     7.93s Open pl.jakubbatycki.MojeZegarki
+    t =     7.93s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:42:06.153 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:42:06.154 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:42:06.159 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     8.14s         Setting up automation session
+    t =     8.38s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.46s Waiting 15.0s for "Document watch" StaticText to exist
+    t =    10.51s     Checking `Expect predicate `existsNoRetry == 1` for object "Document watch" StaticText`
+    t =    10.51s         Checking existence of `"Document watch" StaticText`
+    t =    10.57s Tap "Document watch" StaticText
+    t =    10.57s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.58s     Find the "Document watch" StaticText
+    t =    10.59s     Check for interrupting elements affecting "Document watch" StaticText
+    t =    10.60s     Synthesize event
+    t =    10.90s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.27s Tap "detail.documents" Button
+    t =    11.27s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.28s     Find the "detail.documents" Button
+    t =    11.32s     Check for interrupting elements affecting "detail.documents" Button
+    t =    11.34s     Synthesize event
+    t =    11.63s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.01s Tap Button (First Match)
+    t =    12.01s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.01s     Find the Button (First Match)
+    t =    12.07s     Check for interrupting elements affecting "document.993FE9EC-9765-41C0-992E-41F55DDEE2A4" Button
+    t =    12.10s     Synthesize event
+    t =    12.39s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.75s Waiting 5.0s for "Document unavailable" StaticText to exist
+    t =    13.78s     Checking `Expect predicate `existsNoRetry == 1` for object "Document unavailable" StaticText`
+    t =    13.78s         Checking existence of `"Document unavailable" StaticText`
+    t =    13.84s Find the "document.actions" Button
+    t =    13.88s Terminate pl.jakubbatycki.MojeZegarki:4691
+2026-10-19 19:42:12.110 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:42:12.110 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    14.95s Open pl.jakubbatycki.MojeZegarki
+    t =    14.95s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:42:13.172 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:42:13.172 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:42:13.175 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    15.15s         Setting up automation session
+    t =    15.29s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.39s Waiting 15.0s for "Document watch" StaticText to exist
+    t =    17.42s     Checking `Expect predicate `existsNoRetry == 1` for object "Document watch" StaticText`
+    t =    17.42s         Checking existence of `"Document watch" StaticText`
+    t =    17.49s Tap "Document watch" StaticText
+    t =    17.49s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.49s     Find the "Document watch" StaticText
+    t =    17.51s     Check for interrupting elements affecting "Document watch" StaticText
+    t =    17.52s     Synthesize event
+    t =    17.81s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.18s Tap "detail.documents" Button
+    t =    18.19s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.19s     Find the "detail.documents" Button
+    t =    18.24s     Check for interrupting elements affecting "detail.documents" Button
+    t =    18.26s     Synthesize event
+    t =    18.55s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.92s Tap Button (First Match)
+    t =    18.92s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.93s     Find the Button (First Match)
+    t =    18.99s     Check for interrupting elements affecting "document.D726EAB5-F16B-4298-AE15-C245366F49A3" Button
+    t =    19.02s     Synthesize event
+    t =    19.31s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.66s Waiting 5.0s for "Document unavailable" StaticText to exist
+    t =    20.69s     Checking `Expect predicate `existsNoRetry == 1` for object "Document unavailable" StaticText`
+    t =    20.69s         Checking existence of `"Document unavailable" StaticText`
+    t =    20.74s Find the "document.actions" Button
+    t =    20.78s Terminate pl.jakubbatycki.MojeZegarki:4724
+2026-10-19 19:42:19.006 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:42:19.007 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    21.82s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testMissingAndCorruptDocumentShowsRecoverableError]' passed (21.857 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testMissingWatchPhotoPreviewCanBeClosed]' started.
+    t =     0.00s Start Test at 2026-10-19 19:42:20.081
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:42:20.107 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:42:20.107 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:42:20.110 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     0.23s         Setting up automation session
+    t =     0.38s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     1.47s Waiting 15.0s for "Photo watch" StaticText to exist
+    t =     2.50s     Checking `Expect predicate `existsNoRetry == 1` for object "Photo watch" StaticText`
+    t =     2.50s         Checking existence of `"Photo watch" StaticText`
+    t =     2.55s Tap "Photo watch" StaticText
+    t =     2.55s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.55s     Find the "Photo watch" StaticText
+    t =     2.57s     Check for interrupting elements affecting "Photo watch" StaticText
+    t =     2.58s     Synthesize event
+    t =     2.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.26s Waiting 5.0s for Button (First Match) to exist
+    t =     4.27s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     4.27s         Checking existence of `Button (First Match)`
+    t =     4.33s Tap Button (First Match)
+    t =     4.33s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.33s     Find the Button (First Match)
+    t =     4.37s     Check for interrupting elements affecting "detail.photo.A033ACF4-FDA1-41A7-8B92-0F372C4FF06C" Button
+    t =     4.38s     Synthesize event
+    t =     4.67s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.02s Waiting 5.0s for "Photo unavailable" StaticText to exist
+    t =     6.08s     Checking `Expect predicate `existsNoRetry == 1` for object "Photo unavailable" StaticText`
+    t =     6.08s         Checking existence of `"Photo unavailable" StaticText`
+    t =     6.12s Tap "photoPreview.close" Button
+    t =     6.12s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.12s     Find the "photoPreview.close" Button
+    t =     6.14s     Check for interrupting elements affecting "photoPreview.close" Button
+    t =     6.16s     Synthesize event
+    t =     6.45s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.75s Waiting 5.0s for "detail.photo.A033ACF4-FDA1-41A7-8B92-0F372C4FF06C" Button to exist
+    t =     7.77s     Checking `Expect predicate `existsNoRetry == 1` for object "detail.photo.A033ACF4-FDA1-41A7-8B92-0F372C4FF06C" Button`
+    t =     7.77s         Checking existence of `"detail.photo.A033ACF4-FDA1-41A7-8B92-0F372C4FF06C" Button`
+    t =     7.81s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testMissingWatchPhotoPreviewCanBeClosed]' passed (8.051 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWatchPhotosOpenFullScreenAndReturnToGallery]' started.
+    t =     0.00s Start Test at 2026-10-19 19:42:28.134
+    t =     0.01s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Terminate pl.jakubbatycki.MojeZegarki:4730
+2026-10-19 19:42:28.160 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:42:28.160 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:42:29.201 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:42:29.201 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:42:29.206 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.28s         Setting up automation session
+    t =     1.49s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.59s Waiting 15.0s for "Photo watch" StaticText to exist
+    t =     3.66s     Checking `Expect predicate `existsNoRetry == 1` for object "Photo watch" StaticText`
+    t =     3.66s         Checking existence of `"Photo watch" StaticText`
+    t =     3.73s Tap "Photo watch" StaticText
+    t =     3.73s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.73s     Find the "Photo watch" StaticText
+    t =     3.74s     Check for interrupting elements affecting "Photo watch" StaticText
+    t =     3.76s     Synthesize event
+    t =     4.05s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.43s Waiting 5.0s for Button (First Match) to exist
+    t =     5.46s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =     5.46s         Checking existence of `Button (First Match)`
+    t =     5.52s Find the Button (First Match)
+    t =     5.56s Tap "detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button
+    t =     5.56s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.56s     Find the "detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button
+    t =     5.60s     Check for interrupting elements affecting "detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button
+    t =     5.62s     Synthesize event
+    t =     5.90s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.24s Waiting 5.0s for "photoPreview.image" Image to exist
+    t =     7.28s     Checking `Expect predicate `existsNoRetry == 1` for object "photoPreview.image" Image`
+    t =     7.28s         Checking existence of `"photoPreview.image" Image`
+    t =     7.31s Find the TabBar (First Match)
+    t =     7.33s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     7.39s Added attachment named 'Landscape photo preview'
+    t =     7.39s Tap "photoPreview.close" Button
+    t =     7.39s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.39s     Find the "photoPreview.close" Button
+    t =     7.41s     Check for interrupting elements affecting "photoPreview.close" Button
+    t =     7.43s     Synthesize event
+    t =     7.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.02s Waiting 5.0s for "detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button to exist
+    t =     9.06s     Checking `Expect predicate `existsNoRetry == 1` for object "detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button`
+    t =     9.06s         Checking existence of `"detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button`
+    t =     9.09s Swipe left "detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button
+    t =     9.09s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.09s     Find the "detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button
+    t =     9.11s     Check for interrupting elements affecting "detail.photo.0B7663D3-1D76-4CE8-B2AA-0E9189858238" Button
+    t =     9.13s     Synthesize event
+    t =     9.60s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.72s Waiting 5.0s for Button (First Match) to exist
+    t =    10.74s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    10.75s         Checking existence of `Button (First Match)`
+    t =    10.80s Tap Button (First Match)
+    t =    10.80s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.81s     Find the Button (First Match)
+    t =    10.84s     Check for interrupting elements affecting "detail.photo.5B89FD6E-988C-4618-B1DA-ED2F334480C3" Button
+    t =    10.86s     Synthesize event
+    t =    11.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.47s Waiting 5.0s for "photoPreview.image" Image to exist
+    t =    12.48s     Checking `Expect predicate `existsNoRetry == 1` for object "photoPreview.image" Image`
+    t =    12.48s         Checking existence of `"photoPreview.image" Image`
+    t =    12.51s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    12.57s Added attachment named 'Portrait photo preview'
+    t =    12.57s Tap "photoPreview.close" Button
+    t =    12.57s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.57s     Find the "photoPreview.close" Button
+    t =    12.59s     Check for interrupting elements affecting "photoPreview.close" Button
+    t =    12.61s     Synthesize event
+    t =    12.90s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    13.20s Waiting 5.0s for "detail.photo.5B89FD6E-988C-4618-B1DA-ED2F334480C3" Button to exist
+    t =    14.21s     Checking `Expect predicate `existsNoRetry == 1` for object "detail.photo.5B89FD6E-988C-4618-B1DA-ED2F334480C3" Button`
+    t =    14.21s         Checking existence of `"detail.photo.5B89FD6E-988C-4618-B1DA-ED2F334480C3" Button`
+    t =    14.27s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWatchPhotosOpenFullScreenAndReturnToGallery]' passed (14.534 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWearCalendarRemainsStableAfterScrollingInSheet]' started.
+    t =     0.00s Start Test at 2026-10-19 19:42:42.670
+    t =     0.03s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4746
+2026-10-19 19:42:42.716 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:42:42.716 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:42:43.767 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:42:43.767 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:42:43.772 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.30s         Setting up automation session
+    t =     1.45s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.53s Waiting 15.0s for "Calendar watch" StaticText to exist
+    t =     3.58s     Checking `Expect predicate `existsNoRetry == 1` for object "Calendar watch" StaticText`
+    t =     3.58s         Checking existence of `"Calendar watch" StaticText`
+    t =     3.66s Tap "Calendar watch" StaticText
+    t =     3.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.67s     Find the "Calendar watch" StaticText
+    t =     3.68s     Check for interrupting elements affecting "Calendar watch" StaticText
+    t =     3.70s     Synthesize event
+    t =     3.99s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.36s Tap "detail.wear" Button
+    t =     4.36s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.37s     Find the "detail.wear" Button
+    t =     4.41s     Check for interrupting elements affecting "detail.wear" Button
+    t =     4.44s     Synthesize event
+    t =     4.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.20s Waiting 5.0s for "wear.month.title" Button to exist
+    t =     6.25s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.month.title" Button`
+    t =     6.25s         Checking existence of `"wear.month.title" Button`
+    t =     6.32s Find the "Wear overview" NavigationBar
+    t =     6.36s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     6.36s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.37s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     6.39s     Check for interrupting elements affecting "My Watches" Application
+    t =     6.42s     Synthesize event
+    t =     6.90s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.24s Find the "wear.month.title" Button
+    t =     8.51s Find the "wear.month.title" Button
+    t =     8.78s Find the "wear.month.title" Button
+    t =     9.05s Find the "wear.month.title" Button
+    t =     9.30s Find the "wear.month.title" Button
+    t =     9.55s Find the "wear.month.title" Button
+    t =     9.59s Find the "wear.calendarHint" StaticText
+    t =     9.63s Swipe down Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     9.63s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.63s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     9.65s     Check for interrupting elements affecting "My Watches" Application
+    t =     9.68s     Synthesize event
+    t =    10.17s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.49s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    10.49s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.49s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    10.52s     Check for interrupting elements affecting "My Watches" Application
+    t =    10.55s     Synthesize event
+    t =    11.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.37s Find the "wear.month.title" Button
+    t =    12.64s Find the "wear.month.title" Button
+    t =    12.92s Find the "wear.month.title" Button
+    t =    13.18s Find the "wear.month.title" Button
+    t =    13.43s Find the "wear.month.title" Button
+    t =    13.71s Find the "wear.month.title" Button
+    t =    13.76s Find the "wear.calendarHint" StaticText
+    t =    13.80s Swipe down Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    13.80s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    13.80s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    13.83s     Check for interrupting elements affecting "My Watches" Application
+    t =    13.86s     Synthesize event
+    t =    14.35s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    14.67s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    14.67s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    14.68s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    14.71s     Check for interrupting elements affecting "My Watches" Application
+    t =    14.75s     Synthesize event
+    t =    15.23s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.57s Find the "wear.month.title" Button
+    t =    16.83s Find the "wear.month.title" Button
+    t =    17.10s Find the "wear.month.title" Button
+    t =    17.36s Find the "wear.month.title" Button
+    t =    17.62s Find the "wear.month.title" Button
+    t =    17.88s Find the "wear.month.title" Button
+    t =    17.94s Find the "wear.calendarHint" StaticText
+    t =    17.99s Swipe down Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    17.99s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.99s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    18.01s     Check for interrupting elements affecting "My Watches" Application
+    t =    18.05s     Synthesize event
+    t =    18.54s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.86s Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    18.95s Added attachment named 'wear-calendar-after-scrolling'
+    t =    18.95s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWearCalendarRemainsStableAfterScrollingInSheet]' passed (19.179 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWearDaySelectionScrollsToEntriesAndEmptyState]' started.
+    t =     0.00s Start Test at 2026-10-19 19:43:01.849
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Terminate pl.jakubbatycki.MojeZegarki:4781
+2026-10-19 19:43:01.877 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:43:01.878 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:43:02.915 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:43:02.915 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:43:02.919 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.28s         Setting up automation session
+    t =     1.51s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.61s Waiting 15.0s for "Calendar watch" StaticText to exist
+    t =     3.66s     Checking `Expect predicate `existsNoRetry == 1` for object "Calendar watch" StaticText`
+    t =     3.66s         Checking existence of `"Calendar watch" StaticText`
+    t =     3.74s Tap "Calendar watch" StaticText
+    t =     3.74s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.74s     Find the "Calendar watch" StaticText
+    t =     3.76s     Check for interrupting elements affecting "Calendar watch" StaticText
+    t =     3.77s     Synthesize event
+    t =     4.06s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.43s Tap "detail.wear" Button
+    t =     4.43s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.43s     Find the "detail.wear" Button
+    t =     4.47s     Check for interrupting elements affecting "detail.wear" Button
+    t =     4.49s     Synthesize event
+    t =     4.77s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.25s Waiting 5.0s for "wear.month.title" Button to exist
+    t =     6.28s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.month.title" Button`
+    t =     6.28s         Checking existence of `"wear.month.title" Button`
+    t =     6.35s Tap "wear.day.2026-10-18" Button
+    t =     6.35s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.35s     Find the "wear.day.2026-10-18" Button
+    t =     6.39s     Check for interrupting elements affecting "wear.day.2026-10-18" Button
+    t =     6.42s     Synthesize event
+    t =     6.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.76s Checking `Expect predicate `isHittable == 1` for object "No wear entries for this day" StaticText`
+    t =     7.76s     Find the "No wear entries for this day" StaticText
+    t =     7.82s Tap "wear.day.2026-10-19" Button
+    t =     7.82s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.83s     Find the "wear.day.2026-10-19" Button
+    t =     7.86s     Check for interrupting elements affecting "wear.day.2026-10-19" Button
+    t =     7.90s     Synthesize event
+    t =     8.18s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.22s Checking `Expect predicate `isHittable == 1` for object Button (First Match)`
+    t =     9.22s     Find the Button (First Match)
+    t =     9.31s Tap "wear.day.2026-10-18" Button
+    t =     9.31s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.31s     Find the "wear.day.2026-10-18" Button
+    t =     9.34s     Check for interrupting elements affecting "wear.day.2026-10-18" Button
+    t =     9.37s     Synthesize event
+    t =     9.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.70s Checking `Expect predicate `isHittable == 1` for object "No wear entries for this day" StaticText`
+    t =    10.70s     Find the "No wear entries for this day" StaticText
+    t =    10.75s Tap "wear.day.2026-10-19" Button
+    t =    10.75s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.75s     Find the "wear.day.2026-10-19" Button
+    t =    10.79s     Check for interrupting elements affecting "wear.day.2026-10-19" Button
+    t =    10.82s     Synthesize event
+    t =    11.11s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    12.13s Checking `Expect predicate `isHittable == 1` for object Button (First Match)`
+    t =    12.13s     Find the Button (First Match)
+    t =    12.23s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWearDaySelectionScrollsToEntriesAndEmptyState]' passed (12.452 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWearSheetKeepsScrollingWithAccessibilityText]' started.
+    t =     0.00s Start Test at 2026-10-19 19:43:14.302
+    t =     0.03s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4805
+2026-10-19 19:43:14.348 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:43:14.348 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:43:15.388 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:43:15.388 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:43:15.393 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.29s         Setting up automation session
+    t =     1.44s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.53s Waiting 15.0s for "Calendar watch" StaticText to exist
+    t =     3.56s     Checking `Expect predicate `existsNoRetry == 1` for object "Calendar watch" StaticText`
+    t =     3.56s         Checking existence of `"Calendar watch" StaticText`
+    t =     3.62s Tap "Calendar watch" StaticText
+    t =     3.62s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.62s     Find the "Calendar watch" StaticText
+    t =     3.64s     Check for interrupting elements affecting "Calendar watch" StaticText
+    t =     3.66s     Synthesize event
+    t =     3.66s         Scroll element to visible
+    t =     3.66s         Find the "Calendar watch" StaticText
+    t =     3.68s         Computed hit point {133.16666666666666, 681.33333333333337} after scrolling to visible
+    t =     3.97s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.34s Tap "detail.wear" Button
+    t =     4.34s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.34s     Find the "detail.wear" Button
+    t =     4.36s     Check for interrupting elements affecting "detail.wear" Button
+    t =     4.38s     Synthesize event
+    t =     4.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.10s Waiting 5.0s for "Wear overview" NavigationBar to exist
+    t =     6.15s     Checking `Expect predicate `existsNoRetry == 1` for object "Wear overview" NavigationBar`
+    t =     6.15s         Checking existence of `"Wear overview" NavigationBar`
+    t =     6.20s Find the "wear.day.2026-10-19" Button
+    t =     7.23s     Find the "wear.day.2026-10-19" Button (retry 1)
+    t =     8.28s     Find the "wear.day.2026-10-19" Button (retry 2)
+    t =     8.31s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     8.31s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.31s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =     8.33s     Check for interrupting elements affecting "My Watches" Application
+    t =     8.36s     Synthesize event
+    t =     8.78s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.88s Find the "wear.day.2026-10-19" Button
+    t =    10.93s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    10.93s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.93s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    10.95s     Check for interrupting elements affecting "My Watches" Application
+    t =    10.97s     Synthesize event
+    t =    11.39s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    13.50s Find the "wear.day.2026-10-19" Button
+    t =    13.53s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    13.53s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    13.53s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    13.55s     Check for interrupting elements affecting "My Watches" Application
+    t =    13.57s     Synthesize event
+    t =    14.00s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.10s Find the "wear.day.2026-10-19" Button
+    t =    16.14s Swipe up Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    16.14s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    16.14s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    16.16s     Check for interrupting elements affecting "My Watches" Application
+    t =    16.18s     Synthesize event
+    t =    16.60s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.70s Find the "wear.day.2026-10-19" Button
+    t =    18.73s Find the "wear.day.2026-10-19" Button
+    t =    18.77s Tap "wear.day.2026-10-19" Button
+    t =    18.77s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.77s     Find the "wear.day.2026-10-19" Button
+    t =    18.79s     Check for interrupting elements affecting "wear.day.2026-10-19" Button
+    t =    18.81s     Synthesize event
+    t =    19.10s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.52s Waiting 5.0s for Button (First Match) to exist
+    t =    20.54s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    20.54s         Checking existence of `Button (First Match)`
+    t =    20.60s Find the Button (First Match)
+    t =    20.65s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWearSheetKeepsScrollingWithAccessibilityText]' passed (20.865 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistDragOrderPersistsAfterRelaunch]' started.
+    t =     0.00s Start Test at 2026-10-19 19:43:35.168
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.02s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.02s         Terminate pl.jakubbatycki.MojeZegarki:4825
+2026-10-19 19:43:35.202 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:43:35.202 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:43:36.268 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:43:36.268 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:43:36.273 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.31s         Setting up automation session
+    t =     1.53s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.62s Waiting 15.0s for "collection.add" Button to exist
+    t =     3.66s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     3.66s         Checking existence of `"collection.add" Button`
+    t =     3.72s Tap "Wishlist" Button
+    t =     3.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.73s     Find the "Wishlist" Button
+    t =     3.74s     Check for interrupting elements affecting "Wishlist" Button
+    t =     3.75s     Synthesize event
+    t =     4.05s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.05s Tap "wish.add" Button
+    t =     4.05s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.06s     Find the "wish.add" Button
+    t =     4.08s     Check for interrupting elements affecting "wish.add" Button
+    t =     4.10s     Synthesize event
+    t =     4.39s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.84s Waiting 5.0s for "wish.brand" TextField to exist
+    t =     5.88s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.brand" TextField`
+    t =     5.88s         Checking existence of `"wish.brand" TextField`
+    t =     6.98s Checking `Expect predicate `isHittable == 1` for object "wish.brand" TextField`
+    t =     6.98s     Find the "wish.brand" TextField
+    t =     7.03s Tap "wish.brand" TextField
+    t =     7.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.03s     Find the "wish.brand" TextField
+    t =     7.06s     Check for interrupting elements affecting "wish.brand" TextField
+    t =     7.09s     Synthesize event
+    t =     7.38s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.91s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.brand" TextField`
+    t =     8.91s     Find the "wish.brand" TextField
+    t =    10.00s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.brand" TextField`
+    t =    10.00s     Find the "wish.brand" TextField
+    t =    10.05s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    11.10s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    11.10s         Checking existence of `Keyboard (First Match)`
+    t =    11.12s Type 'Seiko' into "wish.brand" TextField
+    t =    11.12s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.13s     Find the "wish.brand" TextField
+    t =    11.17s     Check for interrupting elements affecting "wish.brand" TextField
+    t =    11.20s     Synthesize event
+    t =    11.48s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.49s Waiting 5.0s for "wish.model" TextField to exist
+    t =    12.53s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.model" TextField`
+    t =    12.53s         Checking existence of `"wish.model" TextField`
+    t =    13.61s Checking `Expect predicate `isHittable == 1` for object "wish.model" TextField`
+    t =    13.62s     Find the "wish.model" TextField
+    t =    13.68s Tap "wish.model" TextField
+    t =    13.68s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    13.68s     Find the "wish.model" TextField
+    t =    13.72s     Check for interrupting elements affecting "wish.model" TextField
+    t =    13.75s     Synthesize event
+    t =    14.03s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    15.08s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.model" TextField`
+    t =    15.08s     Find the "wish.model" TextField
+    t =    16.16s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.model" TextField`
+    t =    16.16s     Find the "wish.model" TextField
+    t =    16.22s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    17.27s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    17.27s         Checking existence of `Keyboard (First Match)`
+    t =    17.28s Type 'First' into "wish.model" TextField
+    t =    17.28s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.29s     Find the "wish.model" TextField
+    t =    17.32s     Check for interrupting elements affecting "wish.model" TextField
+    t =    17.35s     Synthesize event
+    t =    17.64s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.64s Tap "wish.save" Button
+    t =    17.64s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.64s     Find the "wish.save" Button
+    t =    17.68s     Check for interrupting elements affecting "wish.save" Button
+    t =    17.71s     Synthesize event
+    t =    18.00s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.41s Waiting 5.0s for "First" StaticText to exist
+    t =    19.44s     Checking `Expect predicate `existsNoRetry == 1` for object "First" StaticText`
+    t =    19.44s         Checking existence of `"First" StaticText`
+    t =    19.48s Tap "wish.add" Button
+    t =    19.48s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.48s     Find the "wish.add" Button
+    t =    19.50s     Check for interrupting elements affecting "wish.add" Button
+    t =    19.52s     Synthesize event
+    t =    19.82s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    20.21s Waiting 5.0s for "wish.brand" TextField to exist
+    t =    21.23s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.brand" TextField`
+    t =    21.23s         Checking existence of `"wish.brand" TextField`
+    t =    22.34s Checking `Expect predicate `isHittable == 1` for object "wish.brand" TextField`
+    t =    22.34s     Find the "wish.brand" TextField
+    t =    22.38s Tap "wish.brand" TextField
+    t =    22.38s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    22.39s     Find the "wish.brand" TextField
+    t =    22.42s     Check for interrupting elements affecting "wish.brand" TextField
+    t =    22.45s     Synthesize event
+    t =    22.74s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    24.13s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.brand" TextField`
+    t =    24.13s     Find the "wish.brand" TextField
+    t =    25.24s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.brand" TextField`
+    t =    25.24s     Find the "wish.brand" TextField
+    t =    25.29s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    26.31s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    26.31s         Checking existence of `Keyboard (First Match)`
+    t =    26.33s Type 'Seiko' into "wish.brand" TextField
+    t =    26.33s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.33s     Find the "wish.brand" TextField
+    t =    26.37s     Check for interrupting elements affecting "wish.brand" TextField
+    t =    26.40s     Synthesize event
+    t =    26.69s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.69s Waiting 5.0s for "wish.model" TextField to exist
+    t =    27.73s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.model" TextField`
+    t =    27.73s         Checking existence of `"wish.model" TextField`
+    t =    28.81s Checking `Expect predicate `isHittable == 1` for object "wish.model" TextField`
+    t =    28.81s     Find the "wish.model" TextField
+    t =    28.87s Tap "wish.model" TextField
+    t =    28.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    28.87s     Find the "wish.model" TextField
+    t =    28.91s     Check for interrupting elements affecting "wish.model" TextField
+    t =    28.95s     Synthesize event
+    t =    29.23s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    30.27s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.model" TextField`
+    t =    30.27s     Find the "wish.model" TextField
+    t =    31.36s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.model" TextField`
+    t =    31.36s     Find the "wish.model" TextField
+    t =    31.41s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    32.45s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    32.45s         Checking existence of `Keyboard (First Match)`
+    t =    32.47s Type 'Second' into "wish.model" TextField
+    t =    32.47s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.47s     Find the "wish.model" TextField
+    t =    32.52s     Check for interrupting elements affecting "wish.model" TextField
+    t =    32.55s     Synthesize event
+    t =    32.85s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.86s Tap "wish.save" Button
+    t =    32.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.86s     Find the "wish.save" Button
+    t =    32.92s     Check for interrupting elements affecting "wish.save" Button
+    t =    32.95s     Synthesize event
+    t =    33.24s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    33.63s Waiting 5.0s for "Second" StaticText to exist
+    t =    34.65s     Checking `Expect predicate `existsNoRetry == 1` for object "Second" StaticText`
+    t =    34.65s         Checking existence of `"Second" StaticText`
+    t =    34.69s Tap "wish.add" Button
+    t =    34.69s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    34.69s     Find the "wish.add" Button
+    t =    34.71s     Check for interrupting elements affecting "wish.add" Button
+    t =    34.73s     Synthesize event
+    t =    35.01s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.40s Waiting 5.0s for "wish.brand" TextField to exist
+    t =    36.45s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.brand" TextField`
+    t =    36.45s         Checking existence of `"wish.brand" TextField`
+    t =    37.56s Checking `Expect predicate `isHittable == 1` for object "wish.brand" TextField`
+    t =    37.56s     Find the "wish.brand" TextField
+    t =    37.61s Tap "wish.brand" TextField
+    t =    37.61s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    37.62s     Find the "wish.brand" TextField
+    t =    37.65s     Check for interrupting elements affecting "wish.brand" TextField
+    t =    37.68s     Synthesize event
+    t =    37.97s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    39.36s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.brand" TextField`
+    t =    39.36s     Find the "wish.brand" TextField
+    t =    40.45s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.brand" TextField`
+    t =    40.45s     Find the "wish.brand" TextField
+    t =    40.52s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    41.55s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    41.55s         Checking existence of `Keyboard (First Match)`
+    t =    41.57s Type 'Seiko' into "wish.brand" TextField
+    t =    41.57s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    41.58s     Find the "wish.brand" TextField
+    t =    41.63s     Check for interrupting elements affecting "wish.brand" TextField
+    t =    41.67s     Synthesize event
+    t =    41.95s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    41.96s Waiting 5.0s for "wish.model" TextField to exist
+    t =    43.00s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.model" TextField`
+    t =    43.00s         Checking existence of `"wish.model" TextField`
+    t =    44.08s Checking `Expect predicate `isHittable == 1` for object "wish.model" TextField`
+    t =    44.08s     Find the "wish.model" TextField
+    t =    44.15s Tap "wish.model" TextField
+    t =    44.15s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    44.16s     Find the "wish.model" TextField
+    t =    44.20s     Check for interrupting elements affecting "wish.model" TextField
+    t =    44.23s     Synthesize event
+    t =    44.51s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    45.56s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.model" TextField`
+    t =    45.57s     Find the "wish.model" TextField
+    t =    46.68s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.model" TextField`
+    t =    46.68s     Find the "wish.model" TextField
+    t =    46.75s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    47.78s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    47.78s         Checking existence of `Keyboard (First Match)`
+    t =    47.80s Type 'Third' into "wish.model" TextField
+    t =    47.80s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    47.81s     Find the "wish.model" TextField
+    t =    47.86s     Check for interrupting elements affecting "wish.model" TextField
+    t =    47.89s     Synthesize event
+    t =    48.18s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    48.19s Tap "wish.save" Button
+    t =    48.19s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    48.19s     Find the "wish.save" Button
+    t =    48.24s     Check for interrupting elements affecting "wish.save" Button
+    t =    48.28s     Synthesize event
+    t =    48.57s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    48.94s Waiting 5.0s for "Third" StaticText to exist
+    t =    50.00s     Checking `Expect predicate `existsNoRetry == 1` for object "Third" StaticText`
+    t =    50.00s         Checking existence of `"Third" StaticText`
+    t =    50.04s Get number of matches for: Elements containing elements matching type Button with identifier 'Add to collection'
+    t =    50.07s Checking existence of `"Third" StaticText`
+    t =    50.09s Find the "wish.reorder" Button
+    t =    50.11s Find the "wish.add" Button
+    t =    50.13s Find the Button (First Match)
+    t =    50.15s Find the Cell (Element at index 0)
+    t =    50.18s Tap "wish.reorder" Button
+    t =    50.18s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    50.18s     Find the "wish.reorder" Button
+    t =    50.20s     Check for interrupting elements affecting "wish.reorder" Button
+    t =    50.22s     Synthesize event
+    t =    50.51s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    50.64s Press Cell (Element at index 0)[0.94, 0.50] for 1.0 seconds, then drag to Cell (Element at index 2)[0.94, 0.85] with velocity of 500.00 pixels per second, and then hold for 0.0 seconds
+    t =    50.64s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    50.64s     Find the Cell (Element at index 0)
+    t =    50.67s     Check for interrupting elements affecting Cell
+    t =    50.69s     Synthesize event
+    t =    50.69s         Find the Cell at {{20.0, 233.7}, {350.0, 162.0}}
+    t =    50.72s         Find the Cell at {{20.0, 233.7}, {350.0, 162.0}}
+    t =    50.74s         Find the Cell (Element at index 2)
+    t =    50.77s         Find the Cell at {{20.0, 557.7}, {350.0, 162.0}}
+    t =    50.79s         Find the Cell at {{20.0, 233.7}, {350.0, 162.0}}
+    t =    52.80s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    52.95s Tap "wish.reorder" Button
+    t =    52.95s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    52.96s     Find the "wish.reorder" Button
+    t =    53.00s     Check for interrupting elements affecting "wish.reorder" Button
+    t =    53.02s     Synthesize event
+    t =    53.31s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    54.48s Checking `Expect predicate `exists == 1` for object "Third" StaticText`
+    t =    54.48s     Checking existence of `"Third" StaticText`
+    t =    54.51s Terminate pl.jakubbatycki.MojeZegarki:4875
+2026-10-19 19:44:29.690 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:44:29.691 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    55.58s Open pl.jakubbatycki.MojeZegarki
+    t =    55.58s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:44:30.752 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:44:30.752 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:44:30.758 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    55.80s         Setting up automation session
+    t =    56.03s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    57.12s Tap "Wishlist" Button
+    t =    57.12s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    57.13s     Find the "Wishlist" Button
+    t =    57.21s     Check for interrupting elements affecting "Wishlist" Button
+    t =    57.22s     Synthesize event
+    t =    57.51s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    57.52s Waiting 5.0s for "Third" StaticText to exist
+    t =    58.56s     Checking `Expect predicate `existsNoRetry == 1` for object "Third" StaticText`
+    t =    58.56s         Checking existence of `"Third" StaticText`
+    t =    58.61s Checking existence of `"Second" StaticText`
+    t =    58.63s Swipe down Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    58.63s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    58.63s     Find the Target Application 'pl.jakubbatycki.MojeZegarki'
+    t =    58.65s     Check for interrupting elements affecting "My Watches" Application
+    t =    58.66s     Synthesize event
+    t =    59.08s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    59.57s Waiting 5.0s for SearchField (First Match) to exist
+    t =    60.63s     Checking `Expect predicate `existsNoRetry == 1` for object SearchField (First Match)`
+    t =    60.63s         Checking existence of `SearchField (First Match)`
+    t =    60.66s Tap SearchField (First Match)
+    t =    60.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    60.66s     Find the SearchField (First Match)
+    t =    60.68s     Check for interrupting elements affecting "Search brand or model" SearchField
+    t =    60.70s     Synthesize event
+    t =    60.99s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    61.44s Type 'Second' into SearchField (First Match)
+    t =    61.44s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    61.44s     Find the SearchField (First Match)
+    t =    61.49s     Check for interrupting elements affecting "Search brand or model" SearchField
+    t =    61.51s     Synthesize event
+    t =    61.81s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    61.82s Checking existence of `"wish.reorder" Button`
+    t =    61.85s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistDragOrderPersistsAfterRelaunch]' passed (62.103 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistMoveCanBeCancelledThenCommittedAndWearPersists]' started.
+    t =     0.00s Start Test at 2026-10-19 19:44:37.272
+    t =     0.03s Set Up
+    t =     0.03s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:4975
+2026-10-19 19:44:37.316 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:44:37.316 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:44:38.350 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:44:38.350 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:44:38.356 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.29s         Setting up automation session
+    t =     1.43s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.50s Waiting 15.0s for "collection.add" Button to exist
+    t =     3.51s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     3.51s         Checking existence of `"collection.add" Button`
+    t =     3.57s Tap "Wishlist" Button
+    t =     3.57s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.57s     Find the "Wishlist" Button
+    t =     3.59s     Check for interrupting elements affecting "Wishlist" Button
+    t =     3.60s     Synthesize event
+    t =     3.89s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.90s Tap "wish.add" Button
+    t =     3.90s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.90s     Find the "wish.add" Button
+    t =     3.92s     Check for interrupting elements affecting "wish.add" Button
+    t =     3.93s     Synthesize event
+    t =     4.23s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.65s Find the "wish.save" Button
+    t =     4.72s Waiting 5.0s for "wish.brand" TextField to exist
+    t =     5.76s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.brand" TextField`
+    t =     5.76s         Checking existence of `"wish.brand" TextField`
+    t =     6.86s Checking `Expect predicate `isHittable == 1` for object "wish.brand" TextField`
+    t =     6.86s     Find the "wish.brand" TextField
+    t =     6.91s Tap "wish.brand" TextField
+    t =     6.91s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.92s     Find the "wish.brand" TextField
+    t =     6.94s     Check for interrupting elements affecting "wish.brand" TextField
+    t =     6.97s     Synthesize event
+    t =     7.26s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.71s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.brand" TextField`
+    t =     8.71s     Find the "wish.brand" TextField
+    t =     9.81s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.brand" TextField`
+    t =     9.81s     Find the "wish.brand" TextField
+    t =     9.86s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    10.91s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    10.91s         Checking existence of `Keyboard (First Match)`
+    t =    10.94s Type 'Casio' into "wish.brand" TextField
+    t =    10.94s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    10.94s     Find the "wish.brand" TextField
+    t =    10.98s     Check for interrupting elements affecting "wish.brand" TextField
+    t =    11.02s     Synthesize event
+    t =    11.30s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    11.31s Waiting 5.0s for "wish.model" TextField to exist
+    t =    12.34s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.model" TextField`
+    t =    12.34s         Checking existence of `"wish.model" TextField`
+    t =    13.46s Checking `Expect predicate `isHittable == 1` for object "wish.model" TextField`
+    t =    13.46s     Find the "wish.model" TextField
+    t =    13.51s Tap "wish.model" TextField
+    t =    13.51s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    13.51s     Find the "wish.model" TextField
+    t =    13.54s     Check for interrupting elements affecting "wish.model" TextField
+    t =    13.57s     Synthesize event
+    t =    13.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    14.91s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.model" TextField`
+    t =    14.91s     Find the "wish.model" TextField
+    t =    15.99s Checking `Expect predicate `hasKeyboardFocus == 1` for object "wish.model" TextField`
+    t =    15.99s     Find the "wish.model" TextField
+    t =    16.05s Waiting 5.0s for Keyboard (First Match) to exist
+    t =    17.07s     Checking `Expect predicate `existsNoRetry == 1` for object Keyboard (First Match)`
+    t =    17.07s         Checking existence of `Keyboard (First Match)`
+    t =    17.10s Type 'G-Shock' into "wish.model" TextField
+    t =    17.10s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.10s     Find the "wish.model" TextField
+    t =    17.15s     Check for interrupting elements affecting "wish.model" TextField
+    t =    17.18s     Synthesize event
+    t =    17.50s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.50s Tap "wish.save" Button
+    t =    17.50s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    17.51s     Find the "wish.save" Button
+    t =    17.56s     Check for interrupting elements affecting "wish.save" Button
+    t =    17.60s     Synthesize event
+    t =    17.88s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    18.29s Waiting 5.0s for Button (First Match) to exist
+    t =    19.31s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    19.31s         Checking existence of `Button (First Match)`
+    t =    19.36s Tap Button (First Match)
+    t =    19.36s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.36s     Find the Button (First Match)
+    t =    19.39s     Check for interrupting elements affecting "wish.actions.DC99AA14-3D37-4303-8365-77B8A7DAC977" Button
+    t =    19.41s     Synthesize event
+    t =    19.42s         Scroll element to visible
+    t =    19.42s                 Retrying failed scroll-to-visible with containing cell Cell
+    t =    19.42s         Find the "wish.actions.DC99AA14-3D37-4303-8365-77B8A7DAC977" Button
+    t =    19.46s         Computed hit point {-1, -1} after scrolling to visible
+    t =    19.74s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.74s Tap "wish.move" Button
+    t =    19.74s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    19.75s     Find the "wish.move" Button
+    t =    19.77s     Check for interrupting elements affecting "wish.move" Button
+    t =    19.79s     Synthesize event
+    t =    20.07s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    20.42s Find the "editor.brand" TextField
+    t =    21.52s Checking `Expect predicate `isHittable == 1` for object "editor.cancel" Button`
+    t =    21.52s     Find the "editor.cancel" Button
+    t =    21.57s Tap "editor.cancel" Button
+    t =    21.57s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    21.57s     Find the "editor.cancel" Button
+    t =    21.61s     Check for interrupting elements affecting "editor.cancel" Button
+    t =    21.64s     Synthesize event
+    t =    21.93s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    23.34s Checking `Expect predicate `exists == 0` for object "editor.brand" TextField`
+    t =    23.35s     Checking existence of `"editor.brand" TextField`
+    t =    23.37s Waiting 5.0s for "wish.actions.DC99AA14-3D37-4303-8365-77B8A7DAC977" Button to exist
+    t =    24.41s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.actions.DC99AA14-3D37-4303-8365-77B8A7DAC977" Button`
+    t =    24.41s         Checking existence of `"wish.actions.DC99AA14-3D37-4303-8365-77B8A7DAC977" Button`
+    t =    24.45s Waiting 5.0s for Button (First Match) to exist
+    t =    25.49s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    25.49s         Checking existence of `Button (First Match)`
+    t =    25.54s Tap Button (First Match)
+    t =    25.54s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    25.54s     Find the Button (First Match)
+    t =    25.57s     Check for interrupting elements affecting "wish.quickMove.DC99AA14-3D37-4303-8365-77B8A7DAC977" Button
+    t =    25.58s     Synthesize event
+    t =    25.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    25.87s Checking existence of `"editor.save" Button`
+    t =    25.89s Waiting 5.0s for "Your next watch" StaticText to exist
+    t =    26.91s     Checking `Expect predicate `existsNoRetry == 1` for object "Your next watch" StaticText`
+    t =    26.91s         Checking existence of `"Your next watch" StaticText`
+    t =    26.92s Tap "Show collection" Button
+    t =    26.92s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    26.92s     Find the "Show collection" Button
+    t =    26.94s     Check for interrupting elements affecting "Show collection" Button
+    t =    26.95s     Synthesize event
+    t =    27.24s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    27.24s Waiting 5.0s for "G-Shock" StaticText to exist
+    t =    28.28s     Checking `Expect predicate `existsNoRetry == 1` for object "G-Shock" StaticText`
+    t =    28.28s         Checking existence of `"G-Shock" StaticText`
+    t =    28.30s Tap "G-Shock" StaticText
+    t =    28.30s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    28.30s     Find the "G-Shock" StaticText
+    t =    28.32s     Check for interrupting elements affecting "G-Shock" StaticText
+    t =    28.33s     Synthesize event
+    t =    28.62s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    28.98s Waiting 5.0s for "wear.today" Button to exist
+    t =    30.01s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.today" Button`
+    t =    30.01s         Checking existence of `"wear.today" Button`
+    t =    30.05s Find the "wear.today" Button
+    t =    30.08s Tap "wear.today" Button
+    t =    30.08s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    30.08s     Find the "wear.today" Button
+    t =    30.11s     Check for interrupting elements affecting "wear.today" Button
+    t =    30.13s     Synthesize event
+    t =    30.42s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    31.46s Checking `Expect predicate `isEnabled == 0` for object "wear.today" Button`
+    t =    31.46s     Find the "wear.today" Button
+    t =    31.50s Find the "wear.today" Button
+    t =    31.53s Tap Button (Element at index 0)
+    t =    31.53s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    31.53s     Find the Button (Element at index 0)
+    t =    31.55s     Check for interrupting elements affecting "Collection" Button
+    t =    31.57s     Synthesize event
+    t =    31.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.19s Find the Button (First Match)
+    t =    32.23s Tap "G-Shock" StaticText
+    t =    32.23s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.23s     Find the "G-Shock" StaticText
+    t =    32.25s     Check for interrupting elements affecting "G-Shock" StaticText
+    t =    32.26s     Synthesize event
+    t =    32.55s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.90s Tap "detail.wear" Button
+    t =    32.90s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    32.91s     Find the "detail.wear" Button
+    t =    32.95s     Check for interrupting elements affecting "detail.wear" Button
+    t =    32.98s     Synthesize event
+    t =    33.26s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    33.73s Waiting 5.0s for "wear.month.title" Button to exist
+    t =    34.76s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.month.title" Button`
+    t =    34.76s         Checking existence of `"wear.month.title" Button`
+    t =    34.82s Find the "wear.month.title" Button
+    t =    34.86s Find the "wear.month.next" Button
+    t =    34.89s Tap "wear.month.previous" Button
+    t =    34.89s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    34.89s     Find the "wear.month.previous" Button
+    t =    34.92s     Check for interrupting elements affecting "wear.month.previous" Button
+    t =    34.95s     Synthesize event
+    t =    35.24s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.25s Find the "wear.month.title" Button
+    t =    35.30s Tap "wear.month.next" Button
+    t =    35.30s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.30s     Find the "wear.month.next" Button
+    t =    35.34s     Check for interrupting elements affecting "wear.month.next" Button
+    t =    35.37s     Synthesize event
+    t =    35.66s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.67s Find the "wear.month.title" Button
+    t =    35.71s Get number of matches for: Elements matching predicate 'identifier BEGINSWITH "wear.log."'
+    t =    35.74s Tap "wear.day.2026-10-19" Button
+    t =    35.74s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    35.75s     Find the "wear.day.2026-10-19" Button
+    t =    35.78s     Check for interrupting elements affecting "wear.day.2026-10-19" Button
+    t =    35.82s     Synthesize event
+    t =    35.83s         Scroll element to visible
+    t =    35.83s                 Retrying failed scroll-to-visible with containing cell Cell
+    t =    35.83s         Find the "wear.day.2026-10-19" Button
+    t =    35.89s         Computed hit point {-1, -1} after scrolling to visible
+    t =    36.17s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    37.21s Checking `Expect predicate `isHittable == 1` for object Button (First Match)`
+    t =    37.21s     Find the Button (First Match)
+    t =    37.31s Checking existence of `"wear.add" Button`
+    t =    37.35s Get number of matches for: Elements matching predicate 'identifier BEGINSWITH "wear.log."'
+    t =    37.38s Tap "Done" Button
+    t =    37.38s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    37.38s     Find the "Done" Button
+    t =    37.41s     Check for interrupting elements affecting "Done" Button
+    t =    37.45s     Synthesize event
+    t =    37.73s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    38.09s Tap "Wearing" Button
+    t =    38.09s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    38.10s     Find the "Wearing" Button
+    t =    38.13s     Check for interrupting elements affecting "Wearing" Button
+    t =    38.15s     Synthesize event
+    t =    38.44s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    38.44s Waiting 5.0s for "1 day worn" StaticText to exist
+    t =    39.47s     Checking `Expect predicate `existsNoRetry == 1` for object "1 day worn" StaticText`
+    t =    39.47s         Checking existence of `"1 day worn" StaticText`
+    t =    39.52s Get number of matches for: Elements matching predicate 'identifier BEGINSWITH "wear.log."'
+    t =    39.54s Tap "wear.day.2026-10-19" Button
+    t =    39.54s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    39.54s     Find the "wear.day.2026-10-19" Button
+    t =    39.56s     Check for interrupting elements affecting "wear.day.2026-10-19" Button
+    t =    39.58s     Synthesize event
+    t =    39.88s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    40.91s Checking `Expect predicate `isHittable == 1` for object Button (First Match)`
+    t =    40.91s     Find the Button (First Match)
+    t =    40.99s Get number of matches for: Elements matching predicate 'identifier BEGINSWITH "wear.log."'
+    t =    41.01s Terminate pl.jakubbatycki.MojeZegarki:4987
+2026-10-19 19:45:18.290 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:45:18.290 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    42.06s Open pl.jakubbatycki.MojeZegarki
+    t =    42.07s     Launch pl.jakubbatycki.MojeZegarki
+2026-10-19 19:45:19.340 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:45:19.340 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:45:19.346 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =    42.28s         Setting up automation session
+    t =    42.53s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    43.61s Waiting 15.0s for "collection.add" Button to exist
+    t =    44.64s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =    44.64s         Checking existence of `"collection.add" Button`
+    t =    44.73s Tap "Wearing" Button
+    t =    44.73s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    44.73s     Find the "Wearing" Button
+    t =    44.75s     Check for interrupting elements affecting "Wearing" Button
+    t =    44.76s     Synthesize event
+    t =    45.04s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    45.05s Waiting 5.0s for "1 day worn" StaticText to exist
+    t =    46.07s     Checking `Expect predicate `existsNoRetry == 1` for object "1 day worn" StaticText`
+    t =    46.07s         Checking existence of `"1 day worn" StaticText`
+    t =    46.14s Tap "wear.statistics" Button
+    t =    46.14s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    46.14s     Find the "wear.statistics" Button
+    t =    46.16s     Check for interrupting elements affecting "wear.statistics" Button
+    t =    46.18s     Synthesize event
+    t =    46.46s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    46.90s Waiting 5.0s for "stats.period" SegmentedControl to exist
+    t =    47.94s     Checking `Expect predicate `existsNoRetry == 1` for object "stats.period" SegmentedControl`
+    t =    47.94s         Checking existence of `"stats.period" SegmentedControl`
+    t =    48.00s Tap "All time" Button
+    t =    48.00s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    48.00s     Find the "All time" Button
+    t =    48.03s     Check for interrupting elements affecting "All time" Button
+    t =    48.06s     Synthesize event
+    t =    48.36s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    48.56s Checking existence of `"Share of recorded days" StaticText`
+    t =    48.60s Checking existence of `"stats.watch" Button`
+    t =    48.63s Tap "Done" Button
+    t =    48.63s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    48.63s     Find the "Done" Button
+    t =    48.66s     Check for interrupting elements affecting "Done" Button
+    t =    48.68s     Synthesize event
+    t =    48.97s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =    49.32s Waiting 5.0s for "wear.statistics" Button to exist
+    t =    50.34s     Checking `Expect predicate `existsNoRetry == 1` for object "wear.statistics" Button`
+    t =    50.34s         Checking existence of `"wear.statistics" Button`
+    t =    50.39s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistMoveCanBeCancelledThenCommittedAndWearPersists]' passed (50.627 seconds).
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistPhotoPreviewDoesNotChangeDraft]' started.
+    t =     0.00s Start Test at 2026-10-19 19:45:27.901
+    t =     0.02s Set Up
+    t =     0.02s Open pl.jakubbatycki.MojeZegarki
+    t =     0.03s     Launch pl.jakubbatycki.MojeZegarki
+    t =     0.03s         Terminate pl.jakubbatycki.MojeZegarki:5319
+2026-10-19 19:45:27.935 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:45:27.935 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:45:28.949 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: debugger version lookup failed for path '<nil>': noURL
+2026-10-19 19:45:28.949 xcodebuild[3709:1976277] [MT] IDELaunchParametersSnapshot: no debugger version
+2026-10-19 19:45:28.954 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+    t =     1.26s         Setting up automation session
+    t =     1.38s         Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     2.46s Waiting 15.0s for "collection.add" Button to exist
+    t =     3.48s     Checking `Expect predicate `existsNoRetry == 1` for object "collection.add" Button`
+    t =     3.48s         Checking existence of `"collection.add" Button`
+    t =     3.54s Tap "Wishlist" Button
+    t =     3.54s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.55s     Find the "Wishlist" Button
+    t =     3.56s     Check for interrupting elements affecting "Wishlist" Button
+    t =     3.57s     Synthesize event
+    t =     3.86s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.87s Tap "Photo wish" StaticText
+    t =     3.87s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     3.87s     Find the "Photo wish" StaticText
+    t =     3.90s     Check for interrupting elements affecting "Photo wish" StaticText
+    t =     3.92s     Synthesize event
+    t =     4.21s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     4.62s Waiting 5.0s for "wish.photo.preview" Button to exist
+    t =     5.65s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.photo.preview" Button`
+    t =     5.65s         Checking existence of `"wish.photo.preview" Button`
+    t =     5.72s Tap "wish.photo.preview" Button
+    t =     5.72s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     5.73s     Find the "wish.photo.preview" Button
+    t =     5.76s     Check for interrupting elements affecting "wish.photo.preview" Button
+    t =     5.78s     Synthesize event
+    t =     6.07s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     6.40s Waiting 5.0s for "photoPreview.image" Image to exist
+    t =     7.43s     Checking `Expect predicate `existsNoRetry == 1` for object "photoPreview.image" Image`
+    t =     7.43s         Checking existence of `"photoPreview.image" Image`
+    t =     7.48s Tap "photoPreview.close" Button
+    t =     7.48s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     7.48s     Find the "photoPreview.close" Button
+    t =     7.52s     Check for interrupting elements affecting "photoPreview.close" Button
+    t =     7.55s     Synthesize event
+    t =     7.84s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     8.14s Waiting 5.0s for "wish.photo.preview" Button to exist
+    t =     9.18s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.photo.preview" Button`
+    t =     9.18s         Checking existence of `"wish.photo.preview" Button`
+    t =     9.23s Tap "Cancel" Button
+    t =     9.23s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.23s     Find the "Cancel" Button
+    t =     9.26s     Check for interrupting elements affecting "Cancel" Button
+    t =     9.29s     Synthesize event
+    t =     9.58s     Wait for pl.jakubbatycki.MojeZegarki to idle
+    t =     9.93s Waiting 5.0s for "wish.add" Button to exist
+    t =    10.98s     Checking `Expect predicate `existsNoRetry == 1` for object "wish.add" Button`
+    t =    10.98s         Checking existence of `"wish.add" Button`
+    t =    11.01s Checking existence of `"Discard changes" Button`
+    t =    11.03s Checking existence of `"Photo wish" StaticText`
+    t =    11.04s Tear Down
+Test Case '-[MojeZegarkiUITests.FreeModuleUITests testWishlistPhotoPreviewDoesNotChangeDraft]' passed (11.286 seconds).
+Test Suite 'FreeModuleUITests' passed at 2026-10-19 19:45:39.187.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 341.243 (341.260) seconds
+Test Suite 'MojeZegarkiUITests.xctest' failed at 2026-10-19 19:45:39.188.
+	 Executed 20 tests, with 1 test skipped and 1 failure (0 unexpected) in 444.744 (444.776) seconds
+Test Suite 'All tests' failed at 2026-10-19 19:45:39.188.
+	 Executed 20 tests, with 1 test skipped and 1 failure (0 unexpected) in 444.744 (444.777) seconds
+2026-10-19 19:45:39.216 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:45:39.216 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:45:39.230 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:45:39.230 xcodebuild[3709:1976277] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 19:45:39.500 xcodebuild[3709:1976277] [MT] IDETestOperationsObserverDebug: 450.585 elapsed -- Testing started completed.
+2026-10-19 19:45:39.500 xcodebuild[3709:1976277] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-19 19:45:39.500 xcodebuild[3709:1976277] [MT] IDETestOperationsObserverDebug: 450.585 sec, +450.585 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/MojeZegarki-complete17.xcresult
+
+Failing tests:
+	AccessibilityUITests.testCoreScreensAccessibility()
+
+** TEST EXECUTE FAILED **
+
+Testing started
