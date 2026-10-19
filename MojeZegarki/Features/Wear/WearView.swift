@@ -82,10 +82,13 @@ struct WearView: View {
                         Label("No wear history yet", systemImage: "calendar")
                     } description: {
                         Text("Add one or more days to your wear history.")
-                    } actions: {
-                        addDaysButton
                     }
                     .listRowBackground(Color.clear)
+                    Section {
+                        addDaysButton
+                            .listRowInsets(EdgeInsets())
+                            .listRowBackground(Color.clear)
+                    }
                 } else {
                     if watch == nil {
                         Section {
@@ -255,6 +258,7 @@ struct WearView: View {
             adding = true
         } label: {
             Label("Add wear days", systemImage: "plus")
+                .labelStyle(.titleAndIcon)
                 .font(.headline)
                 .padding(.horizontal, 16)
                 .frame(maxWidth: .infinity, minHeight: headerHeight)

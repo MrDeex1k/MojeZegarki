@@ -254,6 +254,23 @@ final class FreeModuleUITests: XCTestCase {
         app.buttons.matching(identifier: "document.confirmDelete").firstMatch.tap()
         XCTAssertTrue(app.staticTexts["No documents yet"].waitForExistence(timeout: 5))
     }
+    func testEmptyWatchWearHistoryHasWideCompactAddButton() {
+        let app = launch(extra: ["--test-wear-fixture"])
+        XCTAssertTrue(app.staticTexts["Second watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Second watch"].tap()
+        app.buttons["detail.wear"].tap()
+        XCTAssertTrue(app.staticTexts["No wear history yet"].waitForExistence(timeout: 5))
+        let addDays = app.buttons["wear.add"]
+        XCTAssertTrue(addDays.isHittable)
+        XCTAssertTrue(addDays.label.contains("Add wear days"))
+        XCTAssertGreaterThan(addDays.frame.width, app.frame.width * 0.75)
+        XCTAssertGreaterThanOrEqual(addDays.frame.height, 44)
+        XCTAssertLessThan(addDays.frame.height, 80)
+        saveScreenshot(app, name: "Empty wear history compact button")
+        addDays.tap()
+        XCTAssertTrue(app.buttons["wear.save"].waitForExistence(timeout: 5))
+    }
+
     func testWearCalendarRemainsStableAfterScrollingInSheet() {
         let app = launch(extra: ["--test-wear-fixture"])
         XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))
