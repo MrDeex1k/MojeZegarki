@@ -85,6 +85,11 @@ struct MojeZegarkiApp: App {
             }
             #if DEBUG
                 if ProcessInfo.processInfo.arguments.contains("--uitesting"),
+                    ProcessInfo.processInfo.arguments.contains("--test-photo-preview-fixture")
+                {
+                    try await seedPhotoPreviewFixture(in: loaded)
+                }
+                if ProcessInfo.processInfo.arguments.contains("--uitesting"),
                     ProcessInfo.processInfo.arguments.contains("--test-document-fixture")
                 {
                     try await seedDocumentFixture(in: loaded)
@@ -108,6 +113,37 @@ struct MojeZegarkiApp: App {
     }
 
     #if DEBUG
+        @MainActor private func seedPhotoPreviewFixture(in store: CollectionStore) async throws {
+            var photos: [PhotoDraft] = []
+            for size in [CGSize(width: 1200, height: 700), CGSize(width: 700, height: 1200)] {
+                let data = UIGraphicsImageRenderer(size: size).jpegData(withCompressionQuality: 0.9) { context in
+                    UIColor.systemTeal.setFill()
+                    context.fill(CGRect(origin: .zero, size: size))
+                    UIColor.white.setStroke()
+                    context.cgContext.setLineWidth(20)
+                    context.cgContext.stroke(CGRect(origin: .zero, size: size).insetBy(dx: 20, dy: 20))
+                    ("Photo preview" as NSString).draw(
+                        at: CGPoint(x: 60, y: 60),
+                        withAttributes: [.font: UIFont.systemFont(ofSize: 60), .foregroundColor: UIColor.white])
+                }
+                photos.append(try await store.photoStore.importPhoto(data))
+            }
+            var draft = TimepieceDraft()
+            draft.brand = "TestBrand"
+            draft.modelName = "Photo watch"
+            draft.photos = photos
+            draft.mainPhotoID = photos.first?.id
+            _ = try store.save(draft)
+            var wish = WishlistDraft()
+            wish.brand = "TestBrand"
+            wish.modelName = "Photo wish"
+            wish.photo = photos.last
+            _ = try store.saveWish(wish)
+            if ProcessInfo.processInfo.arguments.contains("--test-missing-photo") {
+                for photo in photos { try await store.photoStore.remove(photo.id) }
+            }
+        }
+
         @MainActor private func seedDocumentFixture(in store: CollectionStore) async throws {
             var draft = TimepieceDraft()
             draft.brand = "TestBrand"

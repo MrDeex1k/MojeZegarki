@@ -12,6 +12,66 @@ final class FreeModuleUITests: XCTestCase {
         return app
     }
 
+    func testWatchPhotosOpenFullScreenAndReturnToGallery() {
+        let app = launch(extra: ["--test-photo-preview-fixture"])
+        XCTAssertTrue(app.staticTexts["Photo watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Photo watch"].tap()
+        let photos = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "detail.photo."))
+        let first = photos.firstMatch
+        XCTAssertTrue(first.waitForExistence(timeout: 5))
+        let firstID = first.identifier
+        first.tap()
+        XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.tabBars.firstMatch.isHittable)
+        saveScreenshot(app, name: "Landscape photo preview")
+        app.buttons["photoPreview.close"].tap()
+        XCTAssertTrue(app.buttons[firstID].waitForExistence(timeout: 5))
+        app.buttons[firstID].swipeLeft()
+        let second = photos.matching(NSPredicate(format: "identifier != %@", firstID)).firstMatch
+        XCTAssertTrue(second.waitForExistence(timeout: 5))
+        second.tap()
+        XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
+        saveScreenshot(app, name: "Portrait photo preview")
+        app.buttons["photoPreview.close"].tap()
+        XCTAssertTrue(second.waitForExistence(timeout: 5))
+    }
+
+    func testWishlistPhotoPreviewDoesNotChangeDraft() {
+        let app = launch(extra: ["--test-photo-preview-fixture"])
+        XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+        app.tabBars.buttons["Wishlist"].tap()
+        app.staticTexts["Photo wish"].tap()
+        let photo = app.buttons["wish.photo.preview"]
+        XCTAssertTrue(photo.waitForExistence(timeout: 5))
+        photo.tap()
+        XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
+        app.buttons["photoPreview.close"].tap()
+        XCTAssertTrue(photo.waitForExistence(timeout: 5))
+        app.buttons["Cancel"].tap()
+        XCTAssertTrue(app.buttons["wish.add"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["Discard changes"].exists)
+        XCTAssertTrue(app.staticTexts["Photo wish"].exists)
+    }
+
+    func testMissingWatchPhotoPreviewCanBeClosed() {
+        let app = launch(extra: ["--test-photo-preview-fixture", "--test-missing-photo"])
+        XCTAssertTrue(app.staticTexts["Photo watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Photo watch"].tap()
+        let photo = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "detail.photo.")).firstMatch
+        XCTAssertTrue(photo.waitForExistence(timeout: 5))
+        photo.tap()
+        XCTAssertTrue(app.staticTexts["Photo unavailable"].waitForExistence(timeout: 5))
+        app.buttons["photoPreview.close"].tap()
+        XCTAssertTrue(photo.waitForExistence(timeout: 5))
+    }
+
+    private func saveScreenshot(_ app: XCUIApplication, name: String) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     func testWishlistDragOrderPersistsAfterRelaunch() {
         let app = launch()
         XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))

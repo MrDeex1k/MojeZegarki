@@ -8,6 +8,7 @@ struct TimepieceDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @ScaledMetric(relativeTo: .title2) private var titleFontSize = 24
     @State private var editing = false
+    @State private var previewPhoto: PhotoDraft?
     @State private var showingDocuments = false
     @State private var showingWear = false
     @State private var confirmingDelete = false
@@ -30,12 +31,16 @@ struct TimepieceDetailView: View {
                     VStack(spacing: 0) {
                         TabView {
                             ForEach(orderedPhotos) { photo in
-                                PhotoView(
-                                    photo: PhotoDraft(id: photo.id, filename: photo.filename), store: store.photoStore,
-                                    thumbnail: false
-                                )
-                                .accessibilityHidden(false)
-                                .accessibilityLabel("Watch photo")
+                                Button {
+                                    previewPhoto = PhotoDraft(id: photo.id, filename: photo.filename)
+                                } label: {
+                                    PhotoView(
+                                        photo: PhotoDraft(id: photo.id, filename: photo.filename),
+                                        store: store.photoStore, thumbnail: false)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel("View photo")
+                                .accessibilityIdentifier("detail.photo.\(photo.id)")
                             }
                         }
                         .tabViewStyle(.page(indexDisplayMode: orderedPhotos.count > 1 ? .always : .never))
@@ -168,6 +173,9 @@ struct TimepieceDetailView: View {
             }
         }
         .sheet(isPresented: $editing) { TimepieceEditorView(store: store, watch: watch) }
+        .fullScreenCover(item: $previewPhoto) { photo in
+            WatchPhotoPreview(photo: photo, store: store.photoStore)
+        }
         .sheet(isPresented: $showingDocuments) {
             NavigationStack {
                 DocumentsView(watch: watch, store: store, onClose: { showingDocuments = false })
