@@ -1,0 +1,88 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project MojeZegarki.xcodeproj -scheme MojeZegarki -destination "platform=iOS Simulator,id=10C18B34-55BD-45C9-8308-6181BFAAF040" -derivedDataPath /tmp/MojeZegarki-audit-build -resultBundlePath /tmp/MojeZegarki-audit-unit.xcresult "-only-testing:MojeZegarkiTests" -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO test-without-building
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+Writing result bundle at path:
+	/tmp/MojeZegarki-audit-unit.xcresult
+
+2026-10-19 18:35:33.640 xcodebuild[90242:1846383] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+Test Suite 'All tests' started at 2026-10-19 18:35:35.663.
+Test Suite 'MojeZegarkiTests.xctest' started at 2026-10-19 18:35:35.663.
+Test Suite 'AppLockTests' started at 2026-10-19 18:35:35.663.
+Test Case '-[MojeZegarkiTests.AppLockTests testBackgroundInvalidatesPendingSuccessAndDeduplicatesRequests]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testBackgroundInvalidatesPendingSuccessAndDeduplicatesRequests]' passed (0.018 seconds).
+Test Case '-[MojeZegarkiTests.AppLockTests testCancellingPendingAuthenticationResumesContinuation]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testCancellingPendingAuthenticationResumesContinuation]' passed (0.015 seconds).
+Test Case '-[MojeZegarkiTests.AppLockTests testEnableUnlockAndDisableRequireAuthentication]' started.
+Test Case '-[MojeZegarkiTests.AppLockTests testEnableUnlockAndDisableRequireAuthentication]' passed (0.003 seconds).
+Test Suite 'AppLockTests' passed at 2026-10-19 18:35:35.701.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.036 (0.037) seconds
+Test Suite 'CollectionTests' started at 2026-10-19 18:35:35.701.
+Test Case '-[MojeZegarkiTests.CollectionTests testArchiveRestoreAndCascadeDeletionWithPhotos]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testArchiveRestoreAndCascadeDeletionWithPhotos]' passed (0.173 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testDiskPersistenceAndEditingWithoutAutosave]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testDiskPersistenceAndEditingWithoutAutosave]' passed (0.013 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testPhotoEncodingThumbnailAndRecoveryOfUnreferencedFiles]' started.
+2026-10-19 18:35:36.099163+0200 MojeZegarki[90246:1846706] [MojeZegarki] CGImageSourceCreateThumbnailAtIndex:4592: *** ERROR: CGImageSourceCreateThumbnailAtIndex[0] - '....' - failed to create thumbnail [-50] {alw:1, abs: 0 tra:1 max:2400}
+Test Case '-[MojeZegarkiTests.CollectionTests testPhotoEncodingThumbnailAndRecoveryOfUnreferencedFiles]' passed (0.214 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testRemovingMainPhotoChoosesRemainingPhoto]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testRemovingMainPhotoChoosesRemainingPhoto]' passed (0.208 seconds).
+Test Case '-[MojeZegarkiTests.CollectionTests testRequiredFieldsAndExactLocalizedMoney]' started.
+Test Case '-[MojeZegarkiTests.CollectionTests testRequiredFieldsAndExactLocalizedMoney]' passed (0.001 seconds).
+Test Suite 'CollectionTests' passed at 2026-10-19 18:35:36.310.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.608 (0.610) seconds
+Test Suite 'FreeModuleTests' started at 2026-10-19 18:35:36.310.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBoundedPhotoReadRejectsOversizedFiles]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBoundedPhotoReadRejectsOversizedFiles]' passed (0.008 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearRejectsWholeSelectionBeforeMakingChanges]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearRejectsWholeSelectionBeforeMakingChanges]' passed (0.012 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearSkipsDuplicatesAndPersistsAcrossReopen]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testBulkWearSkipsDuplicatesAndPersistsAcrossReopen]' passed (0.013 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentImageConversionPreservesReadableResolution]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentImageConversionPreservesReadableResolution]' passed (0.158 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentsPrivateCopyDuplicatesLimitsAndCascade]' started.
+2026-10-19 18:35:36.522314+0200 MojeZegarki[90246:1846785] [MojeZegarki] CGImageSourceCreateThumbnailAtIndex:4592: *** ERROR: CGImageSourceCreateThumbnailAtIndex[0] - '....' - failed to create thumbnail [-50] {alw:1, abs: 0 tra:1 max:4000}
+Test Case '-[MojeZegarkiTests.FreeModuleTests testDocumentsPrivateCopyDuplicatesLimitsAndCascade]' passed (0.022 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testQuickMoveUndoRestoresWishAndRefusesToDiscardLaterWear]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testQuickMoveUndoRestoresWishAndRefusesToDiscardLaterWear]' passed (0.015 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testStatisticsAtCollectionScale]' started.
+STATISTICS 1000: optimized=0.000770625 seconds, baseline=0.02687825 seconds
+STATISTICS 10000: optimized=0.006914625 seconds, baseline=0.265527792 seconds
+STATISTICS 50000: optimized=0.032281167 seconds, baseline=1.298378625 seconds
+Test Case '-[MojeZegarkiTests.FreeModuleTests testStatisticsAtCollectionScale]' passed (1.645 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV1MigrationPreservesWatchPhotoAndPurchase]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV1MigrationPreservesWatchPhotoAndPurchase]' passed (0.156 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV2MigrationPreservesWishlistAndInitialOrder]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testV2MigrationPreservesWishlistAndInitialOrder]' passed (0.028 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearDayTimeZonesAndInvalidCalendarDates]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearDayTimeZonesAndInvalidCalendarDates]' passed (0.002 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearIdempotenceEditingArchiveAndCascade]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearIdempotenceEditingArchiveAndCascade]' passed (0.016 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsCalendarDaysAcrossDSTAndEmptyPeriod]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsCalendarDaysAcrossDSTAndEmptyPeriod]' passed (0.000 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWearStatisticsDeduplicatesDaysAndHandlesOverlappingWatches]' passed (0.001 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistOrderPersistsWithinPriorityAndSurvivesUndo]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistOrderPersistsWithinPriorityAndSurvivesUndo]' passed (0.019 seconds).
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistValidationAndAtomicConversionPreservesPhoto]' started.
+Test Case '-[MojeZegarkiTests.FreeModuleTests testWishlistValidationAndAtomicConversionPreservesPhoto]' passed (0.025 seconds).
+Test Suite 'FreeModuleTests' passed at 2026-10-19 18:35:38.436.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 2.122 (2.125) seconds
+Test Suite 'MojeZegarkiTests.xctest' passed at 2026-10-19 18:35:38.436.
+	 Executed 23 tests, with 0 failures (0 unexpected) in 2.766 (2.773) seconds
+Test Suite 'All tests' passed at 2026-10-19 18:35:38.436.
+	 Executed 23 tests, with 0 failures (0 unexpected) in 2.766 (2.773) seconds
+2026-10-19 18:35:38.447 xcodebuild[90242:1846383] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 18:35:38.448 xcodebuild[90242:1846383] [MT] IDESchemeActionSDKRecord: operatingSystemBuild = <DVTBuildVersion 24A94232>, error = invalidDigitCount(94232).
+2026-10-19 18:35:38.745 xcodebuild[90242:1846383] [MT] IDETestOperationsObserverDebug: 5.141 elapsed -- Testing started completed.
+2026-10-19 18:35:38.745 xcodebuild[90242:1846383] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-10-19 18:35:38.745 xcodebuild[90242:1846383] [MT] IDETestOperationsObserverDebug: 5.141 sec, +5.141 sec -- end
+
+Test session results, code coverage, and logs:
+	/tmp/MojeZegarki-audit-unit.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started
