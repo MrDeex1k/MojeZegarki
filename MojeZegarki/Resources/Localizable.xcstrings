@@ -1,6 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "View photo" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż zdjęcie"
+          }
+        }
+      }
+    },
+    "Photo unavailable" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdjęcie niedostępne"
+          }
+        }
+      }
+    },
     "The wishlist changed. Try reordering again." : {
       "localizations" : {
         "pl" : {

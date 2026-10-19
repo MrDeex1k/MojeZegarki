@@ -212,6 +212,7 @@ struct WishlistEditorView: View {
     @State private var discarding = false
     @State private var draft: WishlistDraft
     @State private var selectedPhoto: PhotosPickerItem?
+    @State private var previewPhoto: PhotoDraft?
     @State private var stagedIDs: Set<UUID> = []
     @State private var importing = false
     @State private var saving = false
@@ -235,7 +236,14 @@ struct WishlistEditorView: View {
                 }
                 Section("Photo") {
                     if let photo = draft.photo {
-                        PhotoView(photo: photo, store: store.photoStore).frame(height: 190)
+                        Button {
+                            previewPhoto = photo
+                        } label: {
+                            PhotoView(photo: photo, store: store.photoStore).frame(height: 190)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("View photo")
+                        .accessibilityIdentifier("wish.photo.preview")
                         Button("Remove photo", role: .destructive) { draft.photo = nil }
                     }
                     PhotosPicker(selection: $selectedPhoto, matching: .images) {
@@ -273,6 +281,9 @@ struct WishlistEditorView: View {
                 }
             }
             .interactiveDismissDisabled(importing || saving || draft != initialDraft)
+            .fullScreenCover(item: $previewPhoto) { photo in
+                WatchPhotoPreview(photo: photo, store: store.photoStore)
+            }
             .confirmationDialog("Discard unsaved changes?", isPresented: $discarding, titleVisibility: .visible) {
                 Button("Discard changes", role: .destructive) { dismiss() }
             }
@@ -297,7 +308,8 @@ struct WishlistEditorView: View {
             }
         }
         .onDisappear {
-            if !committed {
+            // A full-screen preview also hides the editor; keep any unsaved imported photo alive.
+            if !committed && previewPhoto == nil {
                 let abandoned = stagedIDs
                 Task { for id in abandoned { try? await store.photoStore.remove(id) } }
             }
