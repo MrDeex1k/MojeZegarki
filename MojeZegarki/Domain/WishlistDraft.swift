@@ -24,7 +24,9 @@ struct WishlistDraft: Equatable {
     var notes = ""
     var photo: PhotoDraft?
 
-    init() {}
+    init(locale: Locale = .current) {
+        currencyCode = CurrencyPreference.defaultCode(for: locale)
+    }
     init(item: WishlistItem, locale: Locale = .current) {
         brand = item.brand
         modelName = item.modelName

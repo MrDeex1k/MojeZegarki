@@ -33,6 +33,38 @@ final class CollectionTests: XCTestCase {
         return value
     }
 
+    func testNewDraftCurrencyFollowsLanguageAndPreservesExistingSelection() throws {
+        for (language, currency) in [("pl_PL", "PLN"), ("pl_US", "PLN"), ("en_US", "USD"), ("en_PL", "USD")] {
+            let locale = Locale(identifier: language)
+            XCTAssertEqual(TimepieceDraft(locale: locale).currencyCode, currency)
+            XCTAssertEqual(WishlistDraft(locale: locale).currencyCode, currency)
+        }
+
+        let store = try CollectionStore(directory: directory)
+        var value = TimepieceDraft(locale: Locale(identifier: "pl_PL"))
+        value.brand = "Seiko"
+        value.modelName = "Prospex"
+        value.price = "100"
+        value.currencyCode = "EUR"
+        let watch = try store.save(value)
+        XCTAssertEqual(TimepieceDraft(timepiece: watch, locale: Locale(identifier: "en_US")).currencyCode, "EUR")
+
+        var wishDraft = WishlistDraft(locale: Locale(identifier: "en_US"))
+        wishDraft.brand = "Casio"
+        wishDraft.modelName = "Oceanus"
+        wishDraft.price = "100"
+        wishDraft.currencyCode = "EUR"
+        let wish = try store.saveWish(wishDraft)
+        let reopenedDraft = WishlistDraft(item: wish, locale: Locale(identifier: "pl_PL"))
+        XCTAssertEqual(reopenedDraft.currencyCode, "EUR")
+        XCTAssertEqual(reopenedDraft.purchaseDraft.currencyCode, "EUR")
+
+        watch.currencyCode = nil
+        wish.currencyCode = nil
+        XCTAssertEqual(TimepieceDraft(timepiece: watch).currencyCode, "")
+        XCTAssertEqual(WishlistDraft(item: wish).currencyCode, "")
+    }
+
     func testRequiredFieldsAndExactLocalizedMoney() throws {
         var value = draft()
         XCTAssertNil(try value.validatedPrice())

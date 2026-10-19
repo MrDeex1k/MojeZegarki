@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0ABC1234DEF567890ABC1234 /* CurrencyPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABC1234DEF567890ABC1235 /* CurrencyPreference.swift */; };
 		04702C25A5714DD909F0DFC5 /* CollectionSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19210AE448DA0ABAB8750744 /* CollectionSchema.swift */; };
 		12798E6ACA4D4472B8A77F8A /* WearDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F158ABF3575947F19E6D0A /* WearDay.swift */; };
 		190E12A6DE050AA0E4F254A4 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EDEF8DA916E87DCC6EF9BF /* AppError.swift */; };
@@ -65,6 +66,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0ABC1234DEF567890ABC1235 /* CurrencyPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPreference.swift; sourceTree = "<group>"; };
 		004DDBF4871F50AC6F637034 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		00862672210B614F7E585226 /* FreeModuleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeModuleUITests.swift; sourceTree = "<group>"; };
 		03C92F291EBBA494F8D9622A /* CollectionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionStore.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			children = (
 				B9B816C4E4AEB7EA3D3EACDD /* DocumentTypes.swift */,
 				6E7B22E931690D246AD42192 /* WatchTypes.swift */,
+				0ABC1234DEF567890ABC1235 /* CurrencyPreference.swift */,
 				09F158ABF3575947F19E6D0A /* WearDay.swift */,
 				9F78BA3FF36DC56A95686568 /* WishlistDraft.swift */,
 			);
@@ -427,6 +430,7 @@
 				8CD6737D43AB27F56CEA5005 /* RootView.swift in Sources */,
 				E15D9232E86384A39690B752 /* DocumentTypes.swift in Sources */,
 				B56D10DC665529CF38510088 /* WatchTypes.swift in Sources */,
+				0ABC1234DEF567890ABC1234 /* CurrencyPreference.swift in Sources */,
 				12798E6ACA4D4472B8A77F8A /* WearDay.swift in Sources */,
 				7E24AFD9C426B75DFFC16F57 /* WishlistDraft.swift in Sources */,
 				5AEAF8372FC2C5CEAA2DBB4C /* CollectionView.swift in Sources */,

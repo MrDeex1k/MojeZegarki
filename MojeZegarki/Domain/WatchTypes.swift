@@ -94,6 +94,10 @@ struct TimepieceDraft: Equatable {
     var photos: [PhotoDraft] = []
     var mainPhotoID: UUID?
 
+    init(locale: Locale = .current) {
+        currencyCode = CurrencyPreference.defaultCode(for: locale)
+    }
+
     var hasRequiredFields: Bool { !brand.trimmed.isEmpty && !modelName.trimmed.isEmpty }
 
     func validatedPrice(locale: Locale = .current) throws -> String? {
