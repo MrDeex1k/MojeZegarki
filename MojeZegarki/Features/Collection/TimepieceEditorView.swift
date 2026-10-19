@@ -10,17 +10,15 @@ struct TimepieceEditorView: View {
     private let initialDraft: TimepieceDraft
     @State private var discarding = false
     @State private var draft: TimepieceDraft
+    @State private var choosingPhotos = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
-    @State private var stagedIDs: Set<UUID> = []
-    @State private var importing = false
-    @State private var importTask: Task<Void, Never>?
-    @State private var importedCount = 0
+    @State private var assets: DraftAssetSession
     @State private var saving = false
-    @State private var committed = false
     @State private var errorMessage: String?
 
     init(store: CollectionStore, watch: Timepiece? = nil, wishlistItem: WishlistItem? = nil) {
         self.store = store
+        _assets = State(initialValue: DraftAssetSession { try await store.photoStore.remove($0) })
         self.watch = watch
         self.wishlistItem = wishlistItem
         let initial =
@@ -37,14 +35,14 @@ struct TimepieceEditorView: View {
                     TextField("Brand", text: $draft.brand).accessibilityIdentifier("editor.brand")
                     TextField("Model", text: $draft.modelName).accessibilityIdentifier("editor.model")
                 } header: {
-                    Text("Watch")
+                    Text("Watch").foregroundStyle(Color(uiColor: .label))
                 } footer: {
-                    Text("Only brand and model are required.")
+                    Text("Only brand and model are required.").foregroundStyle(Color(uiColor: .label))
                 }
 
                 photosSection
 
-                Section("Details") {
+                Section {
                     optionalPicker("Device type", selection: $draft.deviceKind)
                     optionalPicker("Movement", selection: $draft.movementType)
                     NavigationLink {
@@ -74,31 +72,23 @@ struct TimepieceEditorView: View {
                     Picker("Status", selection: $draft.status) {
                         ForEach(WatchStatus.allCases) { Text($0.title).tag($0) }
                     }
+                } header: {
+                    Text("Details").foregroundStyle(Color(uiColor: .label))
                 }
-                Section("Purchase") {
-                    Toggle(
-                        "Add purchase date",
-                        isOn: Binding(
-                            get: { draft.purchaseDate != nil }, set: { draft.purchaseDate = $0 ? Date() : nil }))
-                    if draft.purchaseDate != nil {
-                        DatePicker(
-                            "Purchase date",
-                            selection: Binding(get: { draft.purchaseDate ?? Date() }, set: { draft.purchaseDate = $0 }),
-                            displayedComponents: .date)
-                    }
+                Section {
+                    OptionalDateField(
+                        toggleTitle: "Add purchase date", dateTitle: "Purchase date", selection: $draft.purchaseDate)
                     TextField("Purchase price", text: $draft.price).keyboardType(.decimalPad)
                         .accessibilityIdentifier("editor.price")
-                    Picker("Currency", selection: $draft.currencyCode) {
-                        Text("Not specified").tag("")
-                        ForEach(Locale.commonISOCurrencyCodes.sorted(), id: \.self) { code in
-                            Text(verbatim: "\(code) — \(locale.localizedString(forCurrencyCode: code) ?? code)").tag(
-                                code)
-                        }
-                    }
+                    CurrencyPicker(selection: $draft.currencyCode)
                     TextField("Seller", text: $draft.seller)
+                } header: {
+                    Text("Purchase").foregroundStyle(Color(uiColor: .label))
                 }
-                Section("Notes") {
+                Section {
                     TextField("Notes", text: $draft.notes, axis: .vertical).lineLimit(3...8)
+                } header: {
+                    Text("Notes").foregroundStyle(Color(uiColor: .label))
                 }
             }
             .disabled(saving)
@@ -106,50 +96,34 @@ struct TimepieceEditorView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { if draft != initialDraft { discarding = true } else { dismiss() } }
-                        .disabled(importing || saving)
-                        .accessibilityIdentifier("editor.cancel")
+                    Button("Cancel") { if draft != initialDraft { discarding = true } else { dismiss() } }.tint(
+                        Color(uiColor: .label)
+                    )
+                    .disabled(assets.isImporting || saving)
+                    .accessibilityIdentifier("editor.cancel")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { Task { await save() } }
-                        .disabled(!draft.hasRequiredFields || importing || saving)
+                        .disabled(!draft.hasRequiredFields || assets.isImporting || saving)
                         .accessibilityIdentifier("editor.save")
                 }
             }
-            .interactiveDismissDisabled(importing || saving || draft != initialDraft)
-            .confirmationDialog("Discard unsaved changes?", isPresented: $discarding, titleVisibility: .visible) {
-                Button("Discard changes", role: .destructive) { dismiss() }
-            }
-            .alert(
-                "Something went wrong",
-                isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
-            ) {
-                Button("OK", role: .cancel) { errorMessage = nil }
-            } message: {
-                Text(errorMessage ?? "")
-            }
+            .interactiveDismissDisabled(assets.isImporting || saving || draft != initialDraft)
+            .discardChangesConfirmation(isPresented: $discarding) { dismiss() }
+            .appError($errorMessage)
             .onChange(of: selectedPhotos) { _, items in
                 guard !items.isEmpty else { return }
-                importing = true
-                importedCount = 0
-                importTask = Task { await importPhotos(items) }
-            }
-        }
-        // The whole editor must disappear, not just the form when opening Categories.
-        .onDisappear {
-            if !committed {
-                let abandoned = stagedIDs
-                Task { for id in abandoned { try? await store.photoStore.remove(id) } }
+                assets.run { await importPhotos(items) }
             }
         }
     }
 
     private var photosSection: some View {
-        Section("Photos") {
+        Section {
             if !draft.photos.isEmpty {
                 ScrollView(.horizontal) {
-                    HStack(alignment: .top, spacing: 12) {
-                        ForEach(draft.photos) { photo in
+                    LazyHStack(alignment: .top, spacing: 12) {
+                        ForEach(Array(draft.photos.enumerated()), id: \.element.id) { index, photo in
                             VStack(spacing: 8) {
                                 PhotoView(photo: photo, store: store.photoStore)
                                     .frame(width: 130, height: 150).clipShape(RoundedRectangle(cornerRadius: 10))
@@ -163,26 +137,42 @@ struct TimepieceEditorView: View {
                                     .font(.caption)
                                 }
                                 .buttonStyle(.borderless)
+                                .frame(minHeight: 44)
+                                .accessibilityValue(Text("Photo \(index + 1)"))
+                                .accessibilityAddTraits(draft.mainPhotoID == photo.id ? .isSelected : [])
                                 Button("Remove photo", role: .destructive) { removePhoto(photo) }
                                     .font(.caption).buttonStyle(.borderless)
+                                    .frame(minHeight: 44)
+                                    .accessibilityValue(Text("Photo \(index + 1)"))
                             }
                         }
                     }
                     .padding(.vertical, 4)
                 }
             }
-            PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 10, matching: .images) {
+            Button {
+                choosingPhotos = true
+            } label: {
                 Label("Add photos", systemImage: "photo.badge.plus")
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(minHeight: 44)
             }
-            .disabled(importing)
+            .photosPicker(
+                isPresented: $choosingPhotos, selection: $selectedPhotos, maxSelectionCount: 10, matching: .images
+            )
+            .disabled(assets.isImporting)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Add photos")
             .accessibilityIdentifier("editor.photos")
-            if importing {
-                ProgressView(value: Double(importedCount), total: Double(max(selectedPhotos.count, 1))) {
+            if assets.isImporting {
+                ProgressView(value: Double(assets.importedCount), total: Double(max(selectedPhotos.count, 1))) {
                     Text("Importing photos…")
                 }
-                Button("Stop importing") { importTask?.cancel() }
+                Button("Stop importing") { assets.stop() }
             }
-            Text("Up to 10 photos at a time, 20 MB each.").font(.footnote).foregroundStyle(.secondary)
+            Text("Up to 10 photos at a time, 20 MB each.").font(.footnote).foregroundStyle(Color(uiColor: .label))
+        } header: {
+            Text("Photos").foregroundStyle(Color(uiColor: .label))
         }
     }
 
@@ -195,10 +185,7 @@ struct TimepieceEditorView: View {
     }
 
     @MainActor private func importPhotos(_ items: [PhotosPickerItem]) async {
-        defer {
-            selectedPhotos = []
-            importing = false
-        }
+        defer { selectedPhotos = [] }
         for item in items {
             do {
                 try Task.checkCancellation()
@@ -207,10 +194,9 @@ struct TimepieceEditorView: View {
                 }
                 try Task.checkCancellation()
                 let photo = try await store.photoStore.importPhoto(data.data)
-                stagedIDs.insert(photo.id)
+                guard await assets.stage(photo.id) else { break }
                 draft.photos.append(photo)
                 if draft.mainPhotoID == nil { draft.mainPhotoID = photo.id }
-                importedCount += 1
             } catch is CancellationError { break } catch {
                 errorMessage = String(
                     localized: "A photo could not be imported. Already imported photos are still available.")
@@ -224,17 +210,14 @@ struct TimepieceEditorView: View {
     }
 
     @MainActor private func save() async {
+        guard !saving else { return }
         saving = true
         defer { saving = false }
         let oldIDs = Set((watch?.sortedPhotos.map(\.id) ?? []) + (wishlistItem?.photoID.map { [$0] } ?? []))
         let retainedIDs = Set(draft.photos.map(\.id))
         do {
             try store.save(draft, editing: watch, moving: wishlistItem, locale: locale)
-            committed = true
-            for id in oldIDs.union(stagedIDs).subtracting(retainedIDs) {
-                // Startup reconciliation retries cleanup after a filesystem failure.
-                try? await store.photoStore.remove(id)
-            }
+            await assets.commit(retaining: retainedIDs, replacing: oldIDs)
             dismiss()
         } catch { errorMessage = error.localizedDescription }
     }

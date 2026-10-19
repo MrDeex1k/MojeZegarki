@@ -412,6 +412,13 @@ final class FreeModuleUITests: XCTestCase {
         app.buttons["detail.documents"].tap()
         app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "document.")).firstMatch.tap()
         XCTAssertTrue(app.images["Document preview"].waitForExistence(timeout: 5))
+        app.buttons["Zoom in"].tap()
+        XCTAssertEqual(app.images["Document preview"].value as? String, "150%")
+        app.buttons["Zoom out"].tap()
+        XCTAssertEqual(app.images["Document preview"].value as? String, "100%")
+        app.buttons["Zoom in"].tap()
+        app.buttons["Reset zoom"].tap()
+        XCTAssertEqual(app.images["Document preview"].value as? String, "100%")
     }
 
     func testCalendarAppearanceAndLocalizationMatrix() {

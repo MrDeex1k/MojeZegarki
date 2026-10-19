@@ -13,13 +13,15 @@ struct CollectionView: View {
     @State private var adding = false
 
     private var visible: [Timepiece] {
-        watches.filter {
+        let term = search.trimmed
+        return watches.filter {
             ($0.status != .owned) == archive
-                && (search.trimmed.isEmpty || "\($0.brand) \($0.modelName)".localizedStandardContains(search.trimmed))
+                && (term.isEmpty || "\($0.brand) \($0.modelName)".localizedStandardContains(term))
         }
     }
 
     var body: some View {
+        let visible = visible
         NavigationStack(path: $path) {
             VStack(spacing: 0) {
                 Picker("Collection filter", selection: $archive) {
@@ -64,15 +66,11 @@ struct CollectionView: View {
                                                 )
                                                 .frame(width: 86, height: 104)
                                                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                VStack(alignment: .leading, spacing: 6) {
-                                                    Text(watch.brand).font(.system(size: brandFontSize))
-                                                        .foregroundStyle(.secondary)
-                                                    Text(watch.modelName).font(.headline)
-                                                    if archive {
-                                                        Text(watch.status.title).font(.caption).foregroundStyle(
-                                                            .secondary)
-                                                    }
-                                                }
+                                                WatchIdentityLabel(
+                                                    brand: watch.brand, model: watch.modelName,
+                                                    status: archive ? watch.status : nil,
+                                                    brandFont: .system(size: brandFontSize)
+                                                )
                                                 .padding(.vertical, 6)
                                             }
                                     }
@@ -111,5 +109,3 @@ struct CollectionView: View {
         }
     }
 }
-
-private struct WatchRoute: Hashable { let id: UUID }

@@ -60,10 +60,10 @@ struct DocumentsView: View {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(document.displayName).font(.headline)
                                     Text((DocumentKind(rawValue: document.kindRaw) ?? .other).title)
-                                        .font(.subheadline).foregroundStyle(.secondary)
+                                        .font(.subheadline).foregroundStyle(Color.supportingText)
                                     if let date = document.documentDate {
                                         Text(date.formatted(date: .abbreviated, time: .omitted)).font(.caption)
-                                            .foregroundStyle(.secondary)
+                                            .foregroundStyle(Color.supportingText)
                                     }
                                 }
                             }
@@ -127,95 +127,3 @@ struct DocumentsView: View {
         .appError($error)
     }
 }
-
-struct DocumentEditorView: View {
-    let watch: Timepiece
-    let store: CollectionStore
-    var asset: DocumentAsset?
-    var document: DocumentItem?
-    @Environment(\.dismiss) private var dismiss
-    @State private var name: String
-    @State private var kind: DocumentKind
-    @State private var date: Date?
-    @State private var notes: String
-    private let original: DocumentDraft
-    @State private var discarding = false
-    @State private var committed = false
-    @State private var error: String?
-
-    init(
-        watch: Timepiece, store: CollectionStore, asset: DocumentAsset? = nil, proposedName: String = "",
-        document: DocumentItem? = nil
-    ) {
-        self.watch = watch
-        self.store = store
-        self.asset = asset
-        self.document = document
-        original = DocumentDraft(
-            name: document?.displayName ?? proposedName,
-            kind: document.flatMap { DocumentKind(rawValue: $0.kindRaw) } ?? .purchase, date: document?.documentDate,
-            notes: document?.notes ?? "")
-        _name = State(initialValue: document?.displayName ?? proposedName)
-        _kind = State(initialValue: document.flatMap { DocumentKind(rawValue: $0.kindRaw) } ?? .purchase)
-        _date = State(initialValue: document?.documentDate)
-        _notes = State(initialValue: document?.notes ?? "")
-    }
-
-    var body: some View {
-        NavigationStack {
-            Form {
-                TextField("Document name", text: $name).accessibilityIdentifier("document.name")
-                Picker("Document type", selection: $kind) {
-                    ForEach(DocumentKind.allCases) { Text($0.title).tag($0) }
-                }
-                Toggle("Add document date", isOn: Binding(get: { date != nil }, set: { date = $0 ? .now : nil }))
-                if date != nil {
-                    DatePicker(
-                        "Document date", selection: Binding(get: { date ?? .now }, set: { date = $0 }),
-                        displayedComponents: .date)
-                }
-                TextField("Notes", text: $notes, axis: .vertical).lineLimit(3...8)
-            }
-            .navigationTitle(document == nil ? Text("Add document") : Text("Edit document"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { if dirty { discarding = true } else { dismiss() } }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        do {
-                            if let document {
-                                try store.updateDocument(document, name: name, kind: kind, date: date, notes: notes)
-                            } else if let asset {
-                                try store.attachDocument(
-                                    asset, to: watch, name: name, kind: kind, date: date, notes: notes)
-                            }
-                            committed = true
-                            dismiss()
-                        } catch { self.error = error.localizedDescription }
-                    }
-                    .accessibilityIdentifier("document.save")
-                }
-            }
-            .interactiveDismissDisabled(dirty)
-            .confirmationDialog("Discard unsaved changes?", isPresented: $discarding, titleVisibility: .visible) {
-                Button("Discard changes", role: .destructive) { dismiss() }
-            }
-            .appError($error)
-        }
-        .onDisappear {
-            if !committed, let asset { Task { try? await store.documentStore.remove(asset.id) } }
-        }
-    }
-    private var dirty: Bool { original != DocumentDraft(name: name, kind: kind, date: date, notes: notes) }
-}
-
-private struct DocumentDraft: Equatable {
-    let name: String
-    let kind: DocumentKind
-    let date: Date?
-    let notes: String
-}
-
-private struct DocumentRoute: Hashable, Identifiable { let id: UUID }

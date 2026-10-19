@@ -150,7 +150,7 @@ final class CollectionTests: XCTestCase {
         value.photos = [kept]
         let watch = try store.save(value)
         XCTAssertEqual(watch.mainPhoto?.id, kept.id)
-        try await store.reconcilePhotos()
+        try await store.reconcileAssets()
         let orphanBytes = await store.photoStore.data(for: orphan)
         let keptBytes = await store.photoStore.data(for: kept)
         XCTAssertNil(orphanBytes)
@@ -173,7 +173,7 @@ final class CollectionTests: XCTestCase {
         try store.save(value, editing: watch)
         XCTAssertEqual(watch.mainPhotoID, second.id)
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<TimepiecePhoto>()), 1)
-        try await store.reconcilePhotos()
+        try await store.reconcileAssets()
         let removedBytes = await store.photoStore.data(for: first)
         XCTAssertNil(removedBytes)
     }

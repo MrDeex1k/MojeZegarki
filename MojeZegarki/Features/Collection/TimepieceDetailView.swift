@@ -25,8 +25,9 @@ struct TimepieceDetailView: View {
     private var wearLogs: [WearLog] { allWearLogs }
 
     var body: some View {
+        let orderedPhotos = orderedPhotos
         List {
-            if !watch.sortedPhotos.isEmpty {
+            if !orderedPhotos.isEmpty {
                 Section {
                     VStack(spacing: 0) {
                         TabView {
@@ -63,10 +64,10 @@ struct TimepieceDetailView: View {
                         .accessibilityIdentifier("detail.model")
                     Text(watch.status.title)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.supportingText)
                 }
                 .padding(.vertical, 4)
-                if watch.sortedPhotos.isEmpty && watch.status == .owned {
+                if orderedPhotos.isEmpty && watch.status == .owned {
                     WearTodayButton(watch: watch, store: store)
                         .padding(.vertical, 4)
                 }
@@ -81,11 +82,11 @@ struct TimepieceDetailView: View {
                             Text(wearSummaryText)
                                 .foregroundStyle(Color(uiColor: .label))
                             Text("View summary and history")
-                                .font(.caption).foregroundStyle(Color(uiColor: .secondaryLabel))
+                                .font(.caption).foregroundStyle(Color.supportingText)
                         }
                         Spacer()
                         Image(systemName: "chevron.right").font(.caption.weight(.semibold))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.supportingText)
                     }
                 }
                 .accessibilityIdentifier("detail.wear")
@@ -207,14 +208,7 @@ struct TimepieceDetailView: View {
         } message: {
             Text("The watch, photos, documents and wear history will be removed from this iPhone.")
         }
-        .alert(
-            "Something went wrong",
-            isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
-        ) {
-            Button("OK", role: .cancel) { errorMessage = nil }
-        } message: {
-            Text(errorMessage ?? "")
-        }
+        .appError($errorMessage)
     }
 
     private var wearSummaryText: AttributedString {
@@ -224,8 +218,9 @@ struct TimepieceDetailView: View {
     }
 
     private var orderedPhotos: [TimepiecePhoto] {
-        guard let main = watch.mainPhoto else { return watch.sortedPhotos }
-        return [main] + watch.sortedPhotos.filter { $0.id != main.id }
+        let sorted = watch.sortedPhotos
+        guard let main = sorted.first(where: { $0.id == watch.mainPhotoID }) ?? sorted.first else { return sorted }
+        return [main] + sorted.filter { $0.id != main.id }
     }
 
     private var hasDetails: Bool {

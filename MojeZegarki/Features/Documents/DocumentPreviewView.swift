@@ -21,7 +21,7 @@ struct DocumentPreviewView: View {
                     GeometryReader { geometry in
                         PDFPreview(document: pdf).frame(width: geometry.size.width, height: geometry.size.height)
                     }
-                case .image(let image): ZoomableDocumentImage(image: image)
+                case .image(let image): DocumentImagePreview(image: image)
                 }
             } else if failedToLoad {
                 ContentUnavailableView(
@@ -31,7 +31,17 @@ struct DocumentPreviewView: View {
                 ProgressView("Opening document…").frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             if let notes = document.notes {
-                Text(notes).font(.footnote).padding().frame(maxWidth: .infinity, alignment: .leading)
+                Text(notes).font(.footnote).lineLimit(2).accessibilityIdentifier("document.noteSummary")
+                    .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal)
+                NavigationLink {
+                    DocumentNotesView(notes: notes)
+                } label: {
+                    Label("Read full note", systemImage: "text.alignleft")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(minHeight: 44)
+                }
+                .padding(.horizontal)
+                .accessibilityIdentifier("document.readNotes")
             }
         }
         .privacySensitive()
@@ -79,56 +89,5 @@ struct DocumentPreviewView: View {
                 }
             } catch is CancellationError {} catch { failedToLoad = true }
         }
-    }
-}
-
-private enum PreviewContent {
-    case pdf(PDFDocument)
-    case image(UIImage)
-}
-
-private struct PDFPreview: UIViewRepresentable {
-    let document: PDFDocument
-    func makeUIView(context: Context) -> PDFView {
-        let view = PDFView()
-        view.autoScales = true
-        view.displayMode = .singlePageContinuous
-        view.document = document
-        view.accessibilityLabel = String(localized: "Document preview")
-        return view
-    }
-    func updateUIView(_ uiView: PDFView, context: Context) {}
-    func sizeThatFits(_ proposal: ProposedViewSize, uiView: PDFView, context: Context) -> CGSize? {
-        CGSize(width: proposal.width ?? 0, height: proposal.height ?? 0)
-    }
-}
-
-private struct ZoomableDocumentImage: UIViewRepresentable {
-    let image: UIImage
-    func makeUIView(context: Context) -> ImageScrollView { ImageScrollView(image: image) }
-    func updateUIView(_ uiView: ImageScrollView, context: Context) {}
-
-    final class ImageScrollView: UIScrollView, UIScrollViewDelegate {
-        let imageView: UIImageView
-        init(image: UIImage) {
-            imageView = UIImageView(image: image)
-            super.init(frame: .zero)
-            imageView.contentMode = .scaleAspectFit
-            imageView.isAccessibilityElement = true
-            imageView.accessibilityLabel = String(localized: "Document preview")
-            addSubview(imageView)
-            minimumZoomScale = 1
-            maximumZoomScale = 5
-            delegate = self
-        }
-        required init?(coder: NSCoder) { nil }
-        override func layoutSubviews() {
-            super.layoutSubviews()
-            if zoomScale == 1 {
-                imageView.frame = bounds
-                contentSize = bounds.size
-            }
-        }
-        func viewForZooming(in scrollView: UIScrollView) -> UIView? { imageView }
     }
 }

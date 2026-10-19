@@ -5,9 +5,12 @@ import SwiftUI
 struct MojeZegarkiApp: App {
     @State private var store: CollectionStore?
     @State private var failure = false
-    @State private var lock: AppLock
+    @State private var protectedData = ProtectedDataState()
+    @State private var loading = false
+    @State private var testStorePrepared = false
+    @State private var lock: AppLock?
 
-    init() {
+    @MainActor private func makeLock() -> AppLock {
         var defaults = UserDefaults.standard
         #if DEBUG
             if ProcessInfo.processInfo.arguments.contains("--uitesting"),
@@ -22,14 +25,20 @@ struct MojeZegarkiApp: App {
                 }
             }
         #endif
-        _lock = State(initialValue: AppLock(defaults: defaults))
+        return AppLock(defaults: defaults)
     }
 
     var body: some Scene {
         WindowGroup {
             Group {
-                if let store {
+                if let store, let lock {
                     RootView(store: store, lock: lock).modelContainer(store.container)
+                        .disabled(!protectedData.isAvailable)
+                        .accessibilityHidden(!protectedData.isAvailable)
+                } else if !protectedData.isAvailable {
+                    ContentUnavailableView(
+                        "Unlock your iPhone", systemImage: "lock.shield",
+                        description: Text("Your collection will be available after you unlock this device."))
                 } else if failure {
                     ContentUnavailableView {
                         Label("Could not open collection", systemImage: "externaldrive.badge.exclamationmark")
@@ -45,9 +54,22 @@ struct MojeZegarkiApp: App {
             .preferredColorScheme(testColorScheme)
             .tint(Color("AccentColor"))
             .background {
-                LockShield(lock: lock, enabled: lock.enabled, isLocked: lock.isLocked).frame(width: 0, height: 0)
+                if let lock {
+                    LockShield(
+                        lock: lock, enabled: lock.enabled, isLocked: lock.isLocked,
+                        dataAvailable: protectedData.isAvailable
+                    )
+                    .frame(width: 0, height: 0)
+                }
             }
-            .task { if store == nil && !failure { await load() } }
+            .task(id: protectedData.isAvailable) {
+                guard protectedData.isAvailable else { return }
+                if lock == nil { lock = makeLock() }
+                if store == nil && !failure { await load() }
+            }
+            .onChange(of: protectedData.isAvailable) {
+                if !protectedData.isAvailable { lock?.lock() } else { lock?.reloadPreference() }
+            }
         }
     }
 
@@ -63,14 +85,18 @@ struct MojeZegarkiApp: App {
 
     @MainActor
     private func load() async {
+        guard protectedData.isAvailable, !loading else { return }
+        loading = true
         failure = false
+        defer { loading = false }
         do {
             var directory: URL?
             #if DEBUG
                 // UI tests use an isolated on-disk store, never the user's collection.
                 if ProcessInfo.processInfo.arguments.contains("--uitesting") {
                     directory = FileManager.default.temporaryDirectory.appendingPathComponent("CollectionUITests")
-                    if ProcessInfo.processInfo.arguments.contains("--reset-test-store"), let directory,
+                    if !testStorePrepared, ProcessInfo.processInfo.arguments.contains("--reset-test-store"),
+                        let directory,
                         FileManager.default.fileExists(atPath: directory.path)
                     {
                         try FileManager.default.removeItem(at: directory)
@@ -78,10 +104,11 @@ struct MojeZegarkiApp: App {
                 }
             #endif
             let loaded = try CollectionStore(directory: directory)
+            testStorePrepared = true
             // Finish cleanup before exposing editors, but never block a valid collection on orphan cleanup.
-            do { try await loaded.reconcilePhotos() } catch {
+            do { try await loaded.reconcileAssets() } catch {
                 Logger(subsystem: "pl.jakubbatycki.MojeZegarki", category: "Storage").error(
-                    "Asset cleanup failed: \(error.localizedDescription, privacy: .public)")
+                    "Asset cleanup failed: \(error.localizedDescription, privacy: .private)")
             }
             #if DEBUG
                 if ProcessInfo.processInfo.arguments.contains("--uitesting"),
@@ -108,8 +135,11 @@ struct MojeZegarkiApp: App {
                     _ = try loaded.save(draft)
                 }
             #endif
+            guard protectedData.isAvailable, !Task.isCancelled else { return }
             store = loaded
-        } catch { failure = true }
+        } catch {
+            if protectedData.isAvailable && !Task.isCancelled { failure = true }
+        }
     }
 
     #if DEBUG
@@ -172,7 +202,9 @@ struct MojeZegarkiApp: App {
                 try await store.documentStore.remove(asset.id)
             }
             try store.attachDocument(
-                asset, to: watch, name: "Test invoice", kind: .purchase, date: nil, notes: "Private test document")
+                asset, to: watch, name: "Test invoice", kind: .purchase, date: nil,
+                notes: ProcessInfo.processInfo.arguments.contains("--test-long-note")
+                    ? String(repeating: "Private invoice note. ", count: 35) : "Private test document")
         }
     #endif
 }

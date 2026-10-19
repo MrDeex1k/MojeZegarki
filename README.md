@@ -90,6 +90,8 @@ Zapisz model, który chodzi Ci po głowie — ze zdjęciem, linkiem, orientacyjn
 
 **Bez konta. Bez reklam. Bez zewnętrznej analityki.** Kolekcja, zdjęcia, dokumenty i historia są przechowywane lokalnie, więc aplikacja działa także bez internetu.
 
+Dane aplikacji mogą być uwzględnione w systemowych kopiach zapasowych iPhone’a zgodnie z ustawieniami użytkownika; aplikacja nie synchronizuje kolekcji przez własną usługę. Pliki kolekcji korzystają z pełnej ochrony danych iOS po zablokowaniu urządzenia z ustawionym kodem.
+
 Opcjonalna blokada Face ID lub kodem urządzenia chroni dostęp do aplikacji, a przy włączonej blokadzie jej zawartość jest zasłaniana w przełączniku aplikacji. Interfejs obsługuje polski i angielski, jasny i ciemny motyw, VoiceOver oraz systemowe rozmiary tekstu.
 
 ## Pod maską
