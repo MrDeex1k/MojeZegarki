@@ -1,19 +1,5 @@
 import Foundation
 
-enum WishlistPriority: Int, CaseIterable, Identifiable {
-    case unspecified = 0
-    case low, medium, high
-    var id: Int { rawValue }
-    var title: LocalizedStringResource {
-        switch self {
-        case .unspecified: "Not specified"
-        case .low: "Low"
-        case .medium: "Medium"
-        case .high: "High"
-        }
-    }
-}
-
 struct WishlistDraft: Equatable {
     var brand = ""
     var modelName = ""
@@ -48,17 +34,5 @@ struct WishlistDraft: Equatable {
             throw WishlistError.invalidURL
         }
         return value
-    }
-}
-
-enum WishlistError: LocalizedError {
-    case invalidURL, changedAfterMove, invalidOrder
-    var errorDescription: String? {
-        switch self {
-        case .invalidOrder: String(localized: "The wishlist changed. Try reordering again.")
-        case .invalidURL: String(localized: "Enter a full http or https link without login details.")
-        case .changedAfterMove:
-            String(localized: "This watch has changed since it was added. Undo is no longer available.")
-        }
     }
 }
