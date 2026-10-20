@@ -85,6 +85,38 @@ final class CollectionTests: XCTestCase {
         XCTAssertThrowsError(try value.validatedPrice())
     }
 
+    func testPriceRequiresLocaleDecimalSeparatorWithoutGrouping() throws {
+        var value = draft()
+        value.currencyCode = "EUR"
+        for identifier in ["pl_PL", "de_DE", "fr_FR", "en_US"] {
+            let locale = Locale(identifier: identifier)
+            let separator = try XCTUnwrap(locale.decimalSeparator)
+            for (input, expected) in [
+                ("1234", "1234"),
+                (" 1234\(separator)56 ", "1234.56"),
+                ("0\(separator)000001", "0.000001"),
+            ] {
+                value.price = input
+                XCTAssertEqual(try value.validatedPrice(locale: locale), expected, "\(identifier): \(input)")
+            }
+            let wrongSeparator = separator == "." ? "," : "."
+            for input in [
+                "1\(wrongSeparator)234", "12\(wrongSeparator)50",
+                "1\(wrongSeparator)234\(separator)56",
+                "1 234\(separator)56", "1\u{00A0}234\(separator)56", "1\u{202F}234\(separator)56",
+                "1\(separator)234\(separator)56", "0\(separator)1234567",
+            ] {
+                value.price = input
+                XCTAssertThrowsError(try value.validatedPrice(locale: locale), "\(identifier): \(input)") { error in
+                    switch error {
+                    case CollectionError.invalidPrice: break
+                    default: XCTFail("Expected invalidPrice, received \(error)")
+                    }
+                }
+            }
+        }
+    }
+
     func testDiskPersistenceAndEditingWithoutAutosave() throws {
         var savedID: UUID!
         do {
