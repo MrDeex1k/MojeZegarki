@@ -36,7 +36,7 @@ struct WearEditorView: View {
                         }
                     } label: {
                         VStack(alignment: .leading, spacing: 6) {
-                            Text("Watch").font(.caption).foregroundStyle(.secondary)
+                            Text("Watch").font(.caption).foregroundStyle(Color.supportingText)
                             if let selectedWatch {
                                 Text("\(selectedWatch.brand) \(selectedWatch.modelName)")
                             } else {
@@ -91,6 +91,8 @@ struct WearEditorView: View {
                                 Text("Add \(newDays.count) days")
                             }
                         }
+                        .accessibilityLabel(log != nil ? Text("Save") : Text("Add wear days"))
+                        .accessibilityValue(log == nil ? Text("Selected days: \(newDays.count)") : Text(""))
                         .disabled(watchID == nil || (log == nil && newDays.isEmpty)).accessibilityIdentifier(
                             "wear.save")
                     }
@@ -103,14 +105,4 @@ struct WearEditorView: View {
     }
 
     private var selectedWatch: Timepiece? { watches.first { $0.id == watchID } }
-}
-
-private struct WearSavedDays<Content: View>: View {
-    @Query private var logs: [WearLog]
-    let content: (Set<String>) -> Content
-    init(watchID: UUID?, @ViewBuilder content: @escaping (Set<String>) -> Content) {
-        _logs = Query(filter: #Predicate<WearLog> { $0.timepiece?.id == watchID })
-        self.content = content
-    }
-    var body: some View { content(Set(logs.map(\.calendarDay))) }
 }

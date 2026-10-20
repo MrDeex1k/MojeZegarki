@@ -67,7 +67,7 @@ struct WearCalendar: View {
                     GridRow {
                         ForEach(0..<7, id: \.self) { index in
                             Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
-                                .font(.caption).foregroundStyle(.secondary)
+                                .font(.caption).foregroundStyle(Color(uiColor: .label))
                                 .frame(maxWidth: .infinity).accessibilityHidden(true)
                         }
                     }
@@ -89,7 +89,7 @@ struct WearCalendar: View {
             ViewThatFits(in: .horizontal) {
                 HStack { legend }
                 VStack(alignment: .leading) { legend }
-            }.font(.caption).foregroundStyle(.secondary)
+            }.font(.caption).foregroundStyle(Color(uiColor: .label))
         }
         .fixedSize(horizontal: false, vertical: true)
         .sheet(isPresented: $jumping) {

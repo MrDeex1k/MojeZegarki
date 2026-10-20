@@ -33,6 +33,38 @@ final class CollectionTests: XCTestCase {
         return value
     }
 
+    func testNewDraftCurrencyFollowsLanguageAndPreservesExistingSelection() throws {
+        for (language, currency) in [("pl_PL", "PLN"), ("pl_US", "PLN"), ("en_US", "USD"), ("en_PL", "USD")] {
+            let locale = Locale(identifier: language)
+            XCTAssertEqual(TimepieceDraft(locale: locale).currencyCode, currency)
+            XCTAssertEqual(WishlistDraft(locale: locale).currencyCode, currency)
+        }
+
+        let store = try CollectionStore(directory: directory)
+        var value = TimepieceDraft(locale: Locale(identifier: "pl_PL"))
+        value.brand = "Seiko"
+        value.modelName = "Prospex"
+        value.price = "100"
+        value.currencyCode = "EUR"
+        let watch = try store.save(value)
+        XCTAssertEqual(TimepieceDraft(timepiece: watch, locale: Locale(identifier: "en_US")).currencyCode, "EUR")
+
+        var wishDraft = WishlistDraft(locale: Locale(identifier: "en_US"))
+        wishDraft.brand = "Casio"
+        wishDraft.modelName = "Oceanus"
+        wishDraft.price = "100"
+        wishDraft.currencyCode = "EUR"
+        let wish = try store.saveWish(wishDraft)
+        let reopenedDraft = WishlistDraft(item: wish, locale: Locale(identifier: "pl_PL"))
+        XCTAssertEqual(reopenedDraft.currencyCode, "EUR")
+        XCTAssertEqual(reopenedDraft.purchaseDraft.currencyCode, "EUR")
+
+        watch.currencyCode = nil
+        wish.currencyCode = nil
+        XCTAssertEqual(TimepieceDraft(timepiece: watch).currencyCode, "")
+        XCTAssertEqual(WishlistDraft(item: wish).currencyCode, "")
+    }
+
     func testRequiredFieldsAndExactLocalizedMoney() throws {
         var value = draft()
         XCTAssertNil(try value.validatedPrice())
@@ -51,6 +83,38 @@ final class CollectionTests: XCTestCase {
         value.currencyCode = "USD"
         value.brand = " \n "
         XCTAssertThrowsError(try value.validatedPrice())
+    }
+
+    func testPriceRequiresLocaleDecimalSeparatorWithoutGrouping() throws {
+        var value = draft()
+        value.currencyCode = "EUR"
+        for identifier in ["pl_PL", "de_DE", "fr_FR", "en_US"] {
+            let locale = Locale(identifier: identifier)
+            let separator = try XCTUnwrap(locale.decimalSeparator)
+            for (input, expected) in [
+                ("1234", "1234"),
+                (" 1234\(separator)56 ", "1234.56"),
+                ("0\(separator)000001", "0.000001"),
+            ] {
+                value.price = input
+                XCTAssertEqual(try value.validatedPrice(locale: locale), expected, "\(identifier): \(input)")
+            }
+            let wrongSeparator = separator == "." ? "," : "."
+            for input in [
+                "1\(wrongSeparator)234", "12\(wrongSeparator)50",
+                "1\(wrongSeparator)234\(separator)56",
+                "1 234\(separator)56", "1\u{00A0}234\(separator)56", "1\u{202F}234\(separator)56",
+                "1\(separator)234\(separator)56", "0\(separator)1234567",
+            ] {
+                value.price = input
+                XCTAssertThrowsError(try value.validatedPrice(locale: locale), "\(identifier): \(input)") { error in
+                    switch error {
+                    case CollectionError.invalidPrice: break
+                    default: XCTFail("Expected invalidPrice, received \(error)")
+                    }
+                }
+            }
+        }
     }
 
     func testDiskPersistenceAndEditingWithoutAutosave() throws {
@@ -118,7 +182,7 @@ final class CollectionTests: XCTestCase {
         value.photos = [kept]
         let watch = try store.save(value)
         XCTAssertEqual(watch.mainPhoto?.id, kept.id)
-        try await store.reconcilePhotos()
+        try await store.reconcileAssets()
         let orphanBytes = await store.photoStore.data(for: orphan)
         let keptBytes = await store.photoStore.data(for: kept)
         XCTAssertNil(orphanBytes)
@@ -141,7 +205,7 @@ final class CollectionTests: XCTestCase {
         try store.save(value, editing: watch)
         XCTAssertEqual(watch.mainPhotoID, second.id)
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<TimepiecePhoto>()), 1)
-        try await store.reconcilePhotos()
+        try await store.reconcileAssets()
         let removedBytes = await store.photoStore.data(for: first)
         XCTAssertNil(removedBytes)
     }

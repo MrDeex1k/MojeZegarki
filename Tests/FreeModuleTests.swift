@@ -263,7 +263,7 @@ final class FreeModuleTests: XCTestCase {
         let wish = try store.saveWish(draft, locale: Locale(identifier: "pl_PL"))
         XCTAssertEqual(wish.brand, "Casio")
         XCTAssertEqual(wish.targetPrice, "199.99")
-        try await store.reconcilePhotos()
+        try await store.reconcileAssets()
         let retained = await store.photoStore.data(for: photo)
         XCTAssertNotNil(retained)
         for invalid in ["file:///etc/passwd", "javascript:alert(1)", "https://user:secret@example.com", "example.com"] {
@@ -281,7 +281,7 @@ final class FreeModuleTests: XCTestCase {
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WishlistItem>()), 0)
         XCTAssertEqual(purchased.mainPhoto?.id, photo.id)
         XCTAssertEqual(purchased.purchasePrice, "199.99")
-        try await store.reconcilePhotos()
+        try await store.reconcileAssets()
         let moved = await store.photoStore.data(for: photo)
         XCTAssertNotNil(moved)
     }
@@ -307,7 +307,7 @@ final class FreeModuleTests: XCTestCase {
         let other = try store.attachDocument(
             duplicate, to: another, name: "Shared source", kind: .other, date: nil, notes: "")
         let orphan = try await store.documentStore.importData(data)
-        try await store.reconcilePhotos()
+        try await store.reconcileAssets()
         do {
             _ = try await store.documentStore.data(id: orphan.id, filename: orphan.filename)
             XCTFail("Orphan must be removed")

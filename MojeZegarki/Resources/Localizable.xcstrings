@@ -3676,6 +3676,76 @@
           }
         }
       }
+    },
+    "Read full note" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż całą notatkę"
+          }
+        }
+      }
+    },
+    "Zoom out" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomniejsz"
+          }
+        }
+      }
+    },
+    "Zoom in" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Powiększ"
+          }
+        }
+      }
+    },
+    "Reset zoom" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyzeruj powiększenie"
+          }
+        }
+      }
+    },
+    "Unlock your iPhone" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokuj iPhone’a"
+          }
+        }
+      }
+    },
+    "Your collection will be available after you unlock this device." : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolekcja będzie dostępna po odblokowaniu iPhone’a."
+          }
+        }
+      }
+    },
+    "Photo %lld" : {
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdjęcie %lld"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

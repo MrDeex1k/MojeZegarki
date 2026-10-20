@@ -6,6 +6,7 @@ struct WishlistView: View {
     let store: CollectionStore
     var showCollection: () -> Void = {}
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var editMode: EditMode = .inactive
     @State private var movedName: String?
     @State private var undoMove: CollectionStore.WishMoveUndo?
@@ -23,12 +24,15 @@ struct WishlistView: View {
     @State private var error: String?
 
     private var visible: [WishlistItem] {
-        items.filter {
-            search.trimmed.isEmpty || "\($0.brand) \($0.modelName)".localizedStandardContains(search.trimmed)
+        let term = search.trimmed
+        return items.filter {
+            term.isEmpty || "\($0.brand) \($0.modelName)".localizedStandardContains(term)
         }
     }
 
     var body: some View {
+        let visible = visible
+        let groups = Dictionary(grouping: visible, by: \.priority)
         NavigationStack {
             Group {
                 if visible.isEmpty {
@@ -47,7 +51,7 @@ struct WishlistView: View {
                 } else {
                     List {
                         ForEach(WishlistPriority.allCases.reversed()) { priority in
-                            let group = visible.filter { $0.priority == priority.rawValue }
+                            let group = groups[priority.rawValue, default: []]
                             if !group.isEmpty {
                                 Section {
                                     ForEach(group) { item in
@@ -63,10 +67,8 @@ struct WishlistView: View {
                                                                 .frame(width: 70, height: 88).clipShape(
                                                                     RoundedRectangle(cornerRadius: 10))
                                                             VStack(alignment: .leading, spacing: 4) {
-                                                                Text(item.brand).font(.subheadline).foregroundStyle(
-                                                                    .secondary)
-                                                                Text(item.modelName).font(.headline).foregroundStyle(
-                                                                    .primary)
+                                                                WatchIdentityLabel(
+                                                                    brand: item.brand, model: item.modelName)
                                                                 if let amount = item.targetPrice.flatMap({
                                                                     Decimal(
                                                                         string: $0,
@@ -74,7 +76,7 @@ struct WishlistView: View {
                                                                 }), let currency = item.currencyCode {
                                                                     Text(amount.formatted(.currency(code: currency)))
                                                                         .font(.subheadline)
-                                                                        .foregroundStyle(.secondary)
+                                                                        .foregroundStyle(Color.supportingText)
                                                                 }
                                                                 if let priority = WishlistPriority(
                                                                     rawValue: item.priority),
@@ -173,7 +175,9 @@ struct WishlistView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     if items.count > 1 && search.trimmed.isEmpty {
                         Button(editMode.isEditing ? "Done" : "Reorder") {
-                            withAnimation { editMode = editMode.isEditing ? .inactive : .active }
+                            withAnimation(reduceMotion ? nil : .default) {
+                                editMode = editMode.isEditing ? .inactive : .active
+                            }
                         }
                         .accessibilityIdentifier("wish.reorder")
                     }
@@ -200,134 +204,5 @@ struct WishlistView: View {
             }
             .appError($error)
         }
-    }
-}
-
-struct WishlistEditorView: View {
-    let store: CollectionStore
-    let item: WishlistItem?
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.locale) private var locale
-    private let initialDraft: WishlistDraft
-    @State private var discarding = false
-    @State private var draft: WishlistDraft
-    @State private var selectedPhoto: PhotosPickerItem?
-    @State private var previewPhoto: PhotoDraft?
-    @State private var stagedIDs: Set<UUID> = []
-    @State private var importing = false
-    @State private var saving = false
-    @State private var committed = false
-    @State private var error: String?
-
-    init(store: CollectionStore, item: WishlistItem? = nil) {
-        self.store = store
-        self.item = item
-        let initial = item.map { WishlistDraft(item: $0) } ?? WishlistDraft()
-        initialDraft = initial
-        _draft = State(initialValue: initial)
-    }
-
-    var body: some View {
-        NavigationStack {
-            Form {
-                Section("Watch") {
-                    TextField("Brand", text: $draft.brand).accessibilityIdentifier("wish.brand")
-                    TextField("Model", text: $draft.modelName).accessibilityIdentifier("wish.model")
-                }
-                Section("Photo") {
-                    if let photo = draft.photo {
-                        Button {
-                            previewPhoto = photo
-                        } label: {
-                            PhotoView(photo: photo, store: store.photoStore).frame(height: 190)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel("View photo")
-                        .accessibilityIdentifier("wish.photo.preview")
-                        Button("Remove photo", role: .destructive) { draft.photo = nil }
-                    }
-                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
-                        Label("Choose photo", systemImage: "photo")
-                    }
-                    .disabled(importing)
-                    if importing { ProgressView("Importing photos…") }
-                }
-                Section("Details") {
-                    TextField("Link", text: $draft.url).keyboardType(.URL).textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                    TextField("Target price", text: $draft.price).keyboardType(.decimalPad)
-                    Picker("Currency", selection: $draft.currencyCode) {
-                        Text("Not specified").tag("")
-                        ForEach(Locale.commonISOCurrencyCodes.sorted(), id: \.self) { Text($0).tag($0) }
-                    }
-                    Picker("Priority", selection: $draft.priority) {
-                        ForEach(WishlistPriority.allCases) { Text($0.title).tag($0) }
-                    }
-                }
-                Section("Notes") { TextField("Notes", text: $draft.notes, axis: .vertical).lineLimit(3...8) }
-            }
-            .disabled(saving)
-            .navigationTitle(item == nil ? Text("Add to wishlist") : Text("Edit wish"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { if draft != initialDraft { discarding = true } else { dismiss() } }.disabled(
-                        importing || saving)
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { Task { await save() } }
-                        .disabled(!draft.purchaseDraft.hasRequiredFields || importing || saving)
-                        .accessibilityIdentifier("wish.save")
-                }
-            }
-            .interactiveDismissDisabled(importing || saving || draft != initialDraft)
-            .fullScreenCover(item: $previewPhoto) { photo in
-                WatchPhotoPreview(photo: photo, store: store.photoStore)
-            }
-            .confirmationDialog("Discard unsaved changes?", isPresented: $discarding, titleVisibility: .visible) {
-                Button("Discard changes", role: .destructive) { dismiss() }
-            }
-            .appError($error)
-            .onChange(of: selectedPhoto) { _, photo in
-                guard let photo else { return }
-                importing = true
-                Task {
-                    defer {
-                        importing = false
-                        selectedPhoto = nil
-                    }
-                    do {
-                        guard let data = try await photo.loadTransferable(type: ImportedImage.self) else {
-                            throw CollectionError.unreadablePhoto
-                        }
-                        let imported = try await store.photoStore.importPhoto(data.data)
-                        stagedIDs.insert(imported.id)
-                        draft.photo = imported
-                    } catch { self.error = String(localized: "This photo could not be read. Choose another image.") }
-                }
-            }
-        }
-        .onDisappear {
-            // A full-screen preview also hides the editor; keep any unsaved imported photo alive.
-            if !committed && previewPhoto == nil {
-                let abandoned = stagedIDs
-                Task { for id in abandoned { try? await store.photoStore.remove(id) } }
-            }
-        }
-    }
-
-    @MainActor private func save() async {
-        saving = true
-        defer { saving = false }
-        let oldID = item?.photoID
-        do {
-            try store.saveWish(draft, editing: item, locale: locale)
-            committed = true
-            var discarded = stagedIDs
-            if let oldID { discarded.insert(oldID) }
-            if let retained = draft.photo?.id { discarded.remove(retained) }
-            for id in discarded { try? await store.photoStore.remove(id) }
-            dismiss()
-        } catch { self.error = error.localizedDescription }
     }
 }

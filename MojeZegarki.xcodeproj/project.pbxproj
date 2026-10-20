@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0ABC1234DEF567890ABC1234 /* CurrencyPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABC1234DEF567890ABC1235 /* CurrencyPreference.swift */; };
 		04702C25A5714DD909F0DFC5 /* CollectionSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19210AE448DA0ABAB8750744 /* CollectionSchema.swift */; };
 		12798E6ACA4D4472B8A77F8A /* WearDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F158ABF3575947F19E6D0A /* WearDay.swift */; };
 		190E12A6DE050AA0E4F254A4 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EDEF8DA916E87DCC6EF9BF /* AppError.swift */; };
@@ -29,13 +30,11 @@
 		9CD99E564C58B07EE748BD4A /* FreeModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259737604D2CFB1D01F233D1 /* FreeModuleTests.swift */; };
 		A26B4FED7851F9E99BE8BC3C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078151CF97D91D8173A69324 /* SettingsView.swift */; };
 		B4CFE7FAF07C208453820A04 /* CollectionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C92F291EBBA494F8D9622A /* CollectionStore.swift */; };
-		B56D10DC665529CF38510088 /* WatchTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7B22E931690D246AD42192 /* WatchTypes.swift */; };
 		B9CC5C5EE0A9A590619F9F21 /* CollectionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E202D8F442FDD04AE706140E /* CollectionUITests.swift */; };
 		C5AFF9879F39852C5D7DD54F /* LockShield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1002E2A2D83E50DF7F3ACF97 /* LockShield.swift */; };
 		CA3DB8F2EF9B83CD5469160D /* TimepieceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702C5225D67539778E823A8 /* TimepieceDetailView.swift */; };
 		D34F855A50BEE6E89363F372 /* AppLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4E82260C83AF63B2E2931D /* AppLock.swift */; };
 		D4E74F1AA38FED6400A7EF53 /* WishlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50D978E139A81B9FCAF9AFD /* WishlistView.swift */; };
-		E15D9232E86384A39690B752 /* DocumentTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B816C4E4AEB7EA3D3EACDD /* DocumentTypes.swift */; };
 		E6ACF921A64A4A5F62BC1C57 /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAC008B2DF99278619233FE /* CollectionTests.swift */; };
 		EBB2138D447384A1C56399B8 /* DocumentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBF6E9632325D1F5A5B8AA3 /* DocumentStore.swift */; };
 		EE899E36CE74DD8D9761C798 /* CollectionSchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */; };
@@ -45,6 +44,79 @@
 		170AA1EDAEB7919AF56C648B /* WearCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321BA492D2D0D2594717BDEC /* WearCalendar.swift */; };
 		6D446E82D74BFB8A76AB93CC /* WearStatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AEE7F21301984303F90A56 /* WearStatisticsView.swift */; };
 		E1127468AE9247D99B11A601 /* CollectionSchemaV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1127468AE9247D99B11A602 /* CollectionSchemaV3.swift */; };
+		6D5A9C86790B1A586FC1BF62 /* AssetReconciliationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBAA45F14DF61B10CD055AF /* AssetReconciliationError.swift */; };
+		C285722E66855C8B1CCA71E9 /* StorageSafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6936C7C128418578F7623AA6 /* StorageSafetyTests.swift */; };
+		FEB79494047ADFEF623DDDB8 /* DraftAssetSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF26F01FB0B852F6A86955B5 /* DraftAssetSession.swift */; };
+		33762857783F29618077253A /* CurrencyPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D5932FB77149D6B8B0A5B47 /* CurrencyPicker.swift */; };
+		6FDBC79045E3482DA1F0ACEF /* OptionalDateField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70055823E72A02B5491865A /* OptionalDateField.swift */; };
+		93D272E786BCB2634E9A2C70 /* DiscardChangesConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A40025B79B3EF279A333B0 /* DiscardChangesConfirmation.swift */; };
+		3FFEFC6C0BD58F0B5B61C851 /* ProtectedDataState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF1BC52BDE39F8D84C579BB /* ProtectedDataState.swift */; };
+		D87B357B7016C45F3209933E /* DocumentNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC671A13A75A87C0F5FE52 /* DocumentNotesView.swift */; };
+		4750F5681C083619E240A9A1 /* StorageProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C9E7145FA45EA0E5CCB51F /* StorageProtection.swift */; };
+		D4166058FA9B50E2E8F7D18D /* DocumentImagePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C56584FEC70630EF04F70E2 /* DocumentImagePreview.swift */; };
+		BF4B3A99CFF59712D3562BF6 /* ZoomableDocumentImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839DB6A0F4D2AC041934C111 /* ZoomableDocumentImage.swift */; };
+		5EE8DB2546597B3CBFD7D2BE /* DraftAssetSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F0E951BF85C6F5A35FE28A /* DraftAssetSessionTests.swift */; };
+		7ADBA709E94FFFB9692BB1A7 /* AccessibilityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92138333AE65C5C665844A2D /* AccessibilityUITests.swift */; };
+
+		674104869D294D5D58F5D9D0 /* CollectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1F554D1E5C6030AE5D1E37 /* CollectionError.swift */; };
+		B37E088EDD8AD71DCFDF056E /* DeviceKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A73E7E7A7765CFFC710A2A9 /* DeviceKind.swift */; };
+		ADCACB293FD1C7D1E7C09A10 /* MovementType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A4462545BE5F201EC5109C /* MovementType.swift */; };
+		EEB52000892F9134FEC8B134 /* PhotoDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA308A6DB43576FE6C135E6 /* PhotoDraft.swift */; };
+		17B9A07064F1D4D0F7B5AD65 /* TimepieceDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28BBFF59BA27DACF3E2A96D /* TimepieceDraft.swift */; };
+		3CA58DBC99D0CA862040B2F3 /* WatchCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8400C78207907A798389762C /* WatchCategory.swift */; };
+		228AC70EA5028FA5F1042DF4 /* WatchOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D8E7B63CDF61B454B1AAAE /* WatchOption.swift */; };
+		89EF32F9B92ABA6B4EAF4A79 /* WatchStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C96B82DFFCCA5822E73CDB /* WatchStatus.swift */; };
+		6929CDFA01B4A7D3F0BACB97 /* DocumentAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9B7B56063A7EE2A6561412 /* DocumentAsset.swift */; };
+		4DD79FD6523C00B44A9112FE /* DocumentDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67B358E572ED1469B938C40 /* DocumentDraft.swift */; };
+		4F8BE698D214D81C1E211AF1 /* DocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7944E70B0A9DC19A58563379 /* DocumentError.swift */; };
+		FB306505E31801CDD7F79C74 /* DocumentKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5821823FCD26274681870F35 /* DocumentKind.swift */; };
+		771FD41AEAE4FACA26616C7A /* String+Trimming.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E8ED5E04EE67910496C9EB /* String+Trimming.swift */; };
+		854EB06F4AF485480E474E7B /* WearError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 593458E9078D8D04E946DA2A /* WearError.swift */; };
+		CCB44CF8B64EBE221C635459 /* WearStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39266428C5B106BC9436D5CC /* WearStatistics.swift */; };
+		B2DE336A350734C06A897E42 /* WishlistError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C534309771418C3BD84F50 /* WishlistError.swift */; };
+		8FCE91470B613304093AF568 /* WishlistPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB543BF5299BF6A3779958AD /* WishlistPriority.swift */; };
+		5B27ED115657ACBE74831DE6 /* DocumentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB0CA80DAE729A1DD43D847 /* DocumentEditorView.swift */; };
+		48BACDA33ACB09C31C35FBFC /* DocumentRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397102D8851D088C69AF251D /* DocumentRoute.swift */; };
+		4856A1C37569B39D440CCCE0 /* WishlistEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC168D8AF481B4D1C6767A65 /* WishlistEditorView.swift */; };
+		6FF9B02C7BCBF6E9A7D19C9C /* TimepieceDraft+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126ED0840B9B4155873D2CB9 /* TimepieceDraft+Model.swift */; };
+		C2C3E33440C9CBAB7DFF6507 /* WishlistDraft+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E95C6EDBBAFDB0076EEC5D9 /* WishlistDraft+Model.swift */; };
+		22E1486CCF0D363D0AB24734 /* CollectionMigrationPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40C6FA0BC0F36C29A75539B /* CollectionMigrationPlan.swift */; };
+		F7A328746A63F3B3F8EDBB93 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C3320F10E4409FAF0972C8 /* Models.swift */; };
+		70E8E471B312881AC309B0B0 /* CollectionStore+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EC5F6881AB1C671BB570CC /* CollectionStore+Assets.swift */; };
+		E0069AA0EB3395A4F218FA22 /* CollectionStore+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08307CC578E7D1520F312E3C /* CollectionStore+Collection.swift */; };
+		1D5BE15F6E60FD947B47A9F0 /* CollectionStore+Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC4721DC537E941D2FCFF56 /* CollectionStore+Documents.swift */; };
+		166733EAB0E7E0CA7D6FD2E2 /* CollectionStore+Wear.swift in Sources */ = {isa = PBXBuildFile; fileRef = E807CFDD5EB8A6AAAA0CBC8E /* CollectionStore+Wear.swift */; };
+		49416C5E01F651C2AE21F379 /* CollectionStore+Wishlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B3FE9929ACC59095A586CF /* CollectionStore+Wishlist.swift */; };
+		690957F07D4F440BDE8574E6 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F203CE9288119944B18BEA80 /* ImageLoader.swift */; };
+		CFC18A491E00943D7195E7A4 /* WatchPhotoPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9269D0D61CC4C3B802207447 /* WatchPhotoPreview.swift */; };
+		6F48E5518FBA29A70CD4B779 /* DeviceAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F25E3C942CD7AD563D0BE97 /* DeviceAuthenticating.swift */; };
+		A8DCD861AC0DAF8AF45E578D /* LockScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB871859AC1792E08B247EF6 /* LockScreen.swift */; };
+		73DA0E5A941C73730A7AA8E6 /* SystemDeviceAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28759A6C9BCA4F66EA29E834 /* SystemDeviceAuthenticator.swift */; };
+		975603359592E0A5ABAFEC35 /* PreviewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD11FBA3360237E2DCC7C3D9 /* PreviewContent.swift */; };
+		F286B19CE26D37A9EA038AAA /* PDFPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3370090A337B9C83C3C8A080 /* PDFPreview.swift */; };
+		C9A250B432CC0E4147D2681A /* WearScrollAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033128E14A66E19A1FC45A09 /* WearScrollAnchor.swift */; };
+		D8EC986FE5CF93A324932D3E /* WearScrollBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18850BB39CE8C6EB97090814 /* WearScrollBehavior.swift */; };
+		B8344D86D4CCCECD0721610E /* WatchStatisticsRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624874BE6A6EF792C2A3B5C9 /* WatchStatisticsRow.swift */; };
+		906D92BC3590A188FE3CF8A1 /* WearHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E786C4F5B63E94F9CE7E0EA /* WearHistoryView.swift */; };
+
+		ED43AF6D51B61E33A8573823 /* ImportedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEEE920E8D431C61392E21A /* ImportedImage.swift */; };
+		63DF54D88628EB1D20CA6023 /* DocumentComplexityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CF1D75001E2DE2C7C4D56 /* DocumentComplexityTests.swift */; };
+		8C58EC9F059DB3E2B3AD9303 /* StorageProtectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BAF9C6B6B7BAC6F842C61AD /* StorageProtectionTests.swift */; };
+		46E8EF0F2B4C5438DB3EBCAA /* WearLogScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B331E4C62C732EC044D47C /* WearLogScope.swift */; };
+		FF8591DCB15B29E50ACCA979 /* WearLogScopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FA97B72AEED4FAB00C61D5 /* WearLogScopeTests.swift */; };
+		CD5203AE75535A1E8515B207 /* Color+SupportingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E7D3E9BB00D3A101E77C39 /* Color+SupportingText.swift */; };
+		C92864CF66FFE83864A7E287 /* WearLogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDE3EF78109C7E689EBED38 /* WearLogRow.swift */; };
+		C4418314D5ABDE04EFA54250 /* WearWatchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA5D7A38A8AF957851E9EE1 /* WearWatchFilter.swift */; };
+		1EEA2D5B4190B8EDF347E84C /* WatchIdentityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682E3941DD91BFA8CDA04FD4 /* WatchIdentityLabel.swift */; };
+
+		AF02FF4FF29554460ECCEC96 /* CurrencySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE34A0110077A5D978EE714 /* CurrencySelectionView.swift */; };
+		1D330D4B7E717E79D9F182B9 /* WatchRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD77D52F2B81EBC84A6A8874 /* WatchRoute.swift */; };
+		4171830A07AD07CF1DAF7A6A /* TodayWearScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB71009FF2B7F644D5F2EBC /* TodayWearScope.swift */; };
+		51EE3A69C638699EACE36BAC /* WearActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2ED653B2C452C40FDD7D870 /* WearActionButton.swift */; };
+		EF9926A958E88C51234D6224 /* WearActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1E00A84FD9EA11E364BD5A /* WearActionStyle.swift */; };
+		5868C1A124DD79B8AD4FD042 /* WearSavedDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA2E7FA998DE2E86BFD8CE /* WearSavedDays.swift */; };
+		70C969500DE81198C862AE0D /* WearTodayDayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8370F3BF3592A443ECFCF374 /* WearTodayDayButton.swift */; };
+		70DFC3C92880FD09C45A10BC /* WearStatisticsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A975253BFB54A8F83AEC9380 /* WearStatisticsContent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +137,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0ABC1234DEF567890ABC1235 /* CurrencyPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPreference.swift; sourceTree = "<group>"; };
 		004DDBF4871F50AC6F637034 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		00862672210B614F7E585226 /* FreeModuleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeModuleUITests.swift; sourceTree = "<group>"; };
 		03C92F291EBBA494F8D9622A /* CollectionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionStore.swift; sourceTree = "<group>"; };
@@ -81,7 +154,6 @@
 		5015B9A05080CD7ACD47908C /* TimepieceEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimepieceEditorView.swift; sourceTree = "<group>"; };
 		6D2FF408CE63D2A71F0F4C4E /* WearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearView.swift; sourceTree = "<group>"; };
 		6E285DF62416BD4B68439D20 /* MojeZegarki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MojeZegarki.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E7B22E931690D246AD42192 /* WatchTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTypes.swift; sourceTree = "<group>"; };
 		76CD33C3F6AA70A109319289 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		7BAC008B2DF99278619233FE /* CollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTests.swift; sourceTree = "<group>"; };
 		7BE49B9B343D17AC911FC3F6 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -93,7 +165,6 @@
 		AE4E82260C83AF63B2E2931D /* AppLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLock.swift; sourceTree = "<group>"; };
 		B0E04739A75F90CC09A78D18 /* MojeZegarkiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MojeZegarkiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B50D978E139A81B9FCAF9AFD /* WishlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistView.swift; sourceTree = "<group>"; };
-		B9B816C4E4AEB7EA3D3EACDD /* DocumentTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTypes.swift; sourceTree = "<group>"; };
 		CCBF6E9632325D1F5A5B8AA3 /* DocumentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentStore.swift; sourceTree = "<group>"; };
 		D7F58E14745A5BF6AC8A577B /* DocumentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsView.swift; sourceTree = "<group>"; };
 		E202D8F442FDD04AE706140E /* CollectionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionUITests.swift; sourceTree = "<group>"; };
@@ -107,6 +178,79 @@
 		321BA492D2D0D2594717BDEC /* WearCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearCalendar.swift; sourceTree = "<group>"; };
 		18AEE7F21301984303F90A56 /* WearStatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearStatisticsView.swift; sourceTree = "<group>"; };
 		E1127468AE9247D99B11A602 /* CollectionSchemaV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionSchemaV3.swift; sourceTree = "<group>"; };
+		CCBAA45F14DF61B10CD055AF /* AssetReconciliationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetReconciliationError.swift; sourceTree = "<group>"; };
+		6936C7C128418578F7623AA6 /* StorageSafetyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageSafetyTests.swift; sourceTree = "<group>"; };
+		BF26F01FB0B852F6A86955B5 /* DraftAssetSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftAssetSession.swift; sourceTree = "<group>"; };
+		1D5932FB77149D6B8B0A5B47 /* CurrencyPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPicker.swift; sourceTree = "<group>"; };
+		B70055823E72A02B5491865A /* OptionalDateField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalDateField.swift; sourceTree = "<group>"; };
+		36A40025B79B3EF279A333B0 /* DiscardChangesConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscardChangesConfirmation.swift; sourceTree = "<group>"; };
+		1DF1BC52BDE39F8D84C579BB /* ProtectedDataState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectedDataState.swift; sourceTree = "<group>"; };
+		D6DC671A13A75A87C0F5FE52 /* DocumentNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentNotesView.swift; sourceTree = "<group>"; };
+		96C9E7145FA45EA0E5CCB51F /* StorageProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageProtection.swift; sourceTree = "<group>"; };
+		8C56584FEC70630EF04F70E2 /* DocumentImagePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentImagePreview.swift; sourceTree = "<group>"; };
+		839DB6A0F4D2AC041934C111 /* ZoomableDocumentImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableDocumentImage.swift; sourceTree = "<group>"; };
+		69F0E951BF85C6F5A35FE28A /* DraftAssetSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftAssetSessionTests.swift; sourceTree = "<group>"; };
+		92138333AE65C5C665844A2D /* AccessibilityUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityUITests.swift; sourceTree = "<group>"; };
+
+		DA1F554D1E5C6030AE5D1E37 /* CollectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionError.swift; sourceTree = "<group>"; };
+		3A73E7E7A7765CFFC710A2A9 /* DeviceKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceKind.swift; sourceTree = "<group>"; };
+		85A4462545BE5F201EC5109C /* MovementType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementType.swift; sourceTree = "<group>"; };
+		DCA308A6DB43576FE6C135E6 /* PhotoDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDraft.swift; sourceTree = "<group>"; };
+		C28BBFF59BA27DACF3E2A96D /* TimepieceDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimepieceDraft.swift; sourceTree = "<group>"; };
+		8400C78207907A798389762C /* WatchCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCategory.swift; sourceTree = "<group>"; };
+		60D8E7B63CDF61B454B1AAAE /* WatchOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchOption.swift; sourceTree = "<group>"; };
+		D0C96B82DFFCCA5822E73CDB /* WatchStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchStatus.swift; sourceTree = "<group>"; };
+		FC9B7B56063A7EE2A6561412 /* DocumentAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAsset.swift; sourceTree = "<group>"; };
+		F67B358E572ED1469B938C40 /* DocumentDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentDraft.swift; sourceTree = "<group>"; };
+		7944E70B0A9DC19A58563379 /* DocumentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentError.swift; sourceTree = "<group>"; };
+		5821823FCD26274681870F35 /* DocumentKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentKind.swift; sourceTree = "<group>"; };
+		B4E8ED5E04EE67910496C9EB /* String+Trimming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Trimming.swift"; sourceTree = "<group>"; };
+		593458E9078D8D04E946DA2A /* WearError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearError.swift; sourceTree = "<group>"; };
+		39266428C5B106BC9436D5CC /* WearStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearStatistics.swift; sourceTree = "<group>"; };
+		67C534309771418C3BD84F50 /* WishlistError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistError.swift; sourceTree = "<group>"; };
+		FB543BF5299BF6A3779958AD /* WishlistPriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistPriority.swift; sourceTree = "<group>"; };
+		EAB0CA80DAE729A1DD43D847 /* DocumentEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentEditorView.swift; sourceTree = "<group>"; };
+		397102D8851D088C69AF251D /* DocumentRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentRoute.swift; sourceTree = "<group>"; };
+		DC168D8AF481B4D1C6767A65 /* WishlistEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistEditorView.swift; sourceTree = "<group>"; };
+		126ED0840B9B4155873D2CB9 /* TimepieceDraft+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimepieceDraft+Model.swift"; sourceTree = "<group>"; };
+		8E95C6EDBBAFDB0076EEC5D9 /* WishlistDraft+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WishlistDraft+Model.swift"; sourceTree = "<group>"; };
+		C40C6FA0BC0F36C29A75539B /* CollectionMigrationPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionMigrationPlan.swift; sourceTree = "<group>"; };
+		F9C3320F10E4409FAF0972C8 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		18EC5F6881AB1C671BB570CC /* CollectionStore+Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionStore+Assets.swift"; sourceTree = "<group>"; };
+		08307CC578E7D1520F312E3C /* CollectionStore+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionStore+Collection.swift"; sourceTree = "<group>"; };
+		EEC4721DC537E941D2FCFF56 /* CollectionStore+Documents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionStore+Documents.swift"; sourceTree = "<group>"; };
+		E807CFDD5EB8A6AAAA0CBC8E /* CollectionStore+Wear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionStore+Wear.swift"; sourceTree = "<group>"; };
+		58B3FE9929ACC59095A586CF /* CollectionStore+Wishlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionStore+Wishlist.swift"; sourceTree = "<group>"; };
+		F203CE9288119944B18BEA80 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		9269D0D61CC4C3B802207447 /* WatchPhotoPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPhotoPreview.swift; sourceTree = "<group>"; };
+		9F25E3C942CD7AD563D0BE97 /* DeviceAuthenticating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAuthenticating.swift; sourceTree = "<group>"; };
+		BB871859AC1792E08B247EF6 /* LockScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreen.swift; sourceTree = "<group>"; };
+		28759A6C9BCA4F66EA29E834 /* SystemDeviceAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemDeviceAuthenticator.swift; sourceTree = "<group>"; };
+		CD11FBA3360237E2DCC7C3D9 /* PreviewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewContent.swift; sourceTree = "<group>"; };
+		3370090A337B9C83C3C8A080 /* PDFPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPreview.swift; sourceTree = "<group>"; };
+		033128E14A66E19A1FC45A09 /* WearScrollAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearScrollAnchor.swift; sourceTree = "<group>"; };
+		18850BB39CE8C6EB97090814 /* WearScrollBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WearScrollBehavior.swift; sourceTree = "<group>"; };
+		624874BE6A6EF792C2A3B5C9 /* WatchStatisticsRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchStatisticsRow.swift; sourceTree = "<group>"; };
+		5E786C4F5B63E94F9CE7E0EA /* WearHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearHistoryView.swift"; sourceTree = "<group>"; };
+
+		DDEEE920E8D431C61392E21A /* ImportedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImportedImage.swift"; sourceTree = "<group>"; };
+		5E1CF1D75001E2DE2C7C4D56 /* DocumentComplexityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentComplexityTests.swift"; sourceTree = "<group>"; };
+		1BAF9C6B6B7BAC6F842C61AD /* StorageProtectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StorageProtectionTests.swift"; sourceTree = "<group>"; };
+		B5B331E4C62C732EC044D47C /* WearLogScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearLogScope.swift"; sourceTree = "<group>"; };
+		22FA97B72AEED4FAB00C61D5 /* WearLogScopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearLogScopeTests.swift"; sourceTree = "<group>"; };
+		06E7D3E9BB00D3A101E77C39 /* Color+SupportingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+SupportingText.swift"; sourceTree = "<group>"; };
+		4CDE3EF78109C7E689EBED38 /* WearLogRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearLogRow.swift"; sourceTree = "<group>"; };
+		AAA5D7A38A8AF957851E9EE1 /* WearWatchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearWatchFilter.swift"; sourceTree = "<group>"; };
+		682E3941DD91BFA8CDA04FD4 /* WatchIdentityLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchIdentityLabel.swift"; sourceTree = "<group>"; };
+
+		7BE34A0110077A5D978EE714 /* CurrencySelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrencySelectionView.swift"; sourceTree = "<group>"; };
+		AD77D52F2B81EBC84A6A8874 /* WatchRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchRoute.swift"; sourceTree = "<group>"; };
+		7EB71009FF2B7F644D5F2EBC /* TodayWearScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayWearScope.swift"; sourceTree = "<group>"; };
+		D2ED653B2C452C40FDD7D870 /* WearActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearActionButton.swift"; sourceTree = "<group>"; };
+		9B1E00A84FD9EA11E364BD5A /* WearActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearActionStyle.swift"; sourceTree = "<group>"; };
+		75EA2E7FA998DE2E86BFD8CE /* WearSavedDays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearSavedDays.swift"; sourceTree = "<group>"; };
+		8370F3BF3592A443ECFCF374 /* WearTodayDayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearTodayDayButton.swift"; sourceTree = "<group>"; };
+		A975253BFB54A8F83AEC9380 /* WearStatisticsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WearStatisticsContent.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,34 +283,17 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		10208B03215AADB9C46A7535 /* Domain */ = {
-			isa = PBXGroup;
-			children = (
-				B9B816C4E4AEB7EA3D3EACDD /* DocumentTypes.swift */,
-				6E7B22E931690D246AD42192 /* WatchTypes.swift */,
-				09F158ABF3575947F19E6D0A /* WearDay.swift */,
-				9F78BA3FF36DC56A95686568 /* WishlistDraft.swift */,
-			);
-			path = Domain;
-			sourceTree = "<group>";
-		};
-		1475EFD9D255E2CF05827271 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				45EDEF8DA916E87DCC6EF9BF /* AppError.swift */,
-				1002E2A2D83E50DF7F3ACF97 /* LockShield.swift */,
-				FE11ED33912A05BB7857BABF /* MojeZegarkiApp.swift */,
-				A261FC320BF614D2C4274E52 /* RootView.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
 		156052F04525D0F710673CF0 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				144E24429C6B2DB14D957368 /* AppLockTests.swift */,
 				7BAC008B2DF99278619233FE /* CollectionTests.swift */,
+				5E1CF1D75001E2DE2C7C4D56 /* DocumentComplexityTests.swift */,
+				69F0E951BF85C6F5A35FE28A /* DraftAssetSessionTests.swift */,
 				259737604D2CFB1D01F233D1 /* FreeModuleTests.swift */,
+				1BAF9C6B6B7BAC6F842C61AD /* StorageProtectionTests.swift */,
+				6936C7C128418578F7623AA6 /* StorageSafetyTests.swift */,
+				22FA97B72AEED4FAB00C61D5 /* WearLogScopeTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -174,6 +301,7 @@
 		5A349263041B6A939BD7831F /* UITests */ = {
 			isa = PBXGroup;
 			children = (
+				92138333AE65C5C665844A2D /* AccessibilityUITests.swift */,
 				E202D8F442FDD04AE706140E /* CollectionUITests.swift */,
 				00862672210B614F7E585226 /* FreeModuleUITests.swift */,
 			);
@@ -183,42 +311,15 @@
 		681D8297790EAE3457110456 /* MojeZegarki */ = {
 			isa = PBXGroup;
 			children = (
-				1475EFD9D255E2CF05827271 /* App */,
-				10208B03215AADB9C46A7535 /* Domain */,
-				7D17E5F50E01E59CDD718A71 /* Features */,
-				DFBC7678EC9C1863E2AE4F59 /* Persistence */,
-				BD28C4A8CF4996C22D248E3F /* Services */,
+				35D115726DB457BC73115B13 /* App */,
+				E2433C7BDA4A5A0C0609B312 /* Domain */,
+				457B2D1DAF8CE9AD41516087 /* Features */,
+				4FD474E3EE270BF0D4074D95 /* Persistence */,
 				0189424A5A60FED329FA868E /* Resources */,
+				EB6E89D555EE381944FDE5CB /* Services */,
+				42368A1330B73CDE2C7C1472 /* Shared */,
 			);
 			path = MojeZegarki;
-			sourceTree = "<group>";
-		};
-		7D17E5F50E01E59CDD718A71 /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				C7EFD3EF57DECBFAD5C8660E /* Collection */,
-				EAAB65F8AE55B1A6FDB11328 /* Documents */,
-				AC60AF109213A9B1E7B5036C /* Settings */,
-				D0F0707B83F464A2B5CCFE08 /* Wear */,
-				800E7E96C9B5F375B1D644D2 /* Wishlist */,
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
-		800E7E96C9B5F375B1D644D2 /* Wishlist */ = {
-			isa = PBXGroup;
-			children = (
-				B50D978E139A81B9FCAF9AFD /* WishlistView.swift */,
-			);
-			path = Wishlist;
-			sourceTree = "<group>";
-		};
-		AC60AF109213A9B1E7B5036C /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				078151CF97D91D8173A69324 /* SettingsView.swift */,
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 		B28B7AF69320201D1CF206EB = {
@@ -231,60 +332,6 @@
 			);
 			sourceTree = "<group>";
 		};
-		BD28C4A8CF4996C22D248E3F /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				AE4E82260C83AF63B2E2931D /* AppLock.swift */,
-				CCBF6E9632325D1F5A5B8AA3 /* DocumentStore.swift */,
-				81EBF365D4524DE104976E42 /* PhotoStore.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		C7EFD3EF57DECBFAD5C8660E /* Collection */ = {
-			isa = PBXGroup;
-			children = (
-				76CD33C3F6AA70A109319289 /* CollectionView.swift */,
-				E7695B7C24BB24A1302201AC /* PhotoView.swift */,
-				E702C5225D67539778E823A8 /* TimepieceDetailView.swift */,
-				5015B9A05080CD7ACD47908C /* TimepieceEditorView.swift */,
-			);
-			path = Collection;
-			sourceTree = "<group>";
-		};
-		D0F0707B83F464A2B5CCFE08 /* Wear */ = {
-			isa = PBXGroup;
-			children = (
-				6D2FF408CE63D2A71F0F4C4E /* WearView.swift */,
-				18AEE7F21301984303F90A56 /* WearStatisticsView.swift */,
-				321BA492D2D0D2594717BDEC /* WearCalendar.swift */,
-				8695DE556DE34E559D0F4770 /* WearSummaryView.swift */,
-				5BF092A7B00D57E423DF23F0 /* WearEditorView.swift */,
-				FD49839E16A1398D7C13D7A8 /* WearTodayButton.swift */,
-			);
-			path = Wear;
-			sourceTree = "<group>";
-		};
-		DFBC7678EC9C1863E2AE4F59 /* Persistence */ = {
-			isa = PBXGroup;
-			children = (
-				19210AE448DA0ABAB8750744 /* CollectionSchema.swift */,
-				F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */,
-				E1127468AE9247D99B11A602 /* CollectionSchemaV3.swift */,
-				03C92F291EBBA494F8D9622A /* CollectionStore.swift */,
-			);
-			path = Persistence;
-			sourceTree = "<group>";
-		};
-		EAAB65F8AE55B1A6FDB11328 /* Documents */ = {
-			isa = PBXGroup;
-			children = (
-				4DD44D09B4E017F915D45294 /* DocumentPreviewView.swift */,
-				D7F58E14745A5BF6AC8A577B /* DocumentsView.swift */,
-			);
-			path = Documents;
-			sourceTree = "<group>";
-		};
 		FBDC4F23F93125BBEEAE800C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +340,316 @@
 				B0E04739A75F90CC09A78D18 /* MojeZegarkiUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FF398F57F442D87D5AFBCA17 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				AE4E82260C83AF63B2E2931D /* AppLock.swift */,
+				9F25E3C942CD7AD563D0BE97 /* DeviceAuthenticating.swift */,
+				BB871859AC1792E08B247EF6 /* LockScreen.swift */,
+				1002E2A2D83E50DF7F3ACF97 /* LockShield.swift */,
+				1DF1BC52BDE39F8D84C579BB /* ProtectedDataState.swift */,
+				28759A6C9BCA4F66EA29E834 /* SystemDeviceAuthenticator.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
+		35D115726DB457BC73115B13 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				FE11ED33912A05BB7857BABF /* MojeZegarkiApp.swift */,
+				A261FC320BF614D2C4274E52 /* RootView.swift */,
+				FF398F57F442D87D5AFBCA17 /* Security */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		3E90DFA55CDE8C31D5AA4170 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				DA1F554D1E5C6030AE5D1E37 /* CollectionError.swift */,
+				3A73E7E7A7765CFFC710A2A9 /* DeviceKind.swift */,
+				85A4462545BE5F201EC5109C /* MovementType.swift */,
+				DCA308A6DB43576FE6C135E6 /* PhotoDraft.swift */,
+				C28BBFF59BA27DACF3E2A96D /* TimepieceDraft.swift */,
+				8400C78207907A798389762C /* WatchCategory.swift */,
+				60D8E7B63CDF61B454B1AAAE /* WatchOption.swift */,
+				D0C96B82DFFCCA5822E73CDB /* WatchStatus.swift */,
+			);
+			path = Collection;
+			sourceTree = "<group>";
+		};
+		6AEE03C87A8C7FE613E8245D /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				FC9B7B56063A7EE2A6561412 /* DocumentAsset.swift */,
+				F67B358E572ED1469B938C40 /* DocumentDraft.swift */,
+				7944E70B0A9DC19A58563379 /* DocumentError.swift */,
+				5821823FCD26274681870F35 /* DocumentKind.swift */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		26C0A8F1B4CC69B1D4F4028A /* Wear */ = {
+			isa = PBXGroup;
+			children = (
+				09F158ABF3575947F19E6D0A /* WearDay.swift */,
+				593458E9078D8D04E946DA2A /* WearError.swift */,
+				39266428C5B106BC9436D5CC /* WearStatistics.swift */,
+			);
+			path = Wear;
+			sourceTree = "<group>";
+		};
+		993FDE24E480F67FB850E8D3 /* Wishlist */ = {
+			isa = PBXGroup;
+			children = (
+				9F78BA3FF36DC56A95686568 /* WishlistDraft.swift */,
+				67C534309771418C3BD84F50 /* WishlistError.swift */,
+				FB543BF5299BF6A3779958AD /* WishlistPriority.swift */,
+			);
+			path = Wishlist;
+			sourceTree = "<group>";
+		};
+		E2433C7BDA4A5A0C0609B312 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				3E90DFA55CDE8C31D5AA4170 /* Collection */,
+				0ABC1234DEF567890ABC1235 /* CurrencyPreference.swift */,
+				6AEE03C87A8C7FE613E8245D /* Documents */,
+				B4E8ED5E04EE67910496C9EB /* String+Trimming.swift */,
+				26C0A8F1B4CC69B1D4F4028A /* Wear */,
+				993FDE24E480F67FB850E8D3 /* Wishlist */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		EE9466CCA255E834319F55E4 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				76CD33C3F6AA70A109319289 /* CollectionView.swift */,
+				E702C5225D67539778E823A8 /* TimepieceDetailView.swift */,
+				5015B9A05080CD7ACD47908C /* TimepieceEditorView.swift */,
+				AD77D52F2B81EBC84A6A8874 /* WatchRoute.swift */,
+			);
+			path = Collection;
+			sourceTree = "<group>";
+		};
+		F3C7FE8D9A315BE612AC3400 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				3370090A337B9C83C3C8A080 /* PDFPreview.swift */,
+				839DB6A0F4D2AC041934C111 /* ZoomableDocumentImage.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		72F449EC58D911453CB3BB5D /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				EAB0CA80DAE729A1DD43D847 /* DocumentEditorView.swift */,
+				8C56584FEC70630EF04F70E2 /* DocumentImagePreview.swift */,
+				D6DC671A13A75A87C0F5FE52 /* DocumentNotesView.swift */,
+				4DD44D09B4E017F915D45294 /* DocumentPreviewView.swift */,
+				397102D8851D088C69AF251D /* DocumentRoute.swift */,
+				D7F58E14745A5BF6AC8A577B /* DocumentsView.swift */,
+				CD11FBA3360237E2DCC7C3D9 /* PreviewContent.swift */,
+				F3C7FE8D9A315BE612AC3400 /* UIKit */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		1886642BF73EA14DDCBDB259 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				078151CF97D91D8173A69324 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		FF3A8687085E9BCA703DDFDE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				7EB71009FF2B7F644D5F2EBC /* TodayWearScope.swift */,
+				D2ED653B2C452C40FDD7D870 /* WearActionButton.swift */,
+				9B1E00A84FD9EA11E364BD5A /* WearActionStyle.swift */,
+				4CDE3EF78109C7E689EBED38 /* WearLogRow.swift */,
+				75EA2E7FA998DE2E86BFD8CE /* WearSavedDays.swift */,
+				FD49839E16A1398D7C13D7A8 /* WearTodayButton.swift */,
+				8370F3BF3592A443ECFCF374 /* WearTodayDayButton.swift */,
+				AAA5D7A38A8AF957851E9EE1 /* WearWatchFilter.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		6644D1E6DA3843D9AAC80B2A /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				033128E14A66E19A1FC45A09 /* WearScrollAnchor.swift */,
+				18850BB39CE8C6EB97090814 /* WearScrollBehavior.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		B01D5A232BF25022CBA8289A /* Wear */ = {
+			isa = PBXGroup;
+			children = (
+				FF3A8687085E9BCA703DDFDE /* Components */,
+				6644D1E6DA3843D9AAC80B2A /* UIKit */,
+				624874BE6A6EF792C2A3B5C9 /* WatchStatisticsRow.swift */,
+				321BA492D2D0D2594717BDEC /* WearCalendar.swift */,
+				5BF092A7B00D57E423DF23F0 /* WearEditorView.swift */,
+				5E786C4F5B63E94F9CE7E0EA /* WearHistoryView.swift */,
+				A975253BFB54A8F83AEC9380 /* WearStatisticsContent.swift */,
+				18AEE7F21301984303F90A56 /* WearStatisticsView.swift */,
+				8695DE556DE34E559D0F4770 /* WearSummaryView.swift */,
+				6D2FF408CE63D2A71F0F4C4E /* WearView.swift */,
+			);
+			path = Wear;
+			sourceTree = "<group>";
+		};
+		22B9F30C9969AADF9C36324A /* Wishlist */ = {
+			isa = PBXGroup;
+			children = (
+				DC168D8AF481B4D1C6767A65 /* WishlistEditorView.swift */,
+				B50D978E139A81B9FCAF9AFD /* WishlistView.swift */,
+			);
+			path = Wishlist;
+			sourceTree = "<group>";
+		};
+		457B2D1DAF8CE9AD41516087 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				EE9466CCA255E834319F55E4 /* Collection */,
+				72F449EC58D911453CB3BB5D /* Documents */,
+				1886642BF73EA14DDCBDB259 /* Settings */,
+				B01D5A232BF25022CBA8289A /* Wear */,
+				22B9F30C9969AADF9C36324A /* Wishlist */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		90DDBE816212B614B85A7681 /* Mappings */ = {
+			isa = PBXGroup;
+			children = (
+				126ED0840B9B4155873D2CB9 /* TimepieceDraft+Model.swift */,
+				8E95C6EDBBAFDB0076EEC5D9 /* WishlistDraft+Model.swift */,
+			);
+			path = Mappings;
+			sourceTree = "<group>";
+		};
+		BA053142C7914D22F142031C /* Migrations */ = {
+			isa = PBXGroup;
+			children = (
+				C40C6FA0BC0F36C29A75539B /* CollectionMigrationPlan.swift */,
+			);
+			path = Migrations;
+			sourceTree = "<group>";
+		};
+		61656B2D88EA3B98CA670734 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				18EC5F6881AB1C671BB570CC /* CollectionStore+Assets.swift */,
+				08307CC578E7D1520F312E3C /* CollectionStore+Collection.swift */,
+				EEC4721DC537E941D2FCFF56 /* CollectionStore+Documents.swift */,
+				E807CFDD5EB8A6AAAA0CBC8E /* CollectionStore+Wear.swift */,
+				58B3FE9929ACC59095A586CF /* CollectionStore+Wishlist.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		23B537B47295ABAEF5FD70FD /* Queries */ = {
+			isa = PBXGroup;
+			children = (
+				B5B331E4C62C732EC044D47C /* WearLogScope.swift */,
+			);
+			path = Queries;
+			sourceTree = "<group>";
+		};
+		37BDA8487D7F4C4A70ACA71F /* Schemas */ = {
+			isa = PBXGroup;
+			children = (
+				19210AE448DA0ABAB8750744 /* CollectionSchema.swift */,
+				F48D5A5551D53FAB6248C11D /* CollectionSchemaV2.swift */,
+				E1127468AE9247D99B11A602 /* CollectionSchemaV3.swift */,
+			);
+			path = Schemas;
+			sourceTree = "<group>";
+		};
+		4FD474E3EE270BF0D4074D95 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				03C92F291EBBA494F8D9622A /* CollectionStore.swift */,
+				90DDBE816212B614B85A7681 /* Mappings */,
+				BA053142C7914D22F142031C /* Migrations */,
+				F9C3320F10E4409FAF0972C8 /* Models.swift */,
+				61656B2D88EA3B98CA670734 /* Operations */,
+				23B537B47295ABAEF5FD70FD /* Queries */,
+				37BDA8487D7F4C4A70ACA71F /* Schemas */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		EF5E9D6093F9739871211512 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				CCBAA45F14DF61B10CD055AF /* AssetReconciliationError.swift */,
+				CCBF6E9632325D1F5A5B8AA3 /* DocumentStore.swift */,
+				BF26F01FB0B852F6A86955B5 /* DraftAssetSession.swift */,
+				DDEEE920E8D431C61392E21A /* ImportedImage.swift */,
+				81EBF365D4524DE104976E42 /* PhotoStore.swift */,
+				96C9E7145FA45EA0E5CCB51F /* StorageProtection.swift */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		EC905A48E85C362A41582A36 /* Imaging */ = {
+			isa = PBXGroup;
+			children = (
+				F203CE9288119944B18BEA80 /* ImageLoader.swift */,
+			);
+			path = Imaging;
+			sourceTree = "<group>";
+		};
+		EB6E89D555EE381944FDE5CB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				EF5E9D6093F9739871211512 /* Assets */,
+				EC905A48E85C362A41582A36 /* Imaging */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		F286ED65ED77AB42783D1659 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				1D5932FB77149D6B8B0A5B47 /* CurrencyPicker.swift */,
+				7BE34A0110077A5D978EE714 /* CurrencySelectionView.swift */,
+				B70055823E72A02B5491865A /* OptionalDateField.swift */,
+				E7695B7C24BB24A1302201AC /* PhotoView.swift */,
+				682E3941DD91BFA8CDA04FD4 /* WatchIdentityLabel.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		190029CFEC7634C6645DACF2 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				45EDEF8DA916E87DCC6EF9BF /* AppError.swift */,
+				06E7D3E9BB00D3A101E77C39 /* Color+SupportingText.swift */,
+				36A40025B79B3EF279A333B0 /* DiscardChangesConfirmation.swift */,
+				9269D0D61CC4C3B802207447 /* WatchPhotoPreview.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		42368A1330B73CDE2C7C1472 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				F286ED65ED77AB42783D1659 /* Components */,
+				190029CFEC7634C6645DACF2 /* Presentation */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -406,6 +763,7 @@
 		0A163ABD4E3C4F990E16E251 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				7ADBA709E94FFFB9692BB1A7 /* AccessibilityUITests.swift in Sources */,
 				B9CC5C5EE0A9A590619F9F21 /* CollectionUITests.swift in Sources */,
 				4643A935D3C7CE153319722B /* FreeModuleUITests.swift in Sources */,
 			);
@@ -413,6 +771,11 @@
 		250628AB2CABBE13963F5C2C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				FF8591DCB15B29E50ACCA979 /* WearLogScopeTests.swift in Sources */,
+				63DF54D88628EB1D20CA6023 /* DocumentComplexityTests.swift in Sources */,
+				8C58EC9F059DB3E2B3AD9303 /* StorageProtectionTests.swift in Sources */,
+				5EE8DB2546597B3CBFD7D2BE /* DraftAssetSessionTests.swift in Sources */,
+				C285722E66855C8B1CCA71E9 /* StorageSafetyTests.swift in Sources */,
 				68020241B5E5DA5BF38AA064 /* AppLockTests.swift in Sources */,
 				E6ACF921A64A4A5F62BC1C57 /* CollectionTests.swift in Sources */,
 				9CD99E564C58B07EE748BD4A /* FreeModuleTests.swift in Sources */,
@@ -421,12 +784,75 @@
 		A649DF9B901BE335C93490EC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				1D330D4B7E717E79D9F182B9 /* WatchRoute.swift in Sources */,
+				4171830A07AD07CF1DAF7A6A /* TodayWearScope.swift in Sources */,
+				51EE3A69C638699EACE36BAC /* WearActionButton.swift in Sources */,
+				EF9926A958E88C51234D6224 /* WearActionStyle.swift in Sources */,
+				5868C1A124DD79B8AD4FD042 /* WearSavedDays.swift in Sources */,
+				70C969500DE81198C862AE0D /* WearTodayDayButton.swift in Sources */,
+				70DFC3C92880FD09C45A10BC /* WearStatisticsContent.swift in Sources */,
+				AF02FF4FF29554460ECCEC96 /* CurrencySelectionView.swift in Sources */,
+				C92864CF66FFE83864A7E287 /* WearLogRow.swift in Sources */,
+				C4418314D5ABDE04EFA54250 /* WearWatchFilter.swift in Sources */,
+				1EEA2D5B4190B8EDF347E84C /* WatchIdentityLabel.swift in Sources */,
+				CD5203AE75535A1E8515B207 /* Color+SupportingText.swift in Sources */,
+				46E8EF0F2B4C5438DB3EBCAA /* WearLogScope.swift in Sources */,
+				ED43AF6D51B61E33A8573823 /* ImportedImage.swift in Sources */,
+				906D92BC3590A188FE3CF8A1 /* WearHistoryView.swift in Sources */,
+				6F48E5518FBA29A70CD4B779 /* DeviceAuthenticating.swift in Sources */,
+				A8DCD861AC0DAF8AF45E578D /* LockScreen.swift in Sources */,
+				73DA0E5A941C73730A7AA8E6 /* SystemDeviceAuthenticator.swift in Sources */,
+				975603359592E0A5ABAFEC35 /* PreviewContent.swift in Sources */,
+				F286B19CE26D37A9EA038AAA /* PDFPreview.swift in Sources */,
+				C9A250B432CC0E4147D2681A /* WearScrollAnchor.swift in Sources */,
+				D8EC986FE5CF93A324932D3E /* WearScrollBehavior.swift in Sources */,
+				B8344D86D4CCCECD0721610E /* WatchStatisticsRow.swift in Sources */,
+				674104869D294D5D58F5D9D0 /* CollectionError.swift in Sources */,
+				B37E088EDD8AD71DCFDF056E /* DeviceKind.swift in Sources */,
+				ADCACB293FD1C7D1E7C09A10 /* MovementType.swift in Sources */,
+				EEB52000892F9134FEC8B134 /* PhotoDraft.swift in Sources */,
+				17B9A07064F1D4D0F7B5AD65 /* TimepieceDraft.swift in Sources */,
+				3CA58DBC99D0CA862040B2F3 /* WatchCategory.swift in Sources */,
+				228AC70EA5028FA5F1042DF4 /* WatchOption.swift in Sources */,
+				89EF32F9B92ABA6B4EAF4A79 /* WatchStatus.swift in Sources */,
+				6929CDFA01B4A7D3F0BACB97 /* DocumentAsset.swift in Sources */,
+				4DD79FD6523C00B44A9112FE /* DocumentDraft.swift in Sources */,
+				4F8BE698D214D81C1E211AF1 /* DocumentError.swift in Sources */,
+				FB306505E31801CDD7F79C74 /* DocumentKind.swift in Sources */,
+				771FD41AEAE4FACA26616C7A /* String+Trimming.swift in Sources */,
+				854EB06F4AF485480E474E7B /* WearError.swift in Sources */,
+				CCB44CF8B64EBE221C635459 /* WearStatistics.swift in Sources */,
+				B2DE336A350734C06A897E42 /* WishlistError.swift in Sources */,
+				8FCE91470B613304093AF568 /* WishlistPriority.swift in Sources */,
+				5B27ED115657ACBE74831DE6 /* DocumentEditorView.swift in Sources */,
+				48BACDA33ACB09C31C35FBFC /* DocumentRoute.swift in Sources */,
+				4856A1C37569B39D440CCCE0 /* WishlistEditorView.swift in Sources */,
+				6FF9B02C7BCBF6E9A7D19C9C /* TimepieceDraft+Model.swift in Sources */,
+				C2C3E33440C9CBAB7DFF6507 /* WishlistDraft+Model.swift in Sources */,
+				22E1486CCF0D363D0AB24734 /* CollectionMigrationPlan.swift in Sources */,
+				F7A328746A63F3B3F8EDBB93 /* Models.swift in Sources */,
+				70E8E471B312881AC309B0B0 /* CollectionStore+Assets.swift in Sources */,
+				E0069AA0EB3395A4F218FA22 /* CollectionStore+Collection.swift in Sources */,
+				1D5BE15F6E60FD947B47A9F0 /* CollectionStore+Documents.swift in Sources */,
+				166733EAB0E7E0CA7D6FD2E2 /* CollectionStore+Wear.swift in Sources */,
+				49416C5E01F651C2AE21F379 /* CollectionStore+Wishlist.swift in Sources */,
+				690957F07D4F440BDE8574E6 /* ImageLoader.swift in Sources */,
+				CFC18A491E00943D7195E7A4 /* WatchPhotoPreview.swift in Sources */,
+				D4166058FA9B50E2E8F7D18D /* DocumentImagePreview.swift in Sources */,
+				BF4B3A99CFF59712D3562BF6 /* ZoomableDocumentImage.swift in Sources */,
+				3FFEFC6C0BD58F0B5B61C851 /* ProtectedDataState.swift in Sources */,
+				D87B357B7016C45F3209933E /* DocumentNotesView.swift in Sources */,
+				4750F5681C083619E240A9A1 /* StorageProtection.swift in Sources */,
+				FEB79494047ADFEF623DDDB8 /* DraftAssetSession.swift in Sources */,
+				33762857783F29618077253A /* CurrencyPicker.swift in Sources */,
+				6FDBC79045E3482DA1F0ACEF /* OptionalDateField.swift in Sources */,
+				93D272E786BCB2634E9A2C70 /* DiscardChangesConfirmation.swift in Sources */,
+				6D5A9C86790B1A586FC1BF62 /* AssetReconciliationError.swift in Sources */,
 				190E12A6DE050AA0E4F254A4 /* AppError.swift in Sources */,
 				C5AFF9879F39852C5D7DD54F /* LockShield.swift in Sources */,
 				8C40DD5AFDF8C8CD111D34DC /* MojeZegarkiApp.swift in Sources */,
 				8CD6737D43AB27F56CEA5005 /* RootView.swift in Sources */,
-				E15D9232E86384A39690B752 /* DocumentTypes.swift in Sources */,
-				B56D10DC665529CF38510088 /* WatchTypes.swift in Sources */,
+				0ABC1234DEF567890ABC1234 /* CurrencyPreference.swift in Sources */,
 				12798E6ACA4D4472B8A77F8A /* WearDay.swift in Sources */,
 				7E24AFD9C426B75DFFC16F57 /* WishlistDraft.swift in Sources */,
 				5AEAF8372FC2C5CEAA2DBB4C /* CollectionView.swift in Sources */,
@@ -489,13 +915,14 @@
 				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = KV9BUW5GTH;
 				GENERATE_INFOPLIST_FILE = YES;
+				CODE_SIGN_ENTITLEMENTS = MojeZegarki/Resources/MojeZegarki.entitlements;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moje Zegarki";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock your private watch collection.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				MARKETING_VERSION = 0.8.6;
+				MARKETING_VERSION = 0.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -514,13 +941,14 @@
 				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = KV9BUW5GTH;
 				GENERATE_INFOPLIST_FILE = YES;
+				CODE_SIGN_ENTITLEMENTS = MojeZegarki/Resources/MojeZegarki.entitlements;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moje Zegarki";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Use Face ID to unlock your private watch collection.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				MARKETING_VERSION = 0.8.6;
+				MARKETING_VERSION = 0.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = pl.jakubbatycki.MojeZegarki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

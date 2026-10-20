@@ -40,6 +40,16 @@ private final class FakeAuthenticator: DeviceAuthenticating {
 
 @MainActor
 final class AppLockTests: XCTestCase {
+    func testReloadedPreferencesRestoreEnabledLock() {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        let lock = AppLock(defaults: defaults, authenticator: FakeAuthenticator())
+        XCTAssertFalse(lock.enabled)
+        defaults.set(true, forKey: "appLockEnabled")
+        lock.reloadPreference()
+        XCTAssertTrue(lock.enabled)
+        XCTAssertTrue(lock.isLocked)
+    }
+
     func testEnableUnlockAndDisableRequireAuthentication() async throws {
         let defaults = UserDefaults(suiteName: UUID().uuidString)!
         let auth = FakeAuthenticator()
