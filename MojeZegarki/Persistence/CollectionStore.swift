@@ -35,7 +35,7 @@ final class CollectionStore {
         container = try ModelContainer(
             for: schema, migrationPlan: CollectionMigrationPlan.self, configurations: [configuration])
         container.mainContext.autosaveEnabled = false
-        try StorageProtection.protectExistingFiles(in: root)
+        try StorageProtection.protectDatabaseFiles(in: root)
         photoStore = PhotoStore(root: root.appendingPathComponent("Photos", isDirectory: true))
         documentStore = DocumentStore(root: root.appendingPathComponent("Documents", isDirectory: true))
     }

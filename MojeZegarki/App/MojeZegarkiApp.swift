@@ -131,6 +131,11 @@ struct MojeZegarkiApp: App {
                     draft.modelName = "Calendar watch"
                     let watch = try loaded.save(draft)
                     try loaded.logWear(for: watch, date: .now)
+                    if ProcessInfo.processInfo.arguments.contains("--test-statistics-fixture"),
+                        let olderDate = Calendar(identifier: .gregorian).date(byAdding: .day, value: -400, to: .now)
+                    {
+                        try loaded.logWear(for: watch, date: olderDate)
+                    }
                     draft.modelName = "Second watch"
                     _ = try loaded.save(draft)
                 }

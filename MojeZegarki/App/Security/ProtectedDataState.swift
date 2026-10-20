@@ -14,6 +14,9 @@ final class ProtectedDataState: NSObject {
         NotificationCenter.default.addObserver(
             self, selector: #selector(didBecomeAvailable),
             name: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(refresh),
+            name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     @objc private func willBecomeUnavailable() {
@@ -22,4 +25,11 @@ final class ProtectedDataState: NSObject {
     }
 
     @objc private func didBecomeAvailable() { isAvailable = true }
+
+    @objc private func refresh() {
+        let available = UIApplication.shared.isProtectedDataAvailable
+        guard available != isAvailable else { return }
+        isAvailable = available
+        if !available { ImageLoader.clearCache() }
+    }
 }

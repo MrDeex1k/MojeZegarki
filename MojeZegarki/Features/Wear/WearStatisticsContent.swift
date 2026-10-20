@@ -12,11 +12,13 @@ struct WearStatisticsContent: View {
     @Binding var period: WearStatistics.Period
     @State private var selectedID: UUID?
 
-    init(initialWatchID: UUID?, period: Binding<WearStatistics.Period>, now: Date) {
+    init(
+        initialWatchID: UUID?, period: Binding<WearStatistics.Period>, currentPeriod: WearStatistics.Period, now: Date
+    ) {
         self.initialWatchID = initialWatchID
         self.now = now
         _period = period
-        _logs = Query(filter: WearLogScope.period(period.wrappedValue, now: now))
+        _logs = Query(filter: WearLogScope.period(currentPeriod, now: now))
     }
 
     private var statistics: WearStatistics {

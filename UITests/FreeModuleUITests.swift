@@ -217,6 +217,24 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertTrue(app.buttons["wear.statistics"].waitForExistence(timeout: 5))
     }
 
+    func testStatisticsUpdatesQueryImmediatelyWhenPeriodChanges() {
+        let app = launch(extra: ["--test-wear-fixture", "--test-statistics-fixture"])
+        XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))
+        app.tabBars.buttons["Wearing"].tap()
+        app.buttons["wear.statistics"].tap()
+        let periods = app.segmentedControls["stats.period"]
+        XCTAssertTrue(periods.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["1 day worn"].waitForExistence(timeout: 5))
+        for _ in 0..<2 {
+            periods.buttons["All time"].tap()
+            XCTAssertTrue(app.staticTexts["2 days worn"].waitForExistence(timeout: 5))
+            periods.buttons["This year"].tap()
+            XCTAssertTrue(app.staticTexts["1 day worn"].waitForExistence(timeout: 5))
+            periods.buttons["30 days"].tap()
+            XCTAssertTrue(app.staticTexts["1 day worn"].waitForExistence(timeout: 5))
+        }
+    }
+
     func testEnabledLockHidesCollectionOnLaunch() {
         let app = launch(extra: ["--test-lock-enabled"])
         XCTAssertTrue(app.staticTexts["Collection locked"].waitForExistence(timeout: 15))

@@ -41,20 +41,14 @@ extension CollectionStore {
             draft.photos.contains { $0.id == draft.mainPhotoID } ? draft.mainPhotoID : draft.photos.first?.id
         // Moving is one transaction: validation or a failed save must preserve the wish.
         if let wishlistItem { context.delete(wishlistItem) }
-        do { try context.save() } catch {
-            context.rollback()
-            throw CollectionError.saveFailed
-        }
+        try persistChanges()
         return watch
     }
 
     func changeStatus(_ status: WatchStatus, for watch: Timepiece) throws {
         watch.statusRaw = status.rawValue
         watch.updatedAt = Date()
-        do { try context.save() } catch {
-            context.rollback()
-            throw CollectionError.saveFailed
-        }
+        try persistChanges()
     }
 
     func delete(_ watch: Timepiece) async throws {
@@ -67,10 +61,7 @@ extension CollectionStore {
         for log in watch.wearLogs ?? [] { context.delete(log) }
         for document in documents { context.delete(document) }
         context.delete(watch)
-        do { try context.save() } catch {
-            context.rollback()
-            throw CollectionError.saveFailed
-        }
+        try persistChanges()
         // Failed filesystem cleanup is retried at next startup by reconcileAssets().
         for id in photoIDs { try? await photoStore.remove(id) }
         for id in documentIDs { try? await documentStore.remove(id) }

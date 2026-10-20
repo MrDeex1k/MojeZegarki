@@ -60,4 +60,15 @@ final class StorageProtectionTests: XCTestCase {
         NotificationCenter.default.post(name: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil)
         XCTAssertTrue(state.isAvailable)
     }
+
+    func testActivationRefreshesProtectedDataWithoutUnlockNotification() throws {
+        try XCTSkipUnless(UIApplication.shared.isProtectedDataAvailable, "Requires an unlocked device")
+        let state = ProtectedDataState()
+        NotificationCenter.default.post(name: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil)
+        XCTAssertFalse(state.isAvailable)
+        NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+        XCTAssertTrue(state.isAvailable)
+        NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+        XCTAssertTrue(state.isAvailable)
+    }
 }
