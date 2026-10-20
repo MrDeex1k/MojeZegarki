@@ -3717,16 +3717,6 @@
         }
       }
     },
-    "Storage and backup" : {
-      "localizations" : {
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dane i kopie zapasowe"
-          }
-        }
-      }
-    },
     "Unlock your iPhone" : {
       "localizations" : {
         "pl" : {
@@ -3747,32 +3737,12 @@
         }
       }
     },
-    "Your collection and attachments stay in this app and are included in system backups when enabled. There is no account or app sync." : {
-      "localizations" : {
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kolekcja i załączniki pozostają w aplikacji i są uwzględniane w systemowych kopiach zapasowych, jeśli je włączono. Aplikacja nie ma konta ani synchronizacji."
-          }
-        }
-      }
-    },
     "Photo %lld" : {
       "localizations" : {
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zdjęcie %lld"
-          }
-        }
-      }
-    },
-    "With a device passcode set, files are protected while your iPhone is locked. App Lock adds Face ID or device-passcode verification when returning to the app." : {
-      "localizations" : {
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jeśli iPhone ma ustawiony kod, pliki są chronione po jego zablokowaniu. Blokada kolekcji dodatkowo wymaga Face ID lub kodu urządzenia przy powrocie do aplikacji."
           }
         }
       }

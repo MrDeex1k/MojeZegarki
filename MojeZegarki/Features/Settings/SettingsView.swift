@@ -23,16 +23,6 @@ struct SettingsView: View {
                     ).foregroundStyle(Color(uiColor: .label))
                 }
                 Section {
-                    Text(
-                        "Your collection and attachments stay in this app and are included in system backups when enabled. There is no account or app sync."
-                    )
-                    Text(
-                        "With a device passcode set, files are protected while your iPhone is locked. App Lock adds Face ID or device-passcode verification when returning to the app."
-                    )
-                } header: {
-                    Text("Storage and backup").foregroundStyle(Color(uiColor: .label))
-                }
-                Section {
                     Text("The app follows your preferred language. Polish and English are supported.")
                     Button("Open system settings") {
                         if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
@@ -44,7 +34,7 @@ struct SettingsView: View {
                     LabeledContent {
                         Text(
                             verbatim:
-                                "\(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?") (\(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"))"
+                                Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
                         )
                         .foregroundStyle(Color.supportingText)
                     } label: {
