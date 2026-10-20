@@ -23,11 +23,21 @@ struct TimepieceDraft: Equatable {
 
     var hasRequiredFields: Bool { !brand.trimmed.isEmpty && !modelName.trimmed.isEmpty }
 
+    /// Returns a canonical decimal price, or nil when no price was entered.
+    /// Requires the locale's decimal separator, without grouping, and at most
+    /// 18 integer digits and 6 fractional digits. Throws a collection error for
+    /// missing required fields, invalid price input, or an unsupported currency.
     func validatedPrice(locale: Locale = .current) throws -> String? {
         guard hasRequiredFields else { throw CollectionError.requiredFields }
-        guard !price.trimmed.isEmpty else { return nil }
+        let input = price.trimmed
+        guard !input.isEmpty else { return nil }
         let separator = locale.decimalSeparator ?? "."
-        let canonical = price.trimmed.replacingOccurrences(of: separator, with: ".")
+        let escapedSeparator = NSRegularExpression.escapedPattern(for: separator)
+        guard input.range(of: "^[0-9]{1,18}(\(escapedSeparator)[0-9]{1,6})?$", options: .regularExpression) != nil
+        else {
+            throw CollectionError.invalidPrice
+        }
+        let canonical = input.replacingOccurrences(of: separator, with: ".")
         // No permissive NumberFormatter parsing: partial numbers must never be silently accepted.
         guard canonical.range(of: "^[0-9]{1,18}(\\.[0-9]{1,6})?$", options: .regularExpression) != nil,
             let amount = Decimal(string: canonical, locale: Locale(identifier: "en_US_POSIX"))
