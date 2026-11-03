@@ -1,3 +1,8 @@
 import Foundation
+import Observation
 
-struct DocumentRoute: Hashable, Identifiable { let id: UUID }
+@MainActor @Observable final class DocumentRoute: Identifiable {
+    let id: UUID
+    var zoom: CGFloat = 1
+    init(id: UUID) { self.id = id }
+}

@@ -4,20 +4,25 @@ import SwiftUI
 struct TimepieceDetailView: View {
     let watch: Timepiece
     let store: CollectionStore
+    let onBackToCollection: (() -> Void)?
     @Query private var allWearLogs: [WearLog]
     @Environment(\.dismiss) private var dismiss
     @ScaledMetric(relativeTo: .title2) private var titleFontSize = 24
-    @State private var editing = false
+    @Environment(\.horizontalSizeClass) private var widthClass
+    @Environment(\.verticalSizeClass) private var heightClass
+    @State private var editing: TimepieceEditorSession?
     @State private var previewPhoto: PhotoDraft?
+    @State private var selectedPhotoID: UUID?
     @State private var showingDocuments = false
     @State private var showingWear = false
     @State private var confirmingDelete = false
     @State private var deleting = false
     @State private var errorMessage: String?
 
-    init(watch: Timepiece, store: CollectionStore) {
+    init(watch: Timepiece, store: CollectionStore, onBackToCollection: (() -> Void)? = nil) {
         self.watch = watch
         self.store = store
+        self.onBackToCollection = onBackToCollection
         let id = watch.id
         _allWearLogs = Query(filter: #Predicate<WearLog> { $0.timepiece?.id == id })
     }
@@ -30,7 +35,7 @@ struct TimepieceDetailView: View {
             if !orderedPhotos.isEmpty {
                 Section {
                     VStack(spacing: 0) {
-                        TabView {
+                        TabView(selection: $selectedPhotoID) {
                             ForEach(orderedPhotos) { photo in
                                 Button {
                                     previewPhoto = PhotoDraft(id: photo.id, filename: photo.filename)
@@ -40,13 +45,17 @@ struct TimepieceDetailView: View {
                                         store: store.photoStore, thumbnail: false)
                                 }
                                 .buttonStyle(.plain)
+                                .tag(Optional(photo.id))
                                 .accessibilityLabel("View photo")
                                 .accessibilityIdentifier("detail.photo.\(photo.id)")
                             }
                         }
                         .tabViewStyle(.page(indexDisplayMode: orderedPhotos.count > 1 ? .always : .never))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
-                        .frame(height: 300)
+                        .onAppear {
+                            if selectedPhotoID == nil { selectedPhotoID = orderedPhotos.first?.id }
+                        }
+                        .frame(height: widthClass == .regular ? 420 : heightClass == .compact ? 180 : 300)
                         if watch.status == .owned {
                             WearTodayButton(watch: watch, store: store)
                                 .padding(16)
@@ -160,7 +169,14 @@ struct TimepieceDetailView: View {
         .disabled(deleting)
         .navigationTitle(watch.modelName)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(widthClass == .compact)
         .toolbar {
+            if widthClass == .compact, let onBackToCollection {
+                ToolbarItem(placement: .navigation) {
+                    Button("Collection", systemImage: "chevron.backward", action: onBackToCollection)
+                        .accessibilityIdentifier("collection.back")
+                }
+            }
             ToolbarItem(placement: .principal) {
                 Text(watch.modelName)
                     .font(.system(size: titleFontSize, weight: .semibold))
@@ -169,11 +185,11 @@ struct TimepieceDetailView: View {
                     .accessibilityAddTraits(.isHeader)
             }
             ToolbarItem(placement: .primaryAction) {
-                Button("Edit", systemImage: "pencil") { editing = true }
+                Button("Edit", systemImage: "pencil") { editing = TimepieceEditorSession(store: store, watch: watch) }
                     .accessibilityIdentifier("detail.edit")
             }
         }
-        .sheet(isPresented: $editing) { TimepieceEditorView(store: store, watch: watch) }
+        .sheet(item: $editing) { TimepieceEditorView(store: store, session: $0) }
         .fullScreenCover(item: $previewPhoto) { photo in
             WatchPhotoPreview(photo: photo, store: store.photoStore)
         }
@@ -186,7 +202,9 @@ struct TimepieceDetailView: View {
             NavigationStack {
                 WearView(store: store, watch: watch)
                     .toolbar {
-                        ToolbarItem(placement: .cancellationAction) { Button("Done") { showingWear = false } }
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Done", systemImage: "checkmark") { showingWear = false }
+                        }
                     }
             }
         }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DocumentImagePreview: View {
     let image: UIImage
-    @State private var zoom: CGFloat = 1
+    @Binding var zoom: CGFloat
 
     var body: some View {
         VStack(spacing: 0) {

@@ -29,6 +29,7 @@ struct ZoomableDocumentImage: UIViewRepresentable {
 
     final class ImageScrollView: UIScrollView {
         let imageView: UIImageView
+        private var viewportSize = CGSize.zero
         init(image: UIImage) {
             imageView = UIImageView(image: image)
             super.init(frame: .zero)
@@ -42,9 +43,25 @@ struct ZoomableDocumentImage: UIViewRepresentable {
         required init?(coder: NSCoder) { nil }
         override func layoutSubviews() {
             super.layoutSubviews()
-            if zoomScale == 1 {
-                imageView.frame = bounds
-                contentSize = bounds.size
+            let size = bounds.size
+            guard size.width > 0, size.height > 0 else { return }
+            if viewportSize != size {
+                let scale = zoomScale
+                let oldSize = viewportSize
+                let center = CGPoint(
+                    x: (contentOffset.x + oldSize.width / 2) / max(contentSize.width, 1),
+                    y: (contentOffset.y + oldSize.height / 2) / max(contentSize.height, 1))
+                viewportSize = size
+                setZoomScale(1, animated: false)
+                imageView.frame = CGRect(origin: .zero, size: size)
+                contentSize = size
+                setZoomScale(scale, animated: false)
+                contentOffset = CGPoint(
+                    x: min(
+                        max(center.x * contentSize.width - size.width / 2, 0), max(contentSize.width - size.width, 0)),
+                    y: min(
+                        max(center.y * contentSize.height - size.height / 2, 0),
+                        max(contentSize.height - size.height, 0)))
             }
         }
     }

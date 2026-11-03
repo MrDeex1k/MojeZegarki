@@ -164,7 +164,7 @@ final class FreeModuleUITests: XCTestCase {
         )
         wait(for: [disabled], timeout: 5)
         XCTAssertFalse(today.isEnabled)
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.buttons["collection.back"].tap()
         let quick = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.quick.")).firstMatch
         XCTAssertFalse(quick.isEnabled)
         app.staticTexts["G-Shock"].tap()

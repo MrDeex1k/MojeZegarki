@@ -9,11 +9,18 @@ struct WearCalendar: View {
     var singleWatch = false
     var allowsToday = true
     var enabled = true
+    var displayedMonth: Binding<Date>?
     let onSelect: (String) -> Void
     @Environment(\.locale) private var locale
     @Environment(\.dynamicTypeSize) private var typeSize
-    @State private var month = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
+    @State private var localMonth = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
     @State private var jumping = false
+
+    private var monthBinding: Binding<Date> { displayedMonth ?? $localMonth }
+    private var month: Date {
+        get { monthBinding.wrappedValue }
+        nonmutating set { monthBinding.wrappedValue = newValue }
+    }
 
     private var calendar: Calendar {
         var result = Calendar(identifier: .gregorian)
@@ -58,32 +65,11 @@ struct WearCalendar: View {
                 Button("Today") { month = currentMonth }.buttonStyle(.borderless)
             }
             if typeSize.isAccessibilitySize {
-                VStack(spacing: 8) {
-                    ForEach(dates, id: \.self) { day in dayButton(day, expanded: true) }
-                }
+                dayList
             } else {
-                // List needs the full month height up front to keep its scroll offset stable.
-                Grid(horizontalSpacing: 2, verticalSpacing: 6) {
-                    GridRow {
-                        ForEach(0..<7, id: \.self) { index in
-                            Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
-                                .font(.caption).foregroundStyle(Color(uiColor: .label))
-                                .frame(maxWidth: .infinity).accessibilityHidden(true)
-                        }
-                    }
-                    ForEach(0..<((leadingEmptyDays + dates.count + 6) / 7), id: \.self) { week in
-                        GridRow {
-                            ForEach(0..<7, id: \.self) { weekday in
-                                let index = week * 7 + weekday - leadingEmptyDays
-                                if dates.indices.contains(index) {
-                                    dayButton(dates[index], expanded: false)
-                                } else {
-                                    Color.clear.frame(maxWidth: .infinity, minHeight: 44)
-                                        .accessibilityHidden(true)
-                                }
-                            }
-                        }
-                    }
+                ViewThatFits(in: .horizontal) {
+                    monthGrid.frame(minWidth: 320)
+                    dayList
                 }
             }
             ViewThatFits(in: .horizontal) {
@@ -95,19 +81,51 @@ struct WearCalendar: View {
         .sheet(isPresented: $jumping) {
             NavigationStack {
                 Form {
-                    DatePicker("Jump to date", selection: $month, in: ...Date.now, displayedComponents: .date)
+                    DatePicker("Jump to date", selection: monthBinding, in: ...Date.now, displayedComponents: .date)
                         .datePickerStyle(.graphical)
                 }
                 .navigationTitle("Choose month and year")
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
+                        Button("Done", systemImage: "checkmark") {
                             month = calendar.dateInterval(of: .month, for: month)!.start
                             jumping = false
                         }
                     }
                 }
             }.presentationDetents([.medium, .large])
+        }
+    }
+
+    private var dayList: some View {
+        VStack(spacing: 8) {
+            ForEach(dates, id: \.self) { day in dayButton(day, expanded: true) }
+        }
+    }
+
+    private var monthGrid: some View {
+        // List needs the full month height up front to keep its scroll offset stable.
+        Grid(horizontalSpacing: 2, verticalSpacing: 6) {
+            GridRow {
+                ForEach(0..<7, id: \.self) { index in
+                    Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
+                        .font(.caption).foregroundStyle(Color(uiColor: .label))
+                        .frame(maxWidth: .infinity).accessibilityHidden(true)
+                }
+            }
+            ForEach(0..<((leadingEmptyDays + dates.count + 6) / 7), id: \.self) { week in
+                GridRow {
+                    ForEach(0..<7, id: \.self) { weekday in
+                        let index = week * 7 + weekday - leadingEmptyDays
+                        if dates.indices.contains(index) {
+                            dayButton(dates[index], expanded: false)
+                        } else {
+                            Color.clear.frame(maxWidth: .infinity, minHeight: 44)
+                                .accessibilityHidden(true)
+                        }
+                    }
+                }
+            }
         }
     }
 

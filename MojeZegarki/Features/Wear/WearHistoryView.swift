@@ -7,8 +7,8 @@ struct WearHistoryView: View {
     @ScaledMetric(relativeTo: .body) private var headerHeight = 52
     @Query(sort: \WearLog.calendarDay, order: .reverse) private var logs: [WearLog]
     @Query(sort: \Timepiece.brand) private var watches: [Timepiece]
-    @State private var adding = false
-    @State private var editing: WearLog?
+    @State private var editor: WearEditorSession?
+    @State private var month = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
     @State private var deleting: WearLog?
     @State private var showingStatistics = false
     @State private var selectedDay: String?
@@ -20,6 +20,9 @@ struct WearHistoryView: View {
     @State private var scrollBehavior = WearScrollBehavior()
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.horizontalSizeClass) private var widthClass
+
+    private var expanded: Bool { widthClass == .regular && !typeSize.isAccessibilitySize }
 
     init(store: CollectionStore, watch: Timepiece?, filterID: Binding<UUID?>) {
         self.store = store
@@ -42,113 +45,108 @@ struct WearHistoryView: View {
         let filteredLogs = filtered
         let days = Dictionary(grouping: filteredLogs, by: \.calendarDay).map { (day: $0.key, entries: $0.value) }
         ScrollViewReader { proxy in
-            List {
-                if watch == nil && !watches.isEmpty {
-                    Section {
-                        WearWatchFilter(watches: watches, selection: $filterID)
-                            .listRowInsets(EdgeInsets())
-                            .listRowBackground(Color.clear)
-                    }
-                }
-                if watch != nil {
-                    WearSummaryView(dayKeys: Set(days.map(\.day)))
-                }
-                if days.isEmpty {
-                    ContentUnavailableView {
-                        Label("No wear history yet", systemImage: "calendar")
-                    } description: {
-                        Text("Add one or more days to your wear history.")
-                    }
-                    .listRowBackground(Color.clear)
-                    Section {
-                        addDaysButton
-                            .listRowInsets(EdgeInsets())
-                            .listRowBackground(Color.clear)
-                    }
-                } else {
-                    if watch == nil {
+            HStack(spacing: 0) {
+                List {
+                    if watch == nil && !watches.isEmpty {
                         Section {
-                            Button {
-                                showingStatistics = true
-                            } label: {
-                                Text("\(days.count) days worn")
-                                    .font(.system(size: countFontSize, weight: .semibold))
-                                    .foregroundStyle(Color(uiColor: .label))
-                                    .multilineTextAlignment(.center)
-                                    .padding(.horizontal, 36)
-                                    .frame(maxWidth: .infinity, minHeight: headerHeight)
-                                    .overlay(alignment: .trailing) {
-                                        Image(systemName: "chevron.right")
-                                            .font(.caption.weight(.semibold))
-                                            .foregroundStyle(Color(uiColor: .label)).padding(.trailing, 16)
-                                    }
-                                    .background(
-                                        Color(uiColor: .secondarySystemGroupedBackground),
-                                        in: RoundedRectangle(cornerRadius: typeSize.isAccessibilitySize ? 16 : 28))
+                            WearWatchFilter(watches: watches, selection: $filterID)
+                                .listRowInsets(EdgeInsets())
+                                .listRowBackground(Color.clear)
+                        }
+                    }
+                    if watch != nil {
+                        WearSummaryView(dayKeys: Set(days.map(\.day)))
+                    }
+                    if days.isEmpty {
+                        ContentUnavailableView {
+                            Label("No wear history yet", systemImage: "calendar")
+                        } description: {
+                            Text("Add one or more days to your wear history.")
+                        }
+                        .listRowBackground(Color.clear)
+                        Section {
+                            addDaysButton
+                                .listRowInsets(EdgeInsets())
+                                .listRowBackground(Color.clear)
+                        }
+                    } else {
+                        if watch == nil {
+                            Section {
+                                Button {
+                                    showingStatistics = true
+                                } label: {
+                                    Text("\(days.count) days worn")
+                                        .font(.system(size: countFontSize, weight: .semibold))
+                                        .foregroundStyle(Color(uiColor: .label))
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 36)
+                                        .frame(maxWidth: .infinity, minHeight: headerHeight)
+                                        .overlay(alignment: .trailing) {
+                                            Image(systemName: "chevron.right")
+                                                .font(.caption.weight(.semibold))
+                                                .foregroundStyle(Color(uiColor: .label)).padding(.trailing, 16)
+                                        }
+                                        .background(
+                                            Color(uiColor: .secondarySystemGroupedBackground),
+                                            in: RoundedRectangle(cornerRadius: typeSize.isAccessibilitySize ? 16 : 28))
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityIdentifier("wear.statistics")
+                                .accessibilityHint("View wear statistics")
+                                .listRowInsets(EdgeInsets())
+                                .listRowBackground(Color.clear)
                             }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("wear.statistics")
-                            .accessibilityHint("View wear statistics")
-                            .listRowInsets(EdgeInsets())
-                            .listRowBackground(Color.clear)
                         }
-                    }
-                    Section {
-                        addDaysButton
-                            .listRowInsets(EdgeInsets())
-                            .listRowBackground(Color.clear)
-                    }
-                    Section {
-                        WearCalendar(
-                            counts: Dictionary(
-                                uniqueKeysWithValues: days.map {
-                                    ($0.day, Set($0.entries.compactMap { $0.timepiece?.id }).count)
-                                }), selectedDay: selectedDay, singleWatch: watch != nil || filterID != nil
-                        ) {
-                            selectedDay = $0
-                            scrollRequest = UUID()
-                        }
-                    } header: {
-                        Text("Wear calendar").foregroundStyle(Color(uiColor: .label))
-                    } footer: {
-                        if selectedDay == nil {
-                            Text("Select a day to see worn watches").foregroundStyle(Color(uiColor: .label))
-                                .accessibilityIdentifier("wear.calendarHint")
-                        }
-                    }
-                    if selectedDay != nil, !days.contains(where: { $0.day == selectedDay }) {
-                        Text("No wear entries for this day")
-                            .foregroundStyle(Color(uiColor: .label)).listRowBackground(Color.clear)
-                            .id(selectedDay)
-                    }
-                    ForEach(days.filter { $0.day == selectedDay }, id: \.day) { group in
                         Section {
-                            ForEach(group.entries) { log in
-                                WearLogRow(
-                                    log: log, store: store, onEdit: { editing = log }, onDelete: { deleting = log })
+                            addDaysButton
+                                .listRowInsets(EdgeInsets())
+                                .listRowBackground(Color.clear)
+                        }
+                        Section {
+                            WearCalendar(
+                                counts: Dictionary(
+                                    uniqueKeysWithValues: days.map {
+                                        ($0.day, Set($0.entries.compactMap { $0.timepiece?.id }).count)
+                                    }), selectedDay: selectedDay, singleWatch: watch != nil || filterID != nil,
+                                displayedMonth: $month
+                            ) {
+                                selectedDay = $0
+                                scrollRequest = UUID()
                             }
                         } header: {
-                            if let date = WearDay(key: group.day)?.date() {
-                                Text(date.formatted(date: .complete, time: .omitted))
-                                    .listRowInsets(EdgeInsets(top: 7, leading: 16, bottom: 3, trailing: 16))
+                            Text("Wear calendar").foregroundStyle(Color(uiColor: .label))
+                        } footer: {
+                            if selectedDay == nil {
+                                Text("Select a day to see worn watches").foregroundStyle(Color(uiColor: .label))
+                                    .accessibilityIdentifier("wear.calendarHint")
                             }
+                        }
+                        if !expanded { selectedEntries(days: days) }
+                    }
+                }
+                .listSectionSpacing(12)
+                .scrollBounceBehavior(.basedOnSize)
+                if expanded && !days.isEmpty {
+                    Divider()
+                    List {
+                        if selectedDay == nil {
+                            ContentUnavailableView("Select a day to see worn watches", systemImage: "calendar")
+                        } else {
+                            selectedEntries(days: days)
                         }
                     }
                 }
             }
-            .listSectionSpacing(12)
-            .scrollBounceBehavior(.basedOnSize)
             .navigationTitle(watch == nil ? Text("Wearing") : Text("Wear overview"))
             .navigationBarTitleDisplayMode(watch == nil ? .large : .inline)
-            .sheet(isPresented: $adding) {
-                WearEditorView(store: store, initialWatch: watch ?? watches.first { $0.id == filterID }) {
+            .sheet(item: $editor) { session in
+                WearEditorView(store: store, session: session) {
                     savedCount = $0
                 }
             }
             .sheet(isPresented: $showingStatistics) {
                 WearStatisticsView(initialWatchID: filterID)
             }
-            .sheet(item: $editing) { WearEditorView(store: store, log: $0) }
             .confirmationDialog(
                 "Delete this wear entry?",
                 isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }),
@@ -161,7 +159,7 @@ struct WearHistoryView: View {
                 }
             }
             .task(id: scrollRequest) {
-                guard let selectedDay else { return }
+                guard !expanded, let selectedDay else { return }
                 await Task.yield()
                 let firstLog = filteredLogs.first { $0.calendarDay == selectedDay }
                 // A yield alone doesn't guarantee that List has inserted the new target.
@@ -193,9 +191,31 @@ struct WearHistoryView: View {
         }
     }
 
+    @ViewBuilder private func selectedEntries(days: [(day: String, entries: [WearLog])]) -> some View {
+        if selectedDay != nil, !days.contains(where: { $0.day == selectedDay }) {
+            Text("No wear entries for this day")
+                .foregroundStyle(Color(uiColor: .label)).listRowBackground(Color.clear)
+                .id(selectedDay)
+        }
+        ForEach(days.filter { $0.day == selectedDay }, id: \.day) { group in
+            Section {
+                ForEach(group.entries) { log in
+                    WearLogRow(
+                        log: log, store: store, onEdit: { editor = WearEditorSession(log: log) },
+                        onDelete: { deleting = log })
+                }
+            } header: {
+                if let date = WearDay(key: group.day)?.date() {
+                    Text(date.formatted(date: .complete, time: .omitted))
+                        .listRowInsets(EdgeInsets(top: 7, leading: 16, bottom: 3, trailing: 16))
+                }
+            }
+        }
+    }
+
     private var addDaysButton: some View {
         Button {
-            adding = true
+            editor = WearEditorSession(initialWatch: watch ?? watches.first { $0.id == filterID })
         } label: {
             Label("Add wear days", systemImage: "plus")
                 .labelStyle(.titleAndIcon)

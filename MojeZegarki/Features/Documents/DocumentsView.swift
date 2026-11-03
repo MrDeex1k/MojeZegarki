@@ -10,7 +10,7 @@ struct DocumentsView: View {
     @Query private var documents: [DocumentItem]
     @State private var choosingFile = false
     @State private var selectedPhoto: PhotosPickerItem?
-    @State private var pending: DocumentAsset?
+    @State private var pending: DocumentEditorSession?
     @State private var pendingName = ""
     @State private var importing = false
     @State private var error: String?
@@ -76,9 +76,13 @@ struct DocumentsView: View {
         .sheet(item: $preview) { route in
             NavigationStack {
                 if let document = documents.first(where: { $0.id == route.id }) {
-                    DocumentPreviewView(document: document, store: store, onClose: { preview = nil }) {
+                    DocumentPreviewView(document: document, route: route, store: store, onClose: { preview = nil }) {
                         error = $0
-                    }.toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { preview = nil } } }
+                    }.toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Done", systemImage: "checkmark") { preview = nil }
+                        }
+                    }
                 }
             }
         }
@@ -86,7 +90,9 @@ struct DocumentsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .interactiveDismissDisabled(importing)
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) { Button("Done", action: onClose).disabled(importing) }
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Done", systemImage: "checkmark", action: onClose).disabled(importing)
+            }
         }
         .fileImporter(isPresented: $choosingFile, allowedContentTypes: [.pdf, .image]) { result in
             switch result {
@@ -97,7 +103,8 @@ struct DocumentsView: View {
                     do {
                         let asset = try await store.documentStore.importFile(at: url)
                         pendingName = url.deletingPathExtension().lastPathComponent
-                        pending = asset
+                        pending = DocumentEditorSession(
+                            watch: watch, store: store, asset: asset, proposedName: pendingName)
                     } catch { self.error = error.localizedDescription }
                 }
             case .failure(let failure): error = failure.localizedDescription
@@ -117,12 +124,12 @@ struct DocumentsView: View {
                     }
                     let asset = try await store.documentStore.importData(data.data)
                     pendingName = String(localized: "Document")
-                    pending = asset
+                    pending = DocumentEditorSession(watch: watch, store: store, asset: asset, proposedName: pendingName)
                 } catch { self.error = error.localizedDescription }
             }
         }
-        .sheet(item: $pending) { asset in
-            DocumentEditorView(watch: watch, store: store, asset: asset, proposedName: pendingName)
+        .sheet(item: $pending) { session in
+            DocumentEditorView(store: store, session: session)
         }
         .appError($error)
     }

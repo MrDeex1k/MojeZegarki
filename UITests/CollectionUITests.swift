@@ -32,7 +32,7 @@ final class CollectionUITests: XCTestCase {
         app.staticTexts["Alpinist"].tap()
         reveal(app.buttons["detail.sell"], in: app)
         app.buttons["detail.sell"].tap()
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+        app.buttons["collection.back"].tap()
         app.segmentedControls.buttons["Archive"].tap()
         app.staticTexts["Alpinist"].tap()
         reveal(app.buttons["detail.restore"], in: app)

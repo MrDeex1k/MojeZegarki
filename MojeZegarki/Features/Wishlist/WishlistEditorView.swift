@@ -6,31 +6,40 @@ struct WishlistEditorView: View {
     let item: WishlistItem?
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) private var locale
-    private let initialDraft: WishlistDraft
+    @Environment(\.horizontalSizeClass) private var widthClass
+    @Environment(\.verticalSizeClass) private var heightClass
+    @Bindable var session: WishlistEditorSession
+    private var initialDraft: WishlistDraft { session.initial }
     @State private var discarding = false
-    @State private var draft: WishlistDraft
+    private var draft: WishlistDraft {
+        get { session.draft }
+        nonmutating set { session.draft = newValue }
+    }
     @State private var choosingPhoto = false
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var previewPhoto: PhotoDraft?
-    @State private var assets: DraftAssetSession
-    @State private var saving = false
-    @State private var error: String?
+    private var assets: DraftAssetSession { session.assets }
+    private var saving: Bool {
+        get { session.saving }
+        nonmutating set { session.saving = newValue }
+    }
+    private var error: String? {
+        get { session.error }
+        nonmutating set { session.error = newValue }
+    }
 
-    init(store: CollectionStore, item: WishlistItem? = nil) {
+    init(store: CollectionStore, session: WishlistEditorSession) {
         self.store = store
-        _assets = State(initialValue: DraftAssetSession { try await store.photoStore.remove($0) })
-        self.item = item
-        let initial = item.map { WishlistDraft(item: $0) } ?? WishlistDraft()
-        initialDraft = initial
-        _draft = State(initialValue: initial)
+        self.session = session
+        self.item = session.item
     }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Brand", text: $draft.brand).accessibilityIdentifier("wish.brand")
-                    TextField("Model", text: $draft.modelName).accessibilityIdentifier("wish.model")
+                    TextField("Brand", text: $session.draft.brand).accessibilityIdentifier("wish.brand")
+                    TextField("Model", text: $session.draft.modelName).accessibilityIdentifier("wish.model")
                 } header: {
                     Text("Watch").foregroundStyle(Color.supportingText)
                 }
@@ -39,7 +48,8 @@ struct WishlistEditorView: View {
                         Button {
                             previewPhoto = photo
                         } label: {
-                            PhotoView(photo: photo, store: store.photoStore).frame(height: 190)
+                            PhotoView(photo: photo, store: store.photoStore).frame(
+                                height: widthClass == .regular ? 300 : heightClass == .compact ? 140 : 190)
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel("View photo")
@@ -62,18 +72,18 @@ struct WishlistEditorView: View {
                     Text("Photo").foregroundStyle(Color.supportingText)
                 }
                 Section {
-                    TextField("Link", text: $draft.url).keyboardType(.URL).textInputAutocapitalization(.never)
+                    TextField("Link", text: $session.draft.url).keyboardType(.URL).textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
-                    TextField("Target price", text: $draft.price).keyboardType(.decimalPad)
-                    CurrencyPicker(selection: $draft.currencyCode)
-                    Picker("Priority", selection: $draft.priority) {
+                    TextField("Target price", text: $session.draft.price).keyboardType(.decimalPad)
+                    CurrencyPicker(selection: $session.draft.currencyCode)
+                    Picker("Priority", selection: $session.draft.priority) {
                         ForEach(WishlistPriority.allCases) { Text($0.title).tag($0) }
                     }
                 } header: {
                     Text("Details").foregroundStyle(Color.supportingText)
                 }
                 Section {
-                    TextField("Notes", text: $draft.notes, axis: .vertical).lineLimit(3...8)
+                    TextField("Notes", text: $session.draft.notes, axis: .vertical).lineLimit(3...8)
                 } header: {
                     Text("Notes").foregroundStyle(Color.supportingText)
                 }
@@ -83,13 +93,15 @@ struct WishlistEditorView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { if draft != initialDraft { discarding = true } else { dismiss() } }.tint(
+                    Button("Cancel", systemImage: "xmark") {
+                        if draft != initialDraft { discarding = true } else { dismiss() }
+                    }.tint(
                         Color(uiColor: .label)
                     ).disabled(
                         assets.isImporting || saving)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { Task { await save() } }
+                    Button("Save", systemImage: "checkmark") { Task { await save() } }
                         .disabled(!draft.purchaseDraft.hasRequiredFields || assets.isImporting || saving)
                         .accessibilityIdentifier("wish.save")
                 }
@@ -99,7 +111,7 @@ struct WishlistEditorView: View {
                 WatchPhotoPreview(photo: photo, store: store.photoStore)
             }
             .discardChangesConfirmation(isPresented: $discarding) { dismiss() }
-            .appError($error)
+            .appError($session.error)
             .onChange(of: selectedPhoto) { _, photo in
                 guard let photo else { return }
                 assets.run {
