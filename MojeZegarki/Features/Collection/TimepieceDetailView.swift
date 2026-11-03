@@ -14,7 +14,7 @@ struct TimepieceDetailView: View {
     @State private var previewPhoto: PhotoDraft?
     @State private var selectedPhotoID: UUID?
     @State private var showingDocuments = false
-    @State private var showingWear = false
+    @State private var wearSession: WearHistorySession?
     @State private var confirmingDelete = false
     @State private var deleting = false
     @State private var errorMessage: String?
@@ -83,7 +83,7 @@ struct TimepieceDetailView: View {
             }
             Section("Wearing") {
                 Button {
-                    showingWear = true
+                    wearSession = WearHistorySession()
                 } label: {
                     HStack(spacing: 12) {
                         Image(systemName: "calendar")
@@ -94,7 +94,7 @@ struct TimepieceDetailView: View {
                                 .font(.caption).foregroundStyle(Color.supportingText)
                         }
                         Spacer()
-                        Image(systemName: "chevron.right").font(.caption.weight(.semibold))
+                        Image(systemName: "chevron.forward").font(.caption.weight(.semibold))
                             .foregroundStyle(Color.supportingText)
                     }
                 }
@@ -198,15 +198,8 @@ struct TimepieceDetailView: View {
                 DocumentsView(watch: watch, store: store, onClose: { showingDocuments = false })
             }
         }
-        .sheet(isPresented: $showingWear) {
-            NavigationStack {
-                WearView(store: store, watch: watch)
-                    .toolbar {
-                        ToolbarItem(placement: .cancellationAction) {
-                            Button("Done", systemImage: "checkmark") { showingWear = false }
-                        }
-                    }
-            }
+        .sheet(item: $wearSession) { session in
+            WearPresentationView(store: store, watch: watch, session: session) { wearSession = nil }
         }
         .confirmationDialog("Delete this watch permanently?", isPresented: $confirmingDelete, titleVisibility: .visible)
         {

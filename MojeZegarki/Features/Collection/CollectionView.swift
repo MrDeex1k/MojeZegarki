@@ -81,7 +81,7 @@ struct CollectionView: View {
                                                 )
                                                 .padding(.vertical, 6)
                                                 Spacer(minLength: 0)
-                                                Image(systemName: "chevron.right")
+                                                Image(systemName: "chevron.forward")
                                                     .font(.caption.weight(.semibold))
                                                     .foregroundStyle(.secondary)
                                                     .accessibilityHidden(true)

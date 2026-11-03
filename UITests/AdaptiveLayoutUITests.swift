@@ -9,13 +9,14 @@ final class AdaptiveLayoutUITests: XCTestCase {
 
     override func tearDownWithError() throws { XCUIDevice.shared.orientation = .portrait }
 
-    private func launch() -> XCUIApplication {
+    private func launch(extra: [String] = [], locale: String = "en_US") -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = [
-            "--uitesting", "--reset-test-store", "--test-wear-fixture", "--test-photo-preview-fixture",
-            "--test-document-fixture",
-            "-AppleLanguages", "(en)", "-AppleLocale", "en_US",
-        ]
+        app.launchArguments =
+            [
+                "--uitesting", "--reset-test-store", "--test-wear-fixture", "--test-photo-preview-fixture",
+                "--test-document-fixture",
+                "-AppleLanguages", "(en)", "-AppleLocale", locale,
+            ] + extra
         app.launch()
         XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
         return app
@@ -128,7 +129,42 @@ final class AdaptiveLayoutUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Edit wear day"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["wear.save"].isEnabled)
         app.buttons["wear.save"].tap()
-        XCTAssertTrue(app.buttons["wear.add"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Wear overview"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.navigationBars["Edit wear day"].exists)
         XCTAssertEqual(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.log.")).count, 1)
+    }
+
+    func testRTLCalendarNavigationAndDaySelection() {
+        let app = launch(
+            extra: ["-NSForceRightToLeftWritingDirection", "YES", "-AppleTextDirection", "YES"], locale: "ar_SA")
+        app.staticTexts["Calendar watch"].tap()
+        app.buttons["detail.wear"].tap()
+        let addDays = app.buttons["wear.add"]
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "isHittable == true"), object: addDays)
+        wait(for: [ready], timeout: 5)
+        addDays.tap()
+        let previous = app.buttons["wear.selection.month.previous"]
+        let next = app.buttons["wear.selection.month.next"]
+        let title = app.buttons["wear.selection.month.title"]
+        XCTAssertTrue(title.waitForExistence(timeout: 5))
+        let monthFormatter = DateFormatter()
+        monthFormatter.locale = Locale(identifier: "en_US")
+        monthFormatter.calendar = Calendar(identifier: .gregorian)
+        monthFormatter.setLocalizedDateFormatFromTemplate("MMMM y")
+        XCTAssertEqual(title.label, monthFormatter.string(from: Date()))
+        XCTAssertGreaterThan(previous.frame.minX, title.frame.midX)
+        XCTAssertLessThan(next.frame.maxX, title.frame.midX)
+        let currentMonth = title.label
+        previous.tap()
+        XCTAssertNotEqual(title.label, currentMonth)
+        let day = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.selection.day."))
+            .firstMatch
+        if !day.isHittable { app.swipeUp() }
+        day.tap()
+        XCTAssertTrue(app.buttons["wear.save"].isEnabled)
+        let screenshot = XCTAttachment(screenshot: app.screenshot())
+        screenshot.name = "RTL month navigation and day selection"
+        screenshot.lifetime = .keepAlways
+        add(screenshot)
     }
 }

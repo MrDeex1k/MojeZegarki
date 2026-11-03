@@ -154,6 +154,8 @@
                 { "path": "WearEditorView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearEditorSession.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearHistoryView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+                { "path": "WearHistorySession.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+                { "path": "WearPresentationView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearStatisticsContent.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearStatisticsView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearSummaryView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },

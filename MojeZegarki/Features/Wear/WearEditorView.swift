@@ -9,12 +9,17 @@ struct WearEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var session: WearEditorSession
     var onSaved: (Int) -> Void = { _ in }
+    let onClose: (() -> Void)?
     @State private var error: String?
 
-    init(store: CollectionStore, session: WearEditorSession, onSaved: @escaping (Int) -> Void = { _ in }) {
+    init(
+        store: CollectionStore, session: WearEditorSession, onSaved: @escaping (Int) -> Void = { _ in },
+        onClose: (() -> Void)? = nil
+    ) {
         self.store = store
         self.session = session
         self.onSaved = onSaved
+        self.onClose = onClose
     }
 
     var body: some View {
@@ -59,7 +64,7 @@ struct WearEditorView: View {
                 .navigationTitle(log == nil ? Text("Wear days") : Text("Edit wear day"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Cancel", systemImage: "xmark") { dismiss() } }
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel", systemImage: "xmark") { close() } }
                     ToolbarItem(placement: .confirmationAction) {
                         Button {
                             do {
@@ -73,7 +78,7 @@ struct WearEditorView: View {
                                     let count = try store.logWear(for: watch, dates: dates)
                                     onSaved(count)
                                 }
-                                dismiss()
+                                close()
                             } catch { self.error = error.localizedDescription }
                         } label: {
                             if log != nil {
@@ -100,4 +105,8 @@ struct WearEditorView: View {
     }
 
     private var selectedWatch: Timepiece? { watches.first { $0.id == session.watchID } }
+
+    private func close() {
+        if let onClose { onClose() } else { dismiss() }
+    }
 }

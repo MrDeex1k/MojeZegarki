@@ -28,6 +28,7 @@ struct WearCalendar: View {
         result.firstWeekday = Calendar.current.firstWeekday
         return result
     }
+    private var dateStyle: Date.FormatStyle { Date.FormatStyle(locale: locale, calendar: calendar) }
     private var dates: [Date] {
         let start = calendar.dateInterval(of: .month, for: month)!.start
         return (calendar.range(of: .day, in: .month, for: start) ?? 1..<1).compactMap {
@@ -83,6 +84,7 @@ struct WearCalendar: View {
                 Form {
                     DatePicker("Jump to date", selection: monthBinding, in: ...Date.now, displayedComponents: .date)
                         .datePickerStyle(.graphical)
+                        .environment(\.calendar, calendar)
                 }
                 .navigationTitle("Choose month and year")
                 .toolbar {
@@ -133,7 +135,7 @@ struct WearCalendar: View {
         Button {
             jumping = true
         } label: {
-            Text(month.formatted(.dateTime.month(.wide).year()))
+            Text(month.formatted(dateStyle.month(.wide).year()))
                 .font(.headline).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, minHeight: 44)
         }.buttonStyle(.borderless)
@@ -143,7 +145,7 @@ struct WearCalendar: View {
         Button {
             move(-1)
         } label: {
-            Image(systemName: "chevron.left").font(.system(size: 20)).frame(width: 44, height: 44)
+            Image(systemName: "chevron.backward").font(.system(size: 20)).frame(width: 44, height: 44)
         }
         .accessibilityLabel("Previous month").accessibilityIdentifier("\(identifierPrefix).month.previous")
     }
@@ -151,7 +153,7 @@ struct WearCalendar: View {
         Button {
             move(1)
         } label: {
-            Image(systemName: "chevron.right").font(.system(size: 20)).frame(width: 44, height: 44)
+            Image(systemName: "chevron.forward").font(.system(size: 20)).frame(width: 44, height: 44)
         }
         .disabled(month >= currentMonth).accessibilityLabel("Next month").accessibilityIdentifier(
             "\(identifierPrefix).month.next")
@@ -178,7 +180,7 @@ struct WearCalendar: View {
             (expanded ? AnyLayout(HStackLayout(spacing: 8)) : AnyLayout(VStackLayout(spacing: 0))) {
                 Text(
                     expanded
-                        ? date.formatted(.dateTime.day().month().weekday(.wide))
+                        ? date.formatted(dateStyle.day().month().weekday(.wide))
                         : "\(calendar.component(.day, from: date))"
                 )
                 .font(.body)
