@@ -98,6 +98,8 @@ Opcjonalna blokada Face ID lub kodem urządzenia chroni dostęp do aplikacji, a 
 
 Natywna aplikacja w **Swift 6**, z interfejsem **SwiftUI** i lokalną bazą **SwiftData**. Bez własnego backendu i zewnętrznych zależności pakietowych. Logika domenowa, przechowywanie danych i usługi plikowe są oddzielone od widoków, a schemat bazy jest wersjonowany i objęty migracjami.
 
+Konfiguracja projektu jest zapisana w formacie JSON Xcode w `MojeZegarki.xcodeproj/project.xcproj`, obsługiwanym przez **Xcode 27 i nowsze**. Projekt nadal otwiera się przez `MojeZegarki.xcodeproj`; tej samej ścieżki używają `xcodebuild` i `scripts/test-ios.sh`. Migrację wykonano wbudowanym konwerterem Xcode 27.2: `xcodebuild -project MojeZegarki.xcodeproj -convert-project "Xcode Project"`. [Opis formatu i migracji w dokumentacji Apple](https://developer.apple.com/documentation/xcode/updating-your-xcode-project-configuration-file-format).
+
 Testy automatyczne obejmują reguły domenowe, migracje, trwałość danych, obsługę plików i przepływy UI. Testy interfejsu korzystają z izolowanej bazy; macierz regresji uwzględnia oba języki, oba motywy i duży tekst. Projekt jest sprawdzany na symulatorach i fizycznym iPhonie.
 
 ## Dowiedz się więcej
