@@ -17,9 +17,9 @@ struct WishlistView: View {
     ]) private var items: [WishlistItem]
     @Environment(\.locale) private var locale
     @State private var search = ""
-    @State private var adding = false
-    @State private var editing: WishlistItem?
-    @State private var moving: WishlistItem?
+    @State private var adding: WishlistEditorSession?
+    @State private var editing: WishlistEditorSession?
+    @State private var moving: TimepieceEditorSession?
     @State private var deleting: WishlistItem?
     @State private var error: String?
 
@@ -42,7 +42,9 @@ struct WishlistView: View {
                         } description: {
                             Text("Save a watch you would like to add to your collection.")
                         } actions: {
-                            Button("Add to wishlist", systemImage: "plus") { adding = true }.buttonStyle(
+                            Button("Add to wishlist", systemImage: "plus") {
+                                adding = WishlistEditorSession(store: store)
+                            }.buttonStyle(
                                 .borderedProminent)
                         }
                     } else {
@@ -58,7 +60,7 @@ struct WishlistView: View {
                                         HStack(spacing: 12) {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Button {
-                                                    editing = item
+                                                    editing = WishlistEditorSession(store: store, item: item)
                                                 } label: {
                                                     (typeSize.isAccessibilitySize
                                                         ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
@@ -102,9 +104,11 @@ struct WishlistView: View {
                                                 .accessibilityIdentifier("wish.quickMove.\(item.id)")
                                             }
                                             Menu {
-                                                Button("Edit", systemImage: "pencil") { editing = item }
+                                                Button("Edit", systemImage: "pencil") {
+                                                    editing = WishlistEditorSession(store: store, item: item)
+                                                }
                                                 Button("Complete details and add", systemImage: "plus.circle") {
-                                                    moving = item
+                                                    moving = TimepieceEditorSession(store: store, wishlistItem: item)
                                                 }
                                                 .accessibilityIdentifier("wish.move")
                                                 if let rawURL = item.url, let url = URL(string: rawURL),
@@ -125,7 +129,7 @@ struct WishlistView: View {
                                         }
                                         .swipeActions {
                                             Button("Delete", role: .destructive) { deleting = item }
-                                            Button("Edit") { editing = item }
+                                            Button("Edit") { editing = WishlistEditorSession(store: store, item: item) }
                                         }
                                         .moveDisabled(!search.trimmed.isEmpty)
                                     }
@@ -174,7 +178,10 @@ struct WishlistView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     if items.count > 1 && search.trimmed.isEmpty {
-                        Button(editMode.isEditing ? "Done" : "Reorder") {
+                        Button(
+                            editMode.isEditing ? "Done" : "Reorder",
+                            systemImage: editMode.isEditing ? "checkmark" : "arrow.up.arrow.down"
+                        ) {
                             withAnimation(reduceMotion ? nil : .default) {
                                 editMode = editMode.isEditing ? .inactive : .active
                             }
@@ -183,13 +190,13 @@ struct WishlistView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Add to wishlist", systemImage: "plus") { adding = true }
+                    Button("Add to wishlist", systemImage: "plus") { adding = WishlistEditorSession(store: store) }
                         .accessibilityIdentifier("wish.add")
                 }
             }
-            .sheet(isPresented: $adding) { WishlistEditorView(store: store) }
-            .sheet(item: $editing) { WishlistEditorView(store: store, item: $0) }
-            .sheet(item: $moving) { TimepieceEditorView(store: store, wishlistItem: $0) }
+            .sheet(item: $adding) { WishlistEditorView(store: store, session: $0) }
+            .sheet(item: $editing) { WishlistEditorView(store: store, session: $0) }
+            .sheet(item: $moving) { TimepieceEditorView(store: store, session: $0) }
             .confirmationDialog(
                 "Delete this wish?", isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }),
                 titleVisibility: .visible

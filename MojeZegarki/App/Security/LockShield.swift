@@ -28,6 +28,10 @@ struct LockShield: UIViewRepresentable {
 
     final class AnchorView: UIView {
         var onWindowChanged: ((UIWindow?) -> Void)?
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            onWindowChanged?(window)
+        }
         override func didMoveToWindow() {
             super.didMoveToWindow()
             onWindowChanged?(window)
@@ -40,6 +44,7 @@ struct LockShield: UIViewRepresentable {
         var lock: AppLock?
         var dataAvailable = true
         private var needsUnlock = true
+        private var shieldObscured: Bool?
 
         override init() {
             super.init()
@@ -67,6 +72,11 @@ struct LockShield: UIViewRepresentable {
 
         func attach(to originalWindow: UIWindow?) {
             guard let scene = originalWindow?.windowScene else { return }
+            if shield?.windowScene !== scene {
+                shield?.isHidden = true
+                shield = nil
+                shieldObscured = nil
+            }
             self.originalWindow = originalWindow
             if shield == nil {
                 let window = UIWindow(windowScene: scene)
@@ -89,13 +99,20 @@ struct LockShield: UIViewRepresentable {
             let visible = !dataAvailable || (lock.enabled && (lock.isLocked || obscured))
             originalWindow?.accessibilityElementsHidden = visible
             if visible {
-                let controller = UIHostingController(
-                    rootView: LockScreen(lock: lock, obscured: obscured || !dataAvailable))
-                controller.view.backgroundColor = .systemBackground
-                controller.view.accessibilityViewIsModal = true
-                shield?.rootViewController = controller
-                shield?.frame = scene.coordinateSpace.bounds
+                let concealed = obscured || !dataAvailable
+                if let controller = shield?.rootViewController as? UIHostingController<LockScreen> {
+                    if shieldObscured != concealed {
+                        controller.rootView = LockScreen(lock: lock, obscured: concealed)
+                    }
+                } else {
+                    let controller = UIHostingController(rootView: LockScreen(lock: lock, obscured: concealed))
+                    controller.view.backgroundColor = .systemBackground
+                    controller.view.accessibilityViewIsModal = true
+                    shield?.rootViewController = controller
+                }
+                shieldObscured = concealed
             }
+            shield?.frame = scene.coordinateSpace.bounds
             shield?.isHidden = !visible
         }
     }

@@ -4,12 +4,13 @@ import UniformTypeIdentifiers
 
 struct DocumentPreviewView: View {
     let document: DocumentItem
+    @Bindable var route: DocumentRoute
     let store: CollectionStore
     let onClose: () -> Void
     let onDeleteError: (String) -> Void
     @State private var content: PreviewContent?
     @State private var failedToLoad = false
-    @State private var editing = false
+    @State private var editing: DocumentEditorSession?
     @State private var deleting = false
     @State private var confirmingDelete = false
 
@@ -21,7 +22,7 @@ struct DocumentPreviewView: View {
                     GeometryReader { geometry in
                         PDFPreview(document: pdf).frame(width: geometry.size.width, height: geometry.size.height)
                     }
-                case .image(let image): DocumentImagePreview(image: image)
+                case .image(let image): DocumentImagePreview(image: image, zoom: $route.zoom)
                 }
             } else if failedToLoad {
                 ContentUnavailableView(
@@ -49,8 +50,12 @@ struct DocumentPreviewView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Menu {
-                Button("Edit", systemImage: "pencil") { editing = true }
-                    .accessibilityIdentifier("document.edit")
+                Button("Edit", systemImage: "pencil") {
+                    if let watch = document.timepiece {
+                        editing = DocumentEditorSession(watch: watch, store: store, document: document)
+                    }
+                }
+                .accessibilityIdentifier("document.edit")
                 Button("Delete", systemImage: "trash", role: .destructive) { confirmingDelete = true }
                     .accessibilityIdentifier("document.delete")
             } label: {
@@ -58,8 +63,8 @@ struct DocumentPreviewView: View {
             }
             .disabled(deleting).accessibilityIdentifier("document.actions")
         }
-        .sheet(isPresented: $editing) {
-            if let watch = document.timepiece { DocumentEditorView(watch: watch, store: store, document: document) }
+        .sheet(item: $editing) { session in
+            DocumentEditorView(store: store, session: session)
         }
         .confirmationDialog("Delete this document?", isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete", role: .destructive) {

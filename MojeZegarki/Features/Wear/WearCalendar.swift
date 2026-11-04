@@ -9,11 +9,18 @@ struct WearCalendar: View {
     var singleWatch = false
     var allowsToday = true
     var enabled = true
+    var displayedMonth: Binding<Date>?
     let onSelect: (String) -> Void
     @Environment(\.locale) private var locale
     @Environment(\.dynamicTypeSize) private var typeSize
-    @State private var month = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
+    @State private var localMonth = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
     @State private var jumping = false
+
+    private var monthBinding: Binding<Date> { displayedMonth ?? $localMonth }
+    private var month: Date {
+        get { monthBinding.wrappedValue }
+        nonmutating set { monthBinding.wrappedValue = newValue }
+    }
 
     private var calendar: Calendar {
         var result = Calendar(identifier: .gregorian)
@@ -21,6 +28,7 @@ struct WearCalendar: View {
         result.firstWeekday = Calendar.current.firstWeekday
         return result
     }
+    private var dateStyle: Date.FormatStyle { Date.FormatStyle(locale: locale, calendar: calendar) }
     private var dates: [Date] {
         let start = calendar.dateInterval(of: .month, for: month)!.start
         return (calendar.range(of: .day, in: .month, for: start) ?? 1..<1).compactMap {
@@ -58,32 +66,11 @@ struct WearCalendar: View {
                 Button("Today") { month = currentMonth }.buttonStyle(.borderless)
             }
             if typeSize.isAccessibilitySize {
-                VStack(spacing: 8) {
-                    ForEach(dates, id: \.self) { day in dayButton(day, expanded: true) }
-                }
+                dayList
             } else {
-                // List needs the full month height up front to keep its scroll offset stable.
-                Grid(horizontalSpacing: 2, verticalSpacing: 6) {
-                    GridRow {
-                        ForEach(0..<7, id: \.self) { index in
-                            Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
-                                .font(.caption).foregroundStyle(Color(uiColor: .label))
-                                .frame(maxWidth: .infinity).accessibilityHidden(true)
-                        }
-                    }
-                    ForEach(0..<((leadingEmptyDays + dates.count + 6) / 7), id: \.self) { week in
-                        GridRow {
-                            ForEach(0..<7, id: \.self) { weekday in
-                                let index = week * 7 + weekday - leadingEmptyDays
-                                if dates.indices.contains(index) {
-                                    dayButton(dates[index], expanded: false)
-                                } else {
-                                    Color.clear.frame(maxWidth: .infinity, minHeight: 44)
-                                        .accessibilityHidden(true)
-                                }
-                            }
-                        }
-                    }
+                ViewThatFits(in: .horizontal) {
+                    monthGrid.frame(minWidth: 320)
+                    dayList
                 }
             }
             ViewThatFits(in: .horizontal) {
@@ -95,13 +82,14 @@ struct WearCalendar: View {
         .sheet(isPresented: $jumping) {
             NavigationStack {
                 Form {
-                    DatePicker("Jump to date", selection: $month, in: ...Date.now, displayedComponents: .date)
+                    DatePicker("Jump to date", selection: monthBinding, in: ...Date.now, displayedComponents: .date)
                         .datePickerStyle(.graphical)
+                        .environment(\.calendar, calendar)
                 }
                 .navigationTitle("Choose month and year")
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
+                        Button("Done", systemImage: "checkmark") {
                             month = calendar.dateInterval(of: .month, for: month)!.start
                             jumping = false
                         }
@@ -111,11 +99,43 @@ struct WearCalendar: View {
         }
     }
 
+    private var dayList: some View {
+        VStack(spacing: 8) {
+            ForEach(dates, id: \.self) { day in dayButton(day, expanded: true) }
+        }
+    }
+
+    private var monthGrid: some View {
+        // List needs the full month height up front to keep its scroll offset stable.
+        Grid(horizontalSpacing: 2, verticalSpacing: 6) {
+            GridRow {
+                ForEach(0..<7, id: \.self) { index in
+                    Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
+                        .font(.caption).foregroundStyle(Color(uiColor: .label))
+                        .frame(maxWidth: .infinity).accessibilityHidden(true)
+                }
+            }
+            ForEach(0..<((leadingEmptyDays + dates.count + 6) / 7), id: \.self) { week in
+                GridRow {
+                    ForEach(0..<7, id: \.self) { weekday in
+                        let index = week * 7 + weekday - leadingEmptyDays
+                        if dates.indices.contains(index) {
+                            dayButton(dates[index], expanded: false)
+                        } else {
+                            Color.clear.frame(maxWidth: .infinity, minHeight: 44)
+                                .accessibilityHidden(true)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private var monthButton: some View {
         Button {
             jumping = true
         } label: {
-            Text(month.formatted(.dateTime.month(.wide).year()))
+            Text(month.formatted(dateStyle.month(.wide).year()))
                 .font(.headline).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, minHeight: 44)
         }.buttonStyle(.borderless)
@@ -125,7 +145,7 @@ struct WearCalendar: View {
         Button {
             move(-1)
         } label: {
-            Image(systemName: "chevron.left").font(.system(size: 20)).frame(width: 44, height: 44)
+            Image(systemName: "chevron.backward").font(.system(size: 20)).frame(width: 44, height: 44)
         }
         .accessibilityLabel("Previous month").accessibilityIdentifier("\(identifierPrefix).month.previous")
     }
@@ -133,7 +153,7 @@ struct WearCalendar: View {
         Button {
             move(1)
         } label: {
-            Image(systemName: "chevron.right").font(.system(size: 20)).frame(width: 44, height: 44)
+            Image(systemName: "chevron.forward").font(.system(size: 20)).frame(width: 44, height: 44)
         }
         .disabled(month >= currentMonth).accessibilityLabel("Next month").accessibilityIdentifier(
             "\(identifierPrefix).month.next")
@@ -160,7 +180,7 @@ struct WearCalendar: View {
             (expanded ? AnyLayout(HStackLayout(spacing: 8)) : AnyLayout(VStackLayout(spacing: 0))) {
                 Text(
                     expanded
-                        ? date.formatted(.dateTime.day().month().weekday(.wide))
+                        ? date.formatted(dateStyle.day().month().weekday(.wide))
                         : "\(calendar.component(.day, from: date))"
                 )
                 .font(.body)

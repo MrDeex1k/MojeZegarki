@@ -1,8 +1,8 @@
 import Foundation
 
 struct DocumentDraft: Equatable {
-    let name: String
-    let kind: DocumentKind
-    let date: Date?
-    let notes: String
+    var name: String
+    var kind: DocumentKind
+    var date: Date?
+    var notes: String
 }

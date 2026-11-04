@@ -94,6 +94,7 @@
                 { "path": "CollectionView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "TimepieceDetailView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "TimepieceEditorView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+                { "path": "TimepieceEditorSession.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WatchRoute.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
               ],
             }, {
@@ -101,6 +102,7 @@
               "path": "Documents",
               "children": [
                 { "path": "DocumentEditorView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+                { "path": "DocumentEditorSession.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "DocumentImagePreview.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "DocumentNotesView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "DocumentPreviewView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
@@ -150,7 +152,10 @@
                 { "path": "WatchStatisticsRow.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearCalendar.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearEditorView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+                { "path": "WearEditorSession.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearHistoryView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+                { "path": "WearHistorySession.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+                { "path": "WearPresentationView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearStatisticsContent.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearStatisticsView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WearSummaryView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
@@ -161,6 +166,7 @@
               "path": "Wishlist",
               "children": [
                 { "path": "WishlistEditorView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+                { "path": "WishlistEditorSession.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
                 { "path": "WishlistView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
               ],
             },
@@ -288,6 +294,7 @@
       "path": "Tests",
       "children": [
         { "path": "AppLockTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
+        { "path": "DocumentViewportTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
         { "path": "CollectionTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
         { "path": "DocumentComplexityTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
         { "path": "DraftAssetSessionTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
@@ -301,6 +308,7 @@
       "path": "UITests",
       "children": [
         { "path": "AccessibilityUITests.swift", "target-membership": [ "MojeZegarkiUITests/compile-sources" ] },
+        { "path": "AdaptiveLayoutUITests.swift", "target-membership": [ "MojeZegarkiUITests/compile-sources" ] },
         { "path": "CollectionUITests.swift", "target-membership": [ "MojeZegarkiUITests/compile-sources" ] },
         { "path": "FreeModuleUITests.swift", "target-membership": [ "MojeZegarkiUITests/compile-sources" ] },
       ],
@@ -338,7 +346,7 @@
         "INFOPLIST_KEY_NSFaceIDUsageDescription": "Use Face ID to unlock your private watch collection.",
         "INFOPLIST_KEY_UIApplicationSceneManifest_Generation": "YES",
         "INFOPLIST_KEY_UILaunchScreen_Generation": "YES",
-        "INFOPLIST_KEY_UISupportedInterfaceOrientations": "UIInterfaceOrientationPortrait",
+        "INFOPLIST_KEY_UISupportedInterfaceOrientations": "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight",
         "MARKETING_VERSION": "0.9.0",
         "PRODUCT_BUNDLE_IDENTIFIER": "pl.jakubbatycki.MojeZegarki",
         "PRODUCT_NAME": "$(TARGET_NAME)",

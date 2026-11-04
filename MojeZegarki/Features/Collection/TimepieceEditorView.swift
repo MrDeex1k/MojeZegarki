@@ -7,33 +7,38 @@ struct TimepieceEditorView: View {
     let wishlistItem: WishlistItem?
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) private var locale
-    private let initialDraft: TimepieceDraft
+    @Bindable var session: TimepieceEditorSession
+    private var initialDraft: TimepieceDraft { session.initial }
     @State private var discarding = false
-    @State private var draft: TimepieceDraft
+    private var draft: TimepieceDraft {
+        get { session.draft }
+        nonmutating set { session.draft = newValue }
+    }
     @State private var choosingPhotos = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
-    @State private var assets: DraftAssetSession
-    @State private var saving = false
-    @State private var errorMessage: String?
+    private var assets: DraftAssetSession { session.assets }
+    private var saving: Bool {
+        get { session.saving }
+        nonmutating set { session.saving = newValue }
+    }
+    private var errorMessage: String? {
+        get { session.error }
+        nonmutating set { session.error = newValue }
+    }
 
-    init(store: CollectionStore, watch: Timepiece? = nil, wishlistItem: WishlistItem? = nil) {
+    init(store: CollectionStore, session: TimepieceEditorSession) {
         self.store = store
-        _assets = State(initialValue: DraftAssetSession { try await store.photoStore.remove($0) })
-        self.watch = watch
-        self.wishlistItem = wishlistItem
-        let initial =
-            watch.map { TimepieceDraft(timepiece: $0) } ?? wishlistItem.map { WishlistDraft(item: $0).purchaseDraft }
-            ?? TimepieceDraft()
-        initialDraft = initial
-        _draft = State(initialValue: initial)
+        self.session = session
+        self.watch = session.watch
+        self.wishlistItem = session.wishlistItem
     }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Brand", text: $draft.brand).accessibilityIdentifier("editor.brand")
-                    TextField("Model", text: $draft.modelName).accessibilityIdentifier("editor.model")
+                    TextField("Brand", text: $session.draft.brand).accessibilityIdentifier("editor.brand")
+                    TextField("Model", text: $session.draft.modelName).accessibilityIdentifier("editor.model")
                 } header: {
                     Text("Watch").foregroundStyle(Color(uiColor: .label))
                 } footer: {
@@ -43,8 +48,8 @@ struct TimepieceEditorView: View {
                 photosSection
 
                 Section {
-                    optionalPicker("Device type", selection: $draft.deviceKind)
-                    optionalPicker("Movement", selection: $draft.movementType)
+                    optionalPicker("Device type", selection: $session.draft.deviceKind)
+                    optionalPicker("Movement", selection: $session.draft.movementType)
                     NavigationLink {
                         List(WatchCategory.allCases) { category in
                             Toggle(
@@ -67,9 +72,11 @@ struct TimepieceEditorView: View {
                                 ? String(localized: "Not specified")
                                 : draft.categories.map { String(localized: $0.title) }.sorted().joined(separator: ", "))
                     }
-                    TextField("Reference number", text: $draft.referenceNumber).textInputAutocapitalization(.characters)
-                    TextField("Serial number", text: $draft.serialNumber).textInputAutocapitalization(.characters)
-                    Picker("Status", selection: $draft.status) {
+                    TextField("Reference number", text: $session.draft.referenceNumber).textInputAutocapitalization(
+                        .characters)
+                    TextField("Serial number", text: $session.draft.serialNumber).textInputAutocapitalization(
+                        .characters)
+                    Picker("Status", selection: $session.draft.status) {
                         ForEach(WatchStatus.allCases) { Text($0.title).tag($0) }
                     }
                 } header: {
@@ -77,16 +84,17 @@ struct TimepieceEditorView: View {
                 }
                 Section {
                     OptionalDateField(
-                        toggleTitle: "Add purchase date", dateTitle: "Purchase date", selection: $draft.purchaseDate)
-                    TextField("Purchase price", text: $draft.price).keyboardType(.decimalPad)
+                        toggleTitle: "Add purchase date", dateTitle: "Purchase date",
+                        selection: $session.draft.purchaseDate)
+                    TextField("Purchase price", text: $session.draft.price).keyboardType(.decimalPad)
                         .accessibilityIdentifier("editor.price")
-                    CurrencyPicker(selection: $draft.currencyCode)
-                    TextField("Seller", text: $draft.seller)
+                    CurrencyPicker(selection: $session.draft.currencyCode)
+                    TextField("Seller", text: $session.draft.seller)
                 } header: {
                     Text("Purchase").foregroundStyle(Color(uiColor: .label))
                 }
                 Section {
-                    TextField("Notes", text: $draft.notes, axis: .vertical).lineLimit(3...8)
+                    TextField("Notes", text: $session.draft.notes, axis: .vertical).lineLimit(3...8)
                 } header: {
                     Text("Notes").foregroundStyle(Color(uiColor: .label))
                 }
@@ -96,21 +104,23 @@ struct TimepieceEditorView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { if draft != initialDraft { discarding = true } else { dismiss() } }.tint(
+                    Button("Cancel", systemImage: "xmark") {
+                        if draft != initialDraft { discarding = true } else { dismiss() }
+                    }.tint(
                         Color(uiColor: .label)
                     )
                     .disabled(assets.isImporting || saving)
                     .accessibilityIdentifier("editor.cancel")
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { Task { await save() } }
+                    Button("Save", systemImage: "checkmark") { Task { await save() } }
                         .disabled(!draft.hasRequiredFields || assets.isImporting || saving)
                         .accessibilityIdentifier("editor.save")
                 }
             }
             .interactiveDismissDisabled(assets.isImporting || saving || draft != initialDraft)
             .discardChangesConfirmation(isPresented: $discarding) { dismiss() }
-            .appError($errorMessage)
+            .appError($session.error)
             .onChange(of: selectedPhotos) { _, items in
                 guard !items.isEmpty else { return }
                 assets.run { await importPhotos(items) }

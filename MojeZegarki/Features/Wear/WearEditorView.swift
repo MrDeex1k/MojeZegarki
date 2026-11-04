@@ -3,34 +3,32 @@ import SwiftUI
 
 struct WearEditorView: View {
     let store: CollectionStore
-    var log: WearLog?
+    private var log: WearLog? { session.log }
     @Query(sort: \Timepiece.brand) private var watches: [Timepiece]
     @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.dismiss) private var dismiss
-    @State private var watchID: UUID?
-    @State private var date: Date
-    @State private var selectedDays: Set<String> = []
+    @Bindable var session: WearEditorSession
     var onSaved: (Int) -> Void = { _ in }
+    let onClose: (() -> Void)?
     @State private var error: String?
 
     init(
-        store: CollectionStore, log: WearLog? = nil, initialWatch: Timepiece? = nil,
-        onSaved: @escaping (Int) -> Void = { _ in }
+        store: CollectionStore, session: WearEditorSession, onSaved: @escaping (Int) -> Void = { _ in },
+        onClose: (() -> Void)? = nil
     ) {
-        self.onSaved = onSaved
         self.store = store
-        self.log = log
-        _watchID = State(initialValue: log?.timepiece?.id ?? initialWatch?.id)
-        _date = State(initialValue: log.flatMap { WearDay(key: $0.calendarDay)?.date() } ?? .now)
+        self.session = session
+        self.onSaved = onSaved
+        self.onClose = onClose
     }
 
     var body: some View {
-        WearSavedDays(watchID: watchID) { savedDays in
-            let newDays = selectedDays.subtracting(savedDays)
+        WearSavedDays(watchID: session.watchID) { savedDays in
+            let newDays = session.selectedDays.subtracting(savedDays)
             NavigationStack {
                 Form {
                     Menu {
-                        Picker("Watch", selection: $watchID) {
+                        Picker("Watch", selection: $session.watchID) {
                             Text("Choose a watch").tag(Optional<UUID>.none)
                             ForEach(watches) { Text("\($0.brand) \($0.modelName)").tag(Optional($0.id)) }
                         }
@@ -47,15 +45,15 @@ struct WearEditorView: View {
                     }
                     .accessibilityIdentifier("wear.watch")
                     if log != nil {
-                        DatePicker("Day", selection: $date, in: ...Date.now, displayedComponents: .date)
+                        DatePicker("Day", selection: $session.date, in: ...Date.now, displayedComponents: .date)
                     } else {
                         Section {
                             WearCalendar(
                                 counts: Dictionary(uniqueKeysWithValues: savedDays.map { ($0, 1) }), pending: newDays,
                                 editing: true, singleWatch: true, allowsToday: selectedWatch?.status == .owned,
-                                enabled: selectedWatch != nil
+                                enabled: selectedWatch != nil, displayedMonth: $session.month
                             ) { key in
-                                if !selectedDays.insert(key).inserted { selectedDays.remove(key) }
+                                if !session.selectedDays.insert(key).inserted { session.selectedDays.remove(key) }
                             }
                             Text("Selected days: \(newDays.count)")
                                 .accessibilityIdentifier("wear.selectionCount")
@@ -66,43 +64,49 @@ struct WearEditorView: View {
                 .navigationTitle(log == nil ? Text("Wear days") : Text("Edit wear day"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel", systemImage: "xmark") { close() } }
                     ToolbarItem(placement: .confirmationAction) {
                         Button {
                             do {
-                                guard let watch = watches.first(where: { $0.id == watchID }) else {
+                                guard let watch = watches.first(where: { $0.id == session.watchID }) else {
                                     throw WearError.missingWatch
                                 }
                                 if let log {
-                                    try store.logWear(for: watch, date: date, editing: log)
+                                    try store.logWear(for: watch, date: session.date, editing: log)
                                 } else {
                                     let dates = newDays.compactMap { WearDay(key: $0)?.date() }
                                     let count = try store.logWear(for: watch, dates: dates)
                                     onSaved(count)
                                 }
-                                dismiss()
+                                close()
                             } catch { self.error = error.localizedDescription }
                         } label: {
                             if log != nil {
-                                Text("Save")
+                                Label("Save", systemImage: "checkmark")
                             } else if typeSize.isAccessibilitySize {
-                                Text("+\(newDays.count)")
+                                Label("+\(newDays.count)", systemImage: "plus")
                             } else {
-                                Text("Add \(newDays.count) days")
+                                Label("Add \(newDays.count) days", systemImage: "plus")
                             }
                         }
-                        .accessibilityLabel(log != nil ? Text("Save") : Text("Add wear days"))
+                        .accessibilityLabel(
+                            log != nil ? Text("Save") : Text("Add wear days")
+                        )
                         .accessibilityValue(log == nil ? Text("Selected days: \(newDays.count)") : Text(""))
-                        .disabled(watchID == nil || (log == nil && newDays.isEmpty)).accessibilityIdentifier(
+                        .disabled(session.watchID == nil || (log == nil && newDays.isEmpty)).accessibilityIdentifier(
                             "wear.save")
                     }
                 }
-                .onChange(of: watchID) { selectedDays.removeAll() }
+                .onChange(of: session.watchID) { session.selectedDays.removeAll() }
                 .appError($error)
             }
         }
 
     }
 
-    private var selectedWatch: Timepiece? { watches.first { $0.id == watchID } }
+    private var selectedWatch: Timepiece? { watches.first { $0.id == session.watchID } }
+
+    private func close() {
+        if let onClose { onClose() } else { dismiss() }
+    }
 }
