@@ -24,8 +24,10 @@ struct SettingsView: View {
                 }
                 Section {
                     Text("The app follows your preferred language. Polish and English are supported.")
-                    Button("Open system settings") {
+                    Button {
                         if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+                    } label: {
+                        Text("Open system settings").fixedSize(horizontal: false, vertical: true)
                     }
                 } header: {
                     Text("Language").foregroundStyle(Color(uiColor: .label))
@@ -40,6 +42,7 @@ struct SettingsView: View {
                     } label: {
                         Text("Version")
                     }
+                    .accessibilityElement(children: .combine)
                 } header: {
                     Text("About").foregroundStyle(Color(uiColor: .label))
                 }

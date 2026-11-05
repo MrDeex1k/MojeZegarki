@@ -22,6 +22,12 @@
           "children": [
             { "path": "MojeZegarkiApp.swift", "encoding": "utf8", "line-ending": "line-feed", "target-membership": [ "MojeZegarki/compile-sources" ] },
             { "path": "RootView.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "AppTab.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "StartupController.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "StartupFailure.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "AppLaunchConfiguration.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "CollectionBootstrap.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "UITestFixtures.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
             {
               "kind": "group",
               "path": "Security",
@@ -176,6 +182,9 @@
           "path": "Persistence",
           "children": [
             { "path": "CollectionStore.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "PreparedCollection.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "CollectionStorage.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
+            { "path": "AssetInventory.swift", "target-membership": [ "MojeZegarki/compile-sources" ] },
             {
               "kind": "group",
               "path": "Mappings",
@@ -294,6 +303,10 @@
       "path": "Tests",
       "children": [
         { "path": "AppLockTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
+        { "path": "StartupTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
+        { "path": "PersistenceSafetyTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
+        { "path": "FrozenMigrationTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
+        { "path": "UITestFixtureTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
         { "path": "DocumentViewportTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
         { "path": "CollectionTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
         { "path": "DocumentComplexityTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
@@ -302,6 +315,8 @@
         { "path": "StorageProtectionTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
         { "path": "StorageSafetyTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
         { "path": "WearLogScopeTests.swift", "target-membership": [ "MojeZegarkiTests/compile-sources" ] },
+        { "path": "Fixtures/collection-v1.store", "target-membership": [ "MojeZegarkiTests/resources" ] },
+        { "path": "Fixtures/collection-v2.store", "target-membership": [ "MojeZegarkiTests/resources" ] },
       ],
     }, {
       "kind": "group",

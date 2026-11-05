@@ -37,18 +37,15 @@ final class AccessibilityUITests: XCTestCase {
     func testLockScreenAccessibility() throws {
         let app = XCUIApplication()
         app.launchArguments = [
-            "--uitesting", "--reset-test-store", "--test-lock-enabled", "-AppleLanguages", "(en)", "-AppleLocale",
+            "--uitesting", "--reset-test-store", "--test-lock-enabled", "--test-authentication-cancelled",
+            "-AppleLanguages", "(en)", "-AppleLocale",
             "en_US",
         ]
         app.launch()
         XCTAssertTrue(app.staticTexts["Collection locked"].waitForExistence(timeout: 15))
         XCTAssertFalse(app.buttons["collection.add"].exists)
-        do { try audit(app) } catch let error as NSError
-            where error.domain == "com.apple.accessibilityAudit" && error.code == -902
-        {
-            throw XCTSkip(
-                "System authentication owns the foreground process; audit the lock screen manually on an iPhone.")
-        }
+        XCTAssertTrue(app.buttons["lock.unlock"].waitForExistence(timeout: 5))
+        try audit(app)
     }
 
     private func audit(_ app: XCUIApplication) throws {

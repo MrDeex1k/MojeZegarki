@@ -4,27 +4,33 @@ struct RootView: View {
     let store: CollectionStore
     let lock: AppLock
 
-    @State private var selectedTab = 0
+    @State private var selectedTab: AppTab = .collection
     @State private var revealCollection: UUID?
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            CollectionView(store: store, revealRequest: revealCollection)
-                .tabItem { Label("Collection", systemImage: "square.grid.2x2") }.tag(0)
-            NavigationStack {
-                WearView(store: store)
+        if #available(iOS 18, *) {
+            TabView(selection: $selectedTab) {
+                Tab("Collection", systemImage: "square.grid.2x2", value: AppTab.collection) { collection }
+                Tab("Wearing", systemImage: "calendar", value: AppTab.wear) { wear }
+                Tab("Wishlist", systemImage: "heart", value: AppTab.wishlist) { wishlist }
+                Tab("Settings", systemImage: "gearshape", value: AppTab.settings) { SettingsView(lock: lock) }
             }
-            .tabItem { Label("Wearing", systemImage: "calendar") }.tag(1)
-            WishlistView(
-                store: store,
-                showCollection: {
-                    revealCollection = UUID()
-                    selectedTab = 0
-                }
-            )
-            .tabItem { Label("Wishlist", systemImage: "heart") }.tag(2)
-            SettingsView(lock: lock)
-                .tabItem { Label("Settings", systemImage: "gearshape") }.tag(3)
+        } else {
+            TabView(selection: $selectedTab) {
+                collection.tabItem { Label("Collection", systemImage: "square.grid.2x2") }.tag(AppTab.collection)
+                wear.tabItem { Label("Wearing", systemImage: "calendar") }.tag(AppTab.wear)
+                wishlist.tabItem { Label("Wishlist", systemImage: "heart") }.tag(AppTab.wishlist)
+                SettingsView(lock: lock).tabItem { Label("Settings", systemImage: "gearshape") }.tag(AppTab.settings)
+            }
+        }
+    }
+
+    private var collection: some View { CollectionView(store: store, revealRequest: revealCollection) }
+    private var wear: some View { NavigationStack { WearView(store: store) } }
+    private var wishlist: some View {
+        WishlistView(store: store) {
+            revealCollection = UUID()
+            selectedTab = .collection
         }
     }
 }

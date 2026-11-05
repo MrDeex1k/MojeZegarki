@@ -46,6 +46,38 @@ final class CollectionUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Archive is empty"].waitForExistence(timeout: 5))
     }
 
+    func testShowCollectionClearsArchiveSearchAndDetailSelection() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "--uitesting", "--reset-test-store", "--test-wear-fixture", "--test-photo-preview-fixture",
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US",
+        ]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Calendar watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Calendar watch"].tap()
+        reveal(app.buttons["detail.sell"], in: app)
+        app.buttons["detail.sell"].tap()
+        app.buttons["collection.back"].tap()
+        app.segmentedControls.buttons["Archive"].tap()
+        app.swipeDown()
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap()
+        search.typeText("Calendar\n")
+        app.staticTexts["Calendar watch"].tap()
+        XCTAssertTrue(app.buttons["detail.edit"].waitForExistence(timeout: 5))
+        app.tabBars.buttons["Wishlist"].tap()
+        let move = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wish.quickMove.")).firstMatch
+        XCTAssertTrue(move.waitForExistence(timeout: 5))
+        move.tap()
+        app.buttons["Show collection"].tap()
+        XCTAssertTrue(app.staticTexts["Photo wish"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.tabBars.buttons["Collection"].isSelected)
+        XCTAssertTrue(app.segmentedControls.buttons["In collection"].isSelected)
+        XCTAssertFalse(app.buttons["detail.edit"].exists)
+        XCTAssertFalse(app.staticTexts["Calendar watch"].exists)
+    }
+
     private func reveal(_ element: XCUIElement, in app: XCUIApplication) {
         for _ in 0..<6 {
             if element.exists && element.isHittable { return }

@@ -10,41 +10,70 @@ final class CollectionStore {
     let documentStore: DocumentStore
     var context: ModelContext { container.mainContext }
 
-    init(directory: URL? = nil, inMemory: Bool = false) throws {
-        let root =
-            try directory
-            ?? FileManager.default.url(
-                for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true
-            )
-            .appendingPathComponent("MojeZegarki", isDirectory: true)
-        self.root = root
-        try StorageProtection.prepareDirectory(root)
-        try StorageProtection.protectExistingFiles(in: root)
-        var backupRoot = root
-        var values = URLResourceValues()
-        values.isExcludedFromBackup = false
-        try backupRoot.setResourceValues(values)
-        let schema = Schema(versionedSchema: CollectionSchemaV3.self)
-        let configuration: ModelConfiguration
-        if inMemory {
-            configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
-        } else {
-            configuration = ModelConfiguration(
-                schema: schema, url: root.appendingPathComponent("collection.store"), cloudKitDatabase: .none)
-        }
-        container = try ModelContainer(
-            for: schema, migrationPlan: CollectionMigrationPlan.self, configurations: [configuration])
+    private let rollbackManager = UndoManager()
+    private let saveContext: @MainActor (ModelContext) throws -> Void
+
+    convenience init(
+        directory: URL? = nil, inMemory: Bool = false,
+        saveContext: @escaping @MainActor (ModelContext) throws -> Void = { try $0.save() }
+    ) throws {
+        try self.init(
+            prepared: CollectionStorage.prepare(directory: directory, inMemory: inMemory), saveContext: saveContext)
+    }
+
+    private init(
+        prepared: PreparedCollection,
+        saveContext: @escaping @MainActor (ModelContext) throws -> Void = { try $0.save() }
+    ) {
+        root = prepared.root
+        container = prepared.container
+        self.saveContext = saveContext
         container.mainContext.autosaveEnabled = false
-        try StorageProtection.protectDatabaseFiles(in: root)
         photoStore = PhotoStore(root: root.appendingPathComponent("Photos", isDirectory: true))
         documentStore = DocumentStore(root: root.appendingPathComponent("Documents", isDirectory: true))
     }
 
-    func persistChanges() throws {
+    static func open(directory: URL? = nil) async throws -> CollectionStore {
+        let prepared = try await CollectionStorage().prepare(directory: directory)
+        try Task.checkCancellation()
+        return CollectionStore(prepared: prepared)
+    }
+
+    func requireManaged(_ model: some PersistentModel) throws {
+        guard model.modelContext === context, !model.isDeleted else { throw CollectionError.unavailableRecord }
+    }
+
+    /// Pair each mutation with persistChanges; there must be no suspension between them.
+    func beginChanges() {
+        rollbackManager.groupsByEvent = false
+        rollbackManager.removeAllActions()
+        context.undoManager = rollbackManager
+        rollbackManager.beginUndoGrouping()
+    }
+
+    func persistChanges(restoringRelationships: () -> Void = {}) throws {
+        defer {
+            if rollbackManager.groupingLevel > 0 { rollbackManager.endUndoGrouping() }
+            rollbackManager.removeAllActions()
+            context.undoManager = nil
+        }
+        var stage = "file protection"
         do {
             try StorageProtection.protectDatabaseFiles(in: root)
-            try context.save()
+            stage = "database save"
+            context.processPendingChanges()
+            try saveContext(context)
+            context.processPendingChanges()
         } catch {
+            Logger(subsystem: "pl.jakubbatycki.MojeZegarki", category: "Storage").error(
+                "Collection write failed during \(stage, privacy: .public): \(error, privacy: .private)")
+            context.processPendingChanges()
+            if rollbackManager.groupingLevel > 0 { rollbackManager.endUndoGrouping() }
+            if rollbackManager.canUndo { rollbackManager.undo() }
+            // On iOS 17 rollback alone leaves stale scalar values and deletion clears
+            // relationship caches. Undo values and restore affected links before rollback.
+            restoringRelationships()
+            context.processPendingChanges()
             context.rollback()
             throw CollectionError.saveFailed
         }
