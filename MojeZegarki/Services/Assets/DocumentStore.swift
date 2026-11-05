@@ -14,6 +14,7 @@ actor DocumentStore {
     }
 
     func importFile(at url: URL) throws -> DocumentAsset {
+        try Task.checkCancellation()
         let scoped = url.startAccessingSecurityScopedResource()
         defer { if scoped { url.stopAccessingSecurityScopedResource() } }
         var coordinationError: NSError?
@@ -70,6 +71,7 @@ actor DocumentStore {
             }
         }
         guard output.count <= Self.maximumBytes else { throw DocumentError.tooLarge }
+        let hash = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
         try Task.checkCancellation()
         try StorageProtection.prepareDirectory(staging)
         do {
@@ -84,7 +86,7 @@ actor DocumentStore {
         }
         return DocumentAsset(
             id: id, filename: filename, contentType: contentType, fileSize: output.count,
-            contentHash: SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined())
+            contentHash: hash)
     }
 
     func data(id: UUID, filename: String) throws -> Data {

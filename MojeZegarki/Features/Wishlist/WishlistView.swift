@@ -1,4 +1,3 @@
-import PhotosUI
 import SwiftData
 import SwiftUI
 
@@ -8,7 +7,6 @@ struct WishlistView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var editMode: EditMode = .inactive
-    @State private var movedName: String?
     @State private var undoMove: CollectionStore.WishMoveUndo?
     @Query(sort: [
         SortDescriptor(\WishlistItem.priority, order: .reverse),
@@ -33,6 +31,7 @@ struct WishlistView: View {
     var body: some View {
         let visible = visible
         let groups = Dictionary(grouping: visible, by: \.priority)
+        let canReorder = search.trimmed.isEmpty && groups.values.contains { $0.count > 1 }
         NavigationStack {
             Group {
                 if visible.isEmpty {
@@ -43,7 +42,7 @@ struct WishlistView: View {
                             Text("Save a watch you would like to add to your collection.")
                         } actions: {
                             Button("Add to wishlist", systemImage: "plus") {
-                                adding = WishlistEditorSession(store: store)
+                                adding = WishlistEditorSession(store: store, locale: locale)
                             }.buttonStyle(
                                 .borderedProminent)
                         }
@@ -60,7 +59,8 @@ struct WishlistView: View {
                                         HStack(spacing: 12) {
                                             VStack(alignment: .leading, spacing: 12) {
                                                 Button {
-                                                    editing = WishlistEditorSession(store: store, item: item)
+                                                    editing = WishlistEditorSession(
+                                                        store: store, item: item, locale: locale)
                                                 } label: {
                                                     (typeSize.isAccessibilitySize
                                                         ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
@@ -76,9 +76,14 @@ struct WishlistView: View {
                                                                         string: $0,
                                                                         locale: Locale(identifier: "en_US_POSIX"))
                                                                 }), let currency = item.currencyCode {
-                                                                    Text(amount.formatted(.currency(code: currency)))
-                                                                        .font(.subheadline)
-                                                                        .foregroundStyle(Color.supportingText)
+                                                                    Text(
+                                                                        amount.formatted(
+                                                                            .currency(code: currency).precision(
+                                                                                .fractionLength(0...6)
+                                                                            ).locale(locale))
+                                                                    )
+                                                                    .font(.subheadline)
+                                                                    .foregroundStyle(Color.supportingText)
                                                                 }
                                                                 if let priority = WishlistPriority(
                                                                     rawValue: item.priority),
@@ -95,9 +100,7 @@ struct WishlistView: View {
                                                 .accessibilityIdentifier("wish.\(item.id)")
                                                 Button("Add to collection", systemImage: "plus.circle.fill") {
                                                     do {
-                                                        let name = "\(item.brand) \(item.modelName)"
                                                         undoMove = try store.moveWish(item)
-                                                        movedName = name
                                                     } catch { self.error = error.localizedDescription }
                                                 }
                                                 .buttonStyle(.bordered)
@@ -105,16 +108,15 @@ struct WishlistView: View {
                                             }
                                             Menu {
                                                 Button("Edit", systemImage: "pencil") {
-                                                    editing = WishlistEditorSession(store: store, item: item)
+                                                    editing = WishlistEditorSession(
+                                                        store: store, item: item, locale: locale)
                                                 }
                                                 Button("Complete details and add", systemImage: "plus.circle") {
                                                     moving = TimepieceEditorSession(
                                                         store: store, wishlistItem: item, locale: locale)
                                                 }
                                                 .accessibilityIdentifier("wish.move")
-                                                if let rawURL = item.url, let url = URL(string: rawURL),
-                                                    ["http", "https"].contains(url.scheme?.lowercased() ?? "")
-                                                {
+                                                if let rawURL = item.url, let url = WishlistDraft.webLink(rawURL) {
                                                     Link("Open link", destination: url)
                                                 }
                                                 Button("Delete", systemImage: "trash", role: .destructive) {
@@ -130,9 +132,12 @@ struct WishlistView: View {
                                         }
                                         .swipeActions {
                                             Button("Delete", role: .destructive) { deleting = item }
-                                            Button("Edit") { editing = WishlistEditorSession(store: store, item: item) }
+                                            Button("Edit") {
+                                                editing = WishlistEditorSession(
+                                                    store: store, item: item, locale: locale)
+                                            }
                                         }
-                                        .moveDisabled(!search.trimmed.isEmpty)
+                                        .moveDisabled(!canReorder || group.count < 2)
                                     }
                                     .onMove { source, destination in
                                         var reordered = group
@@ -151,34 +156,34 @@ struct WishlistView: View {
                 }
             }
             .safeAreaInset(edge: .bottom) {
-                if let movedName {
+                if let undoMove {
+                    let movedName = "\(undoMove.brand) \(undoMove.modelName)"
                     VStack(spacing: 8) {
                         Text("Added to collection: \(movedName)").font(.subheadline)
                         (typeSize.isAccessibilitySize
                             ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12)) : AnyLayout(HStackLayout())) {
                                 Button("Undo") {
                                     do {
-                                        if let undoMove { try store.undoWishMove(undoMove) }
+                                        try store.undoWishMove(undoMove)
                                         self.undoMove = nil
-                                        self.movedName = nil
                                     } catch { self.error = error.localizedDescription }
                                 }
                                 Button("Show collection") {
-                                    self.movedName = nil
+                                    self.undoMove = nil
                                     showCollection()
                                 }
                                 Spacer()
-                                Button("Done") { self.movedName = nil }
+                                Button("Done") { self.undoMove = nil }
                             }
                     }.padding().background(.regularMaterial)
                 }
             }
             .navigationTitle("Wishlist")
             .searchable(text: $search, prompt: "Search brand or model")
-            .onChange(of: search) { if !search.trimmed.isEmpty { editMode = .inactive } }
+            .onChange(of: canReorder) { if !canReorder { editMode = .inactive } }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    if items.count > 1 && search.trimmed.isEmpty {
+                    if canReorder {
                         Button(
                             editMode.isEditing ? "Done" : "Reorder",
                             systemImage: editMode.isEditing ? "checkmark" : "arrow.up.arrow.down"
@@ -191,8 +196,10 @@ struct WishlistView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Add to wishlist", systemImage: "plus") { adding = WishlistEditorSession(store: store) }
-                        .accessibilityIdentifier("wish.add")
+                    Button("Add to wishlist", systemImage: "plus") {
+                        adding = WishlistEditorSession(store: store, locale: locale)
+                    }
+                    .accessibilityIdentifier("wish.add")
                 }
             }
             .sheet(item: $adding) { WishlistEditorView(store: store, session: $0) }

@@ -307,6 +307,30 @@ import XCTest
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WishlistItem>()), 0)
     }
 
+    func testFailedWearReassignmentKeepsBothWatchHistoriesAndCanBeRetried() throws {
+        let control = SaveControl()
+        let store = try CollectionStore(inMemory: true, saveContext: control.save)
+        let original = try store.save(draft("Original"))
+        let replacement = try store.save(draft("Replacement"))
+        let now = Date.now
+        let log = try store.logWear(for: original, date: now, now: now)
+        let id = log.id
+        XCTAssertEqual(original.wearLogs?.map(\.id), [id])
+        XCTAssertTrue((replacement.wearLogs ?? []).isEmpty)
+
+        control.failing = true
+        XCTAssertThrowsError(try store.logWear(for: replacement, date: now, editing: log, now: now))
+        XCTAssertEqual(log.timepiece?.id, original.id)
+        XCTAssertEqual(original.wearLogs?.map(\.id), [id])
+        XCTAssertTrue((replacement.wearLogs ?? []).isEmpty)
+
+        control.failing = false
+        try store.logWear(for: replacement, date: now, editing: log, now: now)
+        XCTAssertEqual(log.timepiece?.id, replacement.id)
+        XCTAssertTrue((original.wearLogs ?? []).isEmpty)
+        XCTAssertEqual(replacement.wearLogs?.map(\.id), [id])
+    }
+
     func testInMemoryStoresHaveIndependentAssetDirectories() async throws {
         let first = try CollectionStore(inMemory: true)
         let second = try CollectionStore(inMemory: true)

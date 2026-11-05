@@ -4,6 +4,19 @@ struct WearStatistics {
     enum Period: CaseIterable, Identifiable {
         case month, year, all
         var id: Self { self }
+
+        func startDay(endingOn today: WearDay) -> WearDay? {
+            let calendar = WearDay.calendar(timeZone: .gmt)
+            let date = today.date(timeZone: .gmt)!
+            switch self {
+            case .month:
+                return WearDay(calendar.date(byAdding: .day, value: -29, to: date)!, timeZone: .gmt)
+            case .year:
+                return WearDay(calendar.dateInterval(of: .year, for: date)!.start, timeZone: .gmt)
+            case .all:
+                return nil
+            }
+        }
     }
 
     struct Entry {
@@ -11,29 +24,30 @@ struct WearStatistics {
         let day: String
     }
 
-    let start: Date
+    let startDay: WearDay
+    let endDay: WearDay
     let calendarDays: Int
     let recordedDays: Int
     let daysByWatch: [UUID: Int]
 
     init(entries: [Entry], period: Period, now: Date = .now, timeZone: TimeZone = .current) {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = timeZone
-        let today = calendar.startOfDay(for: now)
-        let todayKey = WearDay(now, timeZone: timeZone).key
+        let today = WearDay(now, timeZone: timeZone)
+        endDay = today
+        let firstDay = period.startDay(endingOn: today)
+        let cutoff = firstDay?.key
         // Validate each distinct day once (many watches share the same date).
-        let validKeys = Set(entries.map(\.day)).filter { $0 <= todayKey && WearDay(key: $0) != nil }
-        switch period {
-        case .month: start = calendar.date(byAdding: .day, value: -29, to: today)!
-        case .year: start = calendar.date(from: calendar.dateComponents([.year], from: today))!
-        case .all:
-            start =
-                validKeys.min().flatMap { WearDay(key: $0)?.date(timeZone: timeZone) }
-                .map { calendar.startOfDay(for: $0) } ?? today
+        let includedKeys = Set(entries.map(\.day)).filter { key in
+            key <= today.key && (cutoff.map { key >= $0 } ?? true) && WearDay(key: key) != nil
         }
-        calendarDays = (calendar.dateComponents([.day], from: start, to: today).day ?? 0) + 1
-        let startKey = WearDay(start, timeZone: timeZone).key
-        let includedKeys = Set(validKeys.filter { $0 >= startKey })
+        let start = firstDay ?? includedKeys.min().flatMap(WearDay.init(key:)) ?? today
+        startDay = start
+        // Compare civil dates in GMT so daylight-saving transitions and skipped local days
+        // cannot shift the bounds or change the denominator.
+        let calendar = WearDay.calendar(timeZone: .gmt)
+        calendarDays =
+            (calendar.dateComponents([.day], from: start.date(timeZone: .gmt)!, to: today.date(timeZone: .gmt)!).day
+                ?? 0)
+            + 1
         var watchDays: [UUID: Set<String>] = [:]
         for entry in entries where includedKeys.contains(entry.day) {
             watchDays[entry.watchID, default: []].insert(entry.day)

@@ -6,10 +6,13 @@ enum WearLogScope {
         #Predicate<WearLog> { $0.timepiece?.id == id }
     }
 
-    static func period(_ period: WearStatistics.Period, now: Date) -> Predicate<WearLog>? {
-        guard period != .all else { return nil }
-        let cutoff = WearDay(WearStatistics(entries: [], period: period, now: now).start).key
-        let today = WearDay(now).key
-        return #Predicate<WearLog> { $0.calendarDay >= cutoff && $0.calendarDay <= today }
+    static func period(_ period: WearStatistics.Period, now: Date, timeZone: TimeZone = .current) -> Predicate<WearLog>
+    {
+        let endDay = WearDay(now, timeZone: timeZone)
+        let today = endDay.key
+        if let cutoff = period.startDay(endingOn: endDay)?.key {
+            return #Predicate<WearLog> { $0.calendarDay >= cutoff && $0.calendarDay <= today }
+        }
+        return #Predicate<WearLog> { $0.calendarDay <= today }
     }
 }

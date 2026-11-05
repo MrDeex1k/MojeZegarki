@@ -27,12 +27,17 @@ struct WishlistDraft: Equatable {
 
     func validatedURL() throws -> String? {
         guard let value = url.nilIfEmpty else { return nil }
+        guard Self.webLink(value) != nil else { throw WishlistError.invalidURL }
+        return value
+    }
+
+    static func webLink(_ value: String) -> URL? {
         guard let parsed = URLComponents(string: value),
             ["https", "http"].contains(parsed.scheme?.lowercased() ?? ""),
             let host = parsed.host, !host.isEmpty, parsed.user == nil, parsed.password == nil
         else {
-            throw WishlistError.invalidURL
+            return nil
         }
-        return value
+        return parsed.url
     }
 }

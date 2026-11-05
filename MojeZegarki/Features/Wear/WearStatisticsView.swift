@@ -7,7 +7,8 @@ struct WearStatisticsView: View {
     var body: some View {
         TimelineView(.periodic(from: Date(timeIntervalSince1970: 0), by: 60)) { timeline in
             WearStatisticsContent(
-                initialWatchID: initialWatchID, period: $period, currentPeriod: period, now: timeline.date)
+                initialWatchID: initialWatchID, period: $period, currentPeriod: period,
+                now: WearDay.calendar().startOfDay(for: timeline.date))
         }
     }
 }

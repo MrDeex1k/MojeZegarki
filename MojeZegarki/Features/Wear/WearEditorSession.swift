@@ -8,11 +8,14 @@ import Observation
     var watchID: UUID?
     var date: Date
     var selectedDays: Set<String> = []
-    var month = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
+    var month = WearDay.calendar().dateInterval(of: .month, for: .now)!.start
 
-    init(log: WearLog? = nil, initialWatch: Timepiece? = nil) {
+    init(log: WearLog? = nil, initialWatch: Timepiece? = nil, now: Date = .now, timeZone: TimeZone = .current) {
         self.log = log
         watchID = log?.timepiece?.id ?? initialWatch?.id
-        date = log.flatMap { WearDay(key: $0.calendarDay)?.date() } ?? .now
+        let calendar = WearDay.calendar(timeZone: timeZone)
+        date =
+            log.flatMap { WearDay(key: $0.calendarDay)?.date(timeZone: timeZone) }
+            .map { calendar.startOfDay(for: $0) } ?? now
     }
 }

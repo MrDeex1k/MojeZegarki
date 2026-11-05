@@ -28,6 +28,7 @@ final class WearLogScopeTests: XCTestCase {
         for period in WearStatistics.Period.allCases {
             let logs = try store.context.fetch(
                 FetchDescriptor<WearLog>(predicate: WearLogScope.period(period, now: now)))
+            XCTAssertFalse(logs.contains { $0.calendarDay > "2026-10-19" })
             let expected = WearStatistics(entries: entries(all), period: period, now: now)
             let actual = WearStatistics(entries: entries(logs), period: period, now: now)
             XCTAssertEqual(actual.daysByWatch, expected.daysByWatch)

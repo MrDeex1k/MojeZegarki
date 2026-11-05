@@ -52,6 +52,13 @@ final class DocumentComplexityTests: XCTestCase {
             _ = try await task.value
             XCTFail("Expected cancellation")
         } catch is CancellationError {}
+        // A cancelled request must stop before even opening a provider URL.
+        let fileTask = Task { try await store.importFile(at: root.appendingPathComponent("missing.pdf")) }
+        fileTask.cancel()
+        do {
+            _ = try await fileTask.value
+            XCTFail("Expected cancellation")
+        } catch is CancellationError {}
         XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: root.path).count, 1)
     }
 }

@@ -45,7 +45,11 @@ struct WearEditorView: View {
                     }
                     .accessibilityIdentifier("wear.watch")
                     if log != nil {
-                        DatePicker("Day", selection: $session.date, in: ...Date.now, displayedComponents: .date)
+                        DatePicker(
+                            "Day", selection: $session.date, in: ...max(.now, session.date), displayedComponents: .date
+                        )
+                        .environment(\.calendar, WearDay.calendar())
+                        .environment(\.timeZone, .current)
                     } else {
                         Section {
                             WearCalendar(
@@ -93,7 +97,7 @@ struct WearEditorView: View {
                             log != nil ? Text("Save") : Text("Add wear days")
                         )
                         .accessibilityValue(log == nil ? Text("Selected days: \(newDays.count)") : Text(""))
-                        .disabled(session.watchID == nil || (log == nil && newDays.isEmpty)).accessibilityIdentifier(
+                        .disabled(selectedWatch == nil || (log == nil && newDays.isEmpty)).accessibilityIdentifier(
                             "wear.save")
                     }
                 }

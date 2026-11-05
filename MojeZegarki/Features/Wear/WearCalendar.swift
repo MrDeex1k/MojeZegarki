@@ -13,8 +13,9 @@ struct WearCalendar: View {
     let onSelect: (String) -> Void
     @Environment(\.locale) private var locale
     @Environment(\.dynamicTypeSize) private var typeSize
-    @State private var localMonth = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
+    @State private var localMonth = WearDay.calendar().dateInterval(of: .month, for: .now)!.start
     @State private var jumping = false
+    @State private var jumpDate = Date.now
 
     private var monthBinding: Binding<Date> { displayedMonth ?? $localMonth }
     private var month: Date {
@@ -23,7 +24,7 @@ struct WearCalendar: View {
     }
 
     private var calendar: Calendar {
-        var result = Calendar(identifier: .gregorian)
+        var result = WearDay.calendar()
         result.locale = locale
         result.firstWeekday = Calendar.current.firstWeekday
         return result
@@ -34,9 +35,6 @@ struct WearCalendar: View {
         return (calendar.range(of: .day, in: .month, for: start) ?? 1..<1).compactMap {
             calendar.date(byAdding: .day, value: $0 - 1, to: start)
         }
-    }
-    private var leadingEmptyDays: Int {
-        (calendar.component(.weekday, from: dates.first ?? month) - calendar.firstWeekday + 7) % 7
     }
 
     private var identifierPrefix: String { editing ? "wear.selection" : "wear" }
@@ -82,15 +80,19 @@ struct WearCalendar: View {
         .sheet(isPresented: $jumping) {
             NavigationStack {
                 Form {
-                    DatePicker("Jump to date", selection: monthBinding, in: ...Date.now, displayedComponents: .date)
+                    DatePicker("Jump to date", selection: $jumpDate, in: ...Date.now, displayedComponents: .date)
                         .datePickerStyle(.graphical)
                         .environment(\.calendar, calendar)
+                        .environment(\.timeZone, calendar.timeZone)
                 }
                 .navigationTitle("Choose month and year")
                 .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { jumping = false }
+                    }
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done", systemImage: "checkmark") {
-                            month = calendar.dateInterval(of: .month, for: month)!.start
+                            month = calendar.dateInterval(of: .month, for: jumpDate)!.start
                             jumping = false
                         }
                     }
@@ -100,14 +102,20 @@ struct WearCalendar: View {
     }
 
     private var dayList: some View {
-        VStack(spacing: 8) {
-            ForEach(dates, id: \.self) { day in dayButton(day, expanded: true) }
+        let today = today
+        return VStack(spacing: 8) {
+            ForEach(dates, id: \.self) { day in dayButton(day, today: today, expanded: true) }
         }
     }
 
     private var monthGrid: some View {
+        let dates = dates
+        let calendar = calendar
+        let today = today
+        let leadingEmptyDays =
+            (calendar.component(.weekday, from: dates.first ?? month) - calendar.firstWeekday + 7) % 7
         // List needs the full month height up front to keep its scroll offset stable.
-        Grid(horizontalSpacing: 2, verticalSpacing: 6) {
+        return Grid(horizontalSpacing: 2, verticalSpacing: 6) {
             GridRow {
                 ForEach(0..<7, id: \.self) { index in
                     Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
@@ -120,7 +128,7 @@ struct WearCalendar: View {
                     ForEach(0..<7, id: \.self) { weekday in
                         let index = week * 7 + weekday - leadingEmptyDays
                         if dates.indices.contains(index) {
-                            dayButton(dates[index], expanded: false)
+                            dayButton(dates[index], today: today, expanded: false)
                         } else {
                             Color.clear.frame(maxWidth: .infinity, minHeight: 44)
                                 .accessibilityHidden(true)
@@ -133,6 +141,7 @@ struct WearCalendar: View {
 
     private var monthButton: some View {
         Button {
+            jumpDate = min(month, .now)
             jumping = true
         } label: {
             Text(month.formatted(dateStyle.month(.wide).year()))
@@ -168,7 +177,7 @@ struct WearCalendar: View {
         }
     }
 
-    private func dayButton(_ date: Date, expanded: Bool) -> some View {
+    private func dayButton(_ date: Date, today: String, expanded: Bool) -> some View {
         let key = WearDay(date).key
         let count = counts[key, default: 0]
         let saved = count > 0
@@ -208,7 +217,7 @@ struct WearCalendar: View {
         }
         .buttonStyle(.plain).disabled(unavailable)
         .accessibilityIdentifier("\(identifierPrefix).day.\(key)")
-        .accessibilityLabel(date.formatted(date: .complete, time: .omitted))
+        .accessibilityLabel(date.formatted(dateStyle.day().month(.wide).year().weekday(.wide)))
         .accessibilityValue(
             saved
                 ? (singleWatch || editing ? Text("Already worn") : Text("Watches: \(count)"))
