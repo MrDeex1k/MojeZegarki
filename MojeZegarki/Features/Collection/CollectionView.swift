@@ -115,6 +115,7 @@ struct CollectionView: View {
                 search = ""
             }
             .navigationTitle("Collection")
+            .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $search, prompt: "Search brand or model")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {

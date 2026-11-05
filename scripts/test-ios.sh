@@ -1,10 +1,27 @@
 #!/bin/bash
 set -euo pipefail
-# Supply a UUID from xcrun simctl list devices available, or a complete destination.
-: "${IOS_DESTINATION:?Set IOS_DESTINATION, e.g. platform=iOS Simulator,id=UUID}"
-result_path="${RESULT_PATH:-.build/Regression-$(date +%Y%m%d-%H%M%S).xcresult}"
-xcodebuild -project MojeZegarki.xcodeproj -scheme MojeZegarki \
-  -destination "$IOS_DESTINATION" -derivedDataPath "${DERIVED_DATA_PATH:-.build/Regression}" \
+repo_root="$(CDPATH= cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Supply a simulator UUID from simctl, or an explicit simulator destination.
+: "${IOS_DESTINATION:?Set IOS_DESTINATION to a simulator UUID or a platform=iOS Simulator destination}"
+destination="$IOS_DESTINATION"
+if [[ "$destination" =~ ^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$ ]]; then
+  destination="platform=iOS Simulator,id=$destination"
+elif [[ "$destination" != 'platform=iOS Simulator,'* ]]; then
+  printf 'IOS_DESTINATION must identify an iOS simulator. Run device tests in Xcode with signing configured.\n' >&2
+  exit 2
+fi
+
+result_path="${RESULT_PATH:-}"
+if [[ -z "$result_path" ]]; then
+  results_root="$repo_root/.build/TestResults"
+  mkdir -p "$results_root"
+  run_directory="$(mktemp -d "$results_root/Regression.XXXXXX")"
+  result_path="$run_directory/Regression.xcresult"
+else
+  mkdir -p "$(dirname "$result_path")"
+fi
+printf 'Test result bundle: %s\n' "$result_path"
+exec xcodebuild -project "$repo_root/MojeZegarki.xcodeproj" -scheme MojeZegarki -testPlan Regression \
+  -destination "$destination" -derivedDataPath "${DERIVED_DATA_PATH:-$repo_root/.build/Regression}" \
   -resultBundlePath "$result_path" -parallel-testing-enabled NO \
-  -test-timeouts-enabled YES -default-test-execution-time-allowance 180 \
-  -maximum-test-execution-time-allowance 240 CODE_SIGNING_ALLOWED=NO test "$@"
+  CODE_SIGNING_ALLOWED=NO test "$@"

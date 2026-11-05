@@ -2,6 +2,8 @@ import XCTest
 
 @MainActor
 final class AccessibilityUITests: XCTestCase {
+    override func setUpWithError() throws { continueAfterFailure = false }
+
     func testCoreScreensAccessibility() throws {
         let app = XCUIApplication()
         app.launchArguments = [
@@ -10,6 +12,12 @@ final class AccessibilityUITests: XCTestCase {
         ]
         app.launch()
         XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+        let title = app.navigationBars.staticTexts["Collection"]
+        let filter = app.segmentedControls["collection.filter"]
+        XCTAssertTrue(title.waitForExistence(timeout: 5))
+        XCTAssertTrue(filter.exists)
+        XCTAssertLessThanOrEqual(title.frame.maxY, filter.frame.minY, "The title must not cover the archive filter")
+        attachAuditScreenshot(app, named: "Collection header")
         try audit(app)
         app.buttons["collection.add"].tap()
         XCTAssertTrue(app.textFields["editor.brand"].waitForExistence(timeout: 5))
@@ -63,10 +71,8 @@ final class AccessibilityUITests: XCTestCase {
             // SwiftUI sometimes reports a visual node that has already been recycled.
             // Preserve evidence for manual review; do not present it as a verified contrast pass.
             if issue.auditType == .contrast, issue.element == nil || issue.element?.exists == false {
-                let path = FileManager.default.temporaryDirectory.appendingPathComponent(
-                    "unlocated-contrast-\(UUID().uuidString).png")
-                try? app.screenshot().pngRepresentation.write(to: path)
-                print("AUDIT_MANUAL_CONTRAST: \(issue.detailedDescription) screenshot=\(path.path)")
+                self.attachAuditScreenshot(app, named: "Contrast requires manual review")
+                print("AUDIT_MANUAL_CONTRAST: \(issue.detailedDescription)")
                 return true
             }
             // This is an intentional two-line preview with a tested full-text destination.
@@ -92,23 +98,28 @@ final class AccessibilityUITests: XCTestCase {
             {
                 return true
             }
-            // iOS 17 flags its standard scrolling search field as clipped.
-            if issue.auditType == .textClipped, let element = issue.element, element.elementType == .searchField {
+            // The system reports potential clipping for this native placeholder even when the full text is visible.
+            if issue.auditType == .textClipped, let element = issue.element, element.elementType == .searchField,
+                element.label == "Search brand or model"
+            {
+                self.attachAuditScreenshot(app, named: "Native search placeholder requires manual review")
                 return true
             }
-            if issue.auditType == .contrast, let element = issue.element, !element.isHittable {
+            if issue.auditType == .contrast, let element = issue.element, !element.frame.intersects(app.frame) {
                 print("AUDIT_OFFSCREEN: \(element.label)")
                 return true
             }
-            let path = FileManager.default.temporaryDirectory.appendingPathComponent(
-                "accessibility-\(UUID().uuidString).png")
-            do {
-                try app.screenshot().pngRepresentation.write(to: path)
-                print("AUDIT_SCREENSHOT: \(path.path)")
-            } catch { print("AUDIT_SCREENSHOT_ERROR: \(error)") }
+            self.attachAuditScreenshot(app, named: "Accessibility audit failure")
             print("ACCESSIBILITY: \(issue.compactDescription) — \(issue.element?.label ?? issue.detailedDescription)")
             return false
         }
+    }
+
+    private func attachAuditScreenshot(_ app: XCUIApplication, named name: String) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 
     func testFullDocumentNoteIsReadableWithoutEditing() throws {

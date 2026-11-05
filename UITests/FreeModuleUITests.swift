@@ -439,37 +439,31 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertEqual(app.images["Document preview"].value as? String, "100%")
     }
 
-    func testCalendarAppearanceAndLocalizationMatrix() {
-        for locale in ["en", "pl"] {
-            for dark in [false, true] {
-                for large in [false, true] {
-                    let app = XCUIApplication()
-                    app.launchArguments = [
-                        "--uitesting", "--reset-test-store", "--test-wear-fixture",
-                        "-AppleLanguages", "(\(locale))", "-AppleLocale", locale == "pl" ? "pl_PL" : "en_US",
-                        dark ? "--test-dark" : "--test-light", "-UIPreferredContentSizeCategoryName",
-                        large ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL",
-                    ]
-                    app.launch()
-                    XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
-                    app.tabBars.buttons[locale == "pl" ? "Noszenie" : "Wearing"].tap()
-                    XCTAssertTrue(app.buttons["wear.filter"].waitForExistence(timeout: 5))
-                    XCTAssertTrue(app.buttons["wear.add"].isHittable)
-                    let overview = XCTAttachment(screenshot: app.screenshot())
-                    overview.name = "history-\(locale)-dark\(dark)-large\(large)"
-                    overview.lifetime = .keepAlways
-                    add(overview)
-                    app.buttons["wear.add"].tap()
-                    XCTAssertTrue(app.buttons["wear.save"].waitForExistence(timeout: 5))
-                    XCTAssertFalse(app.buttons["wear.save"].isEnabled)
-                    let editor = XCTAttachment(screenshot: app.screenshot())
-                    editor.name = "editor-\(locale)-dark\(dark)-large\(large)"
-                    editor.lifetime = .keepAlways
-                    add(editor)
-                    app.terminate()
-                }
-            }
+    func testCalendarEnglishLight() { verifyCalendar(locale: "en", dark: false) }
+    func testCalendarEnglishDark() { verifyCalendar(locale: "en", dark: true) }
+    func testCalendarPolishLight() { verifyCalendar(locale: "pl", dark: false) }
+    func testCalendarPolishDark() { verifyCalendar(locale: "pl", dark: true) }
+
+    private func verifyCalendar(locale: String, dark: Bool) {
+        for large in [false, true] {
+            let app = XCUIApplication()
+            app.launchArguments = [
+                "--uitesting", "--reset-test-store", "--test-wear-fixture",
+                "-AppleLanguages", "(\(locale))", "-AppleLocale", locale == "pl" ? "pl_PL" : "en_US",
+                dark ? "--test-dark" : "--test-light", "-UIPreferredContentSizeCategoryName",
+                large ? "UICTContentSizeCategoryAccessibilityXXXL" : "UICTContentSizeCategoryL",
+            ]
+            app.launch()
+            defer { app.terminate() }
+            XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+            app.tabBars.buttons[locale == "pl" ? "Noszenie" : "Wearing"].tap()
+            XCTAssertTrue(app.buttons["wear.filter"].waitForExistence(timeout: 5))
+            XCTAssertTrue(app.buttons["wear.add"].isHittable)
+            saveScreenshot(app, name: "history-\(locale)-dark\(dark)-large\(large)")
+            app.buttons["wear.add"].tap()
+            XCTAssertTrue(app.buttons["wear.save"].waitForExistence(timeout: 5))
+            XCTAssertFalse(app.buttons["wear.save"].isEnabled)
+            saveScreenshot(app, name: "editor-\(locale)-dark\(dark)-large\(large)")
         }
     }
-
 }

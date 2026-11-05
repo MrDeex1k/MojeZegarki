@@ -140,6 +140,28 @@ final class CollectionUITests: XCTestCase {
         XCTAssertTrue(price.exists)
     }
 
+    func testCurrencySearchMatchesPolishNameAndExposesSelectedRow() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--uitesting", "--reset-test-store", "-AppleLanguages", "(pl)", "-AppleLocale", "pl_PL"]
+        app.launch()
+        XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+        app.buttons["collection.add"].tap()
+        let picker = app.buttons["currency.picker"]
+        reveal(picker, in: app)
+        picker.tap()
+
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        XCTAssertEqual(search.placeholderValue, "Szukaj walut")
+        search.tap()
+        search.typeText("japonski")
+        let yen = app.buttons["currency.JPY"]
+        XCTAssertTrue(yen.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["currency.PLN"].exists)
+        yen.tap()
+        XCTAssertTrue(yen.isSelected)
+    }
+
     func testBackgroundShieldCoversPhotoPreviewAndUnsavedEditor() {
         let app = XCUIApplication()
         app.launchArguments = [
