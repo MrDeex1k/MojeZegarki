@@ -108,7 +108,8 @@ struct WishlistView: View {
                                                     editing = WishlistEditorSession(store: store, item: item)
                                                 }
                                                 Button("Complete details and add", systemImage: "plus.circle") {
-                                                    moving = TimepieceEditorSession(store: store, wishlistItem: item)
+                                                    moving = TimepieceEditorSession(
+                                                        store: store, wishlistItem: item, locale: locale)
                                                 }
                                                 .accessibilityIdentifier("wish.move")
                                                 if let rawURL = item.url, let url = URL(string: rawURL),

@@ -10,10 +10,14 @@ private final class FakeAuthenticator: DeviceAuthenticating {
     var calls = 0
     var invalidations = 0
     var suspended = false
+    var ignoresCancellation = false
     var continuation: CheckedContinuation<Bool, any Error>?
     func authenticate(reason: String) async throws -> Bool {
         calls += 1
         if suspended {
+            if ignoresCancellation {
+                return try await withCheckedThrowingContinuation { continuation = $0 }
+            }
             return try await withTaskCancellationHandler {
                 try await withCheckedThrowingContinuation { continuation = $0 }
             } onCancel: {
@@ -40,6 +44,39 @@ private final class FakeAuthenticator: DeviceAuthenticating {
 
 @MainActor
 final class AppLockTests: XCTestCase {
+    func testCancelledTaskCannotAcceptLateAuthenticationSuccess() async throws {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        defaults.set(true, forKey: "appLockEnabled")
+        let auth = FakeAuthenticator()
+        auth.suspended = true
+        auth.ignoresCancellation = true
+        let lock = AppLock(defaults: defaults, authenticator: auth)
+        let task = Task { await lock.unlock() }
+        for _ in 0..<100 where auth.continuation == nil { await Task.yield() }
+        XCTAssertNotNil(auth.continuation)
+        task.cancel()
+        auth.completeAuthentication(returning: true)
+        await task.value
+        XCTAssertTrue(lock.isLocked)
+        XCTAssertNil(lock.error)
+    }
+
+    func testReloadInvalidatesPendingAuthentication() async {
+        let defaults = UserDefaults(suiteName: UUID().uuidString)!
+        defaults.set(true, forKey: "appLockEnabled")
+        let auth = FakeAuthenticator()
+        auth.suspended = true
+        let lock = AppLock(defaults: defaults, authenticator: auth)
+        let task = Task { await lock.unlock() }
+        for _ in 0..<100 where auth.continuation == nil { await Task.yield() }
+        XCTAssertNotNil(auth.continuation)
+        lock.reloadPreference()
+        auth.completeAuthentication(returning: true)
+        await task.value
+        XCTAssertTrue(lock.isLocked)
+        XCTAssertEqual(auth.invalidations, 1)
+    }
+
     func testReloadedPreferencesRestoreEnabledLock() {
         let defaults = UserDefaults(suiteName: UUID().uuidString)!
         let lock = AppLock(defaults: defaults, authenticator: FakeAuthenticator())

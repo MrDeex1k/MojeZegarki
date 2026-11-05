@@ -24,7 +24,10 @@ struct PhotoView: View {
             }
         }
         .accessibilityHidden(true)
-        .task(id: photo?.id) {
+        .task(id: [
+            store.root.path, photo?.id.uuidString ?? "", photo?.filename ?? "", String(thumbnail),
+            ImageLoader.access.revision.uuidString,
+        ]) {
             image = nil
             if let photo {
                 let prepared = await ImageLoader.load(photo, store: store, thumbnail: thumbnail)

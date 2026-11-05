@@ -6,6 +6,7 @@ struct LockShield: UIViewRepresentable {
     // Explicit values make SwiftUI observe changes outside the UIKit coordinator.
     let enabled: Bool
     let isLocked: Bool
+    var isBusy = false
     var dataAvailable = true
 
     func makeCoordinator() -> Coordinator { Coordinator() }
@@ -21,9 +22,8 @@ struct LockShield: UIViewRepresentable {
         context.coordinator.attach(to: view.window)
     }
     static func dismantleUIView(_ uiView: AnchorView, coordinator: Coordinator) {
-        coordinator.shield?.isHidden = true
-        coordinator.originalWindow?.accessibilityElementsHidden = false
-        coordinator.shield = nil
+        uiView.onWindowChanged = nil
+        coordinator.detach()
     }
 
     final class AnchorView: UIView {
@@ -41,10 +41,29 @@ struct LockShield: UIViewRepresentable {
     @MainActor final class Coordinator: NSObject {
         var shield: UIWindow?
         weak var originalWindow: UIWindow?
-        var lock: AppLock?
-        var dataAvailable = true
+        var lock: AppLock? {
+            didSet {
+                if oldValue !== lock {
+                    cancelUnlock()
+                    needsUnlock = true
+                }
+            }
+        }
+        var dataAvailable = true {
+            didSet {
+                if !dataAvailable {
+                    cancelUnlock()
+                    needsUnlock = true
+                }
+            }
+        }
         private var needsUnlock = true
         private var shieldObscured: Bool?
+        private weak var displayedLock: AppLock?
+        private var originalAccessibilityHidden: Bool?
+        private var unlockTask: Task<Void, Never>?
+        private var unlockID: UUID?
+        private var sceneObscured = false
 
         override init() {
             super.init()
@@ -56,12 +75,22 @@ struct LockShield: UIViewRepresentable {
                 self, selector: #selector(sceneChanged(_:)), name: UIScene.didEnterBackgroundNotification, object: nil)
         }
 
+        deinit { unlockTask?.cancel() }
+
         @objc private func sceneChanged(_ notification: Notification) {
             guard let scene = notification.object as? UIWindowScene, scene === originalWindow?.windowScene else {
                 return
             }
-            if notification.name == UIScene.willDeactivateNotification { originalWindow?.endEditing(true) }
+            sceneObscured = notification.name != UIScene.didActivateNotification
+            if notification.name == UIScene.willDeactivateNotification {
+                originalWindow?.endEditing(true)
+                if lock?.isBusy != true {
+                    cancelUnlock()
+                    needsUnlock = true
+                }
+            }
             if notification.name == UIScene.didEnterBackgroundNotification {
+                cancelUnlock()
                 needsUnlock = true
                 lock?.lock()
             }
@@ -71,37 +100,83 @@ struct LockShield: UIViewRepresentable {
         }
 
         func attach(to originalWindow: UIWindow?) {
-            guard let scene = originalWindow?.windowScene else { return }
+            guard let originalWindow, let scene = originalWindow.windowScene else {
+                detach()
+                return
+            }
+            if self.originalWindow !== originalWindow {
+                detach()
+                originalAccessibilityHidden = originalWindow.accessibilityElementsHidden
+                self.originalWindow = originalWindow
+                sceneObscured = scene.activationState != .foregroundActive
+            }
             if shield?.windowScene !== scene {
                 shield?.isHidden = true
                 shield = nil
                 shieldObscured = nil
             }
-            self.originalWindow = originalWindow
             if shield == nil {
                 let window = UIWindow(windowScene: scene)
                 window.windowLevel = UIWindow.Level(rawValue: UIWindow.Level.alert.rawValue + 1)
                 window.backgroundColor = .systemBackground
                 shield = window
             }
-            update(obscured: scene.activationState != .foregroundActive)
+            update(obscured: sceneObscured || scene.activationState != .foregroundActive)
             if scene.activationState == .foregroundActive { unlockIfNeeded() }
         }
 
         private func unlockIfNeeded() {
-            guard dataAvailable, needsUnlock, let lock, lock.enabled, lock.isLocked else { return }
+            guard dataAvailable, !sceneObscured, needsUnlock, let lock else { return }
+            // Consume this activation even when protection is disabled or already unlocked.
+            // Otherwise enabling protection later makes "Lock now" immediately authenticate again.
+            guard lock.enabled, lock.isLocked else {
+                needsUnlock = false
+                return
+            }
+            guard !lock.isBusy else { return }
             needsUnlock = false
-            Task { await lock.unlock() }
+            let id = UUID()
+            unlockID = id
+            unlockTask = Task { [weak self, weak lock] in
+                guard !Task.isCancelled, self?.dataAvailable == true, self?.sceneObscured == false,
+                    self?.originalWindow?.windowScene?.activationState == .foregroundActive, let lock
+                else { return }
+                await lock.unlock()
+                if self?.unlockID == id {
+                    self?.unlockTask = nil
+                    self?.unlockID = nil
+                }
+            }
+        }
+
+        private func cancelUnlock() {
+            unlockTask?.cancel()
+            unlockTask = nil
+            unlockID = nil
+        }
+
+        func detach() {
+            cancelUnlock()
+            needsUnlock = true
+            if let originalAccessibilityHidden {
+                originalWindow?.accessibilityElementsHidden = originalAccessibilityHidden
+            }
+            originalWindow = nil
+            originalAccessibilityHidden = nil
+            shield?.isHidden = true
+            shield = nil
+            shieldObscured = nil
+            displayedLock = nil
         }
 
         private func update(obscured: Bool) {
             guard let lock, let scene = originalWindow?.windowScene else { return }
             let visible = !dataAvailable || (lock.enabled && (lock.isLocked || obscured))
-            originalWindow?.accessibilityElementsHidden = visible
+            originalWindow?.accessibilityElementsHidden = visible || (originalAccessibilityHidden ?? false)
             if visible {
                 let concealed = obscured || !dataAvailable
                 if let controller = shield?.rootViewController as? UIHostingController<LockScreen> {
-                    if shieldObscured != concealed {
+                    if shieldObscured != concealed || displayedLock !== lock {
                         controller.rootView = LockScreen(lock: lock, obscured: concealed)
                     }
                 } else {
@@ -111,6 +186,7 @@ struct LockShield: UIViewRepresentable {
                     shield?.rootViewController = controller
                 }
                 shieldObscured = concealed
+                displayedLock = lock
             }
             shield?.frame = scene.coordinateSpace.bounds
             shield?.isHidden = !visible

@@ -3,6 +3,7 @@ import SwiftUI
 
 struct CollectionView: View {
     let store: CollectionStore
+    @Environment(\.locale) private var locale
     var revealRequest: UUID?
     @State private var selection: WatchRoute?
     @State private var compactColumn: NavigationSplitViewColumn = .sidebar
@@ -47,9 +48,11 @@ struct CollectionView: View {
                         } description: {
                             Text("Add your first watch and keep its story in one place.")
                         } actions: {
-                            Button("Add a watch", systemImage: "plus") { adding = TimepieceEditorSession(store: store) }
-                                .buttonStyle(.borderedProminent)
-                                .accessibilityIdentifier("collection.addFirst")
+                            Button("Add a watch", systemImage: "plus") {
+                                adding = TimepieceEditorSession(store: store, locale: locale)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .accessibilityIdentifier("collection.addFirst")
                         }
                     }
                 } else {
@@ -115,8 +118,10 @@ struct CollectionView: View {
             .searchable(text: $search, prompt: "Search brand or model")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Add a watch", systemImage: "plus") { adding = TimepieceEditorSession(store: store) }
-                        .accessibilityIdentifier("collection.add")
+                    Button("Add a watch", systemImage: "plus") {
+                        adding = TimepieceEditorSession(store: store, locale: locale)
+                    }
+                    .accessibilityIdentifier("collection.add")
                 }
             }
             .sheet(item: $adding) { TimepieceEditorView(store: store, session: $0) }

@@ -114,25 +114,33 @@ struct WishlistEditorView: View {
             .appError($session.error)
             .onChange(of: selectedPhoto) { _, photo in
                 guard let photo else { return }
-                assets.run {
-                    defer { selectedPhoto = nil }
+                let photoStore = store.photoStore
+                assets.run { [weak session, photoStore] in
                     do {
                         guard let data = try await photo.loadTransferable(type: ImportedImage.self) else {
                             throw CollectionError.unreadablePhoto
                         }
-                        let imported = try await store.photoStore.importPhoto(data.data)
-                        guard await assets.stage(imported.id) else { return }
-                        draft.photo = imported
+                        try Task.checkCancellation()
+                        let imported = try await photoStore.importPhoto(data.data)
+                        guard let session else {
+                            try? await photoStore.remove(imported.id)
+                            return
+                        }
+                        guard await session.assets.stage(imported.id) else { return }
+                        session.draft.photo = imported
                     } catch is CancellationError {} catch {
-                        self.error = String(localized: "This photo could not be read. Choose another image.")
+                        session?.error = String(localized: "This photo could not be read. Choose another image.")
                     }
                 }
+            }
+            .onChange(of: assets.isImporting) {
+                if !assets.isImporting { selectedPhoto = nil }
             }
         }
     }
 
     @MainActor private func save() async {
-        guard !saving else { return }
+        guard !saving, !assets.isFinished, !assets.isImporting else { return }
         saving = true
         defer { saving = false }
         let oldID = item?.photoID

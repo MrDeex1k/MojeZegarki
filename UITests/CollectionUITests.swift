@@ -78,6 +78,97 @@ final class CollectionUITests: XCTestCase {
         XCTAssertFalse(app.staticTexts["Calendar watch"].exists)
     }
 
+    func testRemovingCurrentPhotoCanBeCancelledThenSavedWithoutBreakingGallery() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "--uitesting", "--reset-test-store", "--test-photo-preview-fixture", "-AppleLanguages", "(en)",
+            "-AppleLocale", "en_US",
+        ]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Photo watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Photo watch"].tap()
+        let photos = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "detail.photo."))
+        XCTAssertTrue(photos.firstMatch.waitForExistence(timeout: 5))
+        let original = photos.firstMatch.identifier
+        let removeID = original.replacingOccurrences(of: "detail.photo.", with: "editor.photo.remove.")
+        app.buttons["detail.edit"].tap()
+        reveal(app.buttons[removeID], in: app)
+        app.buttons[removeID].tap()
+        app.buttons["editor.cancel"].tap()
+        app.buttons["Discard changes"].tap()
+        XCTAssertTrue(app.buttons[original].waitForExistence(timeout: 5))
+        app.buttons[original].tap()
+        XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
+        app.buttons["photoPreview.close"].tap()
+        app.buttons["detail.edit"].tap()
+        reveal(app.buttons[removeID], in: app)
+        app.buttons[removeID].tap()
+        app.buttons["editor.save"].tap()
+        XCTAssertTrue(photos.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons[original].exists)
+        let remaining = photos.firstMatch.identifier
+        photos.firstMatch.tap()
+        XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
+        app.terminate()
+        app.launchArguments.removeAll { $0 == "--reset-test-store" }
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Photo watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Photo watch"].tap()
+        XCTAssertTrue(app.buttons[remaining].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons[original].exists)
+    }
+
+    func testDetailShowsAllAcceptedPriceDigits() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--uitesting", "--reset-test-store", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+        app.buttons["collection.add"].tap()
+        focus(app.textFields["editor.brand"], in: app)
+        app.textFields["editor.brand"].typeText("Test")
+        focus(app.textFields["editor.model"], in: app)
+        app.textFields["editor.model"].typeText("Precision")
+        reveal(app.textFields["editor.price"], in: app)
+        focus(app.textFields["editor.price"], in: app)
+        app.textFields["editor.price"].typeText("12.123456")
+        app.buttons["editor.save"].tap()
+        XCTAssertTrue(app.staticTexts["Precision"].waitForExistence(timeout: 5))
+        app.staticTexts["Precision"].tap()
+        let price = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "12.123456")).firstMatch
+        reveal(price, in: app)
+        XCTAssertTrue(price.exists)
+    }
+
+    func testBackgroundShieldCoversPhotoPreviewAndUnsavedEditor() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "--uitesting", "--reset-test-store", "--test-photo-preview-fixture", "--test-lock-enabled",
+            "--test-authentication-lifecycle", "-AppleLanguages", "(en)", "-AppleLocale", "en_US",
+        ]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Photo watch"].waitForExistence(timeout: 15))
+        app.staticTexts["Photo watch"].tap()
+        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "detail.photo.")).firstMatch.tap()
+        XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
+        XCUIDevice.shared.press(.home)
+        app.activate()
+        XCTAssertTrue(app.buttons["lock.unlock"].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.images["photoPreview.image"].exists)
+        app.buttons["lock.unlock"].tap()
+        XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
+        app.buttons["photoPreview.close"].tap()
+        app.buttons["detail.edit"].tap()
+        focus(app.textFields["editor.brand"], in: app)
+        app.textFields["editor.brand"].typeText(" Unsaved")
+        XCUIDevice.shared.press(.home)
+        app.activate()
+        XCTAssertTrue(app.buttons["lock.unlock"].waitForExistence(timeout: 10))
+        XCTAssertFalse(app.textFields["editor.brand"].exists)
+        app.buttons["lock.unlock"].tap()
+        XCTAssertTrue(app.textFields["editor.brand"].waitForExistence(timeout: 5))
+        XCTAssertTrue((app.textFields["editor.brand"].value as? String ?? "").contains("Unsaved"))
+    }
+
     private func reveal(_ element: XCUIElement, in app: XCUIApplication) {
         for _ in 0..<6 {
             if element.exists && element.isHittable { return }

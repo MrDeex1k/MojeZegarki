@@ -37,7 +37,7 @@ struct WatchPhotoPreview: View {
             .toolbarBackground(.visible, for: .navigationBar)
         }
         .preferredColorScheme(.dark)
-        .task(id: photo.id) {
+        .task(id: [store.root.path, photo.id.uuidString, photo.filename, ImageLoader.access.revision.uuidString]) {
             image = nil
             loading = true
             let prepared = await ImageLoader.load(photo, store: store, thumbnail: false)

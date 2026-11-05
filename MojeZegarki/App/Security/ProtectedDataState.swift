@@ -24,12 +24,15 @@ final class ProtectedDataState: NSObject {
         ImageLoader.clearCache()
     }
 
-    @objc private func didBecomeAvailable() { isAvailable = true }
+    @objc private func didBecomeAvailable() {
+        isAvailable = true
+        ImageLoader.access.retryLoads()
+    }
 
     @objc private func refresh() {
         let available = UIApplication.shared.isProtectedDataAvailable
         guard available != isAvailable else { return }
         isAvailable = available
-        if !available { ImageLoader.clearCache() }
+        if available { ImageLoader.access.retryLoads() } else { ImageLoader.clearCache() }
     }
 }

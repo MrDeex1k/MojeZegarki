@@ -17,14 +17,7 @@ struct TimepieceEditorView: View {
     @State private var choosingPhotos = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
     private var assets: DraftAssetSession { session.assets }
-    private var saving: Bool {
-        get { session.saving }
-        nonmutating set { session.saving = newValue }
-    }
-    private var errorMessage: String? {
-        get { session.error }
-        nonmutating set { session.error = newValue }
-    }
+    private var saving: Bool { session.saving }
 
     init(store: CollectionStore, session: TimepieceEditorSession) {
         self.store = store
@@ -114,7 +107,7 @@ struct TimepieceEditorView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save", systemImage: "checkmark") { Task { await save() } }
-                        .disabled(!draft.hasRequiredFields || assets.isImporting || saving)
+                        .disabled(!draft.hasRequiredFields || assets.isImporting || assets.isFinished || saving)
                         .accessibilityIdentifier("editor.save")
                 }
             }
@@ -123,7 +116,18 @@ struct TimepieceEditorView: View {
             .appError($session.error)
             .onChange(of: selectedPhotos) { _, items in
                 guard !items.isEmpty else { return }
-                assets.run { await importPhotos(items) }
+                session.importPhotos(
+                    items.map { item in
+                        {
+                            guard let imported = try await item.loadTransferable(type: ImportedImage.self) else {
+                                throw CollectionError.unreadablePhoto
+                            }
+                            return imported.data
+                        }
+                    }, from: store.photoStore)
+            }
+            .onChange(of: assets.isImporting) {
+                if !assets.isImporting { selectedPhotos = [] }
             }
         }
     }
@@ -151,6 +155,7 @@ struct TimepieceEditorView: View {
                                 .accessibilityValue(Text("Photo \(index + 1)"))
                                 .accessibilityAddTraits(draft.mainPhotoID == photo.id ? .isSelected : [])
                                 Button("Remove photo", role: .destructive) { removePhoto(photo) }
+                                    .accessibilityIdentifier("editor.photo.remove.\(photo.id)")
                                     .font(.caption).buttonStyle(.borderless)
                                     .frame(minHeight: 44)
                                     .accessibilityValue(Text("Photo \(index + 1)"))
@@ -194,41 +199,12 @@ struct TimepieceEditorView: View {
         }
     }
 
-    @MainActor private func importPhotos(_ items: [PhotosPickerItem]) async {
-        defer { selectedPhotos = [] }
-        for item in items {
-            do {
-                try Task.checkCancellation()
-                guard let data = try await item.loadTransferable(type: ImportedImage.self) else {
-                    throw CollectionError.unreadablePhoto
-                }
-                try Task.checkCancellation()
-                let photo = try await store.photoStore.importPhoto(data.data)
-                guard await assets.stage(photo.id) else { break }
-                draft.photos.append(photo)
-                if draft.mainPhotoID == nil { draft.mainPhotoID = photo.id }
-            } catch is CancellationError { break } catch {
-                errorMessage = String(
-                    localized: "A photo could not be imported. Already imported photos are still available.")
-            }
-        }
-    }
-
     private func removePhoto(_ photo: PhotoDraft) {
         draft.photos.removeAll { $0.id == photo.id }
         if draft.mainPhotoID == photo.id { draft.mainPhotoID = draft.photos.first?.id }
     }
 
     @MainActor private func save() async {
-        guard !saving else { return }
-        saving = true
-        defer { saving = false }
-        let oldIDs = Set((watch?.sortedPhotos.map(\.id) ?? []) + (wishlistItem?.photoID.map { [$0] } ?? []))
-        let retainedIDs = Set(draft.photos.map(\.id))
-        do {
-            try store.save(draft, editing: watch, moving: wishlistItem, locale: locale)
-            await assets.commit(retaining: retainedIDs, replacing: oldIDs)
-            dismiss()
-        } catch { errorMessage = error.localizedDescription }
+        if await session.save(in: store, locale: locale) { dismiss() }
     }
 }
