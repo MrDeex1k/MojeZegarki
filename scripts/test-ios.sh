@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
-repo_root="$(CDPATH= cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+script_path="$(realpath -- "${BASH_SOURCE[0]}")"
+repo_root="$(CDPATH= cd "$(dirname "$script_path")/.." && pwd)"
 # Supply a simulator UUID from simctl, or an explicit simulator destination.
 : "${IOS_DESTINATION:?Set IOS_DESTINATION to a simulator UUID or a platform=iOS Simulator destination}"
 destination="$IOS_DESTINATION"

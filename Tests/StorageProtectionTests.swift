@@ -5,6 +5,7 @@ import XCTest
 
 @MainActor
 final class StorageProtectionTests: XCTestCase {
+    /// Checks that preparation preserves legacy content and that newly imported files can still be opened.
     func testExistingAndNewCollectionFilesRemainReadableAndKeepBackup() async throws {
         try await withProtectedCollection { root, legacy in
             XCTAssertGreaterThan(try collectionFiles(in: root).count, 6)
@@ -13,6 +14,7 @@ final class StorageProtectionTests: XCTestCase {
         }
     }
 
+    /// Provides a populated fixture while its SwiftData store is still alive.
     private func withProtectedCollection(_ verify: (URL, URL) throws -> Void) async throws {
         // SwiftData can keep the SQLite files open beyond the test's last store reference.
         // Leave this isolated fixture in the system temporary directory for reclamation.
@@ -45,6 +47,7 @@ final class StorageProtectionTests: XCTestCase {
         return urls.compactMap { $0 as? URL }
     }
 
+    /// Verifies the protection class on both the collection directory and its children.
     private func assertCompleteProtection(in root: URL) throws {
         for url in try [root] + collectionFiles(in: root) {
             let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
@@ -52,6 +55,7 @@ final class StorageProtectionTests: XCTestCase {
         }
     }
 
+    /// Checks the actual file protection classes on a device, separately from simulated lifecycle events.
     func testCompleteProtectionMetadataOnPhysicalDevice() async throws {
         #if targetEnvironment(simulator)
             throw XCTSkip("Simulator does not expose NSFileProtectionKey. Run on an iPhone with a device passcode.")

@@ -117,6 +117,7 @@ final class CollectionTests: XCTestCase {
         }
     }
 
+    /// Distinguishes keyboard decimal digits from numeric symbols, grouping separators and excess precision.
     func testPriceAcceptsLocalizedDecimalDigitsWithoutAcceptingOtherNumericSymbols() throws {
         let arabic = Locale(identifier: "ar_SA@numbers=arab")
         let separator = try XCTUnwrap(arabic.decimalSeparator)

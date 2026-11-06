@@ -3834,6 +3834,22 @@
         }
       }
     },
+    "Unsupported currency. Choose another currency to save a price." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unsupported currency. Choose another currency to save a price."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieobsługiwana waluta. Wybierz inną walutę, aby zapisać cenę."
+          }
+        }
+      }
+    },
     "Your collection will be available after you unlock this device." : {
       "localizations" : {
         "pl" : {

@@ -444,7 +444,12 @@ final class FreeModuleUITests: XCTestCase {
     func testCalendarPolishLight() { verifyCalendar(locale: "pl", dark: false) }
     func testCalendarPolishDark() { verifyCalendar(locale: "pl", dark: true) }
 
+    /// Checks the visible saved day in every locale, theme, and text size before capturing the matrix screenshots.
     private func verifyCalendar(locale: String, dark: Bool) {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd"
         for large in [false, true] {
             let app = XCUIApplication()
             app.launchArguments = [
@@ -459,7 +464,13 @@ final class FreeModuleUITests: XCTestCase {
             app.tabBars.buttons[locale == "pl" ? "Noszenie" : "Wearing"].tap()
             XCTAssertTrue(app.buttons["wear.filter"].waitForExistence(timeout: 5))
             XCTAssertTrue(app.buttons["wear.add"].isHittable)
+            XCTAssertTrue(app.buttons["wear.month.title"].waitForExistence(timeout: 5))
+            let saved = app.buttons["wear.day.\(formatter.string(from: .now))"]
+            for _ in 0..<20 where !saved.isHittable { app.swipeUp() }
+            XCTAssertTrue(saved.isHittable)
+            XCTAssertEqual(saved.value as? String, locale == "pl" ? "Zegarki: 1" : "Watches: 1")
             saveScreenshot(app, name: "history-\(locale)-dark\(dark)-large\(large)")
+            for _ in 0..<20 where !app.buttons["wear.add"].isHittable { app.swipeDown() }
             app.buttons["wear.add"].tap()
             XCTAssertTrue(app.buttons["wear.save"].waitForExistence(timeout: 5))
             XCTAssertFalse(app.buttons["wear.save"].isEnabled)

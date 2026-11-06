@@ -19,7 +19,11 @@ struct CurrencySelectionView: View {
         List {
             if term.isEmpty { row("", title: Text("Not specified")) }
             ForEach(matches, id: \.self) { code in
-                row(code, title: Text(verbatim: label(for: code)))
+                row(
+                    code, title: Text(verbatim: label(for: code)),
+                    subtitle: legacy.contains(code)
+                        ? Text("Unsupported currency. Choose another currency to save a price.") : nil
+                )
             }
             if !term.isEmpty && matches.isEmpty {
                 ContentUnavailableView.search(text: search)
@@ -30,17 +34,25 @@ struct CurrencySelectionView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    /// Displays a localized currency name when known and always retains its ISO code.
     private func label(for code: String) -> String {
         guard let name = locale.localizedString(forCurrencyCode: code), name != code else { return code }
         return "\(code) — \(name)"
     }
 
-    private func row(_ code: String, title: Text) -> some View {
+    /// Keeps the saved selection visible and explains when it can no longer be used for a price.
+    private func row(_ code: String, title: Text, subtitle: Text? = nil) -> some View {
         Button {
             selection = code
         } label: {
             HStack {
-                title.foregroundStyle(.primary).fixedSize(horizontal: false, vertical: true)
+                VStack(alignment: .leading, spacing: 4) {
+                    title.foregroundStyle(.primary)
+                    if let subtitle {
+                        subtitle.font(.footnote).foregroundStyle(Color.supportingText)
+                    }
+                }
+                .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 8)
                 if selection == code {
                     Image(systemName: "checkmark").accessibilityHidden(true)
