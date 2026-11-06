@@ -6,7 +6,7 @@ import Observation
     let id = UUID()
     var filterID: UUID?
     var editor: WearEditorSession?
-    var month = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
+    var month = WearDay.calendar().dateInterval(of: .month, for: .now)!.start
     var selectedDay: String?
     var deleting: WearLog?
     var showingStatistics = false

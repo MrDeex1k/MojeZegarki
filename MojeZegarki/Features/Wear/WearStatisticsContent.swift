@@ -13,6 +13,7 @@ struct WearStatisticsContent: View {
     @State private var selectedID: UUID?
     @Environment(\.horizontalSizeClass) private var widthClass
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.locale) private var locale
 
     init(
         initialWatchID: UUID?, period: Binding<WearStatistics.Period>, currentPeriod: WearStatistics.Period, now: Date
@@ -28,6 +29,21 @@ struct WearStatisticsContent: View {
             entries: logs.compactMap { log in
                 log.timepiece.map { WearStatistics.Entry(watchID: $0.id, day: log.calendarDay) }
             }, period: period, now: now)
+    }
+
+    /// Formats a Gregorian day key in the presentation locale without shifting its date.
+    private func formatted(_ day: WearDay) -> String {
+        let calendar = WearDay.calendar(timeZone: .gmt)
+        return day.date(timeZone: .gmt)!.formatted(
+            Date.FormatStyle(date: .abbreviated, time: .omitted, locale: locale, calendar: calendar, timeZone: .gmt))
+    }
+
+    private var periodPicker: some View {
+        Picker("Period", selection: $period) {
+            Text("30 days").tag(WearStatistics.Period.month)
+            Text("This year").tag(WearStatistics.Period.year)
+            Text("All time").tag(WearStatistics.Period.all)
+        }
     }
 
     private func ranked(using stats: WearStatistics) -> [Timepiece] {
@@ -49,12 +65,13 @@ struct WearStatisticsContent: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
-                    Picker("Period", selection: $period) {
-                        Text("30 days").tag(WearStatistics.Period.month)
-                        Text("This year").tag(WearStatistics.Period.year)
-                        Text("All time").tag(WearStatistics.Period.all)
+                    Group {
+                        if typeSize.isAccessibilitySize {
+                            periodPicker.pickerStyle(.menu)
+                        } else {
+                            periodPicker.pickerStyle(.segmented)
+                        }
                     }
-                    .pickerStyle(.segmented)
                     .accessibilityIdentifier("stats.period")
 
                     if watches.isEmpty {
@@ -80,7 +97,7 @@ struct WearStatisticsContent: View {
                                             .font(.title2.weight(.semibold)).monospacedDigit()
                                             .contentTransition(.numericText())
                                         Text(
-                                            "\(stats.start.formatted(date: .abbreviated, time: .omitted)) – \(Date.now.formatted(date: .abbreviated, time: .omitted))"
+                                            "\(formatted(stats.startDay)) – \(formatted(stats.endDay))"
                                         )
                                         .font(.caption).foregroundStyle(Color.supportingText)
                                     }
@@ -139,15 +156,17 @@ struct WearStatisticsContent: View {
 
                                     VStack(alignment: .leading, spacing: 10) {
                                         Text("Against calendar days").font(.headline)
-                                        HStack(alignment: .firstTextBaseline) {
-                                            Text(
-                                                Double(count) / Double(stats.calendarDays),
-                                                format: .percent.precision(.fractionLength(0))
-                                            )
-                                            .font(.title2.weight(.semibold)).monospacedDigit()
-                                            Text("\(count) of \(stats.calendarDays) calendar days")
-                                                .font(.subheadline).foregroundStyle(Color.supportingText)
-                                        }
+                                        (typeSize.isAccessibilitySize
+                                            ? AnyLayout(VStackLayout(alignment: .leading))
+                                            : AnyLayout(HStackLayout(alignment: .firstTextBaseline))) {
+                                                Text(
+                                                    Double(count) / Double(stats.calendarDays),
+                                                    format: .percent.precision(.fractionLength(0))
+                                                )
+                                                .font(.title2.weight(.semibold)).monospacedDigit()
+                                                Text("\(count) of \(stats.calendarDays) calendar days")
+                                                    .font(.subheadline).foregroundStyle(Color.supportingText)
+                                            }
                                     }
 
                                 }

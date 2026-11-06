@@ -7,7 +7,15 @@ extension CollectionStore {
         let position: Int
         let createdAt: Date
         let updatedAt: Date
-        let draft: WishlistDraft
+        let brand: String
+        let modelName: String
+        let targetPrice: String?
+        let currencyCode: String?
+        let url: String?
+        let priority: Int
+        let notes: String?
+        let photoID: UUID?
+        let photoFilename: String?
         let watchID: UUID
         let watchUpdatedAt: Date
     }
@@ -17,13 +25,17 @@ extension CollectionStore {
         try requireManaged(item)
         let locale = Locale(identifier: "en_US_POSIX")
         let draft = WishlistDraft(item: item, locale: locale)
-        let id = item.id
-        let createdAt = item.createdAt
-        let updatedAt = item.updatedAt
-        let position = item.position
+        // Capture the stored values before the conversion deletes the model.
+        let (id, createdAt, updatedAt, position) = (item.id, item.createdAt, item.updatedAt, item.position)
+        let (price, currency, url, priority, notes) = (
+            item.targetPrice, item.currencyCode, item.url, item.priority, item.notes
+        )
+        let (photoID, photoFilename) = (item.photoID, item.photoFilename)
         let watch = try save(draft.purchaseDraft, moving: item, locale: locale)
         return WishMoveUndo(
-            originalID: id, position: position, createdAt: createdAt, updatedAt: updatedAt, draft: draft,
+            originalID: id, position: position, createdAt: createdAt, updatedAt: updatedAt,
+            brand: draft.brand, modelName: draft.modelName, targetPrice: price, currencyCode: currency,
+            url: url, priority: priority, notes: notes, photoID: photoID, photoFilename: photoFilename,
             watchID: watch.id, watchUpdatedAt: watch.updatedAt)
     }
 
@@ -40,18 +52,18 @@ extension CollectionStore {
         else {
             throw WishlistError.changedAfterMove
         }
-        let wish = WishlistItem(brand: undo.draft.brand, modelName: undo.draft.modelName)
+        let wish = WishlistItem(brand: undo.brand, modelName: undo.modelName)
         wish.id = originalID
         wish.createdAt = undo.createdAt
         wish.updatedAt = undo.updatedAt
-        wish.targetPrice = undo.draft.price.nilIfEmpty
-        wish.currencyCode = undo.draft.currencyCode.nilIfEmpty
-        wish.url = undo.draft.url.nilIfEmpty
-        wish.priority = undo.draft.priority.rawValue
+        wish.targetPrice = undo.targetPrice
+        wish.currencyCode = undo.currencyCode
+        wish.url = undo.url
+        wish.priority = undo.priority
         wish.position = undo.position
-        wish.notes = undo.draft.notes.nilIfEmpty
-        wish.photoID = undo.draft.photo?.id
-        wish.photoFilename = undo.draft.photo?.filename
+        wish.notes = undo.notes
+        wish.photoID = undo.photoID
+        wish.photoFilename = undo.photoFilename
         beginChanges()
         context.insert(wish)
         let photos = watch.photos ?? []

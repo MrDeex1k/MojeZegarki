@@ -1,3 +1,4 @@
+import Observation
 import SwiftData
 import UIKit
 import XCTest
@@ -127,6 +128,55 @@ final class FreeModuleTests: XCTestCase {
         XCTAssertEqual(empty.calendarDays, 89)
         XCTAssertEqual(empty.recordedDays, 0)
         XCTAssertEqual(empty.shareOfRecordedDays(for: id), 0)
+    }
+
+    /// Uses a civil day skipped by the current time zone to verify that statistics preserve stored keys.
+    func testStatisticsKeepGregorianDayKeysAcrossAChangeOfDateLine() throws {
+        let zone = try XCTUnwrap(TimeZone(identifier: "Pacific/Apia"))
+        let now = try XCTUnwrap(WearDay(key: "2012-01-02")?.date(timeZone: zone))
+        let id = UUID()
+        // December 30 existed where the log was recorded, but not in Apia.
+        let entries: [WearStatistics.Entry] = [
+            .init(watchID: id, day: "2011-12-03"),
+            .init(watchID: id, day: "2011-12-04"),
+            .init(watchID: id, day: "2011-12-30"),
+        ]
+        let recent = WearStatistics(entries: entries, period: .month, now: now, timeZone: zone)
+        XCTAssertEqual(recent.startDay.key, "2011-12-04")
+        XCTAssertEqual(recent.calendarDays, 30)
+        XCTAssertEqual(recent.daysByWatch[id], 2)
+
+        let all = WearStatistics(entries: [entries[2]], period: .all, now: now, timeZone: zone)
+        XCTAssertEqual(all.startDay.key, "2011-12-30")
+        XCTAssertEqual(all.calendarDays, 4)
+        XCTAssertEqual(all.recordedDays, 1)
+    }
+
+    func testWearEditorKeepsTodaysDateInRangeBeforeNoon() throws {
+        let zone = try XCTUnwrap(TimeZone(identifier: "Europe/Warsaw"))
+        let now = try XCTUnwrap(WearDay(key: "2026-03-29")?.date(timeZone: zone)).addingTimeInterval(-5 * 3600)
+        let log = WearLog(day: "2026-03-29", timepiece: nil)
+        let editor = WearEditorSession(log: log, now: now, timeZone: zone)
+        let today = WearDay(now, timeZone: zone)
+        XCTAssertLessThanOrEqual(editor.date, try XCTUnwrap(today.date(timeZone: .gmt)))
+        XCTAssertEqual(editor.day.key, log.calendarDay)
+    }
+
+    /// Reopens and saves an entry in a time zone that skipped its stored civil day.
+    func testEditingKeepsCalendarDayAcrossTimeZoneChanges() throws {
+        let store = try CollectionStore(inMemory: true)
+        let watch = try watch(store)
+        let day = try XCTUnwrap(WearDay(key: "2011-12-30"))
+        let log = try store.logWear(for: watch, on: day)
+        let originalZone = try XCTUnwrap(TimeZone(identifier: "America/New_York"))
+        let newZone = try XCTUnwrap(TimeZone(identifier: "Pacific/Apia"))
+        let editor = WearEditorSession(log: log, timeZone: originalZone)
+        let reOpenedEditor = WearEditorSession(log: log, timeZone: newZone)
+        XCTAssertEqual(editor.day, day)
+        XCTAssertEqual(reOpenedEditor.day, day)
+        // Apia skipped this civil day. Saving a selected key must still keep the historical date.
+        try store.logWear(for: watch, on: editor.day, editing: log, today: WearDay(.now, timeZone: newZone))
+        XCTAssertEqual(log.calendarDay, day.key)
     }
 
     private func pdf() -> Data {
@@ -383,7 +433,7 @@ final class FreeModuleTests: XCTestCase {
             let baseline = baselineStart.duration(to: .now)
             XCTAssertEqual(stats.recordedDays, baselineRecorded)
             XCTAssertEqual(stats.daysByWatch, baselineCounts)
-            XCTAssertEqual(WearDay(stats.start, timeZone: zone), WearDay(baselineFirst, timeZone: zone))
+            XCTAssertEqual(stats.startDay, WearDay(baselineFirst, timeZone: zone))
             print("STATISTICS \(size): optimized=\(optimized), baseline=\(baseline)")
             XCTAssertEqual(stats.recordedDays, size / 100)
             XCTAssertEqual(stats.daysByWatch.count, 100)
@@ -413,6 +463,60 @@ final class FreeModuleTests: XCTestCase {
         XCTAssertThrowsError(try store.undoWishMove(second))
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WearLog>()), 1)
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WishlistItem>()), 0)
+    }
+
+    func testWishEditorRoundTripsPriceWithTheViewsLocale() async throws {
+        let store = try CollectionStore(inMemory: true)
+        let polish = Locale(identifier: "pl_PL")
+        var draft = WishlistDraft(locale: polish)
+        draft.brand = "Casio"
+        draft.modelName = "Oceanus"
+        draft.price = "123,4567"
+        let item = try store.saveWish(draft, locale: polish)
+        let session = WishlistEditorSession(store: store, item: item, locale: polish)
+        XCTAssertEqual(session.draft.price, "123,4567")
+        session.draft.notes = "Changed note"
+        let saved = await session.save(in: store, locale: polish)
+        XCTAssertTrue(saved)
+        XCTAssertEqual(item.targetPrice, "123.4567")
+        XCTAssertEqual(item.notes, "Changed note")
+        let repeated = await session.save(in: store, locale: polish)
+        XCTAssertFalse(repeated)
+    }
+
+    func testWishPhotoImportReportsSpecificSizeError() async throws {
+        let store = try CollectionStore(inMemory: true)
+        let session = WishlistEditorSession(store: store)
+        let reported = expectation(description: "The editor reports the import error")
+        withObservationTracking {
+            _ = session.error
+        } onChange: {
+            reported.fulfill()
+        }
+        session.importPhoto(from: store.photoStore) { throw DocumentError.tooLarge }
+        await fulfillment(of: [reported], timeout: 2)
+        XCTAssertEqual(session.error, DocumentError.tooLarge.localizedDescription)
+        XCTAssertNil(session.draft.photo)
+    }
+
+    func testQuickMoveUndoPreservesLegacyOptionalFields() throws {
+        let store = try CollectionStore(inMemory: true)
+        let item = WishlistItem(brand: "Casio", modelName: "Legacy")
+        item.currencyCode = "PLN"
+        item.url = ""
+        item.notes = "  "
+        store.context.insert(item)
+        try store.context.save()
+        let id = item.id
+
+        try store.undoWishMove(store.moveWish(item))
+
+        let restored = try XCTUnwrap(store.context.fetch(FetchDescriptor<WishlistItem>()).first)
+        XCTAssertEqual(restored.id, id)
+        XCTAssertNil(restored.targetPrice)
+        XCTAssertEqual(restored.currencyCode, "PLN")
+        XCTAssertEqual(restored.url, "")
+        XCTAssertEqual(restored.notes, "  ")
     }
 
 }

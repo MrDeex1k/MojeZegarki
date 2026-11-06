@@ -8,10 +8,18 @@ extension CollectionStore {
         for watch: Timepiece, date: Date, editing existing: WearLog? = nil, now: Date = .now,
         timeZone: TimeZone = .current
     ) throws -> WearLog {
+        try logWear(
+            for: watch, on: WearDay(date, timeZone: timeZone), editing: existing,
+            today: WearDay(now, timeZone: timeZone))
+    }
+
+    /// Saves a chosen calendar day without reinterpreting it in the device’s time zone.
+    @discardableResult
+    func logWear(
+        for watch: Timepiece, on day: WearDay, editing existing: WearLog? = nil, today: WearDay = WearDay(.now)
+    ) throws -> WearLog {
         try requireManaged(watch)
         if let existing { try requireManaged(existing) }
-        let day = WearDay(date, timeZone: timeZone)
-        let today = WearDay(now, timeZone: timeZone)
         guard day <= today else { throw WearError.futureDay }
         guard watch.status == .owned || day < today else { throw WearError.archivedToday }
         let watchID = watch.id
@@ -44,9 +52,14 @@ extension CollectionStore {
     /// Validate the whole selection before inserting; save all new days together.
     @discardableResult
     func logWear(for watch: Timepiece, dates: [Date], now: Date = .now, timeZone: TimeZone = .current) throws -> Int {
-        try requireManaged(watch)
         let days = Set(dates.map { WearDay($0, timeZone: timeZone) })
-        let today = WearDay(now, timeZone: timeZone)
+        return try logWear(for: watch, days: days, today: WearDay(now, timeZone: timeZone))
+    }
+
+    /// Validates and commits selected calendar keys without round-tripping through local dates.
+    @discardableResult
+    func logWear(for watch: Timepiece, days: Set<WearDay>, today: WearDay = WearDay(.now)) throws -> Int {
+        try requireManaged(watch)
         guard days.allSatisfy({ $0 <= today }) else { throw WearError.futureDay }
         guard watch.status == .owned || days.allSatisfy({ $0 < today }) else { throw WearError.archivedToday }
         let watchID = watch.id

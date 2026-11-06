@@ -11,7 +11,8 @@ struct WearActionButton: View {
 
     var body: some View {
         Button {
-            do { try store.logWear(for: watch, date: .now) } catch { self.error = error.localizedDescription }
+            let now = Date.now
+            do { try store.logWear(for: watch, date: now, now: now) } catch { self.error = error.localizedDescription }
         } label: {
             if compact {
                 Image(systemName: logged ? "checkmark.circle.fill" : "checkmark.circle")

@@ -5,6 +5,7 @@ import XCTest
 
 @MainActor
 final class WearLogScopeTests: XCTestCase {
+    /// Checks raw fetch boundaries as well as the resulting totals so later filtering cannot hide an overly broad query.
     func testDatabaseScopesPreservePeriodStatisticsAndWatchIsolation() throws {
         let store = try CollectionStore(inMemory: true)
         var draft = TimepieceDraft()
@@ -28,6 +29,13 @@ final class WearLogScopeTests: XCTestCase {
         for period in WearStatistics.Period.allCases {
             let logs = try store.context.fetch(
                 FetchDescriptor<WearLog>(predicate: WearLogScope.period(period, now: now)))
+            let expectedDays: [String] =
+                switch period {
+                case .month: ["2026-09-20", "2026-10-19", "2026-10-19"]
+                case .year: ["2026-01-01", "2026-09-19", "2026-09-20", "2026-10-19", "2026-10-19"]
+                case .all: ["2025-12-31", "2026-01-01", "2026-09-19", "2026-09-20", "2026-10-19", "2026-10-19"]
+                }
+            XCTAssertEqual(logs.map(\.calendarDay).sorted(), expectedDays)
             let expected = WearStatistics(entries: entries(all), period: period, now: now)
             let actual = WearStatistics(entries: entries(logs), period: period, now: now)
             XCTAssertEqual(actual.daysByWatch, expected.daysByWatch)

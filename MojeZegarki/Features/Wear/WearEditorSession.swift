@@ -7,12 +7,16 @@ import Observation
     let log: WearLog?
     var watchID: UUID?
     var date: Date
+    var day: WearDay { WearDay(date, timeZone: .gmt) }
     var selectedDays: Set<String> = []
-    var month = Calendar(identifier: .gregorian).dateInterval(of: .month, for: .now)!.start
+    var month = WearDay.calendar().dateInterval(of: .month, for: .now)!.start
 
-    init(log: WearLog? = nil, initialWatch: Timepiece? = nil) {
+    /// Anchors the draft to a calendar day before adapting it to the date picker’s Date binding.
+    init(log: WearLog? = nil, initialWatch: Timepiece? = nil, now: Date = .now, timeZone: TimeZone = .current) {
         self.log = log
         watchID = log?.timepiece?.id ?? initialWatch?.id
-        date = log.flatMap { WearDay(key: $0.calendarDay)?.date() } ?? .now
+        let day = log.flatMap { WearDay(key: $0.calendarDay) } ?? WearDay(now, timeZone: timeZone)
+        // Use GMT only as the date picker's representation of the calendar day.
+        date = WearDay.calendar(timeZone: .gmt).startOfDay(for: day.date(timeZone: .gmt)!)
     }
 }

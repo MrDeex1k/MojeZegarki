@@ -45,7 +45,12 @@ struct WearEditorView: View {
                     }
                     .accessibilityIdentifier("wear.watch")
                     if log != nil {
-                        DatePicker("Day", selection: $session.date, in: ...Date.now, displayedComponents: .date)
+                        DatePicker(
+                            "Day", selection: $session.date,
+                            in: ...max(WearDay(.now).date(timeZone: .gmt)!, session.date), displayedComponents: .date
+                        )
+                        .environment(\.calendar, WearDay.calendar(timeZone: .gmt))
+                        .environment(\.timeZone, .gmt)
                     } else {
                         Section {
                             WearCalendar(
@@ -72,10 +77,10 @@ struct WearEditorView: View {
                                     throw WearError.missingWatch
                                 }
                                 if let log {
-                                    try store.logWear(for: watch, date: session.date, editing: log)
+                                    try store.logWear(for: watch, on: session.day, editing: log)
                                 } else {
-                                    let dates = newDays.compactMap { WearDay(key: $0)?.date() }
-                                    let count = try store.logWear(for: watch, dates: dates)
+                                    let days = Set(newDays.compactMap(WearDay.init(key:)))
+                                    let count = try store.logWear(for: watch, days: days)
                                     onSaved(count)
                                 }
                                 close()
@@ -93,7 +98,7 @@ struct WearEditorView: View {
                             log != nil ? Text("Save") : Text("Add wear days")
                         )
                         .accessibilityValue(log == nil ? Text("Selected days: \(newDays.count)") : Text(""))
-                        .disabled(session.watchID == nil || (log == nil && newDays.isEmpty)).accessibilityIdentifier(
+                        .disabled(selectedWatch == nil || (log == nil && newDays.isEmpty)).accessibilityIdentifier(
                             "wear.save")
                     }
                 }

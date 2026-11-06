@@ -7,12 +7,12 @@ struct DocumentPreviewView: View {
     @Bindable var route: DocumentRoute
     let store: CollectionStore
     let onClose: () -> Void
-    let onDeleteError: (String) -> Void
     @State private var content: PreviewContent?
     @State private var failedToLoad = false
     @State private var editing: DocumentEditorSession?
     @State private var deleting = false
     @State private var confirmingDelete = false
+    @State private var error: String?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -48,36 +48,49 @@ struct DocumentPreviewView: View {
         .privacySensitive()
         .navigationTitle(document.displayName)
         .navigationBarTitleDisplayMode(.inline)
+        .interactiveDismissDisabled(deleting)
         .toolbar {
-            Menu {
-                Button("Edit", systemImage: "pencil") {
-                    if let watch = document.timepiece {
-                        editing = DocumentEditorSession(watch: watch, store: store, document: document)
-                    }
-                }
-                .accessibilityIdentifier("document.edit")
-                Button("Delete", systemImage: "trash", role: .destructive) { confirmingDelete = true }
-                    .accessibilityIdentifier("document.delete")
-            } label: {
-                Label("Document actions", systemImage: "ellipsis.circle")
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Done", systemImage: "checkmark", action: onClose).disabled(deleting)
             }
-            .disabled(deleting).accessibilityIdentifier("document.actions")
+            ToolbarItem(placement: .primaryAction) {
+                Menu {
+                    Button("Edit", systemImage: "pencil") {
+                        if let watch = document.timepiece {
+                            editing = DocumentEditorSession(watch: watch, store: store, document: document)
+                        }
+                    }
+                    .accessibilityIdentifier("document.edit")
+                    Button("Delete", systemImage: "trash", role: .destructive) { confirmingDelete = true }
+                        .accessibilityIdentifier("document.delete")
+                } label: {
+                    Label("Document actions", systemImage: "ellipsis.circle")
+                }
+                .disabled(deleting).accessibilityIdentifier("document.actions")
+            }
         }
         .sheet(item: $editing) { session in
             DocumentEditorView(store: store, session: session)
         }
         .confirmationDialog("Delete this document?", isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete", role: .destructive) {
+                guard !deleting else { return }
                 deleting = true
-                onClose()
                 Task {
-                    do { try await store.deleteDocument(document) } catch { onDeleteError(error.localizedDescription) }
+                    defer { deleting = false }
+                    do {
+                        try await store.deleteDocument(document)
+                        onClose()
+                    } catch {
+                        self.error = error.localizedDescription
+                    }
                 }
             }
             .accessibilityIdentifier("document.confirmDelete")
         }
-        .task(id: document.id) {
-            content = nil
+        .appError($error)
+        .task(id: ImageLoader.access.revision) {
+            guard content == nil else { return }
             failedToLoad = false
             do {
                 let data = try await store.documentStore.data(id: document.id, filename: document.filename)
@@ -92,7 +105,9 @@ struct DocumentPreviewView: View {
                     try Task.checkCancellation()
                     content = .image(image)
                 }
-            } catch is CancellationError {} catch { failedToLoad = true }
+            } catch is CancellationError {} catch {
+                if !Task.isCancelled { failedToLoad = true }
+            }
         }
     }
 }

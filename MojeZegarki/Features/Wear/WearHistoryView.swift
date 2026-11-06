@@ -17,6 +17,7 @@ struct WearHistoryView: View {
 
     private var expanded: Bool { widthClass == .regular && !typeSize.isAccessibilitySize }
 
+    /// Scopes the history query to the detail watch or the active watch filter when either exists.
     init(store: CollectionStore, watch: Timepiece?, session: WearHistorySession, presentsEditor: Bool) {
         self.store = store
         self.watch = watch
@@ -36,8 +37,7 @@ struct WearHistoryView: View {
     }
 
     var body: some View {
-        let filteredLogs = filtered
-        let days = Dictionary(grouping: filteredLogs, by: \.calendarDay).map { (day: $0.key, entries: $0.value) }
+        let days = Dictionary(grouping: filtered, by: \.calendarDay)
         ScrollViewReader { proxy in
             HStack(spacing: 0) {
                 List {
@@ -49,7 +49,7 @@ struct WearHistoryView: View {
                         }
                     }
                     if watch != nil {
-                        WearSummaryView(dayKeys: Set(days.map(\.day)))
+                        WearSummaryView(dayKeys: Set(days.keys))
                     }
                     if days.isEmpty {
                         ContentUnavailableView {
@@ -78,10 +78,8 @@ struct WearHistoryView: View {
                         }
                         Section {
                             WearCalendar(
-                                counts: Dictionary(
-                                    uniqueKeysWithValues: days.map {
-                                        ($0.day, Set($0.entries.compactMap { $0.timepiece?.id }).count)
-                                    }), selectedDay: session.selectedDay,
+                                counts: days.mapValues { Set($0.compactMap { $0.timepiece?.id }).count },
+                                selectedDay: session.selectedDay,
                                 singleWatch: watch != nil || session.filterID != nil,
                                 displayedMonth: $session.month
                             ) {
@@ -136,7 +134,7 @@ struct WearHistoryView: View {
             .task(id: session.scrollRequest) {
                 guard !expanded, let selectedDay = session.selectedDay else { return }
                 await Task.yield()
-                let firstLog = filteredLogs.first { $0.calendarDay == selectedDay }
+                let firstLog = days[selectedDay]?.first
                 // A yield alone doesn't guarantee that List has inserted the new target.
                 // Retry briefly; a newer selection or leaving the view cancels this request.
                 for attempt in 0..<3 {
@@ -154,6 +152,11 @@ struct WearHistoryView: View {
                 }
             }
             .onChange(of: session.filterID) { session.selectedDay = nil }
+            .onChange(of: watches.map(\.id), initial: true) {
+                if let id = session.filterID, !watches.contains(where: { $0.id == id }) {
+                    session.filterID = nil
+                }
+            }
             .alert(
                 "Wear history updated",
                 isPresented: Binding(get: { session.savedCount != nil }, set: { if !$0 { session.savedCount = nil } })
@@ -190,24 +193,26 @@ struct WearHistoryView: View {
         .accessibilityHint("View wear statistics")
     }
 
-    @ViewBuilder private func selectedEntries(days: [(day: String, entries: [WearLog])]) -> some View {
-        if session.selectedDay != nil, !days.contains(where: { $0.day == session.selectedDay }) {
-            Text("No wear entries for this day")
-                .foregroundStyle(Color(uiColor: .label)).listRowBackground(Color.clear)
-                .id(session.selectedDay)
-        }
-        ForEach(days.filter { $0.day == session.selectedDay }, id: \.day) { group in
-            Section {
-                ForEach(group.entries) { log in
-                    WearLogRow(
-                        log: log, store: store, onEdit: { session.editor = WearEditorSession(log: log) },
-                        onDelete: { session.deleting = log })
+    /// Shows only the chosen day and gives an empty selection a stable scroll target.
+    @ViewBuilder private func selectedEntries(days: [String: [WearLog]]) -> some View {
+        if let selectedDay = session.selectedDay {
+            if let entries = days[selectedDay] {
+                Section {
+                    ForEach(entries) { log in
+                        WearLogRow(
+                            log: log, store: store, onEdit: { session.editor = WearEditorSession(log: log) },
+                            onDelete: { session.deleting = log })
+                    }
+                } header: {
+                    if let date = WearDay(key: selectedDay)?.date() {
+                        Text(date.formatted(date: .complete, time: .omitted))
+                            .listRowInsets(EdgeInsets(top: 7, leading: 16, bottom: 3, trailing: 16))
+                    }
                 }
-            } header: {
-                if let date = WearDay(key: group.day)?.date() {
-                    Text(date.formatted(date: .complete, time: .omitted))
-                        .listRowInsets(EdgeInsets(top: 7, leading: 16, bottom: 3, trailing: 16))
-                }
+            } else {
+                Text("No wear entries for this day")
+                    .foregroundStyle(Color(uiColor: .label)).listRowBackground(Color.clear)
+                    .id(Optional(selectedDay))
             }
         }
     }

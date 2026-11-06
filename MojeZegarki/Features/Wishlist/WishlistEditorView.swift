@@ -3,7 +3,6 @@ import SwiftUI
 
 struct WishlistEditorView: View {
     let store: CollectionStore
-    let item: WishlistItem?
     @Environment(\.dismiss) private var dismiss
     @Environment(\.locale) private var locale
     @Environment(\.horizontalSizeClass) private var widthClass
@@ -19,20 +18,7 @@ struct WishlistEditorView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var previewPhoto: PhotoDraft?
     private var assets: DraftAssetSession { session.assets }
-    private var saving: Bool {
-        get { session.saving }
-        nonmutating set { session.saving = newValue }
-    }
-    private var error: String? {
-        get { session.error }
-        nonmutating set { session.error = newValue }
-    }
-
-    init(store: CollectionStore, session: WishlistEditorSession) {
-        self.store = store
-        self.session = session
-        self.item = session.item
-    }
+    private var saving: Bool { session.saving }
 
     var body: some View {
         NavigationStack {
@@ -89,7 +75,7 @@ struct WishlistEditorView: View {
                 }
             }
             .disabled(saving)
-            .navigationTitle(item == nil ? Text("Add to wishlist") : Text("Edit wish"))
+            .navigationTitle(session.item == nil ? Text("Add to wishlist") : Text("Edit wish"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -101,9 +87,15 @@ struct WishlistEditorView: View {
                         assets.isImporting || saving)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save", systemImage: "checkmark") { Task { await save() } }
-                        .disabled(!draft.purchaseDraft.hasRequiredFields || assets.isImporting || saving)
-                        .accessibilityIdentifier("wish.save")
+                    Button("Save", systemImage: "checkmark") {
+                        Task {
+                            if await session.save(in: store, locale: locale) { dismiss() }
+                        }
+                    }
+                    .disabled(
+                        !draft.purchaseDraft.hasRequiredFields || assets.isImporting || assets.isFinished || saving
+                    )
+                    .accessibilityIdentifier("wish.save")
                 }
             }
             .interactiveDismissDisabled(assets.isImporting || saving || draft != initialDraft)
@@ -115,38 +107,13 @@ struct WishlistEditorView: View {
             .onChange(of: selectedPhoto) { _, photo in
                 defer { selectedPhoto = nil }
                 guard let photo else { return }
-                let photoStore = store.photoStore
-                assets.run { [weak session, photoStore] in
-                    do {
-                        guard let data = try await photo.loadTransferable(type: ImportedImage.self) else {
-                            throw CollectionError.unreadablePhoto
-                        }
-                        try Task.checkCancellation()
-                        let imported = try await photoStore.importPhoto(data.data)
-                        guard let session else {
-                            try? await photoStore.remove(imported.id)
-                            return
-                        }
-                        guard await session.assets.stage(imported.id) else { return }
-                        session.draft.photo = imported
-                    } catch is CancellationError {} catch {
-                        session?.error = String(localized: "This photo could not be read. Choose another image.")
+                session.importPhoto(from: store.photoStore) {
+                    guard let data = try await photo.loadTransferable(type: ImportedImage.self) else {
+                        throw CollectionError.unreadablePhoto
                     }
+                    return data.data
                 }
             }
         }
-    }
-
-    @MainActor private func save() async {
-        guard !saving, !assets.isFinished, !assets.isImporting else { return }
-        saving = true
-        defer { saving = false }
-        let oldID = item?.photoID
-        do {
-            try store.saveWish(draft, editing: item, locale: locale)
-            await assets.commit(
-                retaining: Set(draft.photo.map { [$0.id] } ?? []), replacing: Set(oldID.map { [$0] } ?? []))
-            dismiss()
-        } catch { self.error = error.localizedDescription }
     }
 }
