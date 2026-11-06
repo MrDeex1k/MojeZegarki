@@ -5,6 +5,7 @@ struct WearStatistics {
         case month, year, all
         var id: Self { self }
 
+        /// Computes the inclusive lower bound from the same day key used by the database query.
         func startDay(endingOn today: WearDay) -> WearDay? {
             let calendar = WearDay.calendar(timeZone: .gmt)
             let date = today.date(timeZone: .gmt)!
@@ -30,6 +31,7 @@ struct WearStatistics {
     let recordedDays: Int
     let daysByWatch: [UUID: Int]
 
+    /// Counts unique civil days and unique days per watch without relying on elapsed seconds.
     init(entries: [Entry], period: Period, now: Date = .now, timeZone: TimeZone = .current) {
         let today = WearDay(now, timeZone: timeZone)
         endDay = today

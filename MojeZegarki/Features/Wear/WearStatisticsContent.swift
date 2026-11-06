@@ -31,6 +31,7 @@ struct WearStatisticsContent: View {
             }, period: period, now: now)
     }
 
+    /// Formats a Gregorian day key in the presentation locale without shifting its date.
     private func formatted(_ day: WearDay) -> String {
         let calendar = WearDay.calendar(timeZone: .gmt)
         return day.date(timeZone: .gmt)!.formatted(

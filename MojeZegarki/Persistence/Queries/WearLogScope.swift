@@ -6,6 +6,7 @@ enum WearLogScope {
         #Predicate<WearLog> { $0.timepiece?.id == id }
     }
 
+    /// Fetches only days in the inclusive statistics range, with no lower bound for all time.
     static func period(_ period: WearStatistics.Period, now: Date, timeZone: TimeZone = .current) -> Predicate<WearLog>
     {
         let endDay = WearDay(now, timeZone: timeZone)

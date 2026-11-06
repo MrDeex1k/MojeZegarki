@@ -10,6 +10,7 @@ import Observation
     private(set) var saving = false
     var error: String?
 
+    /// Initializes an isolated draft using the same locale that the editor uses to validate prices.
     init(store: CollectionStore, item: WishlistItem? = nil, locale: Locale = .current) {
         self.item = item
         let initial = item.map { WishlistDraft(item: $0, locale: locale) } ?? WishlistDraft(locale: locale)
@@ -18,6 +19,7 @@ import Observation
         assets = DraftAssetSession { try await store.photoStore.remove($0) }
     }
 
+    /// Commits the wish before discarding any replaced photo and keeps the draft available on failure.
     func save(in store: CollectionStore, locale: Locale) async -> Bool {
         guard !saving, !assets.isFinished, !assets.isImporting else { return false }
         saving = true
@@ -36,6 +38,7 @@ import Observation
         }
     }
 
+    /// Stages the imported file for the draft and reports errors only while the task is active.
     func importPhoto(from store: PhotoStore, load: @escaping @MainActor () async throws -> Data) {
         assets.run { [weak self] in
             do {
@@ -49,7 +52,7 @@ import Observation
                 guard await assets.stage(imported.id) else { return }
                 draft.photo = imported
             } catch is CancellationError {} catch {
-                self?.error = String(localized: "This photo could not be read. Choose another image.")
+                if !Task.isCancelled { self?.error = error.localizedDescription }
             }
         }
     }

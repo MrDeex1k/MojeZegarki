@@ -177,6 +177,7 @@ struct WearCalendar: View {
         }
     }
 
+    /// Presents the same day as a compact grid cell or a large-text row with explicit selection state.
     private func dayButton(_ date: Date, today: String, expanded: Bool) -> some View {
         let key = WearDay(date).key
         let count = counts[key, default: 0]

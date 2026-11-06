@@ -1,3 +1,4 @@
+import Observation
 import SwiftData
 import UIKit
 import XCTest
@@ -129,6 +130,7 @@ final class FreeModuleTests: XCTestCase {
         XCTAssertEqual(empty.shareOfRecordedDays(for: id), 0)
     }
 
+    /// Uses a civil day skipped by the current time zone to verify that statistics preserve stored keys.
     func testStatisticsKeepGregorianDayKeysAcrossAChangeOfDateLine() throws {
         let zone = try XCTUnwrap(TimeZone(identifier: "Pacific/Apia"))
         let now = try XCTUnwrap(WearDay(key: "2012-01-02")?.date(timeZone: zone))
@@ -155,8 +157,26 @@ final class FreeModuleTests: XCTestCase {
         let now = try XCTUnwrap(WearDay(key: "2026-03-29")?.date(timeZone: zone)).addingTimeInterval(-5 * 3600)
         let log = WearLog(day: "2026-03-29", timepiece: nil)
         let editor = WearEditorSession(log: log, now: now, timeZone: zone)
-        XCTAssertLessThanOrEqual(editor.date, now)
-        XCTAssertEqual(WearDay(editor.date, timeZone: zone).key, log.calendarDay)
+        let today = WearDay(now, timeZone: zone)
+        XCTAssertLessThanOrEqual(editor.date, try XCTUnwrap(today.date(timeZone: .gmt)))
+        XCTAssertEqual(editor.day.key, log.calendarDay)
+    }
+
+    /// Reopens and saves an entry in a time zone that skipped its stored civil day.
+    func testEditingKeepsCalendarDayAcrossTimeZoneChanges() throws {
+        let store = try CollectionStore(inMemory: true)
+        let watch = try watch(store)
+        let day = try XCTUnwrap(WearDay(key: "2011-12-30"))
+        let log = try store.logWear(for: watch, on: day)
+        let originalZone = try XCTUnwrap(TimeZone(identifier: "America/New_York"))
+        let newZone = try XCTUnwrap(TimeZone(identifier: "Pacific/Apia"))
+        let editor = WearEditorSession(log: log, timeZone: originalZone)
+        let reOpenedEditor = WearEditorSession(log: log, timeZone: newZone)
+        XCTAssertEqual(editor.day, day)
+        XCTAssertEqual(reOpenedEditor.day, day)
+        // Apia skipped this civil day. Saving a selected key must still keep the historical date.
+        try store.logWear(for: watch, on: editor.day, editing: log, today: WearDay(.now, timeZone: newZone))
+        XCTAssertEqual(log.calendarDay, day.key)
     }
 
     private func pdf() -> Data {
@@ -462,6 +482,21 @@ final class FreeModuleTests: XCTestCase {
         XCTAssertEqual(item.notes, "Changed note")
         let repeated = await session.save(in: store, locale: polish)
         XCTAssertFalse(repeated)
+    }
+
+    func testWishPhotoImportReportsSpecificSizeError() async throws {
+        let store = try CollectionStore(inMemory: true)
+        let session = WishlistEditorSession(store: store)
+        let reported = expectation(description: "The editor reports the import error")
+        withObservationTracking {
+            _ = session.error
+        } onChange: {
+            reported.fulfill()
+        }
+        session.importPhoto(from: store.photoStore) { throw DocumentError.tooLarge }
+        await fulfillment(of: [reported], timeout: 2)
+        XCTAssertEqual(session.error, DocumentError.tooLarge.localizedDescription)
+        XCTAssertNil(session.draft.photo)
     }
 
     func testQuickMoveUndoPreservesLegacyOptionalFields() throws {

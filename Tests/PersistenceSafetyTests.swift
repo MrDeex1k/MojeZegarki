@@ -307,6 +307,7 @@ import XCTest
         XCTAssertEqual(try store.context.fetchCount(FetchDescriptor<WishlistItem>()), 0)
     }
 
+    /// Keeps independent entries on each watch to detect lost or moved relationships after a failed save.
     func testFailedWearReassignmentKeepsBothWatchHistoriesAndCanBeRetried() throws {
         let control = SaveControl()
         let store = try CollectionStore(inMemory: true, saveContext: control.save)
@@ -315,20 +316,23 @@ import XCTest
         let now = Date.now
         let log = try store.logWear(for: original, date: now, now: now)
         let id = log.id
-        XCTAssertEqual(original.wearLogs?.map(\.id), [id])
-        XCTAssertTrue((replacement.wearLogs ?? []).isEmpty)
+        let originalOther = try store.logWear(for: original, on: XCTUnwrap(WearDay(key: "2000-01-01")))
+        let replacementOther = try store.logWear(for: replacement, on: XCTUnwrap(WearDay(key: "2000-01-02")))
+        func history(_ watch: Timepiece) -> Set<UUID> { Set(watch.wearLogs?.map(\.id) ?? []) }
+        XCTAssertEqual(history(original), [id, originalOther.id])
+        XCTAssertEqual(history(replacement), [replacementOther.id])
 
         control.failing = true
         XCTAssertThrowsError(try store.logWear(for: replacement, date: now, editing: log, now: now))
         XCTAssertEqual(log.timepiece?.id, original.id)
-        XCTAssertEqual(original.wearLogs?.map(\.id), [id])
-        XCTAssertTrue((replacement.wearLogs ?? []).isEmpty)
+        XCTAssertEqual(history(original), [id, originalOther.id])
+        XCTAssertEqual(history(replacement), [replacementOther.id])
 
         control.failing = false
         try store.logWear(for: replacement, date: now, editing: log, now: now)
         XCTAssertEqual(log.timepiece?.id, replacement.id)
-        XCTAssertTrue((original.wearLogs ?? []).isEmpty)
-        XCTAssertEqual(replacement.wearLogs?.map(\.id), [id])
+        XCTAssertEqual(history(original), [originalOther.id])
+        XCTAssertEqual(history(replacement), [id, replacementOther.id])
     }
 
     func testInMemoryStoresHaveIndependentAssetDirectories() async throws {

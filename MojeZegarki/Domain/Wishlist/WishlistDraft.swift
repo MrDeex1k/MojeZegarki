@@ -25,12 +25,14 @@ struct WishlistDraft: Equatable {
         return draft
     }
 
+    /// Returns a valid optional link or reports an invalid URL before the wish is saved.
     func validatedURL() throws -> String? {
         guard let value = url.nilIfEmpty else { return nil }
         guard Self.webLink(value) != nil else { throw WishlistError.invalidURL }
         return value
     }
 
+    /// Accepts only HTTP or HTTPS links with a host and without embedded credentials.
     static func webLink(_ value: String) -> URL? {
         guard let parsed = URLComponents(string: value),
             ["https", "http"].contains(parsed.scheme?.lowercased() ?? ""),

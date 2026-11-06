@@ -131,11 +131,13 @@ struct DocumentsView: View {
         .appError($error)
     }
 
+    /// Starts an import only while there is no active request or document draft.
     private func beginImport(_ source: ImportRequest.Source) {
         guard !importing, pending == nil else { return }
         importRequest = ImportRequest(source: source)
     }
 
+    /// Transfers a completed asset to the current draft or schedules targeted cleanup if it is no longer needed.
     private func importDocument(_ request: ImportRequest) async {
         defer {
             if importRequest?.id == request.id { importRequest = nil }
@@ -157,13 +159,13 @@ struct DocumentsView: View {
                 asset = try await store.documentStore.importData(data.data)
             }
             guard !Task.isCancelled, importRequest?.id == request.id else {
-                try? await store.documentStore.remove(asset.id)
+                await store.documentStore.discardUnattached(asset.id)
                 return
             }
             do {
                 try store.requireManaged(watch)
             } catch {
-                try? await store.documentStore.remove(asset.id)
+                await store.documentStore.discardUnattached(asset.id)
                 throw error
             }
             pending = DocumentEditorSession(watch: watch, store: store, asset: asset, proposedName: name)

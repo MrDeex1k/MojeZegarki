@@ -17,6 +17,7 @@ struct WearHistoryView: View {
 
     private var expanded: Bool { widthClass == .regular && !typeSize.isAccessibilitySize }
 
+    /// Scopes the history query to the detail watch or the active watch filter when either exists.
     init(store: CollectionStore, watch: Timepiece?, session: WearHistorySession, presentsEditor: Bool) {
         self.store = store
         self.watch = watch
@@ -151,7 +152,7 @@ struct WearHistoryView: View {
                 }
             }
             .onChange(of: session.filterID) { session.selectedDay = nil }
-            .onChange(of: watches.map(\.id)) {
+            .onChange(of: watches.map(\.id), initial: true) {
                 if let id = session.filterID, !watches.contains(where: { $0.id == id }) {
                     session.filterID = nil
                 }
@@ -192,6 +193,7 @@ struct WearHistoryView: View {
         .accessibilityHint("View wear statistics")
     }
 
+    /// Shows only the chosen day and gives an empty selection a stable scroll target.
     @ViewBuilder private func selectedEntries(days: [String: [WearLog]]) -> some View {
         if let selectedDay = session.selectedDay {
             if let entries = days[selectedDay] {
