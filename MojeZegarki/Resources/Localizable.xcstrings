@@ -116,7 +116,13 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
+            "value" : "%1$@ – %2$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "%1$@ – %2$@"
           }
         }
@@ -950,7 +956,22 @@
         }
       }
     },
-    "Days" : {},
+    "Days" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Days"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dni"
+          }
+        }
+      }
+    },
     "Days with a checkmark are already saved. Select new days marked with a plus." : {
       "localizations" : {
         "pl" : {
@@ -2116,6 +2137,22 @@
         }
       }
     },
+    "Opening photo…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opening photo…"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otwieranie zdjęcia…"
+          }
+        }
+      }
+    },
     "Opening document…" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2588,6 +2625,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wybierz zegarek do statystyk"
+          }
+        }
+      }
+    },
+    "Search currencies" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search currencies"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szukaj walut"
           }
         }
       }
@@ -3777,6 +3830,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odblokuj iPhone’a"
+          }
+        }
+      }
+    },
+    "Unsupported currency. Choose another currency to save a price." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unsupported currency. Choose another currency to save a price."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieobsługiwana waluta. Wybierz inną walutę, aby zapisać cenę."
           }
         }
       }

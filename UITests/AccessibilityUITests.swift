@@ -1,7 +1,11 @@
+import Vision
 import XCTest
 
 @MainActor
 final class AccessibilityUITests: XCTestCase {
+    override func setUpWithError() throws { continueAfterFailure = false }
+
+    /// Checks the collection title geometry and audits the main screens with standard text sizing.
     func testCoreScreensAccessibility() throws {
         let app = XCUIApplication()
         app.launchArguments = [
@@ -10,6 +14,16 @@ final class AccessibilityUITests: XCTestCase {
         ]
         app.launch()
         XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+        let title = app.navigationBars.staticTexts["Collection"]
+        let filter = app.segmentedControls["collection.filter"]
+        XCTAssertTrue(title.waitForExistence(timeout: 5))
+        XCTAssertTrue(filter.exists)
+        let titleFrame = title.frame
+        XCTAssertGreaterThan(titleFrame.width, 0)
+        XCTAssertGreaterThan(titleFrame.height, 0)
+        XCTAssertTrue(app.frame.contains(titleFrame), "The collection title must be visible")
+        XCTAssertLessThanOrEqual(titleFrame.maxY, filter.frame.minY, "The title must not cover the archive filter")
+        attachAuditScreenshot(app, named: "Collection header")
         try audit(app)
         app.buttons["collection.add"].tap()
         XCTAssertTrue(app.textFields["editor.brand"].waitForExistence(timeout: 5))
@@ -34,6 +48,38 @@ final class AccessibilityUITests: XCTestCase {
         try audit(app)
     }
 
+    /// Reads the rendered placeholder rather than the accessibility label, which can be complete even when clipped.
+    func testCollectionSearchPlaceholderIsReadableAtLargestTextSize() throws {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "--uitesting", "--reset-test-store", "--test-wear-fixture", "-AppleLanguages", "(en)", "-AppleLocale",
+            "en_US", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL",
+        ]
+        app.launch()
+        XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+        let search = app.searchFields.firstMatch
+        if !search.isHittable { app.swipeDown() }
+        XCTAssertTrue(search.isHittable)
+        let bounds = app.frame
+        let frame = search.frame
+        XCTAssertTrue(bounds.contains(frame))
+        XCTAssertFalse(frame.isEmpty)
+        attachAuditScreenshot(app, named: "Collection search at largest text size")
+
+        let image = try XCTUnwrap(XCUIScreen.main.screenshot().image.cgImage)
+        let scaleX = CGFloat(image.width) / bounds.width
+        let scaleY = CGFloat(image.height) / bounds.height
+        let crop = CGRect(
+            x: (frame.minX - bounds.minX) * scaleX, y: (frame.minY - bounds.minY) * scaleY,
+            width: frame.width * scaleX, height: frame.height * scaleY)
+        let fieldImage = try XCTUnwrap(image.cropping(to: crop.integral))
+        let recognition = VNRecognizeTextRequest()
+        recognition.recognitionLanguages = ["en-US"]
+        try VNImageRequestHandler(cgImage: fieldImage).perform([recognition])
+        let text = (recognition.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: " ")
+        XCTAssertTrue(text.localizedCaseInsensitiveContains("Search brand or model"), "Rendered placeholder: \(text)")
+    }
+
     func testLockScreenAccessibility() throws {
         let app = XCUIApplication()
         app.launchArguments = [
@@ -48,6 +94,7 @@ final class AccessibilityUITests: XCTestCase {
         try audit(app)
     }
 
+    /// Runs the accessibility audit and attaches evidence for failures and the reviewed system exceptions.
     private func audit(_ app: XCUIApplication) throws {
         try app.performAccessibilityAudit(for: [
             .sufficientElementDescription, .trait, .hitRegion, .contrast, .textClipped,
@@ -63,10 +110,8 @@ final class AccessibilityUITests: XCTestCase {
             // SwiftUI sometimes reports a visual node that has already been recycled.
             // Preserve evidence for manual review; do not present it as a verified contrast pass.
             if issue.auditType == .contrast, issue.element == nil || issue.element?.exists == false {
-                let path = FileManager.default.temporaryDirectory.appendingPathComponent(
-                    "unlocated-contrast-\(UUID().uuidString).png")
-                try? app.screenshot().pngRepresentation.write(to: path)
-                print("AUDIT_MANUAL_CONTRAST: \(issue.detailedDescription) screenshot=\(path.path)")
+                self.attachAuditScreenshot(app, named: "Contrast requires manual review")
+                print("AUDIT_MANUAL_CONTRAST: \(issue.detailedDescription)")
                 return true
             }
             // This is an intentional two-line preview with a tested full-text destination.
@@ -92,23 +137,29 @@ final class AccessibilityUITests: XCTestCase {
             {
                 return true
             }
-            // iOS 17 flags its standard scrolling search field as clipped.
-            if issue.auditType == .textClipped, let element = issue.element, element.elementType == .searchField {
+            // The system reports potential clipping for this native placeholder even when the full text is visible.
+            if issue.auditType == .textClipped, let element = issue.element, element.elementType == .searchField,
+                element.label == "Search brand or model"
+            {
+                self.attachAuditScreenshot(app, named: "Native search placeholder requires manual review")
                 return true
             }
-            if issue.auditType == .contrast, let element = issue.element, !element.isHittable {
+            if issue.auditType == .contrast, let element = issue.element, !element.frame.intersects(app.frame) {
                 print("AUDIT_OFFSCREEN: \(element.label)")
                 return true
             }
-            let path = FileManager.default.temporaryDirectory.appendingPathComponent(
-                "accessibility-\(UUID().uuidString).png")
-            do {
-                try app.screenshot().pngRepresentation.write(to: path)
-                print("AUDIT_SCREENSHOT: \(path.path)")
-            } catch { print("AUDIT_SCREENSHOT_ERROR: \(error)") }
+            self.attachAuditScreenshot(app, named: "Accessibility audit failure")
             print("ACCESSIBILITY: \(issue.compactDescription) — \(issue.element?.label ?? issue.detailedDescription)")
             return false
         }
+    }
+
+    /// Keeps the visual evidence available in the result bundle even if the test passes.
+    private func attachAuditScreenshot(_ app: XCUIApplication, named name: String) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 
     func testFullDocumentNoteIsReadableWithoutEditing() throws {

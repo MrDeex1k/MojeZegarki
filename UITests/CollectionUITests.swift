@@ -140,6 +140,56 @@ final class CollectionUITests: XCTestCase {
         XCTAssertTrue(price.exists)
     }
 
+    /// Opens an existing price with an unsupported code and checks that a supported choice replaces it.
+    func testLegacyCurrencyExplainsHowToSaveAnExistingPrice() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "--uitesting", "--reset-test-store", "--test-legacy-currency", "-AppleLanguages", "(en)", "-AppleLocale",
+            "en_US",
+        ]
+        app.launch()
+        let watch = app.staticTexts["Legacy currency watch"]
+        XCTAssertTrue(watch.waitForExistence(timeout: 15))
+        watch.tap()
+        app.buttons["detail.edit"].tap()
+        let picker = app.buttons["currency.picker"]
+        reveal(picker, in: app)
+        picker.tap()
+
+        let legacy = app.buttons["currency.ZZZ"]
+        XCTAssertTrue(legacy.waitForExistence(timeout: 5))
+        XCTAssertTrue(legacy.isSelected)
+        XCTAssertTrue(legacy.label.contains("Unsupported currency. Choose another currency to save a price."))
+        let supported = app.buttons["currency.USD"]
+        XCTAssertTrue(supported.isHittable)
+        supported.tap()
+        XCTAssertTrue(supported.isSelected)
+        XCTAssertFalse(legacy.exists)
+    }
+
+    /// Searches by a localized name without diacritics and verifies that the chosen row exposes its selection.
+    func testCurrencySearchMatchesPolishNameAndExposesSelectedRow() {
+        let app = XCUIApplication()
+        app.launchArguments = ["--uitesting", "--reset-test-store", "-AppleLanguages", "(pl)", "-AppleLocale", "pl_PL"]
+        app.launch()
+        XCTAssertTrue(app.buttons["collection.add"].waitForExistence(timeout: 15))
+        app.buttons["collection.add"].tap()
+        let picker = app.buttons["currency.picker"]
+        reveal(picker, in: app)
+        picker.tap()
+
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        XCTAssertEqual(search.placeholderValue, "Szukaj walut")
+        search.tap()
+        search.typeText("japonski")
+        let yen = app.buttons["currency.JPY"]
+        XCTAssertTrue(yen.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["currency.PLN"].exists)
+        yen.tap()
+        XCTAssertTrue(yen.isSelected)
+    }
+
     func testBackgroundShieldCoversPhotoPreviewAndUnsavedEditor() {
         let app = XCUIApplication()
         app.launchArguments = [

@@ -19,7 +19,7 @@ struct WatchPhotoPreview: View {
                         .accessibilityLabel("Watch photo")
                         .accessibilityIdentifier("photoPreview.image")
                 } else if loading {
-                    ProgressView().tint(.white)
+                    ProgressView("Opening photo…").tint(.white)
                 } else {
                     ContentUnavailableView("Photo unavailable", systemImage: "photo.badge.exclamationmark")
                         .accessibilityIdentifier("photoPreview.unavailable")

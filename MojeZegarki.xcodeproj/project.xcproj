@@ -455,6 +455,7 @@
     "DEBUG_INFORMATION_FORMAT[config=Debug]": "dwarf",
     "DEBUG_INFORMATION_FORMAT[config=Release]": "dwarf-with-dsym",
     "ENABLE_STRICT_OBJC_MSGSEND": "YES",
+    "ENABLE_CODE_COVERAGE[config=Release]": "NO",
     "ENABLE_TESTABILITY[config=Debug]": "YES",
     "ENABLE_USER_SCRIPT_SANDBOXING": "YES",
     "GCC_NO_COMMON_BLOCKS": "YES",

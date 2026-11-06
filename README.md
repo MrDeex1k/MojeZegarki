@@ -100,7 +100,20 @@ Natywna aplikacja w **Swift 6**, z interfejsem **SwiftUI** i lokalną bazą **Sw
 
 Konfiguracja projektu jest zapisana w formacie JSON Xcode w `MojeZegarki.xcodeproj/project.xcproj`, obsługiwanym przez **Xcode 27 i nowsze**. Projekt nadal otwiera się przez `MojeZegarki.xcodeproj`; tej samej ścieżki używają `xcodebuild` i `scripts/test-ios.sh`. Migrację wykonano wbudowanym konwerterem Xcode 27.2: `xcodebuild -project MojeZegarki.xcodeproj -convert-project "Xcode Project"`. [Opis formatu i migracji w dokumentacji Apple](https://developer.apple.com/documentation/xcode/updating-your-xcode-project-configuration-file-format).
 
-Testy automatyczne obejmują reguły domenowe, migracje, trwałość danych, obsługę plików i przepływy UI. Testy interfejsu korzystają z izolowanej bazy; macierz regresji uwzględnia oba języki, oba motywy i duży tekst. Projekt jest sprawdzany na symulatorach i fizycznym iPhonie.
+### Weryfikacja lokalna
+
+W Xcode wybierz schemat `MojeZegarki` i plan `Regression`. Z terminala użyj identyfikatora symulatora zwróconego przez `xcrun simctl list devices available`.
+
+```sh
+bash scripts/format.sh --check
+IOS_DESTINATION='<UUID symulatora>' bash scripts/test-ios.sh
+```
+
+Aby uruchomić same testy jednostkowe i integracyjne, dodaj `-only-testing:MojeZegarkiTests`. Wyniki, pokrycie kodu i załączniki audytu dostępności znajdziesz w ścieżce `.xcresult` wypisanej przez skrypt. Przy uruchamianiu dwóch zestawów równolegle użyj różnych symulatorów i ustaw osobny `DERIVED_DATA_PATH` dla każdego. Własną ścieżkę do nowego pakietu wyników ustawisz przez `RESULT_PATH`.
+
+Testy UI korzystają z izolowanej kolekcji testowej. Macierz kalendarza obejmuje polski i angielski, oba motywy oraz standardowy i największy rozmiar tekstu. Pokrycie zbiera konfiguracja testowa Debug. Kompilacja Release wyłącza instrumentację pokrycia.
+
+Test `StorageProtectionTests.testCompleteProtectionMetadataOnPhysicalDevice` uruchom z Xcode na odblokowanym iPhonie z ustawionym kodem i skonfigurowanym podpisywaniem. Na fizycznym urządzeniu sprawdź także osłonę podczas blokowania, rzeczywiste uwierzytelnianie, nawigację i ogłaszanie wybranej waluty przez VoiceOver oraz czytelność pól wyszukiwania przy dużym tekście. Zrzuty w `.xcresult` wskazują przypadki oznaczone w audycie do ręcznej weryfikacji.
 
 ## Dowiedz się więcej
 

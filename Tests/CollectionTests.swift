@@ -117,6 +117,20 @@ final class CollectionTests: XCTestCase {
         }
     }
 
+    /// Distinguishes keyboard decimal digits from numeric symbols, grouping separators and excess precision.
+    func testPriceAcceptsLocalizedDecimalDigitsWithoutAcceptingOtherNumericSymbols() throws {
+        let arabic = Locale(identifier: "ar_SA@numbers=arab")
+        let separator = try XCTUnwrap(arabic.decimalSeparator)
+        var value = draft()
+        value.currencyCode = "SAR"
+        value.price = "١٢\(separator)٣٤٥٦"
+        XCTAssertEqual(try value.validatedPrice(locale: arabic), "12.3456")
+        for input in ["١٬٢٣٤\(separator)٥٦", "①\(separator)٥", "½", "١٢\(separator)١٢٣٤٥٦٧"] {
+            value.price = input
+            XCTAssertThrowsError(try value.validatedPrice(locale: arabic), input)
+        }
+    }
+
     func testDiskPersistenceAndEditingWithoutAutosave() throws {
         var savedID: UUID!
         do {

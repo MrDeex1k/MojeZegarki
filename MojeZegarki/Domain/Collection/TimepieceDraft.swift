@@ -31,13 +31,20 @@ struct TimepieceDraft: Equatable {
         guard hasRequiredFields else { throw CollectionError.requiredFields }
         let input = price.trimmed
         guard !input.isEmpty else { return nil }
+        let digits = input.map { character in
+            guard character.unicodeScalars.count == 1,
+                character.unicodeScalars.first?.properties.numericType == .decimal,
+                let value = character.wholeNumberValue
+            else { return String(character) }
+            return String(value)
+        }.joined()
         let separator = locale.decimalSeparator ?? "."
         let escapedSeparator = NSRegularExpression.escapedPattern(for: separator)
-        guard input.range(of: "^[0-9]{1,18}(\(escapedSeparator)[0-9]{1,6})?$", options: .regularExpression) != nil
+        guard digits.range(of: "^[0-9]{1,18}(\(escapedSeparator)[0-9]{1,6})?$", options: .regularExpression) != nil
         else {
             throw CollectionError.invalidPrice
         }
-        let canonical = input.replacingOccurrences(of: separator, with: ".")
+        let canonical = digits.replacingOccurrences(of: separator, with: ".")
         // No permissive NumberFormatter parsing: partial numbers must never be silently accepted.
         guard canonical.range(of: "^[0-9]{1,18}(\\.[0-9]{1,6})?$", options: .regularExpression) != nil,
             let amount = Decimal(string: canonical, locale: Locale(identifier: "en_US_POSIX"))

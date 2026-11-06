@@ -21,12 +21,21 @@
             func invalidate() {}
         }
 
+        /// Installs the requested scenarios into the isolated UI test collection.
         func seed(in store: CollectionStore) async throws {
             if configuration.has("--test-photo-preview-fixture") {
                 try await once("photos") { try await photos(in: store) }
             }
             if configuration.has("--test-document-fixture") {
                 try await once("documents") { try await document(in: store) }
+            }
+            if configuration.has("--test-legacy-currency") {
+                try await once("legacy-currency") {
+                    let watch = try fixtureWatch("Legacy currency watch", in: store)
+                    watch.purchasePrice = "50"
+                    watch.currencyCode = "ZZZ"
+                    try store.context.save()
+                }
             }
             if configuration.has("--test-wear-fixture") {
                 try await once("wear") {

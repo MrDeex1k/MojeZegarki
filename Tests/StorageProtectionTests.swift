@@ -5,9 +5,20 @@ import XCTest
 
 @MainActor
 final class StorageProtectionTests: XCTestCase {
+    /// Checks that preparation preserves legacy content and that newly imported files can still be opened.
     func testExistingAndNewCollectionFilesRemainReadableAndKeepBackup() async throws {
-        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        defer { try? FileManager.default.removeItem(at: root) }
+        try await withProtectedCollection { root, legacy in
+            XCTAssertGreaterThan(try collectionFiles(in: root).count, 6)
+            XCTAssertEqual(try root.resourceValues(forKeys: [.isExcludedFromBackupKey]).isExcludedFromBackup, false)
+            XCTAssertEqual(try String(contentsOf: legacy, encoding: .utf8), "legacy")
+        }
+    }
+
+    /// Provides a populated fixture while its SwiftData store is still alive.
+    private func withProtectedCollection(_ verify: (URL, URL) throws -> Void) async throws {
+        // SwiftData can keep the SQLite files open beyond the test's last store reference.
+        // Leave this isolated fixture in the system temporary directory for reclamation.
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("StorageProtection-\(UUID())")
         let legacy = root.appendingPathComponent("Documents/legacy/document.pdf")
         try FileManager.default.createDirectory(
             at: legacy.deletingLastPathComponent(), withIntermediateDirectories: true)
@@ -22,34 +33,36 @@ final class StorageProtectionTests: XCTestCase {
             UIColor.white.setFill()
             $0.fill(CGRect(x: 0, y: 0, width: 100, height: 100))
         }
-        _ = try await store.photoStore.importPhoto(image)
-        _ = try await store.documentStore.importData(image)
-        let count = try protectedItemCount(root)
-        XCTAssertGreaterThan(count, 6)
-        XCTAssertEqual(try root.resourceValues(forKeys: [.isExcludedFromBackupKey]).isExcludedFromBackup, false)
-        XCTAssertEqual(try String(contentsOf: legacy, encoding: .utf8), "legacy")
+        let photo = try await store.photoStore.importPhoto(image)
+        let document = try await store.documentStore.importData(image)
+        let photoData = await store.photoStore.data(for: photo)
+        let documentData = try await store.documentStore.data(id: document.id, filename: document.filename)
+        XCTAssertNotNil(photoData)
+        XCTAssertFalse(documentData.isEmpty)
+        try withExtendedLifetime(store) { try verify(root, legacy) }
     }
 
-    private func protectedItemCount(_ root: URL) throws -> Int {
+    private func collectionFiles(in root: URL) throws -> [URL] {
         let urls = try XCTUnwrap(FileManager.default.enumerator(at: root, includingPropertiesForKeys: nil))
-        var count = 0
-        for case let url as URL in urls {
-            #if !targetEnvironment(simulator)
-                let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
-            #endif
-            #if !targetEnvironment(simulator)
-                XCTAssertEqual(attributes[.protectionKey] as? FileProtectionType, .complete, url.lastPathComponent)
-            #endif
-            count += 1
-        }
-        return count
+        return urls.compactMap { $0 as? URL }
     }
 
+    /// Verifies the protection class on both the collection directory and its children.
+    private func assertCompleteProtection(in root: URL) throws {
+        for url in try [root] + collectionFiles(in: root) {
+            let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
+            XCTAssertEqual(attributes[.protectionKey] as? FileProtectionType, .complete, url.lastPathComponent)
+        }
+    }
+
+    /// Checks the actual file protection classes on a device, separately from simulated lifecycle events.
     func testCompleteProtectionMetadataOnPhysicalDevice() async throws {
         #if targetEnvironment(simulator)
             throw XCTSkip("Simulator does not expose NSFileProtectionKey. Run on an iPhone with a device passcode.")
         #else
-            try await testExistingAndNewCollectionFilesRemainReadableAndKeepBackup()
+            try await withProtectedCollection { root, _ in
+                try assertCompleteProtection(in: root)
+            }
         #endif
     }
 

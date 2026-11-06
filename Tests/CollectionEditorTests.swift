@@ -57,11 +57,12 @@ import XCTest
     /// Checks file lifetime before a failed write and after a successful retry.
     func testFailedDatabaseSaveKeepsBothPhotoSetsUntilRetryCommits() async throws {
         enum Failure: Error { case simulated }
-        var failing = false
+        @MainActor final class SaveState { var failing = false }
+        let state = SaveState()
         let store = try CollectionStore(
             inMemory: true,
             saveContext: {
-                if failing { throw Failure.simulated }
+                if state.failing { throw Failure.simulated }
                 try $0.save()
             })
         var draft = TimepieceDraft()
@@ -75,7 +76,7 @@ import XCTest
         _ = await session.assets.stage(replacement.id)
         session.draft.photos = [replacement]
         session.draft.mainPhotoID = replacement.id
-        failing = true
+        state.failing = true
         let failed = await session.save(in: store, locale: Locale(identifier: "en_US"))
         XCTAssertFalse(failed)
         XCTAssertFalse(session.assets.isFinished)
@@ -84,7 +85,7 @@ import XCTest
         XCTAssertNotNil(oldBytes)
         XCTAssertNotNil(stagedBytes)
         XCTAssertEqual(watch.photos?.map(\.id), [original.id])
-        failing = false
+        state.failing = false
         let saved = await session.save(in: store, locale: Locale(identifier: "en_US"))
         XCTAssertTrue(saved)
         let removed = await store.photoStore.data(for: original)
