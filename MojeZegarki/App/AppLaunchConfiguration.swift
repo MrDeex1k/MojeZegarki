@@ -12,6 +12,7 @@ struct AppLaunchConfiguration {
         #endif
     }
 
+    /// Accepts fixture and reset flags only in a Debug UI test launch.
     func has(_ flag: String) -> Bool { isUITesting && arguments.contains(flag) }
 
     var directory: URL? {

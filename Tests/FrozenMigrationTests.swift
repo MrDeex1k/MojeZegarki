@@ -60,6 +60,7 @@ import XCTest
         XCTAssertEqual(try reopened.context.fetchCount(FetchDescriptor<WishlistItem>()), 3)
     }
 
+    /// Copies the immutable fixture because opening its database can rewrite it during migration.
     private func copyFixture(version: Int) throws -> URL {
         let source = try XCTUnwrap(
             Bundle(for: Self.self).url(forResource: "collection-v\(version)", withExtension: "store"))

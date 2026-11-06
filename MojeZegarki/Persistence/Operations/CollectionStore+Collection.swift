@@ -51,6 +51,7 @@ extension CollectionStore {
         return watch
     }
 
+    /// Persists an archive or restore operation and refreshes the record’s modification date.
     func changeStatus(_ status: WatchStatus, for watch: Timepiece) throws {
         try requireManaged(watch)
         beginChanges()
@@ -59,6 +60,7 @@ extension CollectionStore {
         try persistChanges()
     }
 
+    /// Commits removal of the watch and its related records before deleting their files.
     func delete(_ watch: Timepiece) async throws {
         try requireManaged(watch)
         let photos = watch.sortedPhotos

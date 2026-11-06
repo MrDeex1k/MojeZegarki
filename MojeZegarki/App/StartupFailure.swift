@@ -5,6 +5,7 @@ struct StartupFailure {
     enum Kind { case storageFull, unavailable, other }
     let kind: Kind
 
+    /// Logs the underlying error privately and keeps only its category for presentation.
     init(error: any Error) {
         let error = error as NSError
         Logger(subsystem: "pl.jakubbatycki.MojeZegarki", category: "Startup").error(
@@ -12,6 +13,7 @@ struct StartupFailure {
         kind = Self.classify(error)
     }
 
+    /// Recognizes recoverable storage failures even when the framework wraps the original error.
     private static func classify(_ error: NSError) -> Kind {
         if (error.domain == NSCocoaErrorDomain && error.code == NSFileWriteOutOfSpaceError)
             || (error.domain == NSPOSIXErrorDomain && error.code == Int(ENOSPC))

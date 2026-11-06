@@ -7,7 +7,11 @@ import UniformTypeIdentifiers
 actor DocumentStore {
     static let maximumBytes = 20_000_000
     let root: URL
-    init(root: URL) { self.root = root }
+    private let temporaryDirectory: TemporaryCollectionDirectory?
+    init(root: URL, temporaryDirectory: TemporaryCollectionDirectory? = nil) {
+        self.root = root
+        self.temporaryDirectory = temporaryDirectory
+    }
 
     func importFile(at url: URL) throws -> DocumentAsset {
         let scoped = url.startAccessingSecurityScopedResource()

@@ -33,6 +33,7 @@
             }
         }
 
+        /// Records completion only after the fixture operation succeeds so a partial setup can be retried.
         private func once(_ name: String, operation: () async throws -> Void) async throws {
             let marker = directory.appendingPathComponent("fixture-\(name)-v1.ready")
             guard !FileManager.default.fileExists(atPath: marker.path) else { return }
@@ -40,6 +41,7 @@
             try Data().write(to: marker, options: [.atomic, .completeFileProtection])
         }
 
+        /// Finds a fixture by its seeded identity so a relaunch can reuse the same record.
         private func existingWatch(_ name: String, in store: CollectionStore) throws -> Timepiece? {
             var query = FetchDescriptor<Timepiece>(
                 predicate: #Predicate {
@@ -49,6 +51,7 @@
             return try store.context.fetch(query).first
         }
 
+        /// Reuses a matching fixture watch or inserts it if seeding has not created it yet.
         private func fixtureWatch(_ name: String, in store: CollectionStore) throws -> Timepiece {
             if let watch = try existingWatch(name, in: store) { return watch }
             var draft = TimepieceDraft()
@@ -70,6 +73,7 @@
             }
         }
 
+        /// Seeds the gallery and wishlist with separate photo assets so either owner can delete its own files.
         private func photos(in store: CollectionStore) async throws {
             if try existingWatch("Photo watch", in: store) == nil {
                 var draft = TimepieceDraft()
@@ -98,6 +102,7 @@
             }
         }
 
+        /// Seeds the requested document variant so the preview tests can cover both successful and failed reads.
         private func document(in store: CollectionStore) async throws {
             let watch = try fixtureWatch("Document watch", in: store)
             guard (watch.documents ?? []).isEmpty else { return }

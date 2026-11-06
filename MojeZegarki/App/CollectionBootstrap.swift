@@ -19,6 +19,7 @@ import OSLog
         self.reconcile = reconcile
     }
 
+    /// Prepares a collection for presentation, reconciling files before editors can write new assets.
     func load() async throws -> CollectionStore {
         if !resetPrepared, configuration.has("--reset-test-store"), let directory = configuration.directory {
             try await CollectionStorage().resetTestDirectory(directory)

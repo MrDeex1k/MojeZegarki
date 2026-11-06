@@ -12,6 +12,7 @@ extension CollectionStore {
         let watchUpdatedAt: Date
     }
 
+    /// Converts a wish to a watch and captures the original state needed to undo that move.
     func moveWish(_ item: WishlistItem) throws -> WishMoveUndo {
         try requireManaged(item)
         let locale = Locale(identifier: "en_US_POSIX")
@@ -59,6 +60,7 @@ extension CollectionStore {
         try persistChanges { watch.photos = photos }
     }
 
+    /// Saves a wish and assigns a position when it enters a different priority group.
     @discardableResult
     func saveWish(
         _ draft: WishlistDraft, editing existing: WishlistItem? = nil, locale: Locale = .current,
@@ -121,6 +123,7 @@ extension CollectionStore {
         try persistChanges()
     }
 
+    /// Commits wish removal before deleting its photo asset.
     func deleteWish(_ item: WishlistItem) async throws {
         try requireManaged(item)
         let photoID = item.photoID

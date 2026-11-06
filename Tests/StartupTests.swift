@@ -7,12 +7,14 @@ import XCTest
         private var started = false
         private var startWaiter: CheckedContinuation<Void, Never>?
         private var completion: CheckedContinuation<Void, Never>?
+        /// Signals that loading started, then holds the attempt until the test releases it.
         func enter() async {
             started = true
             startWaiter?.resume()
             startWaiter = nil
             await withCheckedContinuation { completion = $0 }
         }
+        /// Waits until the loader can be interrupted at a known point.
         func waitForStart() async {
             if !started { await withCheckedContinuation { startWaiter = $0 } }
         }
@@ -22,6 +24,7 @@ import XCTest
         }
     }
 
+    /// Releases the cancelled loader only after requesting its replacement to detect overlapping attempts.
     func testUnlockDuringCancelledAttemptStartsReplacementWithoutOverlap() async {
         let gate = Gate()
         var calls = 0
@@ -76,6 +79,7 @@ import XCTest
         startup.setDataAvailable(true)
         await startup.waitUntilSettled()
         XCTAssertEqual(startup.failure?.kind, .storageFull)
+        startup.setDataAvailable(false)
         startup.setDataAvailable(true)
         await startup.waitUntilSettled()
         XCTAssertEqual(calls, 1)
@@ -83,6 +87,28 @@ import XCTest
         await startup.waitUntilSettled()
         XCTAssertEqual(startup.resource, 42)
         XCTAssertNil(startup.failure)
+    }
+
+    func testUnlockRetriesPermissionFailureReportedBeforeLockNotification() async {
+        var calls = 0
+        let startup = StartupController<Int> {
+            calls += 1
+            if calls == 1 { throw CocoaError(.fileReadNoPermission) }
+            return 42
+        }
+        startup.setDataAvailable(true)
+        await startup.waitUntilSettled()
+        XCTAssertEqual(startup.failure?.kind, .unavailable)
+        startup.setDataAvailable(true)
+        await startup.waitUntilSettled()
+        XCTAssertEqual(calls, 1)
+
+        startup.setDataAvailable(false)
+        XCTAssertNil(startup.failure)
+        startup.setDataAvailable(true)
+        await startup.waitUntilSettled()
+        XCTAssertEqual(calls, 2)
+        XCTAssertEqual(startup.resource, 42)
     }
 
     func testCancelledErrorWhileLockedIsNotShownAndUnlockCanRetry() async {

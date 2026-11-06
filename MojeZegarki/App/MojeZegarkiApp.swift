@@ -7,6 +7,7 @@ struct MojeZegarkiApp: App {
     @State private var protectedData = ProtectedDataState()
     @State private var lock: AppLock?
 
+    /// Uses isolated lock preferences for UI tests so fixture changes do not reach the user’s settings.
     @MainActor private func makeLock() -> AppLock {
         var defaults = UserDefaults.standard
         #if DEBUG

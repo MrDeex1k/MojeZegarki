@@ -4,7 +4,11 @@ import UniformTypeIdentifiers
 
 actor PhotoStore {
     let root: URL
-    init(root: URL) { self.root = root }
+    private let temporaryDirectory: TemporaryCollectionDirectory?
+    init(root: URL, temporaryDirectory: TemporaryCollectionDirectory? = nil) {
+        self.root = root
+        self.temporaryDirectory = temporaryDirectory
+    }
 
     func importPhoto(_ data: Data) throws -> PhotoDraft {
         guard data.count <= ImportedImage.maximumBytes else { throw DocumentError.tooLarge }

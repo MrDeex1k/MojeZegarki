@@ -2,6 +2,7 @@ import Foundation
 import SwiftData
 
 extension CollectionStore {
+    /// Attaches an imported file unless the same watch already has a document with its content hash.
     @discardableResult
     func attachDocument(
         _ asset: DocumentAsset, to watch: Timepiece, name: String, kind: DocumentKind, date: Date?, notes: String
@@ -26,6 +27,7 @@ extension CollectionStore {
         return document
     }
 
+    /// Updates document metadata while keeping the existing file reference.
     func updateDocument(_ document: DocumentItem, name: String, kind: DocumentKind, date: Date?, notes: String) throws {
         try requireManaged(document)
         beginChanges()
@@ -36,6 +38,7 @@ extension CollectionStore {
         try persistChanges()
     }
 
+    /// Commits record removal before deleting the document file.
     func deleteDocument(_ document: DocumentItem) async throws {
         try requireManaged(document)
         let id = document.id

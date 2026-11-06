@@ -2,6 +2,7 @@ import Foundation
 import SwiftData
 
 extension CollectionStore {
+    /// Logs a day idempotently or edits an existing entry, restoring both owners if reassignment fails.
     @discardableResult
     func logWear(
         for watch: Timepiece, date: Date, editing existing: WearLog? = nil, now: Date = .now,
@@ -22,11 +23,21 @@ extension CollectionStore {
             throw WearError.duplicate
         }
         let log = existing ?? WearLog(day: key, timepiece: nil)
+        let previousWatch = existing?.timepiece
+        let reassigning = existing != nil && previousWatch !== watch
+        let previousLogs = reassigning ? previousWatch?.wearLogs : nil
+        let destinationLogs = reassigning ? watch.wearLogs : nil
         beginChanges()
         if existing == nil { context.insert(log) }
-        log.timepiece = watch
+        if previousWatch !== watch { log.timepiece = watch }
         log.calendarDay = key
-        try persistChanges()
+        try persistChanges {
+            guard reassigning else { return }
+            // SwiftData can leave both inverse collections changed after a failed reassignment.
+            watch.wearLogs = destinationLogs
+            log.timepiece = previousWatch
+            previousWatch?.wearLogs = previousLogs
+        }
         return log
     }
 
@@ -59,6 +70,7 @@ extension CollectionStore {
         return newDays.count
     }
 
+    /// Removes a wear entry while preserving the owner’s inverse relationship if the save fails.
     func deleteWear(_ log: WearLog) throws {
         try requireManaged(log)
         let watch = log.timepiece

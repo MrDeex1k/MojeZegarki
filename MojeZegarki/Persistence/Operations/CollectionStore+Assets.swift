@@ -3,6 +3,7 @@ import OSLog
 import SwiftData
 
 extension CollectionStore {
+    /// Takes a snapshot of referenced assets before removing unreferenced files.
     func reconcileAssets(
         cleanPhotos: ((Set<UUID>) async throws -> Void)? = nil,
         cleanDocuments: ((Set<UUID>) async throws -> Void)? = nil

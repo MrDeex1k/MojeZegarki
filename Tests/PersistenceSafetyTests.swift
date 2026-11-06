@@ -136,6 +136,7 @@ import XCTest
         XCTAssertEqual(restored.photoID, draft.photo?.id)
     }
 
+    /// Checks that persisted links and files survive both a failed bulk write and a failed cascade.
     func testFailedBulkAndCascadeDeletionKeepPersistedGraphAndFiles() async throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let control = SaveControl()
@@ -172,6 +173,7 @@ import XCTest
         XCTAssertFalse(FileManager.default.fileExists(atPath: file.path))
     }
 
+    /// Exercises changes that can leave stale in-memory values even when a write fails.
     func testFailedScalarAndAttachmentWritesRestoreValuesAndRetry() async throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         let control = SaveControl()
@@ -230,6 +232,44 @@ import XCTest
         XCTAssertNotEqual(log.calendarDay, originalDay)
     }
 
+    /// Reads the histories from a fresh store before and after retrying the failed reassignment.
+    func testFailedWearReassignmentPreservesDiskHistoryUntilRetrySucceeds() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let control = SaveControl()
+        let store = try CollectionStore(directory: root, saveContext: control.save)
+        let original = try store.save(draft("Original"))
+        let replacement = try store.save(draft("Replacement"))
+        let now = Date.now
+        let log = try store.logWear(for: original, date: now, now: now)
+        let id = log.id
+
+        func assertPersistedOwner(_ expectedID: UUID) throws {
+            let reopened = try CollectionStore(directory: root)
+            let logs = try reopened.context.fetch(FetchDescriptor<WearLog>())
+            XCTAssertEqual(logs.map(\.id), [id])
+            XCTAssertEqual(logs.first?.timepiece?.id, expectedID)
+            let watches = try reopened.context.fetch(FetchDescriptor<Timepiece>())
+            XCTAssertEqual(watches.count, 2)
+            for watch in watches {
+                XCTAssertEqual(watch.wearLogs?.map(\.id) ?? [], watch.id == expectedID ? [id] : [])
+            }
+        }
+
+        control.failing = true
+        XCTAssertThrowsError(try store.logWear(for: replacement, date: now, editing: log, now: now))
+        XCTAssertEqual(log.timepiece?.id, original.id)
+        XCTAssertEqual(original.wearLogs?.map(\.id), [id])
+        XCTAssertTrue((replacement.wearLogs ?? []).isEmpty)
+        try assertPersistedOwner(original.id)
+
+        control.failing = false
+        try store.logWear(for: replacement, date: now, editing: log, now: now)
+        XCTAssertEqual(log.timepiece?.id, replacement.id)
+        XCTAssertTrue((original.wearLogs ?? []).isEmpty)
+        XCTAssertEqual(replacement.wearLogs?.map(\.id), [id])
+        try assertPersistedOwner(replacement.id)
+    }
+
     func testFailedIndividualDeletesRestoreRelationshipsAndRetry() async throws {
         let control = SaveControl()
         let store = try CollectionStore(inMemory: true, saveContext: control.save)
@@ -281,5 +321,35 @@ import XCTest
         try Data([42]).write(to: file)
         try await first.reconcileAssets()
         XCTAssertTrue(FileManager.default.fileExists(atPath: file.path))
+    }
+
+    /// Keeps the asset actors alive after releasing the collection to verify shared directory ownership.
+    func testInMemoryAssetsAreRemovedAfterLastStoreReleasesDirectory() async throws {
+        var store: CollectionStore? = try CollectionStore(inMemory: true)
+        var photos: PhotoStore? = store?.photoStore
+        var documents: DocumentStore? = store?.documentStore
+        let photoRoot = await photos?.root
+        let root = try XCTUnwrap(photoRoot).deletingLastPathComponent()
+        XCTAssertNotNil(documents)
+        let marker = root.appendingPathComponent("temporary-asset")
+        try Data([42]).write(to: marker)
+        store = nil
+        XCTAssertTrue(FileManager.default.fileExists(atPath: marker.path))
+        documents = nil
+        XCTAssertTrue(FileManager.default.fileExists(atPath: marker.path))
+        photos = nil
+        XCTAssertFalse(FileManager.default.fileExists(atPath: root.path))
+    }
+
+    func testInMemoryStoreLeavesCallerDirectoryUntouchedOnRelease() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let marker = root.appendingPathComponent("caller-owned")
+        try autoreleasepool {
+            let store = try CollectionStore(directory: root, inMemory: true)
+            try Data([42]).write(to: marker)
+            withExtendedLifetime(store) {}
+        }
+        XCTAssertTrue(FileManager.default.fileExists(atPath: marker.path))
     }
 }

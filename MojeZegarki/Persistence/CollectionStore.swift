@@ -13,6 +13,7 @@ final class CollectionStore {
     private let rollbackManager = UndoManager()
     private let saveContext: @MainActor (ModelContext) throws -> Void
 
+    /// Opens a store synchronously for tests and previews, with an optional failure injection point for saves.
     convenience init(
         directory: URL? = nil, inMemory: Bool = false,
         saveContext: @escaping @MainActor (ModelContext) throws -> Void = { try $0.save() }
@@ -29,16 +30,22 @@ final class CollectionStore {
         container = prepared.container
         self.saveContext = saveContext
         container.mainContext.autosaveEnabled = false
-        photoStore = PhotoStore(root: root.appendingPathComponent("Photos", isDirectory: true))
-        documentStore = DocumentStore(root: root.appendingPathComponent("Documents", isDirectory: true))
+        photoStore = PhotoStore(
+            root: root.appendingPathComponent("Photos", isDirectory: true),
+            temporaryDirectory: prepared.temporaryDirectory)
+        documentStore = DocumentStore(
+            root: root.appendingPathComponent("Documents", isDirectory: true),
+            temporaryDirectory: prepared.temporaryDirectory)
     }
 
+    /// Prepares persistent storage off the main actor before creating the UI-facing store.
     static func open(directory: URL? = nil) async throws -> CollectionStore {
         let prepared = try await CollectionStorage().prepare(directory: directory)
         try Task.checkCancellation()
         return CollectionStore(prepared: prepared)
     }
 
+    /// Rejects deleted, detached, and foreign models before an operation reads or mutates their relationships.
     func requireManaged(_ model: some PersistentModel) throws {
         guard model.modelContext === context, !model.isDeleted else { throw CollectionError.unavailableRecord }
     }
@@ -51,6 +58,7 @@ final class CollectionStore {
         rollbackManager.beginUndoGrouping()
     }
 
+    /// Saves a mutation or restores its values and affected relationships before propagating failure.
     func persistChanges(restoringRelationships: () -> Void = {}) throws {
         defer {
             if rollbackManager.groupingLevel > 0 { rollbackManager.endUndoGrouping() }

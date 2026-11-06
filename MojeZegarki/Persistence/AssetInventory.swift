@@ -6,6 +6,7 @@ actor AssetInventory {
     let container: ModelContainer
     init(container: ModelContainer) { self.container = container }
 
+    /// Collects file identifiers from both watch and wishlist records before orphan cleanup.
     func photoIDs() throws -> Set<UUID> {
         let context = ModelContext(container)
         var photos = FetchDescriptor<TimepiecePhoto>()
@@ -15,6 +16,7 @@ actor AssetInventory {
         return Set(try context.fetch(photos).map(\.id) + context.fetch(wishes).compactMap(\.photoID))
     }
 
+    /// Collects document identifiers referenced by the database before orphan cleanup.
     func documentIDs() throws -> Set<UUID> {
         let context = ModelContext(container)
         var documents = FetchDescriptor<DocumentItem>()
