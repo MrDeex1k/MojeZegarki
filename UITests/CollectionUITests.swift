@@ -1,3 +1,4 @@
+import UIKit
 import XCTest
 
 @MainActor
@@ -150,23 +151,76 @@ final class CollectionUITests: XCTestCase {
         app.staticTexts["Photo watch"].tap()
         app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "detail.photo.")).firstMatch.tap()
         XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
+        let visiblePhoto = XCUIScreen.main.screenshot()
         XCUIDevice.shared.press(.home)
         app.activate()
         XCTAssertTrue(app.buttons["lock.unlock"].waitForExistence(timeout: 10))
         XCTAssertFalse(app.images["photoPreview.image"].exists)
+        let lockedPhoto = lockScreenshot(named: "Shield over photo preview")
         app.buttons["lock.unlock"].tap()
         XCTAssertTrue(app.images["photoPreview.image"].waitForExistence(timeout: 5))
         app.buttons["photoPreview.close"].tap()
         app.buttons["detail.edit"].tap()
         focus(app.textFields["editor.brand"], in: app)
-        app.textFields["editor.brand"].typeText(" Unsaved")
+        app.textFields["editor.brand"].typeText(" Unsaved\n")
+        // Let UIKit finish the text input session before exercising scene activation.
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 5))
+        let visibleEditor = XCUIScreen.main.screenshot()
         XCUIDevice.shared.press(.home)
         app.activate()
         XCTAssertTrue(app.buttons["lock.unlock"].waitForExistence(timeout: 10))
         XCTAssertFalse(app.textFields["editor.brand"].exists)
+        let lockedEditor = lockScreenshot(named: "Shield over unsaved editor")
+        do {
+            XCTAssertGreaterThan(try pixelDifference(visiblePhoto, visibleEditor), 0.25)
+            XCTAssertGreaterThan(try pixelDifference(visiblePhoto, lockedPhoto), 0.05)
+            XCTAssertGreaterThan(try pixelDifference(visibleEditor, lockedEditor), 0.05)
+            XCTAssertLessThan(
+                try pixelDifference(lockedPhoto, lockedEditor), 0.02,
+                "The shield should render the same screen over two visibly different private views")
+        } catch {
+            XCTFail("Could not compare the captured screens: \(error)")
+        }
         app.buttons["lock.unlock"].tap()
         XCTAssertTrue(app.textFields["editor.brand"].waitForExistence(timeout: 5))
         XCTAssertTrue((app.textFields["editor.brand"].value as? String ?? "").contains("Unsaved"))
+    }
+
+    /// Retains visual evidence even when all accessibility checks pass.
+    private func lockScreenshot(named name: String) -> XCUIScreenshot {
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+        return screenshot
+    }
+
+    /// Compares the screen interior at a fixed scale, ignoring status and home indicator chrome.
+    private func pixelDifference(_ first: XCUIScreenshot, _ second: XCUIScreenshot) throws -> Double {
+        let width = 80
+        let height = 160
+        func sample(_ screenshot: XCUIScreenshot) throws -> [UInt8] {
+            let image = try XCTUnwrap(screenshot.image.cgImage)
+            let rect = CGRect(x: 0, y: image.height / 12, width: image.width, height: image.height * 5 / 6)
+            let interior = try XCTUnwrap(image.cropping(to: rect))
+            var pixels = [UInt8](repeating: 0, count: width * height * 4)
+            try pixels.withUnsafeMutableBytes { buffer in
+                let context = try XCTUnwrap(
+                    CGContext(
+                        data: buffer.baseAddress, width: width, height: height, bitsPerComponent: 8,
+                        bytesPerRow: width * 4, space: CGColorSpaceCreateDeviceRGB(),
+                        bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue))
+                context.draw(interior, in: CGRect(x: 0, y: 0, width: width, height: height))
+            }
+            return pixels
+        }
+        let left = try sample(first)
+        let right = try sample(second)
+        let differences = stride(from: 0, to: left.count, by: 4).count { index in
+            (0..<3).contains { channel in abs(Int(left[index + channel]) - Int(right[index + channel])) > 20 }
+        }
+        return Double(differences) / Double(width * height)
     }
 
     private func reveal(_ element: XCUIElement, in app: XCUIApplication) {

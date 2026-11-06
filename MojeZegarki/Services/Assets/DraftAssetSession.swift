@@ -14,6 +14,7 @@ final class DraftAssetSession {
         self.remove = remove
     }
 
+    /// Runs one import at a time without retaining the editor through its task.
     func run(_ operation: @escaping @MainActor () async -> Void) {
         guard !isImporting, !isFinished else { return }
         isImporting = true
@@ -37,6 +38,7 @@ final class DraftAssetSession {
         stagedIDs.insert(id)
     }
 
+    /// Accepts a file into the draft or deletes it if the import was cancelled or already finished.
     func stage(_ id: UUID) async -> Bool {
         guard !Task.isCancelled, !isFinished else {
             try? await remove(id)
@@ -47,6 +49,7 @@ final class DraftAssetSession {
         return true
     }
 
+    /// Transfers retained files to the saved record and removes the remaining staged and replaced files.
     func commit(retaining: Set<UUID>, replacing: Set<UUID> = []) async {
         guard !isFinished else { return }
         isFinished = true

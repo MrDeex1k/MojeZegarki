@@ -5,6 +5,7 @@ struct PhotoView: View {
     let store: PhotoStore
     var thumbnail = true
     @State private var image: UIImage?
+    @State private var loadedAsset: [String]?
 
     var body: some View {
         GeometryReader { geometry in
@@ -24,15 +25,19 @@ struct PhotoView: View {
             }
         }
         .accessibilityHidden(true)
-        .task(id: [
-            store.root.path, photo?.id.uuidString ?? "", photo?.filename ?? "", String(thumbnail),
-            ImageLoader.access.revision.uuidString,
-        ]) {
+        .task(id: asset + [ImageLoader.access.revision.uuidString]) { [asset] in
+            guard loadedAsset != asset || image == nil else { return }
             image = nil
             if let photo {
                 let prepared = await ImageLoader.load(photo, store: store, thumbnail: thumbnail)
-                if !Task.isCancelled { image = prepared }
+                guard !Task.isCancelled else { return }
+                loadedAsset = asset
+                image = prepared
             }
         }
+    }
+
+    private var asset: [String] {
+        [store.root.path, photo?.id.uuidString ?? "", photo?.filename ?? "", String(thumbnail)]
     }
 }

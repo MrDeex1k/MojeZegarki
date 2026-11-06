@@ -62,6 +62,7 @@ actor PhotoStore {
         return try? Data(contentsOf: url)
     }
 
+    /// Deletes the photo directory and invalidates any cached thumbnail or pending decode.
     func remove(_ id: UUID) async throws {
         let url = root.appendingPathComponent(id.uuidString)
         if FileManager.default.fileExists(atPath: url.path) { try FileManager.default.removeItem(at: url) }

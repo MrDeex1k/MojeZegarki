@@ -4,19 +4,37 @@ import XCTest
 @testable import MojeZegarki
 
 @MainActor final class ImageLoadingTests: XCTestCase {
+    /// Drives notification ordering and availability without depending on the simulator’s lock state.
     func testUnlockAndActivationRefreshBothRetryInterruptedImageLoads() {
-        let state = ProtectedDataState()
-        NotificationCenter.default.post(name: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil)
+        let notifications = NotificationCenter()
+        var available = true
+        let state = ProtectedDataState(readAvailability: { available }, notifications: notifications)
+
+        available = false
+        notifications.post(name: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil)
         XCTAssertFalse(state.isAvailable)
         let beforeUnlock = ImageLoader.access.revision
-        NotificationCenter.default.post(name: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil)
+        available = true
+        notifications.post(name: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil)
         XCTAssertTrue(state.isAvailable)
         XCTAssertNotEqual(ImageLoader.access.revision, beforeUnlock)
-        NotificationCenter.default.post(name: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil)
+
+        available = false
+        notifications.post(name: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil)
         let beforeActivation = ImageLoader.access.revision
-        NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+        notifications.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+        XCTAssertFalse(state.isAvailable)
+        XCTAssertEqual(ImageLoader.access.revision, beforeActivation)
+
+        available = true
+        notifications.post(name: UIApplication.didBecomeActiveNotification, object: nil)
         XCTAssertTrue(state.isAvailable)
         XCTAssertNotEqual(ImageLoader.access.revision, beforeActivation)
+
+        let afterActivation = ImageLoader.access.revision
+        notifications.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+        XCTAssertTrue(state.isAvailable)
+        XCTAssertNotEqual(ImageLoader.access.revision, afterActivation)
     }
 
     private func fixture() async throws -> (PhotoStore, PhotoDraft) {
@@ -30,6 +48,7 @@ import XCTest
         return (store, try await store.importPhoto(data))
     }
 
+    /// Suspends decoding to exercise invalidation between the file read and the result.
     func testClearRejectsAnImageAlreadyBeingDecoded() async throws {
         let (store, photo) = try await fixture()
         let started = expectation(description: "Decoding started")
@@ -54,6 +73,7 @@ import XCTest
         XCTAssertNil(cached)
     }
 
+    /// Covers both an explicit deletion and orphan reconciliation.
     func testRemovingPhotoInvalidatesItsCachedThumbnail() async throws {
         for reconcile in [false, true] {
             let (store, photo) = try await fixture()
@@ -65,6 +85,7 @@ import XCTest
         }
     }
 
+    /// Verifies that targeted invalidation rejects an old decode and leaves other cached images intact.
     func testRemovalRejectsLateDecodeWithoutInvalidatingOtherPhotos() async throws {
         let (store, photo) = try await fixture()
         let bytes = await store.data(for: photo, thumbnail: false)

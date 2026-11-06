@@ -16,11 +16,13 @@ struct LockShield: UIViewRepresentable {
         view.onWindowChanged = { [weak coordinator = context.coordinator] window in coordinator?.attach(to: window) }
         return view
     }
+    /// Synchronizes the coordinator with SwiftUI before updating the shield for this window.
     func updateUIView(_ view: AnchorView, context: Context) {
         context.coordinator.lock = lock
         context.coordinator.dataAvailable = dataAvailable
         context.coordinator.attach(to: view.window)
     }
+    /// Disconnects the anchor before restoring the underlying window.
     static func dismantleUIView(_ uiView: AnchorView, coordinator: Coordinator) {
         uiView.onWindowChanged = nil
         coordinator.detach()
@@ -65,6 +67,7 @@ struct LockShield: UIViewRepresentable {
         private var unlockID: UUID?
         private var sceneObscured = false
 
+        /// Observes scene transitions so the shield can react before UIKit changes activation state.
         override init() {
             super.init()
             NotificationCenter.default.addObserver(
@@ -77,6 +80,7 @@ struct LockShield: UIViewRepresentable {
 
         deinit { unlockTask?.cancel() }
 
+        /// Obscures private content synchronously on deactivation and relocks it on entry to the background.
         @objc private func sceneChanged(_ notification: Notification) {
             guard let scene = notification.object as? UIWindowScene, scene === originalWindow?.windowScene else {
                 return
@@ -99,6 +103,7 @@ struct LockShield: UIViewRepresentable {
             if notification.name == UIScene.didActivateNotification { unlockIfNeeded() }
         }
 
+        /// Tracks the hosting window and creates a shield above its sheets in the same scene.
         func attach(to originalWindow: UIWindow?) {
             guard let originalWindow, let scene = originalWindow.windowScene else {
                 detach()
@@ -125,6 +130,7 @@ struct LockShield: UIViewRepresentable {
             if scene.activationState == .foregroundActive { unlockIfNeeded() }
         }
 
+        /// Starts at most one automatic unlock per eligible activation.
         private func unlockIfNeeded() {
             guard dataAvailable, !sceneObscured, needsUnlock, let lock else { return }
             // Consume this activation even when protection is disabled or already unlocked.
@@ -155,6 +161,7 @@ struct LockShield: UIViewRepresentable {
             unlockID = nil
         }
 
+        /// Cancels queued authentication and restores the original accessibility state.
         func detach() {
             cancelUnlock()
             needsUnlock = true
@@ -169,6 +176,7 @@ struct LockShield: UIViewRepresentable {
             displayedLock = nil
         }
 
+        /// Keeps the shield and the underlying window’s accessibility exposure in sync.
         private func update(obscured: Bool) {
             guard let lock, let scene = originalWindow?.windowScene else { return }
             let visible = !dataAvailable || (lock.enabled && (lock.isLocked || obscured))

@@ -13,11 +13,13 @@ import UIKit
     private static var requests: [UUID: String] = [:]
     private static var invalidated: Set<UUID> = []
 
+    /// Drops thumbnail cache entries and rejects results from reads that were already in flight.
     static func clearCache() {
         thumbnails.removeAllObjects()
         invalidated.formUnion(requests.keys)
     }
 
+    /// Drops both filename variants for one photo without invalidating unrelated requests.
     static func invalidate(_ id: UUID, root: URL) {
         for filename in ["photo.heic", "photo.jpg"] {
             let key = "\(root.path)/\(id)/\(filename)"
@@ -31,6 +33,7 @@ import UIKit
         return await image.byPreparingForDisplay()
     }
 
+    /// Reads or reuses an image and checks cancellation and invalidation before returning a result.
     static func load(
         _ photo: PhotoDraft, store: PhotoStore, thumbnail: Bool,
         prepareImage: @MainActor (Data) async -> UIImage? = ImageLoader.prepare

@@ -54,6 +54,7 @@ import XCTest
         }
     }
 
+    /// Checks file lifetime before a failed write and after a successful retry.
     func testFailedDatabaseSaveKeepsBothPhotoSetsUntilRetryCommits() async throws {
         enum Failure: Error { case simulated }
         var failing = false
@@ -113,6 +114,7 @@ import XCTest
         XCTAssertNil(bytes)
     }
 
+    /// Lets the editor go away while a photo provider is still suspended.
     func testClosingEditorCancelsImportWithoutRetainingTheSession() async throws {
         let store = try CollectionStore(inMemory: true)
         var session: TimepieceEditorSession? = TimepieceEditorSession(store: store)

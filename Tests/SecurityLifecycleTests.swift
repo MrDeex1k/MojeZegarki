@@ -13,6 +13,7 @@ import XCTest
         func invalidate() {}
     }
 
+    /// Attaches a shield to a real window so tests can drive scene notifications and accessibility state.
     private func fixture(hidden: Bool = false) throws -> (LockShield.Coordinator, UIWindow, AppLock, Authenticator) {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         XCTAssertEqual(scene.activationState, .foregroundActive)
@@ -49,6 +50,7 @@ import XCTest
         XCTAssertTrue(lock.isLocked)
     }
 
+    /// Simulates layout after willDeactivate but before the scene reports its new state.
     func testLayoutCannotUncoverShieldBeforeSceneStateChanges() async throws {
         let (coordinator, window, _, auth) = try fixture()
         defer { coordinator.detach() }

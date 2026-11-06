@@ -21,6 +21,7 @@ final class AppLock {
         isLocked = initiallyEnabled
     }
 
+    /// Refreshes the saved setting and discards authentication that started under the previous setting.
     func reloadPreference() {
         generation += 1
         authenticator.invalidate()
@@ -49,6 +50,7 @@ final class AppLock {
         authenticator.invalidate()
     }
 
+    /// Accepts a result only from an uncancelled request for the current lock generation.
     private func verify() async -> Bool {
         guard !Task.isCancelled else { return false }
         isBusy = true

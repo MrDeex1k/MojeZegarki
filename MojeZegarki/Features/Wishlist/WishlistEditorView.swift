@@ -113,6 +113,7 @@ struct WishlistEditorView: View {
             .discardChangesConfirmation(isPresented: $discarding) { dismiss() }
             .appError($session.error)
             .onChange(of: selectedPhoto) { _, photo in
+                defer { selectedPhoto = nil }
                 guard let photo else { return }
                 let photoStore = store.photoStore
                 assets.run { [weak session, photoStore] in
@@ -132,9 +133,6 @@ struct WishlistEditorView: View {
                         session?.error = String(localized: "This photo could not be read. Choose another image.")
                     }
                 }
-            }
-            .onChange(of: assets.isImporting) {
-                if !assets.isImporting { selectedPhoto = nil }
             }
         }
     }

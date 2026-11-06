@@ -11,6 +11,7 @@ import Observation
     var saving = false
     var error: String?
 
+    /// Creates a draft in the editor locale and gives the session ownership of staged files.
     init(store: CollectionStore, watch: Timepiece? = nil, wishlistItem: WishlistItem? = nil, locale: Locale = .current)
     {
         self.watch = watch
@@ -24,6 +25,7 @@ import Observation
         assets = DraftAssetSession { try await store.photoStore.remove($0) }
     }
 
+    /// Commits the draft before deleting replaced assets and leaves staged files available if saving fails.
     func save(in store: CollectionStore, locale: Locale) async -> Bool {
         guard !saving, !assets.isImporting, !assets.isFinished else { return false }
         saving = true
@@ -43,6 +45,7 @@ import Observation
         }
     }
 
+    /// Imports selected photos in order and discards files that arrive after the editor closes.
     func importPhotos(_ sources: [@MainActor () async throws -> Data], from store: PhotoStore) {
         assets.run { [weak self] in
             for source in sources {

@@ -16,6 +16,7 @@ struct TimepieceEditorView: View {
     }
     @State private var choosingPhotos = false
     @State private var selectedPhotos: [PhotosPickerItem] = []
+    @State private var importCount = 0
     private var assets: DraftAssetSession { session.assets }
     private var saving: Bool { session.saving }
 
@@ -116,6 +117,8 @@ struct TimepieceEditorView: View {
             .appError($session.error)
             .onChange(of: selectedPhotos) { _, items in
                 guard !items.isEmpty else { return }
+                selectedPhotos = []
+                importCount = items.count
                 session.importPhotos(
                     items.map { item in
                         {
@@ -125,9 +128,6 @@ struct TimepieceEditorView: View {
                             return imported.data
                         }
                     }, from: store.photoStore)
-            }
-            .onChange(of: assets.isImporting) {
-                if !assets.isImporting { selectedPhotos = [] }
             }
         }
     }
@@ -180,7 +180,7 @@ struct TimepieceEditorView: View {
             .accessibilityLabel("Add photos")
             .accessibilityIdentifier("editor.photos")
             if assets.isImporting {
-                ProgressView(value: Double(assets.importedCount), total: Double(max(selectedPhotos.count, 1))) {
+                ProgressView(value: Double(assets.importedCount), total: Double(max(importCount, 1))) {
                     Text("Importing photos…")
                 }
                 Button("Stop importing") { assets.stop() }
@@ -204,6 +204,7 @@ struct TimepieceEditorView: View {
         if draft.mainPhotoID == photo.id { draft.mainPhotoID = draft.photos.first?.id }
     }
 
+    /// Dismisses the editor only after the draft and its files have been committed.
     @MainActor private func save() async {
         if await session.save(in: store, locale: locale) { dismiss() }
     }

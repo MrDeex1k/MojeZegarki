@@ -12,6 +12,7 @@ import Observation
     var saving = false
     var error: String?
 
+    /// Claims a new import before presentation so dismissal or failed presentation cannot orphan its file.
     init(
         watch: Timepiece, store: CollectionStore, asset: DocumentAsset? = nil,
         proposedName: String = "", document: DocumentItem? = nil

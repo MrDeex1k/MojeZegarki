@@ -4,6 +4,7 @@ import LocalAuthentication
 final class SystemDeviceAuthenticator: DeviceAuthenticating {
     private var context: LAContext?
     private var requestID: UUID?
+    /// Owns the authentication context for this request and invalidates it on cancellation.
     func authenticate(reason: String) async throws -> Bool {
         try Task.checkCancellation()
         self.context?.invalidate()
