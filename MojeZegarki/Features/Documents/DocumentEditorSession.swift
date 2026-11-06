@@ -12,6 +12,7 @@ import Observation
     var saving = false
     var error: String?
 
+    /// Claims a new import before presentation so dismissal or failed presentation cannot orphan its file.
     init(
         watch: Timepiece, store: CollectionStore, asset: DocumentAsset? = nil,
         proposedName: String = "", document: DocumentItem? = nil
@@ -25,5 +26,6 @@ import Observation
             date: document?.documentDate, notes: document?.notes ?? "")
         draft = original
         assets = DraftAssetSession { try await store.documentStore.remove($0) }
+        if let asset { assets.claim(asset.id) }
     }
 }

@@ -21,7 +21,11 @@ final class AppLock {
         isLocked = initiallyEnabled
     }
 
+    /// Refreshes the saved setting and discards authentication that started under the previous setting.
     func reloadPreference() {
+        generation += 1
+        authenticator.invalidate()
+        error = nil
         enabled = defaults.bool(forKey: "appLockEnabled")
         isLocked = enabled
     }
@@ -46,7 +50,9 @@ final class AppLock {
         authenticator.invalidate()
     }
 
+    /// Accepts a result only from an uncancelled request for the current lock generation.
     private func verify() async -> Bool {
+        guard !Task.isCancelled else { return false }
         isBusy = true
         error = nil
         let request = generation
@@ -54,9 +60,9 @@ final class AppLock {
         do {
             let success = try await authenticator.authenticate(
                 reason: String(localized: "Authenticate to access your private collection."))
-            return success && generation == request
+            return success && generation == request && !Task.isCancelled
         } catch {
-            guard generation == request else { return false }
+            guard generation == request, !Task.isCancelled, !(error is CancellationError) else { return false }
             if let authError = error as? LAError, [.userCancel, .systemCancel, .appCancel].contains(authError.code) {
                 return false
             }

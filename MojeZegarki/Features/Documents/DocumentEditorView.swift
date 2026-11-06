@@ -45,7 +45,7 @@ struct DocumentEditorView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save", systemImage: "checkmark") {
-                        guard !saving else { return }
+                        guard !saving, !assets.isFinished else { return }
                         saving = true
                         do {
                             if let document {
@@ -74,7 +74,6 @@ struct DocumentEditorView: View {
             .interactiveDismissDisabled(dirty || saving)
             .discardChangesConfirmation(isPresented: $discarding) { dismiss() }
             .appError($session.error)
-            .onAppear { if let asset { assets.claim(asset.id) } }
         }
     }
     private var dirty: Bool { session.original != session.draft }

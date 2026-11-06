@@ -4,6 +4,7 @@ import SwiftUI
 struct TimepieceDetailView: View {
     let watch: Timepiece
     let store: CollectionStore
+    @Environment(\.locale) private var locale
     let onBackToCollection: (() -> Void)?
     @Query private var allWearLogs: [WearLog]
     @Environment(\.dismiss) private var dismiss
@@ -52,8 +53,10 @@ struct TimepieceDetailView: View {
                         }
                         .tabViewStyle(.page(indexDisplayMode: orderedPhotos.count > 1 ? .always : .never))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
-                        .onAppear {
-                            if selectedPhotoID == nil { selectedPhotoID = orderedPhotos.first?.id }
+                        .onChange(of: orderedPhotos.map(\.id), initial: true) {
+                            if !orderedPhotos.contains(where: { $0.id == selectedPhotoID }) {
+                                selectedPhotoID = orderedPhotos.first?.id
+                            }
                         }
                         .frame(height: widthClass == .regular ? 420 : heightClass == .compact ? 180 : 300)
                         if watch.status == .owned {
@@ -138,8 +141,13 @@ struct TimepieceDetailView: View {
                         let decimal = Decimal(string: price, locale: Locale(identifier: "en_US_POSIX")),
                         let currency = watch.currencyCode
                     {
-                        LabeledContent("Purchase price", value: decimal.formatted(.currency(code: currency)))
-                            .privacySensitive()
+                        LabeledContent(
+                            "Purchase price",
+                            value: decimal.formatted(
+                                .currency(code: currency).precision(.fractionLength(0...6)).locale(locale))
+                        )
+                        .privacySensitive()
+                        .accessibilityIdentifier("detail.price")
                     }
                     if let seller = watch.seller { LabeledContent("Seller", value: seller) }
                 }
@@ -185,8 +193,10 @@ struct TimepieceDetailView: View {
                     .accessibilityAddTraits(.isHeader)
             }
             ToolbarItem(placement: .primaryAction) {
-                Button("Edit", systemImage: "pencil") { editing = TimepieceEditorSession(store: store, watch: watch) }
-                    .accessibilityIdentifier("detail.edit")
+                Button("Edit", systemImage: "pencil") {
+                    editing = TimepieceEditorSession(store: store, watch: watch, locale: locale)
+                }
+                .accessibilityIdentifier("detail.edit")
             }
         }
         .sheet(item: $editing) { TimepieceEditorView(store: store, session: $0) }

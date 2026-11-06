@@ -6,7 +6,7 @@ final class DraftAssetSession {
     private(set) var isImporting = false
     private(set) var importedCount = 0
     @ObservationIgnored private var stagedIDs: Set<UUID> = []
-    @ObservationIgnored private var isFinished = false
+    private(set) var isFinished = false
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private let remove: @Sendable (UUID) async throws -> Void
 
@@ -14,28 +14,31 @@ final class DraftAssetSession {
         self.remove = remove
     }
 
+    /// Runs one import at a time without retaining the editor through its task.
     func run(_ operation: @escaping @MainActor () async -> Void) {
         guard !isImporting, !isFinished else { return }
         isImporting = true
         importedCount = 0
-        task = Task {
+        task = Task { [weak self] in
             defer {
-                isImporting = false
-                task = nil
+                self?.isImporting = false
+                self?.task = nil
             }
+            guard !Task.isCancelled else { return }
             await operation()
         }
     }
 
     func stop() { task?.cancel() }
 
-    // Claim files only after SwiftUI mounts the stored session. View initializers
-    // can create temporary @State initial values that SwiftUI immediately discards.
+    // The owning editor session claims an import as soon as it receives it, even
+    // if presentation is cancelled. Do not claim shared files from view initializers.
     func claim(_ id: UUID) {
         guard !isFinished else { return }
         stagedIDs.insert(id)
     }
 
+    /// Accepts a file into the draft or deletes it if the import was cancelled or already finished.
     func stage(_ id: UUID) async -> Bool {
         guard !Task.isCancelled, !isFinished else {
             try? await remove(id)
@@ -46,6 +49,7 @@ final class DraftAssetSession {
         return true
     }
 
+    /// Transfers retained files to the saved record and removes the remaining staged and replaced files.
     func commit(retaining: Set<UUID>, replacing: Set<UUID> = []) async {
         guard !isFinished else { return }
         isFinished = true

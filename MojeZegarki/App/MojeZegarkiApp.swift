@@ -25,6 +25,9 @@ struct MojeZegarkiApp: App {
             if configuration.has("--test-authentication-cancelled") {
                 return AppLock(defaults: defaults, authenticator: UITestFixtures.CancelledAuthenticator())
             }
+            if configuration.has("--test-authentication-lifecycle") {
+                return AppLock(defaults: defaults, authenticator: UITestFixtures.LifecycleAuthenticator())
+            }
         #endif
         return AppLock(defaults: defaults)
     }
@@ -58,6 +61,7 @@ struct MojeZegarkiApp: App {
                 if let lock {
                     LockShield(
                         lock: lock, enabled: lock.enabled, isLocked: lock.isLocked,
+                        isBusy: lock.isBusy,
                         dataAvailable: protectedData.isAvailable
                     )
                     .frame(width: 0, height: 0)

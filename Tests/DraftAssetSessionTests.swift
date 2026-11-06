@@ -9,6 +9,40 @@ private actor RemovalRecorder {
 
 @MainActor
 final class DraftAssetSessionTests: XCTestCase {
+    func testStopBeforeTaskStartsDoesNotInvokeImporter() async {
+        let session = DraftAssetSession { _ in }
+        var started = false
+        session.run { started = true }
+        session.stop()
+        for _ in 0..<20 { await Task.yield() }
+        XCTAssertFalse(started)
+        XCTAssertFalse(session.isImporting)
+    }
+
+    func testAbandonedSessionCancelsItsRunningOperationAndRemovesStagedFiles() async {
+        let recorder = RemovalRecorder()
+        let id = UUID()
+        var session: DraftAssetSession? = DraftAssetSession { await recorder.remove($0) }
+        _ = await session?.stage(id)
+        let started = expectation(description: "Import started")
+        let cancelled = expectation(description: "Import cancelled")
+        session?.run {
+            started.fulfill()
+            do { try await Task.sleep(for: .seconds(2)) } catch { cancelled.fulfill() }
+        }
+        await fulfillment(of: [started], timeout: 1)
+        weak let weakSession = session
+        session = nil
+        XCTAssertNil(weakSession)
+        await fulfillment(of: [cancelled], timeout: 1)
+        for _ in 0..<100 {
+            if await recorder.ids.contains(id) { break }
+            await Task.yield()
+        }
+        let removed = await recorder.ids
+        XCTAssertEqual(removed, [id])
+    }
+
     func testCommitKeepsRetainedAssetAndRemovesReplacedAndUnusedAssets() async {
         let recorder = RemovalRecorder()
         let retained = UUID()

@@ -62,17 +62,22 @@ actor PhotoStore {
         return try? Data(contentsOf: url)
     }
 
-    func remove(_ id: UUID) throws {
+    /// Deletes the photo directory and invalidates any cached thumbnail or pending decode.
+    func remove(_ id: UUID) async throws {
         let url = root.appendingPathComponent(id.uuidString)
         if FileManager.default.fileExists(atPath: url.path) { try FileManager.default.removeItem(at: url) }
+        await ImageLoader.invalidate(id, root: root)
     }
 
     /// Called before presenting editors; also removes incomplete imports after interrupted launches.
-    func removeUnreferenced(keeping ids: Set<UUID>) throws {
+    func removeUnreferenced(keeping ids: Set<UUID>) async throws {
         guard FileManager.default.fileExists(atPath: root.path) else { return }
         for url in try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil) {
             let name = url.lastPathComponent
-            if let id = UUID(uuidString: name), !ids.contains(id) { try FileManager.default.removeItem(at: url) }
+            if let id = UUID(uuidString: name), !ids.contains(id) {
+                try FileManager.default.removeItem(at: url)
+                await ImageLoader.invalidate(id, root: root)
+            }
             if name.hasPrefix("."), UUID(uuidString: String(name.dropFirst())) != nil {
                 try FileManager.default.removeItem(at: url)
             }

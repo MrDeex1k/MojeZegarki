@@ -12,6 +12,15 @@
             func invalidate() {}
         }
 
+        @MainActor final class LifecycleAuthenticator: DeviceAuthenticating {
+            private var attempts = 0
+            func authenticate(reason: String) async throws -> Bool {
+                attempts += 1
+                return attempts.isMultiple(of: 2) == false
+            }
+            func invalidate() {}
+        }
+
         func seed(in store: CollectionStore) async throws {
             if configuration.has("--test-photo-preview-fixture") {
                 try await once("photos") { try await photos(in: store) }
