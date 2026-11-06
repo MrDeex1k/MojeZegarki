@@ -1,28 +1,29 @@
-import OSLog
 import SwiftUI
 
 @main
 struct MojeZegarkiApp: App {
-    @State private var store: CollectionStore?
-    @State private var failure = false
+    @State private var startup = StartupController(load: CollectionBootstrap().load)
+    private let configuration = AppLaunchConfiguration()
     @State private var protectedData = ProtectedDataState()
-    @State private var loading = false
-    @State private var testStorePrepared = false
     @State private var lock: AppLock?
 
+    /// Uses isolated lock preferences for UI tests so fixture changes do not reach the user’s settings.
     @MainActor private func makeLock() -> AppLock {
         var defaults = UserDefaults.standard
         #if DEBUG
-            if ProcessInfo.processInfo.arguments.contains("--uitesting"),
+            if configuration.isUITesting,
                 let testDefaults = UserDefaults(suiteName: "CollectionUITests")
             {
                 defaults = testDefaults
-                if ProcessInfo.processInfo.arguments.contains("--reset-test-store") {
+                if configuration.has("--reset-test-store") {
                     defaults.removePersistentDomain(forName: "CollectionUITests")
                 }
-                if ProcessInfo.processInfo.arguments.contains("--test-lock-enabled") {
+                if configuration.has("--test-lock-enabled") {
                     defaults.set(true, forKey: "appLockEnabled")
                 }
+            }
+            if configuration.has("--test-authentication-cancelled") {
+                return AppLock(defaults: defaults, authenticator: UITestFixtures.CancelledAuthenticator())
             }
         #endif
         return AppLock(defaults: defaults)
@@ -31,7 +32,7 @@ struct MojeZegarkiApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if let store, let lock {
+                if let store = startup.resource, let lock {
                     RootView(store: store, lock: lock).modelContainer(store.container)
                         .disabled(!protectedData.isAvailable)
                         .accessibilityHidden(!protectedData.isAvailable)
@@ -39,13 +40,13 @@ struct MojeZegarkiApp: App {
                     ContentUnavailableView(
                         "Unlock your iPhone", systemImage: "lock.shield",
                         description: Text("Your collection will be available after you unlock this device."))
-                } else if failure {
+                } else if let failure = startup.failure {
                     ContentUnavailableView {
                         Label("Could not open collection", systemImage: "externaldrive.badge.exclamationmark")
                     } description: {
-                        Text("Your data has not been reset. Check available storage and try again.")
+                        Text(failure.message)
                     } actions: {
-                        Button("Try again") { Task { await load() } }
+                        Button("Try again") { startup.retry() }
                     }
                 } else {
                     ProgressView("Opening collection…")
@@ -62,154 +63,25 @@ struct MojeZegarkiApp: App {
                     .frame(width: 0, height: 0)
                 }
             }
-            .task(id: protectedData.isAvailable) {
-                guard protectedData.isAvailable else { return }
-                if lock == nil { lock = makeLock() }
-                if store == nil && !failure { await load() }
-            }
-            .onChange(of: protectedData.isAvailable) {
-                if !protectedData.isAvailable { lock?.lock() } else { lock?.reloadPreference() }
+            .onChange(of: protectedData.isAvailable, initial: true) {
+                if protectedData.isAvailable {
+                    if lock == nil { lock = makeLock() } else { lock?.reloadPreference() }
+                } else {
+                    lock?.lock()
+                }
+                startup.setDataAvailable(protectedData.isAvailable)
             }
         }
     }
 
     private var testColorScheme: ColorScheme? {
         #if DEBUG
-            if ProcessInfo.processInfo.arguments.contains("--uitesting") {
-                if ProcessInfo.processInfo.arguments.contains("--test-dark") { return .dark }
-                if ProcessInfo.processInfo.arguments.contains("--test-light") { return .light }
+            if configuration.isUITesting {
+                if configuration.has("--test-dark") { return .dark }
+                if configuration.has("--test-light") { return .light }
             }
         #endif
         return nil
     }
 
-    @MainActor
-    private func load() async {
-        guard protectedData.isAvailable, !loading else { return }
-        loading = true
-        failure = false
-        defer { loading = false }
-        do {
-            var directory: URL?
-            #if DEBUG
-                // UI tests use an isolated on-disk store, never the user's collection.
-                if ProcessInfo.processInfo.arguments.contains("--uitesting") {
-                    directory = FileManager.default.temporaryDirectory.appendingPathComponent("CollectionUITests")
-                    if !testStorePrepared, ProcessInfo.processInfo.arguments.contains("--reset-test-store"),
-                        let directory,
-                        FileManager.default.fileExists(atPath: directory.path)
-                    {
-                        try FileManager.default.removeItem(at: directory)
-                    }
-                }
-            #endif
-            let loaded = try CollectionStore(directory: directory)
-            testStorePrepared = true
-            // Finish cleanup before exposing editors, but never block a valid collection on orphan cleanup.
-            do { try await loaded.reconcileAssets() } catch {
-                Logger(subsystem: "pl.jakubbatycki.MojeZegarki", category: "Storage").error(
-                    "Asset cleanup failed: \(error.localizedDescription, privacy: .private)")
-            }
-            #if DEBUG
-                if ProcessInfo.processInfo.arguments.contains("--uitesting"),
-                    ProcessInfo.processInfo.arguments.contains("--test-photo-preview-fixture")
-                {
-                    try await seedPhotoPreviewFixture(in: loaded)
-                }
-                if ProcessInfo.processInfo.arguments.contains("--uitesting"),
-                    ProcessInfo.processInfo.arguments.contains("--test-document-fixture")
-                {
-                    try await seedDocumentFixture(in: loaded)
-                }
-            #endif
-            #if DEBUG
-                if ProcessInfo.processInfo.arguments.contains("--uitesting"),
-                    ProcessInfo.processInfo.arguments.contains("--test-wear-fixture")
-                {
-                    var draft = TimepieceDraft()
-                    draft.brand = "TestBrand"
-                    draft.modelName = "Calendar watch"
-                    let watch = try loaded.save(draft)
-                    try loaded.logWear(for: watch, date: .now)
-                    if ProcessInfo.processInfo.arguments.contains("--test-statistics-fixture"),
-                        let olderDate = Calendar(identifier: .gregorian).date(byAdding: .day, value: -400, to: .now)
-                    {
-                        try loaded.logWear(for: watch, date: olderDate)
-                    }
-                    draft.modelName = "Second watch"
-                    _ = try loaded.save(draft)
-                }
-            #endif
-            guard protectedData.isAvailable, !Task.isCancelled else { return }
-            store = loaded
-        } catch {
-            if protectedData.isAvailable && !Task.isCancelled { failure = true }
-        }
-    }
-
-    #if DEBUG
-        @MainActor private func seedPhotoPreviewFixture(in store: CollectionStore) async throws {
-            var photos: [PhotoDraft] = []
-            for size in [CGSize(width: 1200, height: 700), CGSize(width: 700, height: 1200)] {
-                let data = UIGraphicsImageRenderer(size: size).jpegData(withCompressionQuality: 0.9) { context in
-                    UIColor.systemTeal.setFill()
-                    context.fill(CGRect(origin: .zero, size: size))
-                    UIColor.white.setStroke()
-                    context.cgContext.setLineWidth(20)
-                    context.cgContext.stroke(CGRect(origin: .zero, size: size).insetBy(dx: 20, dy: 20))
-                    ("Photo preview" as NSString).draw(
-                        at: CGPoint(x: 60, y: 60),
-                        withAttributes: [.font: UIFont.systemFont(ofSize: 60), .foregroundColor: UIColor.white])
-                }
-                photos.append(try await store.photoStore.importPhoto(data))
-            }
-            var draft = TimepieceDraft()
-            draft.brand = "TestBrand"
-            draft.modelName = "Photo watch"
-            draft.photos = photos
-            draft.mainPhotoID = photos.first?.id
-            _ = try store.save(draft)
-            var wish = WishlistDraft()
-            wish.brand = "TestBrand"
-            wish.modelName = "Photo wish"
-            wish.photo = photos.last
-            _ = try store.saveWish(wish)
-            if ProcessInfo.processInfo.arguments.contains("--test-missing-photo") {
-                for photo in photos { try await store.photoStore.remove(photo.id) }
-            }
-        }
-
-        @MainActor private func seedDocumentFixture(in store: CollectionStore) async throws {
-            var draft = TimepieceDraft()
-            draft.brand = "TestBrand"
-            draft.modelName = "Document watch"
-            let watch = try store.save(draft)
-            let pdf = UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: 400, height: 600)).pdfData { context in
-                context.beginPage()
-                ("Test invoice / 2026" as NSString).draw(at: CGPoint(x: 30, y: 30), withAttributes: nil)
-            }
-            let imageFixture = ProcessInfo.processInfo.arguments.contains("--test-image-document")
-            let bytes =
-                imageFixture
-                ? UIGraphicsImageRenderer(size: CGSize(width: 400, height: 600)).jpegData(withCompressionQuality: 0.8) {
-                    context in
-                    UIColor.white.setFill()
-                    context.fill(CGRect(x: 0, y: 0, width: 400, height: 600))
-                    ("Test invoice" as NSString).draw(at: CGPoint(x: 30, y: 30), withAttributes: nil)
-                } : pdf
-            let asset = try await store.documentStore.importData(bytes)
-            if ProcessInfo.processInfo.arguments.contains("--test-corrupt-document") {
-                let url = store.documentStore.root.appendingPathComponent(asset.id.uuidString).appendingPathComponent(
-                    asset.filename)
-                try Data("corrupt".utf8).write(to: url)
-            }
-            if ProcessInfo.processInfo.arguments.contains("--test-missing-document") {
-                try await store.documentStore.remove(asset.id)
-            }
-            try store.attachDocument(
-                asset, to: watch, name: "Test invoice", kind: .purchase, date: nil,
-                notes: ProcessInfo.processInfo.arguments.contains("--test-long-note")
-                    ? String(repeating: "Private invoice note. ", count: 35) : "Private test document")
-        }
-    #endif
 }

@@ -1,6 +1,50 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Your data has not been reset. Free some storage on your iPhone and try again." : {
+      "extractionState": "manual",
+      "localizations": {
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Twoje dane nie zostały usunięte. Zwolnij miejsce na iPhonie i spróbuj ponownie."
+          }
+        }
+      }
+    },
+    "Your data has not been reset. Unlock your iPhone and try again." : {
+      "extractionState": "manual",
+      "localizations": {
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Twoje dane nie zostały usunięte. Odblokuj iPhone’a i spróbuj ponownie."
+          }
+        }
+      }
+    },
+    "Your data has not been reset. Try again. If the problem continues, contact support." : {
+      "extractionState": "manual",
+      "localizations": {
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Twoje dane nie zostały usunięte. Spróbuj ponownie. Jeśli problem się powtarza, skontaktuj się z pomocą techniczną."
+          }
+        }
+      }
+    },
+    "This item is no longer available. Close this screen and try again." : {
+      "extractionState": "manual",
+      "localizations": {
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ten element nie jest już dostępny. Zamknij ten ekran i spróbuj ponownie."
+          }
+        }
+      }
+    },
     "Select a watch" : {
       "localizations" : {
         "pl" : {

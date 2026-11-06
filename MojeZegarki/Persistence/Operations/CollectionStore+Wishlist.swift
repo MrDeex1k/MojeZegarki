@@ -12,7 +12,9 @@ extension CollectionStore {
         let watchUpdatedAt: Date
     }
 
+    /// Converts a wish to a watch and captures the original state needed to undo that move.
     func moveWish(_ item: WishlistItem) throws -> WishMoveUndo {
+        try requireManaged(item)
         let locale = Locale(identifier: "en_US_POSIX")
         let draft = WishlistDraft(item: item, locale: locale)
         let id = item.id
@@ -50,12 +52,15 @@ extension CollectionStore {
         wish.notes = undo.draft.notes.nilIfEmpty
         wish.photoID = undo.draft.photo?.id
         wish.photoFilename = undo.draft.photo?.filename
+        beginChanges()
         context.insert(wish)
-        for photo in watch.photos ?? [] { context.delete(photo) }
+        let photos = watch.photos ?? []
+        for photo in photos { context.delete(photo) }
         context.delete(watch)
-        try persistChanges()
+        try persistChanges { watch.photos = photos }
     }
 
+    /// Saves a wish and assigns a position when it enters a different priority group.
     @discardableResult
     func saveWish(
         _ draft: WishlistDraft, editing existing: WishlistItem? = nil, locale: Locale = .current,
@@ -63,20 +68,29 @@ extension CollectionStore {
     ) throws
         -> WishlistItem
     {
+        if let existing { try requireManaged(existing) }
         let price = try draft.purchaseDraft.validatedPrice(locale: locale)
         let url = try draft.validatedURL()
         let position: Int
         if existing == nil || existing?.priority != draft.priority.rawValue {
             let priority = draft.priority.rawValue
-            let peers =
-                try fetchPeers?(priority)
-                ?? context.fetch(
-                    FetchDescriptor<WishlistItem>(predicate: #Predicate { $0.priority == priority }))
-            position = (peers.filter { $0.id != existing?.id }.map(\.position).min() ?? 0) - 1
+            let lowestPosition: Int?
+            if let fetchPeers {
+                lowestPosition = try fetchPeers(priority).filter { $0.id != existing?.id }.map(\.position).min()
+            } else {
+                let excludedID = existing?.id ?? UUID()
+                var query = FetchDescriptor<WishlistItem>(
+                    predicate: #Predicate { $0.priority == priority && $0.id != excludedID },
+                    sortBy: [SortDescriptor(\.position)])
+                query.fetchLimit = 1
+                lowestPosition = try context.fetch(query).first?.position
+            }
+            position = (lowestPosition ?? 0) - 1
         } else {
             position = existing?.position ?? 0
         }
         let item = existing ?? WishlistItem(brand: draft.brand.trimmed, modelName: draft.modelName.trimmed)
+        beginChanges()
         if existing == nil { context.insert(item) }
         item.brand = draft.brand.trimmed
         item.modelName = draft.modelName.trimmed
@@ -102,14 +116,18 @@ extension CollectionStore {
             throw WishlistError.invalidOrder
         }
         let byID = Dictionary(uniqueKeysWithValues: peers.map { ($0.id, $0) })
+        beginChanges()
         for (position, id) in orderedIDs.enumerated() {
             byID[id]?.position = position
         }
         try persistChanges()
     }
 
+    /// Commits wish removal before deleting its photo asset.
     func deleteWish(_ item: WishlistItem) async throws {
+        try requireManaged(item)
         let photoID = item.photoID
+        beginChanges()
         context.delete(item)
         try persistChanges()
         if let photoID { try? await photoStore.remove(photoID) }

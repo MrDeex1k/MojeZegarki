@@ -14,8 +14,7 @@ struct LockScreen: View {
                     Text("Collection locked").font(.title2.bold())
                     if !obscured {
                         Text("Unlock with Face ID or your device passcode.").multilineTextAlignment(.center)
-                            .foregroundStyle(
-                                .secondary)
+                            .foregroundStyle(Color.supportingText)
                         if lock.isBusy {
                             ProgressView()
                         } else {

@@ -1,0 +1,9 @@
+{
+  "sourceCommit": "7c2f0c9e5d3311d0b58adef08733e2764b211c00",
+  "toolchain": "Xcode 27.2, Swift 6.4.2, macOS SwiftData",
+  "kind": "Synthetic frozen stores generated from historical schema sources; not user data or databases captured from a released app.",
+  "sha256": {
+    "collection-v1.store": "99144b3024ded7c34e593ef48ab8562590addbb2cbea7967048c3bed46c4c683",
+    "collection-v2.store": "104c6ca200430223686d2dc7a1c833fc8943b5d3353ca0de59d9493a97dc2a9b"
+  }
+}

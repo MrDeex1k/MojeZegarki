@@ -41,7 +41,9 @@ enum CollectionSchemaV3: VersionedSchema {
 
         var status: WatchStatus { WatchStatus(rawValue: statusRaw) ?? .owned }
         var sortedPhotos: [TimepiecePhoto] { (photos ?? []).sorted { $0.position < $1.position } }
-        var mainPhoto: TimepiecePhoto? { sortedPhotos.first { $0.id == mainPhotoID } ?? sortedPhotos.first }
+        var mainPhoto: TimepiecePhoto? {
+            (photos ?? []).first { $0.id == mainPhotoID } ?? (photos ?? []).min { $0.position < $1.position }
+        }
     }
 
     @Model
@@ -65,7 +67,7 @@ enum CollectionSchemaV3: VersionedSchema {
         var calendarDay: String = ""
         var createdAt: Date = Date()
         var timepiece: Timepiece?
-        init(day: String, timepiece: Timepiece) {
+        init(day: String, timepiece: Timepiece? = nil) {
             calendarDay = day
             self.timepiece = timepiece
         }
@@ -109,7 +111,7 @@ enum CollectionSchemaV3: VersionedSchema {
         var notes: String?
         var createdAt: Date = Date()
         var timepiece: Timepiece?
-        init(asset: DocumentAsset, name: String, timepiece: Timepiece) {
+        init(asset: DocumentAsset, name: String, timepiece: Timepiece? = nil) {
             id = asset.id
             filename = asset.filename
             contentType = asset.contentType
