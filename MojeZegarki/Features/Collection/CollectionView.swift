@@ -23,14 +23,9 @@ struct CollectionView: View {
         }
     }
 
-    private func clearHiddenSelection() {
-        guard let selection, !visible.contains(where: { $0.id == selection.id }) else { return }
-        self.selection = nil
-        compactColumn = .sidebar
-    }
-
     var body: some View {
         let visible = visible
+        let selectionIsVisible = selection.map { route in visible.contains { $0.id == route.id } } ?? true
         NavigationSplitView(preferredCompactColumn: $compactColumn) {
             VStack(spacing: 0) {
                 Picker("Collection filter", selection: $archive) {
@@ -144,13 +139,10 @@ struct CollectionView: View {
             }
         }
         .navigationSplitViewStyle(.balanced)
-        .onChange(of: archive) { clearHiddenSelection() }
-        .onChange(of: search) { clearHiddenSelection() }
-        .onChange(of: watches.map(\.id)) {
-            if let selection, !watches.contains(where: { $0.id == selection.id }) {
-                self.selection = nil
-                compactColumn = .sidebar
-            }
+        .onChange(of: selectionIsVisible) { _, isVisible in
+            guard !isVisible else { return }
+            selection = nil
+            compactColumn = .sidebar
         }
     }
 }

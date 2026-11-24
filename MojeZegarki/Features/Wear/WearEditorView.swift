@@ -10,11 +10,7 @@ struct WearEditorView: View {
     @Bindable var session: WearEditorSession
     var onSaved: (Int) -> Void = { _ in }
     let onClose: (() -> Void)?
-    private enum DiscardAction {
-        case close
-        case selectWatch(UUID?)
-    }
-    @State private var discardAction = DiscardAction.close
+    @State private var discardAction = WearEditorDiscardAction.close
     @State private var discarding = false
     @State private var error: String?
 

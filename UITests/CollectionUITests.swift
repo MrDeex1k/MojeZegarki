@@ -33,18 +33,48 @@ final class CollectionUITests: XCTestCase {
         app.staticTexts["Alpinist"].tap()
         reveal(app.buttons["detail.sell"], in: app)
         app.buttons["detail.sell"].tap()
-        app.buttons["collection.back"].tap()
+        XCTAssertTrue(app.buttons["detail.edit"].waitForNonExistence(timeout: 5))
         app.segmentedControls.buttons["Archive"].tap()
         app.staticTexts["Alpinist"].tap()
         reveal(app.buttons["detail.restore"], in: app)
         app.buttons["detail.restore"].tap()
+        XCTAssertTrue(app.staticTexts["Archive is empty"].waitForExistence(timeout: 5))
+        app.segmentedControls.buttons["In collection"].tap()
+        app.staticTexts["Alpinist"].tap()
         reveal(app.buttons["detail.delete"], in: app)
         app.buttons["detail.delete"].tap()
         // iOS 26 exposes nested button elements for the same confirmation action.
         let confirmation = app.buttons.matching(identifier: "confirm.delete").firstMatch
         XCTAssertTrue(confirmation.waitForExistence(timeout: 5))
         confirmation.tap()
-        XCTAssertTrue(app.staticTexts["Archive is empty"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["collection.addFirst"].waitForExistence(timeout: 5))
+    }
+
+    func testEditingWatchOutOfSearchResultsClearsSelection() {
+        let app = XCUIApplication()
+        app.launchArguments = [
+            "--uitesting", "--reset-test-store", "--test-wear-fixture",
+            "-AppleLanguages", "(en)", "-AppleLocale", "en_US",
+        ]
+        app.launch()
+        let watch = app.staticTexts["Calendar watch"]
+        XCTAssertTrue(watch.waitForExistence(timeout: 15))
+        app.swipeDown()
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        search.tap()
+        search.typeText("Calendar\n")
+        XCTAssertFalse(app.staticTexts["Second watch"].exists)
+        watch.tap()
+        app.buttons["detail.edit"].tap()
+        let model = app.textFields["editor.model"]
+        focus(model, in: app)
+        model.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: "Calendar watch".count) + "Renamed")
+        app.buttons["editor.save"].tap()
+        XCTAssertTrue(app.buttons["detail.edit"].waitForNonExistence(timeout: 5))
+        XCTAssertTrue(app.segmentedControls.buttons["In collection"].waitForExistence(timeout: 5))
+        XCTAssertEqual(search.value as? String, "Calendar")
+        XCTAssertFalse(watch.exists)
     }
 
     func testShowCollectionClearsArchiveSearchAndDetailSelection() {
@@ -58,7 +88,7 @@ final class CollectionUITests: XCTestCase {
         app.staticTexts["Calendar watch"].tap()
         reveal(app.buttons["detail.sell"], in: app)
         app.buttons["detail.sell"].tap()
-        app.buttons["collection.back"].tap()
+        XCTAssertTrue(app.buttons["detail.edit"].waitForNonExistence(timeout: 5))
         app.segmentedControls.buttons["Archive"].tap()
         app.swipeDown()
         let search = app.searchFields.firstMatch
