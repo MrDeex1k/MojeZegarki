@@ -96,9 +96,8 @@ struct DocumentPreviewView: View {
                 let data = try await store.documentStore.data(id: document.id, filename: document.filename)
                 try Task.checkCancellation()
                 if document.contentType == UTType.pdf.identifier {
-                    guard let pdf = PDFDocument(data: data), !pdf.isLocked, pdf.pageCount > 0 else {
-                        throw DocumentError.unsupported
-                    }
+                    let pdf = try await PreviewContent.preparePDF(data)
+                    try Task.checkCancellation()
                     content = .pdf(pdf)
                 } else {
                     guard let image = await ImageLoader.prepare(data) else { throw DocumentError.unsupported }

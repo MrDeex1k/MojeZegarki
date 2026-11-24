@@ -81,7 +81,7 @@ extension CollectionStore {
         }
         // Failed filesystem cleanup is retried at next startup by reconcileAssets().
         for id in photoIDs { try? await photoStore.remove(id) }
-        for id in documentIDs { try? await documentStore.remove(id) }
+        for id in Set(documentIDs) { await removeDocumentFileIfUnreferenced(id) }
     }
 
 }

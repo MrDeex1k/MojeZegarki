@@ -7,13 +7,7 @@ struct WearStatisticsContent: View {
     let now: Date
     @Query private var logs: [WearLog]
     @Query(sort: \Timepiece.brand) private var watches: [Timepiece]
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Binding var period: WearStatistics.Period
-    @State private var selectedID: UUID?
-    @Environment(\.horizontalSizeClass) private var widthClass
-    @Environment(\.dynamicTypeSize) private var typeSize
-    @Environment(\.locale) private var locale
 
     init(
         initialWatchID: UUID?, period: Binding<WearStatistics.Period>, currentPeriod: WearStatistics.Period, now: Date
@@ -31,21 +25,6 @@ struct WearStatisticsContent: View {
             }, period: period, now: now)
     }
 
-    /// Formats a Gregorian day key in the presentation locale without shifting its date.
-    private func formatted(_ day: WearDay) -> String {
-        let calendar = WearDay.calendar(timeZone: .gmt)
-        return day.date(timeZone: .gmt)!.formatted(
-            Date.FormatStyle(date: .abbreviated, time: .omitted, locale: locale, calendar: calendar, timeZone: .gmt))
-    }
-
-    private var periodPicker: some View {
-        Picker("Period", selection: $period) {
-            Text("30 days").tag(WearStatistics.Period.month)
-            Text("This year").tag(WearStatistics.Period.year)
-            Text("All time").tag(WearStatistics.Period.all)
-        }
-    }
-
     private func ranked(using stats: WearStatistics) -> [Timepiece] {
         watches.sorted {
             let left = stats.daysByWatch[$0.id, default: 0]
@@ -57,8 +36,35 @@ struct WearStatisticsContent: View {
 
     var body: some View {
         let stats = statistics
-        let ranking = ranked(using: stats)
-        let maximum = max(stats.daysByWatch.values.max() ?? 0, 1)
+        StatisticsPresentation(
+            initialWatchID: initialWatchID, watches: watches, ranking: ranked(using: stats),
+            stats: stats, maximum: max(stats.daysByWatch.values.max() ?? 0, 1), period: $period)
+    }
+}
+
+private struct StatisticsPresentation: View {
+    let initialWatchID: UUID?
+    let watches: [Timepiece]
+    let ranking: [Timepiece]
+    let stats: WearStatistics
+    let maximum: Int
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Binding var period: WearStatistics.Period
+    @State private var selectedID: UUID?
+    @Environment(\.horizontalSizeClass) private var widthClass
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.locale) private var locale
+
+    private var periodPicker: some View {
+        Picker("Period", selection: $period) {
+            Text("30 days").tag(WearStatistics.Period.month)
+            Text("This year").tag(WearStatistics.Period.year)
+            Text("All time").tag(WearStatistics.Period.all)
+        }
+    }
+
+    var body: some View {
         let selected = watches.first { $0.id == (selectedID ?? initialWatchID) } ?? ranking.first
         let count = selected.map { stats.daysByWatch[$0.id, default: 0] } ?? 0
         let share = selected.map { stats.shareOfRecordedDays(for: $0.id) } ?? 0
@@ -97,7 +103,7 @@ struct WearStatisticsContent: View {
                                             .font(.title2.weight(.semibold)).monospacedDigit()
                                             .contentTransition(.numericText())
                                         Text(
-                                            "\(formatted(stats.startDay)) – \(formatted(stats.endDay))"
+                                            "\(stats.startDay.formatted(.abbreviated, locale: locale)) – \(stats.endDay.formatted(.abbreviated, locale: locale))"
                                         )
                                         .font(.caption).foregroundStyle(Color.supportingText)
                                     }

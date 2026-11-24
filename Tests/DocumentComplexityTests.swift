@@ -24,7 +24,7 @@ final class DocumentComplexityTests: XCTestCase {
             let importTime = start.duration(to: clock.now)
             let bytes = try await store.data(id: asset.id, filename: asset.filename)
             let previewStart = clock.now
-            let preview = try XCTUnwrap(PDFDocument(data: bytes))
+            let preview = try await PreviewContent.preparePDF(bytes)
             XCTAssertEqual(preview.pageCount, count)
             _ = preview.page(at: 0)?.thumbnail(of: CGSize(width: 300, height: 400), for: .mediaBox)
             print(
@@ -32,6 +32,12 @@ final class DocumentComplexityTests: XCTestCase {
             )
             XCTAssertEqual(bytes, data)
         }
+    }
+
+    func testShortReadsContinueUntilEOF() throws {
+        var chunks = [Data([1]), Data([2, 3]), Data()]
+        let bytes = try BoundedFileReader.readChunks { _ in chunks.removeFirst() }
+        XCTAssertEqual(bytes, Data([1, 2, 3]))
     }
 
     /// Checks the byte limit and that a cancelled provider import never asks for URL access.

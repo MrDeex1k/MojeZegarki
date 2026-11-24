@@ -4,8 +4,36 @@ import SwiftUI
 struct WearHistoryView: View {
     let store: CollectionStore
     var watch: Timepiece?
+    let session: WearHistorySession
+    let presentsEditor: Bool
+    @Query private var history: [WearLog]
+
+    init(store: CollectionStore, watch: Timepiece?, session: WearHistorySession, presentsEditor: Bool) {
+        self.store = store
+        self.watch = watch
+        self.session = session
+        self.presentsEditor = presentsEditor
+        let filter: Predicate<WearLog> =
+            (watch?.id ?? session.filterID).map(WearLogScope.watch) ?? #Predicate { $0.timepiece != nil }
+        var descriptor = FetchDescriptor<WearLog>(predicate: filter)
+        descriptor.propertiesToFetch = [\.calendarDay]
+        _history = Query(descriptor)
+    }
+
+    var body: some View {
+        WearMonthContent(
+            store: store, watch: watch, dayKeys: Set(history.map(\.calendarDay)), session: session,
+            presentsEditor: presentsEditor)
+    }
+}
+
+private struct WearMonthContent: View {
+    let store: CollectionStore
+    let watch: Timepiece?
+    let dayKeys: Set<String>
     @ScaledMetric(relativeTo: .body) private var headerHeight = 52
-    @Query(sort: \WearLog.calendarDay, order: .reverse) private var logs: [WearLog]
+    @State private var addingWatch: TimepieceEditorSession?
+    @Environment(\.locale) private var locale
     @Query(sort: \Timepiece.brand) private var watches: [Timepiece]
     @Bindable var session: WearHistorySession
     let presentsEditor: Bool
@@ -17,27 +45,14 @@ struct WearHistoryView: View {
 
     private var expanded: Bool { widthClass == .regular && !typeSize.isAccessibilitySize }
 
-    /// Scopes the history query to the detail watch or the active watch filter when either exists.
-    init(store: CollectionStore, watch: Timepiece?, session: WearHistorySession, presentsEditor: Bool) {
-        self.store = store
-        self.watch = watch
-        self.session = session
-        self.presentsEditor = presentsEditor
-        if let id = watch?.id ?? session.filterID {
-            _logs = Query(
-                filter: WearLogScope.watch(id), sort: \WearLog.calendarDay, order: .reverse)
-        }
-    }
-
-    private var filtered: [WearLog] {
-        logs.filter { log in
-            guard let owner = log.timepiece else { return false }
-            return (watch == nil || owner.id == watch?.id) && (session.filterID == nil || owner.id == session.filterID)
-        }
-    }
-
     var body: some View {
-        let days = Dictionary(grouping: filtered, by: \.calendarDay)
+        WearMonthEntries(month: session.month, watchID: watch?.id ?? session.filterID, selectedDay: session.selectedDay)
+        { days in
+            history(days: days)
+        }
+    }
+
+    private func history(days: [String: [WearLog]]) -> some View {
         ScrollViewReader { proxy in
             HStack(spacing: 0) {
                 List {
@@ -49,24 +64,34 @@ struct WearHistoryView: View {
                         }
                     }
                     if watch != nil {
-                        WearSummaryView(dayKeys: Set(days.keys))
+                        WearSummaryView(dayKeys: dayKeys)
                     }
-                    if days.isEmpty {
+                    if dayKeys.isEmpty {
                         ContentUnavailableView {
                             Label("No wear history yet", systemImage: "calendar")
                         } description: {
-                            Text("Add one or more days to your wear history.")
+                            if watches.isEmpty {
+                                Text("Add your first watch and keep its story in one place.")
+                            } else {
+                                Text("Add one or more days to your wear history.")
+                            }
                         }
                         .listRowBackground(Color.clear)
                         Section {
-                            addDaysButton
-                                .listRowInsets(EdgeInsets())
-                                .listRowBackground(Color.clear)
+                            if watches.isEmpty {
+                                Button("Add a watch", systemImage: "plus") {
+                                    addingWatch = TimepieceEditorSession(store: store, locale: locale)
+                                }
+                            } else {
+                                addDaysButton
+                                    .listRowInsets(EdgeInsets())
+                                    .listRowBackground(Color.clear)
+                            }
                         }
                     } else {
                         if watch == nil {
                             Section {
-                                statisticsButton(days: days.count)
+                                statisticsButton(days: dayKeys.count)
                                     .listRowInsets(EdgeInsets())
                                     .listRowBackground(Color.clear)
                             }
@@ -99,7 +124,7 @@ struct WearHistoryView: View {
                 }
                 .listSectionSpacing(12)
                 .scrollBounceBehavior(.basedOnSize)
-                if expanded && !days.isEmpty {
+                if expanded && !dayKeys.isEmpty {
                     Divider()
                     List {
                         if session.selectedDay == nil {
@@ -117,6 +142,7 @@ struct WearHistoryView: View {
                     session.savedCount = $0
                 }
             }
+            .sheet(item: $addingWatch) { TimepieceEditorView(store: store, session: $0) }
             .sheet(isPresented: $session.showingStatistics) {
                 WearStatisticsView(initialWatchID: session.filterID)
             }
@@ -204,8 +230,8 @@ struct WearHistoryView: View {
                             onDelete: { session.deleting = log })
                     }
                 } header: {
-                    if let date = WearDay(key: selectedDay)?.date() {
-                        Text(date.formatted(date: .complete, time: .omitted))
+                    if let day = WearDay(key: selectedDay) {
+                        Text(day.formatted(.complete, locale: locale))
                             .listRowInsets(EdgeInsets(top: 7, leading: 16, bottom: 3, trailing: 16))
                     }
                 }
@@ -241,4 +267,20 @@ struct WearHistoryView: View {
             }
         }
     }
+}
+
+private struct WearMonthEntries<Content: View>: View {
+    @Query private var logs: [WearLog]
+    let content: ([String: [WearLog]]) -> Content
+
+    init(
+        month: Date, watchID: UUID?, selectedDay: String?,
+        @ViewBuilder content: @escaping ([String: [WearLog]]) -> Content
+    ) {
+        let filter = WearLogScope.month(month, watchID: watchID, selectedDay: selectedDay)
+        _logs = Query(filter: filter, sort: \WearLog.calendarDay, order: .reverse)
+        self.content = content
+    }
+
+    var body: some View { content(Dictionary(grouping: logs, by: \.calendarDay)) }
 }

@@ -9,9 +9,10 @@ extension CollectionStore {
     ) throws -> DocumentItem {
         try requireManaged(watch)
         let watchID = watch.id
+        let assetID = asset.id
         let hash = asset.contentHash
         var query = FetchDescriptor<DocumentItem>(
-            predicate: #Predicate { $0.timepiece?.id == watchID && $0.contentHash == hash })
+            predicate: #Predicate { $0.id == assetID || ($0.timepiece?.id == watchID && $0.contentHash == hash) })
         query.fetchLimit = 1
         let matches = try context.fetch(query)
         guard matches.isEmpty else { throw DocumentError.duplicate }
@@ -47,7 +48,20 @@ extension CollectionStore {
         beginChanges()
         context.delete(document)
         try persistChanges { watch?.documents = documents }
-        try? await documentStore.remove(id)
+        await removeDocumentFileIfUnreferenced(id)
+    }
+
+    func discardDocumentDraft(_ id: UUID) async {
+        guard documentReferenceCount(id) == 0 else { return }
+        await documentStore.discardUnattached(id)
+    }
+
+    private func documentReferenceCount(_ id: UUID) -> Int? {
+        try? context.fetchCount(FetchDescriptor<DocumentItem>(predicate: #Predicate { $0.id == id }))
+    }
+
+    func removeDocumentFileIfUnreferenced(_ id: UUID) async {
+        if documentReferenceCount(id) == 0 { try? await documentStore.remove(id) }
     }
 
 }

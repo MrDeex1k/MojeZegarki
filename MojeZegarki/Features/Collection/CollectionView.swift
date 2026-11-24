@@ -23,6 +23,12 @@ struct CollectionView: View {
         }
     }
 
+    private func clearHiddenSelection() {
+        guard let selection, !visible.contains(where: { $0.id == selection.id }) else { return }
+        self.selection = nil
+        compactColumn = .sidebar
+    }
+
     var body: some View {
         let visible = visible
         NavigationSplitView(preferredCompactColumn: $compactColumn) {
@@ -138,6 +144,8 @@ struct CollectionView: View {
             }
         }
         .navigationSplitViewStyle(.balanced)
+        .onChange(of: archive) { clearHiddenSelection() }
+        .onChange(of: search) { clearHiddenSelection() }
         .onChange(of: watches.map(\.id)) {
             if let selection, !watches.contains(where: { $0.id == selection.id }) {
                 self.selection = nil

@@ -26,6 +26,13 @@ struct WearDay: Hashable, Comparable, Sendable {
             from: DateComponents(year: parts[0], month: parts[1], day: parts[2], hour: 12))
     }
 
+    /// Format a stored civil day independently of transitions in the device’s time zone.
+    func formatted(_ style: Date.FormatStyle.DateStyle, locale: Locale) -> String {
+        date(timeZone: .gmt)!.formatted(
+            Date.FormatStyle(
+                date: style, time: .omitted, locale: locale, calendar: Self.calendar(timeZone: .gmt), timeZone: .gmt))
+    }
+
     /// Uses the Gregorian calendar for stored day keys regardless of the device calendar.
     static func calendar(timeZone: TimeZone = .current) -> Calendar {
         var calendar = Calendar(identifier: .gregorian)

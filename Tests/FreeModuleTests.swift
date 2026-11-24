@@ -520,3 +520,78 @@ final class FreeModuleTests: XCTestCase {
     }
 
 }
+
+extension FreeModuleTests {
+    func testUndoAfterReorderingRestoresWishAtItsPreviousIndex() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let store = try CollectionStore(directory: directory)
+        let wishes = try ["A", "B", "C"].map { name in
+            var draft = WishlistDraft()
+            draft.brand = "Audit"
+            draft.modelName = name
+            draft.priority = .high
+            return try store.saveWish(draft)
+        }
+        let ids = wishes.map(\.id)
+        try store.reorderWishes(ids, priority: .high)
+        let undo = try store.moveWish(wishes[1])
+        try store.reorderWishes([ids[2], ids[0]], priority: .high)
+        try store.undoWishMove(undo)
+        let reopened = try CollectionStore(directory: directory)
+        let ordered = try reopened.context.fetch(FetchDescriptor<WishlistItem>(sortBy: [SortDescriptor(\.position)]))
+        XCTAssertEqual(ordered.map(\.position), [0, 1, 2])
+        XCTAssertEqual(ordered.map(\.id), [ids[2], ids[1], ids[0]])
+    }
+
+    func testSavingStaleEditorPreservesReplacementPhoto() async throws {
+        let store = try store()
+        let data = UIGraphicsImageRenderer(size: CGSize(width: 12, height: 12)).pngData { context in
+            UIColor.blue.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 12, height: 12))
+        }
+        let a = try await store.photoStore.importPhoto(data)
+        let b = try await store.photoStore.importPhoto(data)
+        var draft = TimepieceDraft()
+        draft.brand = "Audit"
+        draft.modelName = "Audit"
+        draft.photos = [a]
+        let watch = try store.save(draft)
+        let first = TimepieceEditorSession(store: store, watch: watch)
+        let second = TimepieceEditorSession(store: store, watch: watch)
+        first.draft.photos = [b]
+        let savedFirst = await first.save(in: store, locale: .current)
+        XCTAssertTrue(savedFirst)
+        second.draft.notes = "Updated"
+        let savedSecond = await second.save(in: store, locale: .current)
+        XCTAssertFalse(savedSecond)
+        XCTAssertEqual(watch.mainPhoto?.id, b.id)
+        let bytesA = await store.photoStore.data(for: a, thumbnail: false)
+        let bytesB = await store.photoStore.data(for: b, thumbnail: false)
+        XCTAssertNil(bytesA)
+        XCTAssertNotNil(bytesB)
+    }
+
+    func testSharedDocumentIDIsRejectedAndLegacyFileSurvivesDeletion() async throws {
+        let store = try store()
+        let a = try watch(store, model: "A")
+        let b = try watch(store, model: "B")
+        let bytes = UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: 50, height: 50)).pdfData { $0.beginPage() }
+        let asset = try await store.documentStore.importData(bytes)
+        let da = try store.attachDocument(asset, to: a, name: "A", kind: .other, date: nil, notes: "")
+        XCTAssertThrowsError(try store.attachDocument(asset, to: b, name: "B", kind: .other, date: nil, notes: ""))
+        let db = DocumentItem(asset: asset, name: "Legacy", timepiece: b)
+        store.context.insert(db)
+        try store.context.save()
+        try await store.deleteDocument(da)
+        let remaining = try store.context.fetch(FetchDescriptor<DocumentItem>())
+        XCTAssertEqual(remaining.count, 1)
+        XCTAssertEqual(remaining.first?.timepiece?.id, b.id)
+        let retainedBytes = try await store.documentStore.data(id: db.id, filename: db.filename)
+        XCTAssertEqual(retainedBytes, bytes)
+        try await store.delete(b)
+        do {
+            _ = try await store.documentStore.data(id: asset.id, filename: asset.filename)
+            XCTFail("Expected cleanup after the final owner was removed")
+        } catch DocumentError.missingFile {}
+    }
+}

@@ -9,8 +9,11 @@ struct PreparedCollection: Sendable {
 
 /// The in-memory collection and its asset actors share ownership of this directory.
 final class TemporaryCollectionDirectory: Sendable {
-    let url = FileManager.default.temporaryDirectory.appendingPathComponent(
-        "CollectionPreview-\(UUID())", isDirectory: true)
+    let url: URL
+
+    init(parent: URL) {
+        url = parent.appendingPathComponent("CollectionPreview-\(UUID())", isDirectory: true)
+    }
 
     deinit { try? FileManager.default.removeItem(at: url) }
 }

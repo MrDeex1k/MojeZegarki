@@ -4,7 +4,7 @@ import SwiftData
 extension CollectionStore {
     struct WishMoveUndo {
         let originalID: UUID
-        let position: Int
+        let groupIndex: Int
         let createdAt: Date
         let updatedAt: Date
         let brand: String
@@ -26,14 +26,16 @@ extension CollectionStore {
         let locale = Locale(identifier: "en_US_POSIX")
         let draft = WishlistDraft(item: item, locale: locale)
         // Capture the stored values before the conversion deletes the model.
-        let (id, createdAt, updatedAt, position) = (item.id, item.createdAt, item.updatedAt, item.position)
+        let (id, createdAt, updatedAt) = (item.id, item.createdAt, item.updatedAt)
+        let group = try orderedWishes(priority: item.priority)
+        guard let groupIndex = group.firstIndex(where: { $0.id == id }) else { throw WishlistError.invalidOrder }
         let (price, currency, url, priority, notes) = (
             item.targetPrice, item.currencyCode, item.url, item.priority, item.notes
         )
         let (photoID, photoFilename) = (item.photoID, item.photoFilename)
         let watch = try save(draft.purchaseDraft, moving: item, locale: locale)
         return WishMoveUndo(
-            originalID: id, position: position, createdAt: createdAt, updatedAt: updatedAt,
+            originalID: id, groupIndex: groupIndex, createdAt: createdAt, updatedAt: updatedAt,
             brand: draft.brand, modelName: draft.modelName, targetPrice: price, currencyCode: currency,
             url: url, priority: priority, notes: notes, photoID: photoID, photoFilename: photoFilename,
             watchID: watch.id, watchUpdatedAt: watch.updatedAt)
@@ -60,12 +62,14 @@ extension CollectionStore {
         wish.currencyCode = undo.currencyCode
         wish.url = undo.url
         wish.priority = undo.priority
-        wish.position = undo.position
+        var group = try orderedWishes(priority: undo.priority)
+        group.insert(wish, at: min(undo.groupIndex, group.count))
         wish.notes = undo.notes
         wish.photoID = undo.photoID
         wish.photoFilename = undo.photoFilename
         beginChanges()
         context.insert(wish)
+        for (index, peer) in group.enumerated() { peer.position = index }
         let photos = watch.photos ?? []
         for photo in photos { context.delete(photo) }
         context.delete(watch)
@@ -117,6 +121,13 @@ extension CollectionStore {
         item.updatedAt = .now
         try persistChanges()
         return item
+    }
+
+    private func orderedWishes(priority: Int) throws -> [WishlistItem] {
+        try context.fetch(
+            FetchDescriptor<WishlistItem>(
+                predicate: #Predicate { $0.priority == priority },
+                sortBy: [SortDescriptor(\.position), SortDescriptor(\.createdAt, order: .reverse)]))
     }
 
     /// Only a complete priority group can be reordered; filtered lists cannot hide peers.

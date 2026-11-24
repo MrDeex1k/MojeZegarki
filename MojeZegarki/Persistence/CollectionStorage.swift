@@ -18,12 +18,13 @@ actor CollectionStorage {
 
     /// Applies protection and backup metadata before opening the database and running migrations.
     nonisolated static func prepare(directory: URL?, inMemory: Bool) throws -> PreparedCollection {
-        let temporaryDirectory = directory == nil && inMemory ? TemporaryCollectionDirectory() : nil
+        let temporaryDirectory =
+            inMemory ? TemporaryCollectionDirectory(parent: directory ?? FileManager.default.temporaryDirectory) : nil
         let root: URL
-        if let directory {
-            root = directory
-        } else if let temporaryDirectory {
+        if let temporaryDirectory {
             root = temporaryDirectory.url
+        } else if let directory {
+            root = directory
         } else {
             root = try FileManager.default.url(
                 for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true

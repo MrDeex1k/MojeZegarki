@@ -129,6 +129,7 @@ final class CollectionUITests: XCTestCase {
         app.textFields["editor.brand"].typeText("Test")
         focus(app.textFields["editor.model"], in: app)
         app.textFields["editor.model"].typeText("Precision")
+        app.textFields["editor.model"].typeText("\n")
         reveal(app.textFields["editor.price"], in: app)
         focus(app.textFields["editor.price"], in: app)
         app.textFields["editor.price"].typeText("12.123456")
@@ -292,6 +293,10 @@ final class CollectionUITests: XCTestCase {
         focus(app.textFields["editor.brand"], in: app)
         app.textFields["editor.brand"].typeText("Casio")
         app.buttons["Anuluj"].tap()
+        let discard = app.buttons["Odrzuć zmiany"]
+        XCTAssertTrue(discard.waitForExistence(timeout: 5))
+        discard.tap()
+        XCTAssertTrue(app.textFields["editor.brand"].waitForNonExistence(timeout: 5))
         XCTAssertTrue(app.buttons["collection.addFirst"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.staticTexts["Casio"].exists)
     }
