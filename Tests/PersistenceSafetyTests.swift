@@ -1,4 +1,5 @@
 import SwiftData
+import UIKit
 import XCTest
 
 @testable import MojeZegarki
@@ -367,6 +368,23 @@ import XCTest
         XCTAssertTrue(FileManager.default.fileExists(atPath: marker.path))
         photos = nil
         XCTAssertFalse(FileManager.default.fileExists(atPath: root.path))
+    }
+
+    func testInMemoryReconciliationCannotDeleteDiskCollectionAssets() async throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let disk = try CollectionStore(directory: root)
+        let data = UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: 40, height: 40)).pdfData { $0.beginPage() }
+        let asset = try await disk.documentStore.importData(data)
+        var draft = TimepieceDraft()
+        draft.brand = "Test"
+        draft.modelName = "Watch"
+        let watch = try disk.save(draft)
+        try disk.attachDocument(asset, to: watch, name: "Receipt", kind: .purchase, date: nil, notes: "")
+        let preview = try CollectionStore(directory: root, inMemory: true)
+        try await preview.reconcileAssets()
+        let reopened = try CollectionStore(directory: root)
+        let retained = try await reopened.documentStore.data(id: asset.id, filename: asset.filename)
+        XCTAssertEqual(retained, data)
     }
 
     func testInMemoryStoreLeavesCallerDirectoryUntouchedOnRelease() throws {

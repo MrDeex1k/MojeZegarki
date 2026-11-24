@@ -4,6 +4,7 @@ import Observation
 @MainActor @Observable final class WishlistEditorSession: Identifiable {
     let id = UUID()
     let item: WishlistItem?
+    private let initialVersion: Date?
     let initial: WishlistDraft
     var draft: WishlistDraft
     let assets: DraftAssetSession
@@ -14,6 +15,7 @@ import Observation
     init(store: CollectionStore, item: WishlistItem? = nil, locale: Locale = .current) {
         self.item = item
         let initial = item.map { WishlistDraft(item: $0, locale: locale) } ?? WishlistDraft(locale: locale)
+        initialVersion = item?.updatedAt
         self.initial = initial
         draft = initial
         assets = DraftAssetSession { try await store.photoStore.remove($0) }
@@ -27,6 +29,7 @@ import Observation
         defer { saving = false }
         do {
             if let item { try store.requireManaged(item) }
+            guard (item?.updatedAt) == initialVersion else { throw CollectionError.changedRecord }
             let oldIDs = Set(item?.photoID.map { [$0] } ?? [])
             let retainedIDs = Set(draft.photo.map { [$0.id] } ?? [])
             try store.saveWish(draft, editing: item, locale: locale)

@@ -25,7 +25,7 @@ import Observation
             kind: document.flatMap { DocumentKind(rawValue: $0.kindRaw) } ?? .purchase,
             date: document?.documentDate, notes: document?.notes ?? "")
         draft = original
-        assets = DraftAssetSession { try await store.documentStore.remove($0) }
+        assets = DraftAssetSession { await store.discardDocumentDraft($0) }
         if let asset { assets.claim(asset.id) }
     }
 }

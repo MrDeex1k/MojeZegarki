@@ -24,8 +24,8 @@ struct WearSummaryView: View {
             LabeledContent("Total") { Text("\(dayKeys.count) days worn").fontWeight(.semibold) }
             LabeledContent("This month") { Text("\(daysThisMonth) days worn") }
             LabeledContent("Last worn") {
-                if let key = dayKeys.max(), let date = WearDay(key: key)?.date() {
-                    Text(date.formatted(date: .abbreviated, time: .omitted))
+                if let key = dayKeys.max(), let day = WearDay(key: key) {
+                    Text(day.formatted(.abbreviated, locale: locale))
                 } else {
                     Text("Not yet worn")
                 }

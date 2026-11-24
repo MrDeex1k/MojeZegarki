@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Keep editing" : {
+      "localizations" : { "pl" : { "stringUnit" : { "state" : "translated", "value" : "Kontynuuj edycję" } } }
+    },
+    "This item has changed. Reopen the editor to use the latest version." : {
+      "localizations" : { "pl" : { "stringUnit" : { "state" : "translated", "value" : "Ten element został zmieniony. Otwórz edytor ponownie, aby użyć najnowszej wersji." } } }
+    },
     "Your data has not been reset. Free some storage on your iPhone and try again." : {
       "extractionState": "manual",
       "localizations": {
@@ -303,6 +309,7 @@
     },
     "Add %lld days" : {
       "localizations" : {
+        "en" : { "variations" : { "plural" : { "one" : { "stringUnit" : { "state" : "translated", "value" : "Add %lld day" } }, "other" : { "stringUnit" : { "state" : "translated", "value" : "Add %lld days" } } } } },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",

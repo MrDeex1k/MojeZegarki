@@ -407,6 +407,34 @@ final class FreeModuleUITests: XCTestCase {
         XCTAssertFalse(app.buttons["wear.save"].isEnabled)
     }
 
+    func testChangingWatchRequiresConfirmationToDiscardSelectedDays() {
+        let app = launch(extra: ["--test-wear-fixture"])
+        let first = app.staticTexts["Calendar watch"]
+        XCTAssertTrue(first.waitForExistence(timeout: 15))
+        first.tap()
+        app.buttons["detail.wear"].tap()
+        app.buttons["wear.add"].tap()
+        app.buttons["wear.selection.month.previous"].tap()
+        let day = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "wear.selection.day."))
+            .firstMatch
+        day.tap()
+        let picker = app.buttons["wear.watch"]
+        picker.tap()
+        app.buttons["TestBrand Second watch"].tap()
+        let discard = app.buttons["Discard changes"]
+        XCTAssertTrue(discard.waitForExistence(timeout: 5))
+        app.alerts.buttons["Keep editing"].tap()
+        XCTAssertEqual(app.staticTexts["wear.selectionCount"].label, "Selected days: 1")
+        picker.tap()
+        app.buttons["TestBrand Second watch"].tap()
+        XCTAssertTrue(discard.waitForExistence(timeout: 5))
+        discard.tap()
+        let cleared = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "label == %@", "Selected days: 0"),
+            object: app.staticTexts["wear.selectionCount"])
+        wait(for: [cleared], timeout: 5)
+    }
+
     func testMissingAndCorruptDocumentShowsRecoverableError() {
         for variant in [
             ["--test-missing-document"], ["--test-corrupt-document"],

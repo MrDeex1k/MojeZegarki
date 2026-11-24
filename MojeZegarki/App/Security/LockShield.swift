@@ -87,7 +87,7 @@ struct LockShield: UIViewRepresentable {
             }
             sceneObscured = notification.name != UIScene.didActivateNotification
             if notification.name == UIScene.willDeactivateNotification {
-                originalWindow?.endEditing(true)
+                if lock?.enabled == true || !dataAvailable { originalWindow?.endEditing(true) }
                 if lock?.isBusy != true {
                     cancelUnlock()
                     needsUnlock = true

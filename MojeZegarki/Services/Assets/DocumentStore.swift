@@ -6,7 +6,7 @@ import PDFKit
 import UniformTypeIdentifiers
 
 actor DocumentStore {
-    static let maximumBytes = 20_000_000
+    static let maximumBytes = BoundedFileReader.maximumBytes
     private var pendingDiscards: Set<UUID> = []
     let root: URL
     private let temporaryDirectory: TemporaryCollectionDirectory?
@@ -16,25 +16,28 @@ actor DocumentStore {
     }
 
     /// Checks cancellation before requesting permission to read the provider’s URL.
-    func importFile(
-        at url: URL, startAccess: @Sendable (URL) -> Bool = { $0.startAccessingSecurityScopedResource() }
-    ) throws -> DocumentAsset {
+    nonisolated func importFile(
+        at url: URL, startAccess: @escaping @Sendable (URL) -> Bool = { $0.startAccessingSecurityScopedResource() }
+    ) async throws -> DocumentAsset {
         try Task.checkCancellation()
-        let scoped = startAccess(url)
-        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
-        var coordinationError: NSError?
-        var result: Result<Data, Error>?
-        NSFileCoordinator().coordinate(readingItemAt: url, options: [], error: &coordinationError) { coordinatedURL in
-            result = Result {
-                let handle = try FileHandle(forReadingFrom: coordinatedURL)
-                defer { try? handle.close() }
-                // Bounded read protects against misleading file-size metadata from providers.
-                return try handle.read(upToCount: Self.maximumBytes + 1) ?? Data()
+        let read = CoordinatedDocumentRead()
+        let bytes = try await withTaskCancellationHandler {
+            try Task.checkCancellation()
+            let scoped = startAccess(url)
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            var error: NSError?
+            var result: Result<Data, Error>?
+            read.coordinator.coordinate(readingItemAt: url, options: [], error: &error) { source in
+                result = Result { try BoundedFileReader.read(source) }
             }
+            try Task.checkCancellation()
+            if let error { throw error }
+            guard let result else { throw DocumentError.missingFile }
+            return try result.get()
+        } onCancel: {
+            read.coordinator.cancel()
         }
-        if let coordinationError { throw coordinationError }
-        guard let result else { throw DocumentError.missingFile }
-        return try importData(result.get())
+        return try await importData(bytes)
     }
 
     /// Validates and writes a private copy, retrying cleanup of previously discarded imports.
@@ -147,4 +150,9 @@ actor DocumentStore {
         guard CGImageDestinationFinalize(destination) else { return nil }
         return buffer as Data
     }
+}
+
+// One task coordinates the read. The cancellation handler can call cancel() from another thread.
+private final class CoordinatedDocumentRead: @unchecked Sendable {
+    let coordinator = NSFileCoordinator()
 }

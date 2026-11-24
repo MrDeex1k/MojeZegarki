@@ -42,6 +42,14 @@ final class WearLogScopeTests: XCTestCase {
             XCTAssertEqual(actual.calendarDays, expected.calendarDays)
             XCTAssertEqual(actual.recordedDays, expected.recordedDays)
         }
+        func monthDays(watchID: UUID?, selectedDay: String?) throws -> [String] {
+            let filter = WearLogScope.month(now, watchID: watchID, selectedDay: selectedDay)
+            return try store.context.fetch(FetchDescriptor<WearLog>(predicate: filter)).map(\.calendarDay).sorted()
+        }
+        XCTAssertEqual(try monthDays(watchID: nil, selectedDay: nil), ["2026-10-19", "2026-10-19", "2026-10-20"])
+        XCTAssertEqual(try monthDays(watchID: b.id, selectedDay: "2025-12-31"), ["2026-10-19"])
+        XCTAssertEqual(
+            try monthDays(watchID: a.id, selectedDay: "2025-12-31"), ["2025-12-31", "2026-10-19", "2026-10-20"])
         let own = try store.context.fetch(FetchDescriptor<WearLog>(predicate: WearLogScope.watch(b.id)))
         XCTAssertEqual(own.count, 1)
         XCTAssertEqual(own.first?.timepiece?.id, b.id)

@@ -1,10 +1,12 @@
 import Foundation
 
 enum CollectionError: LocalizedError {
-    case unavailableRecord, requiredFields, invalidPrice, invalidCurrency, unreadablePhoto, saveFailed, fileAccess
+    case changedRecord, unavailableRecord, requiredFields, invalidPrice, invalidCurrency, unreadablePhoto, saveFailed,
+        fileAccess
 
     var errorDescription: String? {
         switch self {
+        case .changedRecord: String(localized: "This item has changed. Reopen the editor to use the latest version.")
         case .unavailableRecord: String(localized: "This item is no longer available. Close this screen and try again.")
         case .requiredFields: String(localized: "Enter a brand and model.")
         case .invalidPrice:

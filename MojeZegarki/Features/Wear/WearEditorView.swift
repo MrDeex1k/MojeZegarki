@@ -10,6 +10,8 @@ struct WearEditorView: View {
     @Bindable var session: WearEditorSession
     var onSaved: (Int) -> Void = { _ in }
     let onClose: (() -> Void)?
+    @State private var discardAction = WearEditorDiscardAction.close
+    @State private var discarding = false
     @State private var error: String?
 
     init(
@@ -28,7 +30,20 @@ struct WearEditorView: View {
             NavigationStack {
                 Form {
                     Menu {
-                        Picker("Watch", selection: $session.watchID) {
+                        Picker(
+                            "Watch",
+                            selection: Binding(
+                                get: { session.watchID },
+                                set: { id in
+                                    guard id != session.watchID else { return }
+                                    if session.selectedDays.isEmpty {
+                                        session.watchID = id
+                                    } else {
+                                        discardAction = .selectWatch(id)
+                                        discarding = true
+                                    }
+                                })
+                        ) {
                             Text("Choose a watch").tag(Optional<UUID>.none)
                             ForEach(watches) { Text("\($0.brand) \($0.modelName)").tag(Optional($0.id)) }
                         }
@@ -69,7 +84,16 @@ struct WearEditorView: View {
                 .navigationTitle(log == nil ? Text("Wear days") : Text("Edit wear day"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Cancel", systemImage: "xmark") { close() } }
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel", systemImage: "xmark") {
+                            if session.selectedDays.isEmpty {
+                                close()
+                            } else {
+                                discardAction = .close
+                                discarding = true
+                            }
+                        }
+                    }
                     ToolbarItem(placement: .confirmationAction) {
                         Button {
                             do {
@@ -102,7 +126,18 @@ struct WearEditorView: View {
                             "wear.save")
                     }
                 }
-                .onChange(of: session.watchID) { session.selectedDays.removeAll() }
+                .interactiveDismissDisabled(!session.selectedDays.isEmpty)
+                .alert("Discard unsaved changes?", isPresented: $discarding, presenting: discardAction) { action in
+                    Button("Keep editing", role: .cancel) {}
+                    Button("Discard changes", role: .destructive) {
+                        switch action {
+                        case .close: close()
+                        case .selectWatch(let id):
+                            session.selectedDays.removeAll()
+                            session.watchID = id
+                        }
+                    }
+                }
                 .appError($error)
             }
         }

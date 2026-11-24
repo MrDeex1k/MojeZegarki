@@ -5,6 +5,7 @@ import Observation
     let id = UUID()
     let watch: Timepiece?
     let wishlistItem: WishlistItem?
+    private let initialVersion: Date?
     let initial: TimepieceDraft
     var draft: TimepieceDraft
     let assets: DraftAssetSession
@@ -20,6 +21,7 @@ import Observation
             watch.map { TimepieceDraft(timepiece: $0, locale: locale) }
             ?? wishlistItem.map { WishlistDraft(item: $0, locale: locale).purchaseDraft }
             ?? TimepieceDraft(locale: locale)
+        initialVersion = watch?.updatedAt ?? wishlistItem?.updatedAt
         self.initial = initial
         draft = initial
         assets = DraftAssetSession { try await store.photoStore.remove($0) }
@@ -34,6 +36,9 @@ import Observation
         do {
             if let watch { try store.requireManaged(watch) }
             if let wishlistItem { try store.requireManaged(wishlistItem) }
+            guard (watch?.updatedAt ?? wishlistItem?.updatedAt) == initialVersion else {
+                throw CollectionError.changedRecord
+            }
             let oldIDs = Set((watch?.sortedPhotos.map(\.id) ?? []) + (wishlistItem?.photoID.map { [$0] } ?? []))
             let retainedIDs = Set(draft.photos.map(\.id))
             try store.save(draft, editing: watch, moving: wishlistItem, locale: locale)
