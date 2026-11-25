@@ -115,6 +115,8 @@ Testy UI korzystają z izolowanej kolekcji testowej. Macierz kalendarza obejmuje
 
 Test `StorageProtectionTests.testCompleteProtectionMetadataOnPhysicalDevice` uruchom z Xcode na odblokowanym iPhonie z ustawionym kodem i skonfigurowanym podpisywaniem. Na fizycznym urządzeniu sprawdź także osłonę podczas blokowania, rzeczywiste uwierzytelnianie, nawigację i ogłaszanie wybranej waluty przez VoiceOver oraz czytelność pól wyszukiwania przy dużym tekście. Zrzuty w `.xcresult` wskazują przypadki oznaczone w audycie do ręcznej weryfikacji.
 
+Instrukcje uruchomienia i kryteria wdrożenia znajdziesz w [pilotażu e2e i Flashwrighta](e2e/README.md).
+
 ## Dowiedz się więcej
 
 [Galeria aplikacji](#galeria) · [Pochodzenie zdjęć](.github/assets/README.md) · [Licencja](LICENSE) · [Zasady zgłoszeń](CONTRIBUTING.md)
