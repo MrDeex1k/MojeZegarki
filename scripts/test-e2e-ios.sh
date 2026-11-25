@@ -17,6 +17,7 @@ xcodebuild -project "$repo_root/MojeZegarki.xcodeproj" -scheme MojeZegarki \
   -configuration Debug -destination "platform=iOS Simulator,id=$IOS_DESTINATION" \
   -derivedDataPath "$derived_data" CODE_SIGNING_ALLOWED=NO \
   PRODUCT_BUNDLE_IDENTIFIER=pl.jakubbatycki.MojeZegarki.E2EPilot build
+xcrun simctl bootstatus "$IOS_DESTINATION" -b
 xcrun simctl install "$IOS_DESTINATION" "$derived_data/Build/Products/Debug-iphonesimulator/MojeZegarki.app"
 
 cd "$repo_root/e2e"

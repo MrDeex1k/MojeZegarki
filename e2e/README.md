@@ -20,7 +20,7 @@ IOS_DESTINATION='<UUID symulatora>' npm --prefix e2e run test:ios
 
 Skrypt buduje i instaluje wariant Debug z identyfikatorem `pl.jakubbatycki.MojeZegarki.E2EPilot`. Ten wariant ma własny kontener. Każdy scenariusz startuje z pustą bazą testową. Restart w środku scenariusza zachowuje zapisane dane. Scenariusze używają jawnych selektorów i asercji, a skrypt wyłącza telemetrię e2e. Raport jest w `e2e/.e2e/report.json`, a artefakty awarii w `e2e/.e2e/results/`.
 
-Pilotaż przechowuje stan sterownika `agent-device` w `.build/e2e-driver/`. Uruchamiaj go na symulatorze wolnym od innych sesji automatyzacji.
+Skrypt w razie potrzeby uruchamia wybrany symulator i czeka na jego gotowość przed instalacją aplikacji. Pilotaż przechowuje stan sterownika `agent-device` w `.build/e2e-driver/`. Uruchamiaj go na symulatorze wolnym od innych sesji automatyzacji.
 
 ### Chromium
 
